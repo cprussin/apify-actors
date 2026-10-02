@@ -1,0 +1,319 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "route": {
+        "type": ["string", "null"],
+        "title": "Route",
+        "description": "Route as ORIGIN-DESTINATION.",
+        "example": "JFK-LHR"
+      },
+      "origin": {
+        "type": ["string", "null"],
+        "title": "Origin",
+        "description": "Origin airport or city code.",
+        "example": "JFK"
+      },
+      "destination": {
+        "type": ["string", "null"],
+        "title": "Destination",
+        "description": "Destination airport or city code.",
+        "example": "LHR"
+      },
+      "tripType": {
+        "type": ["string", "null"],
+        "title": "Trip type",
+        "description": "oneWay or roundTrip.",
+        "example": "oneWay"
+      },
+      "departureDate": {
+        "type": ["string", "null"],
+        "title": "Departure date",
+        "description": "Outbound date (YYYY-MM-DD).",
+        "example": "2026-11-15"
+      },
+      "returnDate": {
+        "type": ["string", "null"],
+        "title": "Return date",
+        "description": "Return date for round trips (YYYY-MM-DD).",
+        "example": "2026-11-22"
+      },
+      "adults": {
+        "type": ["number", "null"],
+        "title": "Adults",
+        "description": "Number of adult passengers.",
+        "example": 1
+      },
+      "cabinClass": {
+        "type": ["string", "null"],
+        "title": "Cabin",
+        "description": "Cabin class: economy, premiumEconomy, business or first.",
+        "example": "economy"
+      },
+      "price": {
+        "type": ["number", "null"],
+        "title": "Price",
+        "description": "Total price for all passengers (round-trip price for round trips).",
+        "example": 291
+      },
+      "currency": {
+        "type": ["string", "null"],
+        "title": "Currency",
+        "description": "Price currency code.",
+        "example": "USD"
+      },
+      "isBest": {
+        "type": ["boolean", "null"],
+        "title": "Best",
+        "description": "Whether Google lists the flight among its best options.",
+        "example": false
+      },
+      "isCheapest": {
+        "type": ["boolean", "null"],
+        "title": "Cheapest",
+        "description": "Whether this is the cheapest option for the search.",
+        "example": true
+      },
+      "rank": {
+        "type": ["number", "null"],
+        "title": "Rank",
+        "description": "Position in Google's results for the search.",
+        "example": 6
+      },
+      "airlines": {
+        "type": ["array", "null"],
+        "title": "Airlines",
+        "description": "Airlines operating the itinerary.",
+        "example": ["Icelandair"]
+      },
+      "flightNumbers": {
+        "type": ["array", "null"],
+        "title": "Flights",
+        "description": "Flight numbers of each leg.",
+        "example": ["FI614", "FI450"]
+      },
+      "departureAirport": {
+        "type": ["string", "null"],
+        "title": "Departure airport",
+        "description": "Departure airport code.",
+        "example": "JFK"
+      },
+      "arrivalAirport": {
+        "type": ["string", "null"],
+        "title": "Arrival airport",
+        "description": "Arrival airport code.",
+        "example": "LHR"
+      },
+      "departureTime": {
+        "type": ["string", "null"],
+        "title": "Departs (local)",
+        "description": "Departure time, local airport time (YYYY-MM-DDTHH:mm).",
+        "example": "2026-11-15T19:25"
+      },
+      "arrivalTime": {
+        "type": ["string", "null"],
+        "title": "Arrives (local)",
+        "description": "Arrival time, local airport time (YYYY-MM-DDTHH:mm).",
+        "example": "2026-11-16T10:50"
+      },
+      "durationMinutes": {
+        "type": ["number", "null"],
+        "title": "Duration (min)",
+        "description": "Total travel time in minutes.",
+        "example": 625
+      },
+      "duration": {
+        "type": ["string", "null"],
+        "title": "Duration",
+        "description": "Total travel time, e.g. 10h 25m.",
+        "example": "10h 25m"
+      },
+      "stops": {
+        "type": ["number", "null"],
+        "title": "Stops",
+        "description": "Number of stops.",
+        "example": 1
+      },
+      "layoverAirports": {
+        "type": ["array", "null"],
+        "title": "Layovers",
+        "description": "Layover airport codes.",
+        "example": ["KEF"]
+      },
+      "layovers": {
+        "type": ["array", "null"],
+        "title": "Layover details",
+        "description": "Layovers: airport, airportName, city, durationMinutes.",
+        "example": [
+          {
+            "airport": "KEF",
+            "airportName": "Keflavík International Airport",
+            "city": "Reykjavík",
+            "durationMinutes": 85
+          }
+        ]
+      },
+      "legs": {
+        "type": ["array", "null"],
+        "title": "Legs",
+        "description": "Flight legs: flightNumber, airline, airlineCode, from, fromName, to, toName, departureTime, arrivalTime, durationMinutes, aircraft, legroom.",
+        "example": [
+          {
+            "flightNumber": "FI614",
+            "airline": "Icelandair",
+            "airlineCode": "FI",
+            "from": "JFK",
+            "fromName": "John F. Kennedy International Airport",
+            "to": "KEF",
+            "toName": "Keflavík International Airport",
+            "departureTime": "2026-11-15T19:25",
+            "arrivalTime": "2026-11-16T06:10",
+            "durationMinutes": 345,
+            "aircraft": "Boeing 737MAX 9 Passenger",
+            "legroom": "30 in"
+          }
+        ]
+      },
+      "emissionsKg": {
+        "type": ["number", "null"],
+        "title": "CO2 kg",
+        "description": "Estimated CO2 emissions in kg.",
+        "example": 466
+      },
+      "typicalEmissionsKg": {
+        "type": ["number", "null"],
+        "title": "Typical CO2 kg",
+        "description": "Typical CO2 emissions for the route in kg.",
+        "example": 431
+      },
+      "emissionsDiffPercent": {
+        "type": ["number", "null"],
+        "title": "CO2 vs typical %",
+        "description": "Emissions difference from typical, in percent.",
+        "example": 8
+      },
+      "searchUrl": {
+        "type": ["string", "null"],
+        "title": "Google Flights",
+        "description": "Opens the same search on Google Flights.",
+        "example": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTEtMTVqBRIDSkZLcgUSA0xIUkABSAGYAQI%3D&hl=en&gl=us&curr=USD"
+      },
+      "scrapedAt": {
+        "type": ["string", "null"],
+        "title": "Scraped at",
+        "description": "When the price was scraped (ISO 8601 UTC).",
+        "example": "2026-09-30T20:00:00.000Z"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Itineraries",
+      "transformation": {
+        "fields": [
+          "route",
+          "departureDate",
+          "returnDate",
+          "price",
+          "currency",
+          "isCheapest",
+          "isBest",
+          "airlines",
+          "flightNumbers",
+          "departureTime",
+          "arrivalTime",
+          "duration",
+          "stops",
+          "layoverAirports",
+          "emissionsKg",
+          "cabinClass",
+          "adults",
+          "searchUrl",
+          "scrapedAt"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "route": {
+            "label": "Route",
+            "format": "text"
+          },
+          "departureDate": {
+            "label": "Departure date",
+            "format": "text"
+          },
+          "returnDate": {
+            "label": "Return date",
+            "format": "text"
+          },
+          "price": {
+            "label": "Price",
+            "format": "number"
+          },
+          "currency": {
+            "label": "Currency",
+            "format": "text"
+          },
+          "isCheapest": {
+            "label": "Cheapest",
+            "format": "boolean"
+          },
+          "isBest": {
+            "label": "Best",
+            "format": "boolean"
+          },
+          "airlines": {
+            "label": "Airlines",
+            "format": "array"
+          },
+          "flightNumbers": {
+            "label": "Flights",
+            "format": "array"
+          },
+          "departureTime": {
+            "label": "Departs (local)",
+            "format": "text"
+          },
+          "arrivalTime": {
+            "label": "Arrives (local)",
+            "format": "text"
+          },
+          "duration": {
+            "label": "Duration",
+            "format": "text"
+          },
+          "stops": {
+            "label": "Stops",
+            "format": "number"
+          },
+          "layoverAirports": {
+            "label": "Layovers",
+            "format": "array"
+          },
+          "emissionsKg": {
+            "label": "CO2 kg",
+            "format": "number"
+          },
+          "cabinClass": {
+            "label": "Cabin",
+            "format": "text"
+          },
+          "adults": {
+            "label": "Adults",
+            "format": "number"
+          },
+          "searchUrl": {
+            "label": "Google Flights",
+            "format": "link"
+          },
+          "scrapedAt": {
+            "label": "Scraped at",
+            "format": "date"
+          }
+        }
+      }
+    }
+  }
+}

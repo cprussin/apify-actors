@@ -1,0 +1,75 @@
+{
+  "title": "Wellfound Jobs Scraper input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "roles": {
+      "title": "Roles",
+      "type": "array",
+      "description": "Job roles as Wellfound slugs or plain names, e.g. <code>software-engineer</code>, <code>product-manager</code>, <code>Data Analyst</code>. Each role is searched in every location below. Leave empty to list all jobs in the locations.",
+      "editor": "stringList",
+      "prefill": ["software-engineer"],
+      "sectionCaption": "What to search"
+    },
+    "locations": {
+      "title": "Locations",
+      "type": "array",
+      "description": "Locations as Wellfound slugs or plain names, e.g. <code>san-francisco</code>, <code>new-york</code>, <code>london</code>, or <code>remote</code> for remote jobs. Leave empty to search a role in all locations.",
+      "editor": "stringList",
+      "prefill": ["san-francisco"]
+    },
+    "startUrls": {
+      "title": "Start URLs",
+      "type": "array",
+      "description": "Optional Wellfound listing pages, e.g. <code>https://wellfound.com/role/l/software-engineer/san-francisco</code>, <code>https://wellfound.com/role/r/data-analyst</code> (remote), <code>https://wellfound.com/role/product-manager</code> or <code>https://wellfound.com/location/new-york</code>. A <code>?page=N</code> parameter sets the first page.",
+      "editor": "stringList"
+    },
+    "maxJobs": {
+      "title": "Max jobs",
+      "type": "integer",
+      "description": "Stop after this many jobs in total, across all searches. Each job is billed as one event.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 10000,
+      "default": 20,
+      "prefill": 20,
+      "sectionCaption": "Limits"
+    },
+    "maxPages": {
+      "title": "Max pages per search",
+      "type": "integer",
+      "description": "Listing pages to read per role/location (20 companies, usually 30-50 jobs per page).",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 5
+    },
+    "includeDescription": {
+      "title": "Include job description",
+      "type": "boolean",
+      "description": "Add the full job description (Markdown) to each job. Turn off for smaller datasets.",
+      "editor": "checkbox",
+      "default": true
+    },
+    "onlyNew": {
+      "title": "Only new jobs (monitoring)",
+      "type": "boolean",
+      "description": "Return only jobs not returned by an earlier run with the same roles, locations and start URLs. Schedule the actor (e.g. daily) for new-job alerts: the first run is a baseline, later runs output (and bill) only new jobs. State is kept in the key-value store \"wellfound-jobs-state\" in your account.",
+      "default": false,
+      "sectionCaption": "Monitoring"
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Apify Proxy (datacenter is enough). The actor switches to a new IP whenever Wellfound blocks or rate-limits a request, and falls back to direct requests if the proxy keeps failing.",
+      "editor": "proxy",
+      "default": {
+        "useApifyProxy": true
+      },
+      "prefill": {
+        "useApifyProxy": true
+      },
+      "sectionCaption": "Advanced"
+    }
+  }
+}

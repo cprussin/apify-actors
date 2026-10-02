@@ -1,0 +1,85 @@
+{
+  "title": "Tennis Results & Betting Odds input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "startDate": {
+      "title": "Start date",
+      "type": "string",
+      "description": "First day to scrape: YYYY-MM-DD, \"yesterday\", or relative like \"7 days\" (ago). Empty = same as the end date (one day). In player mode, empty = 1 January of the end date's year.",
+      "editor": "textfield",
+      "sectionCaption": "Dates"
+    },
+    "endDate": {
+      "title": "End date",
+      "type": "string",
+      "description": "Last day to scrape (inclusive): YYYY-MM-DD, \"today\", \"yesterday\" or relative like \"1 day\". Empty = yesterday (UTC). Days are TennisExplorer's (Central European time).",
+      "editor": "textfield"
+    },
+    "tours": {
+      "title": "Tours",
+      "type": "array",
+      "description": "Which singles tours to include. ATP and WTA = main tours (WTA includes WTA 125). CHALLENGER = ATP Challenger. ITF_MEN / ITF_WOMEN = ITF World Tennis Tour. OTHER_MEN / OTHER_WOMEN = UTR events, Asian Games, team events and exhibitions.",
+      "editor": "select",
+      "items": {
+        "type": "string",
+        "enum": [
+          "ATP",
+          "WTA",
+          "CHALLENGER",
+          "ITF_MEN",
+          "ITF_WOMEN",
+          "OTHER_MEN",
+          "OTHER_WOMEN"
+        ],
+        "enumTitles": [
+          "ATP",
+          "WTA",
+          "ATP Challenger",
+          "ITF men",
+          "ITF women",
+          "Other men (UTR, exhibitions...)",
+          "Other women (UTR, exhibitions...)"
+        ]
+      },
+      "prefill": ["ATP", "WTA"],
+      "default": ["ATP", "WTA"],
+      "sectionCaption": "Filters"
+    },
+    "playerSlugs": {
+      "title": "Players (optional)",
+      "type": "array",
+      "description": "Player mode: instead of daily results, return the singles match history of these players in the date range. Use the TennisExplorer slug or URL, e.g. \"hurkacz\" or https://www.tennisexplorer.com/player/hurkacz/. The tours filter still applies.",
+      "editor": "stringList"
+    },
+    "maxMatches": {
+      "title": "Max matches",
+      "type": "integer",
+      "description": "Stop after this many matches. Each match is billed as one event.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 1000000,
+      "default": 500,
+      "prefill": 500
+    },
+    "includeRoundAndSurface": {
+      "title": "Add round and surface",
+      "type": "boolean",
+      "description": "Look up round (1R, QF, SF, F...) and surface from each tournament page (one extra request per tournament, cached). Player mode has them anyway. ITF men's matches listed as \"Futures\" have no tournament page.",
+      "default": true,
+      "sectionCaption": "Details"
+    },
+    "includeBookmakerOdds": {
+      "title": "Add per-bookmaker odds",
+      "type": "boolean",
+      "description": "Open each match's detail page and add home/away odds from every listed bookmaker (closing and opening), plus player rankings and full names. One extra request per match (slower), billed as an extra event per match that has bookmaker odds.",
+      "default": false
+    },
+    "onlyNew": {
+      "title": "Only new matches (monitoring)",
+      "type": "boolean",
+      "description": "Skip matches returned by an earlier run with the same tours and players. Schedule daily with startDate \"3 days\" to also catch late-added results; each match is returned (and billed) once. State is kept in the key-value store \"tennis-matches-odds-state\" in your account.",
+      "default": false
+    }
+  }
+}

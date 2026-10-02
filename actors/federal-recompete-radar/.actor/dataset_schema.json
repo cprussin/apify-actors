@@ -1,0 +1,284 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "awardId": {
+        "type": ["string", "null"],
+        "title": "Award ID",
+        "description": "USAspending generated award ID.",
+        "example": "CONT_AWD_36C10B22C0001_3600_-NONE-_-NONE-"
+      },
+      "piid": {
+        "type": ["string", "null"],
+        "title": "PIID",
+        "description": "Contract number (procurement instrument identifier).",
+        "example": "36C10B22C0001"
+      },
+      "parentIdvPiid": {
+        "type": ["string", "null"],
+        "title": "Parent IDV PIID",
+        "description": "Parent IDV contract number for task orders.",
+        "example": "47QTCA19D00AB"
+      },
+      "recipientName": {
+        "type": ["string", "null"],
+        "title": "Incumbent",
+        "description": "Incumbent contractor (recipient) name.",
+        "example": "ACME FEDERAL SOLUTIONS LLC"
+      },
+      "recipientUei": {
+        "type": ["string", "null"],
+        "title": "Recipient UEI",
+        "description": "Recipient's Unique Entity ID.",
+        "example": "ABCDEF123456"
+      },
+      "parentRecipientName": {
+        "type": ["string", "null"],
+        "title": "Parent company",
+        "description": "Recipient's parent company name.",
+        "example": "ACME HOLDINGS INC"
+      },
+      "awardingAgency": {
+        "type": ["string", "null"],
+        "title": "Agency",
+        "description": "Awarding agency.",
+        "example": "Department of Veterans Affairs"
+      },
+      "awardingSubAgency": {
+        "type": ["string", "null"],
+        "title": "Sub-agency",
+        "description": "Awarding sub-agency.",
+        "example": "Veterans Affairs, Department of"
+      },
+      "awardingOffice": {
+        "type": ["string", "null"],
+        "title": "Office",
+        "description": "Awarding contracting office (detail field).",
+        "example": "TECHNOLOGY ACQUISITION CENTER NJ (36C10B)"
+      },
+      "contractType": {
+        "type": ["string", "null"],
+        "title": "Contract type",
+        "description": "Award type, e.g. DEFINITIVE CONTRACT or DELIVERY ORDER.",
+        "example": "DEFINITIVE CONTRACT"
+      },
+      "naicsCode": {
+        "type": ["string", "null"],
+        "title": "NAICS",
+        "description": "NAICS industry code.",
+        "example": "541512"
+      },
+      "naicsDescription": {
+        "type": ["string", "null"],
+        "title": "NAICS description",
+        "description": "NAICS industry description.",
+        "example": "COMPUTER SYSTEMS DESIGN SERVICES"
+      },
+      "pscCode": {
+        "type": ["string", "null"],
+        "title": "PSC",
+        "description": "Product and service code.",
+        "example": "DA01"
+      },
+      "pscDescription": {
+        "type": ["string", "null"],
+        "title": "PSC description",
+        "description": "Product and service code description.",
+        "example": "IT AND TELECOM - BUSINESS APPLICATION/APPLICATION DEVELOPMENT SUPPORT SERVICES (LABOR)"
+      },
+      "description": {
+        "type": ["string", "null"],
+        "title": "Description",
+        "description": "Contract description.",
+        "example": "IT OPERATIONS AND MAINTENANCE SUPPORT SERVICES"
+      },
+      "setAsideType": {
+        "type": ["string", "null"],
+        "title": "Set-aside",
+        "description": "Set-aside type code (detail field).",
+        "example": "SDVOSBC"
+      },
+      "setAsideDescription": {
+        "type": ["string", "null"],
+        "title": "Set-aside description",
+        "description": "Set-aside type description (detail field).",
+        "example": "SERVICE DISABLED VETERAN OWNED SMALL BUSINESS SET-ASIDE"
+      },
+      "extentCompeted": {
+        "type": ["string", "null"],
+        "title": "Extent competed",
+        "description": "How the contract was competed (detail field).",
+        "example": "FULL AND OPEN COMPETITION"
+      },
+      "pricingType": {
+        "type": ["string", "null"],
+        "title": "Pricing type",
+        "description": "Contract pricing type, e.g. FIRM FIXED PRICE (detail field).",
+        "example": "FIRM FIXED PRICE"
+      },
+      "numberOfOffers": {
+        "type": ["number", "null"],
+        "title": "Offers",
+        "description": "Number of offers received (detail field).",
+        "example": 3
+      },
+      "obligatedAmount": {
+        "type": ["number", "null"],
+        "title": "Obligated ($)",
+        "description": "Amount obligated so far, in USD.",
+        "example": 4250000.5
+      },
+      "outlayedAmount": {
+        "type": ["number", "null"],
+        "title": "Outlayed ($)",
+        "description": "Amount outlayed so far, in USD.",
+        "example": 3100000
+      },
+      "currentValue": {
+        "type": ["number", "null"],
+        "title": "Current value ($)",
+        "description": "Base plus exercised options, in USD.",
+        "example": 5100000
+      },
+      "potentialValue": {
+        "type": ["number", "null"],
+        "title": "Potential ($)",
+        "description": "Base plus all options, in USD (detail field).",
+        "example": 8750000
+      },
+      "startDate": {
+        "type": ["string", "null"],
+        "title": "Start",
+        "description": "Period of performance start date (YYYY-MM-DD).",
+        "example": "2022-04-01"
+      },
+      "currentEndDate": {
+        "type": ["string", "null"],
+        "title": "Current end",
+        "description": "Current period of performance end date (YYYY-MM-DD).",
+        "example": "2027-03-29"
+      },
+      "potentialEndDate": {
+        "type": ["string", "null"],
+        "title": "Potential end",
+        "description": "End date if every option is exercised (YYYY-MM-DD; detail field).",
+        "example": "2029-03-31"
+      },
+      "daysUntilExpiry": {
+        "type": ["number", "null"],
+        "title": "Days left",
+        "description": "Days from today until currentEndDate.",
+        "example": 181
+      },
+      "placeOfPerformance": {
+        "type": ["object", "null"],
+        "title": "Place of performance",
+        "description": "Place of performance: city, county, state, zip, country.",
+        "example": {
+          "city": "ARLINGTON",
+          "county": "ARLINGTON",
+          "state": "VA",
+          "zip": "22201",
+          "country": "USA"
+        }
+      },
+      "lastModifiedDate": {
+        "type": ["string", "null"],
+        "title": "Last modified",
+        "description": "Date the award was last modified (YYYY-MM-DD).",
+        "example": "2026-08-14"
+      },
+      "usaspendingUrl": {
+        "type": ["string", "null"],
+        "title": "USAspending",
+        "description": "Award page on USAspending.gov.",
+        "example": "https://www.usaspending.gov/award/CONT_AWD_36C10B22C0001_3600_-NONE-_-NONE-"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Expiring contracts",
+      "transformation": {
+        "fields": [
+          "currentEndDate",
+          "daysUntilExpiry",
+          "piid",
+          "recipientName",
+          "awardingAgency",
+          "awardingSubAgency",
+          "naicsCode",
+          "pscCode",
+          "setAsideType",
+          "obligatedAmount",
+          "potentialValue",
+          "potentialEndDate",
+          "description",
+          "usaspendingUrl"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "currentEndDate": {
+            "label": "Current end",
+            "format": "date"
+          },
+          "daysUntilExpiry": {
+            "label": "Days left",
+            "format": "number"
+          },
+          "piid": {
+            "label": "PIID",
+            "format": "text"
+          },
+          "recipientName": {
+            "label": "Incumbent",
+            "format": "text"
+          },
+          "awardingAgency": {
+            "label": "Agency",
+            "format": "text"
+          },
+          "awardingSubAgency": {
+            "label": "Sub-agency",
+            "format": "text"
+          },
+          "naicsCode": {
+            "label": "NAICS",
+            "format": "text"
+          },
+          "pscCode": {
+            "label": "PSC",
+            "format": "text"
+          },
+          "setAsideType": {
+            "label": "Set-aside",
+            "format": "text"
+          },
+          "obligatedAmount": {
+            "label": "Obligated ($)",
+            "format": "number"
+          },
+          "potentialValue": {
+            "label": "Potential ($)",
+            "format": "number"
+          },
+          "potentialEndDate": {
+            "label": "Potential end",
+            "format": "date"
+          },
+          "description": {
+            "label": "Description",
+            "format": "text"
+          },
+          "usaspendingUrl": {
+            "label": "USAspending",
+            "format": "link"
+          }
+        }
+      }
+    }
+  }
+}

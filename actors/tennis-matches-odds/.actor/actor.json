@@ -1,0 +1,18 @@
+{
+  "actorSpecification": 1,
+  "name": "tennis-matches-odds",
+  "title": "Tennis Results & Betting Odds Scraper (ATP, WTA, ITF)",
+  "description": "Historical and daily tennis match results with closing betting odds from TennisExplorer: ATP, WTA, Challenger and ITF. Set scores, tiebreaks, surface, round, seeds and optional per-bookmaker odds. By date range or player.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "defaultMemoryMbytes": 512,
+  "maxMemoryMbytes": 1024,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}

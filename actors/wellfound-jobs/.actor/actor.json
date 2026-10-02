@@ -1,0 +1,17 @@
+{
+  "actorSpecification": 1,
+  "name": "wellfound-jobs",
+  "title": "Wellfound Jobs Scraper: Startup Jobs, Salary & Equity",
+  "description": "Startup jobs from Wellfound (formerly AngelList Talent) by role and location, including remote: title, salary range, equity, job type and posted date, plus company size, stage and one-liner. No login needed.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 1024,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}

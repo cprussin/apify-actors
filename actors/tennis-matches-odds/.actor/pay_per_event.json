@@ -1,0 +1,13 @@
+{
+  "match": {
+    "eventTitle": "Match",
+    "eventDescription": "One tennis match (result, set scores and closing odds) written to the dataset.",
+    "eventPriceUsd": 0.004,
+    "isPrimaryEvent": true
+  },
+  "match-odds-detail": {
+    "eventTitle": "Per-bookmaker odds",
+    "eventDescription": "Per-bookmaker odds added to a match (only with includeBookmakerOdds, only when the match has bookmaker odds).",
+    "eventPriceUsd": 0.002
+  }
+}

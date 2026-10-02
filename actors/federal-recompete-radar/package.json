@@ -1,0 +1,23 @@
+{
+  "name": "federal-recompete-radar",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Find US federal contracts expiring soon (upcoming recompetes) from USAspending.gov.",
+  "main": "dist/main.js",
+  "scripts": {
+    "start": "node dist/main.js",
+    "start:dev": "tsx src/main.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "smoke": "tsx scripts/smoke.ts"
+  },
+  "dependencies": {
+    "apify": "^3.7.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.4",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,193 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "state": {
+        "type": ["string", "null"],
+        "title": "State",
+        "description": "US state code of the registry.",
+        "example": "CO"
+      },
+      "entityId": {
+        "type": ["string", "null"],
+        "title": "Entity ID",
+        "description": "State registry entity ID.",
+        "example": "20261234567"
+      },
+      "name": {
+        "type": ["string", "null"],
+        "title": "Business name",
+        "description": "Registered business name.",
+        "example": "Mile High Roofing LLC"
+      },
+      "entityType": {
+        "type": ["string", "null"],
+        "title": "Entity type",
+        "description": "Entity type as the state labels it.",
+        "example": "DLLC"
+      },
+      "entityCategory": {
+        "type": ["string", "null"],
+        "title": "Category",
+        "description": "Normalized entity category, e.g. llc or corporation.",
+        "example": "llc"
+      },
+      "status": {
+        "type": ["string", "null"],
+        "title": "Status",
+        "description": "Entity status as reported by the state.",
+        "example": "Good Standing"
+      },
+      "formationDate": {
+        "type": ["string", "null"],
+        "title": "Formed",
+        "description": "Formation or registration date (YYYY-MM-DD).",
+        "example": "2026-09-25"
+      },
+      "jurisdiction": {
+        "type": ["string", "null"],
+        "title": "Jurisdiction",
+        "description": "State or country of formation.",
+        "example": "CO"
+      },
+      "county": {
+        "type": ["string", "null"],
+        "title": "County",
+        "description": "County, where the state publishes it.",
+        "example": "DENVER"
+      },
+      "principalAddress": {
+        "type": ["object", "null"],
+        "title": "Principal address",
+        "description": "Principal office address: street, street2, city, state, zip, country.",
+        "example": {
+          "street": "1600 Broadway",
+          "street2": "Suite 200",
+          "city": "Denver",
+          "state": "CO",
+          "zip": "80202",
+          "country": "US"
+        }
+      },
+      "mailingAddress": {
+        "type": ["object", "null"],
+        "title": "Mailing address",
+        "description": "Mailing address: street, street2, city, state, zip, country.",
+        "example": {
+          "street": "PO Box 123",
+          "street2": null,
+          "city": "Denver",
+          "state": "CO",
+          "zip": "80201",
+          "country": "US"
+        }
+      },
+      "registeredAgentName": {
+        "type": ["string", "null"],
+        "title": "Registered agent",
+        "description": "Registered agent name.",
+        "example": "Jane Q Doe"
+      },
+      "registeredAgentAddress": {
+        "type": ["object", "null"],
+        "title": "Agent address",
+        "description": "Registered agent address: street, street2, city, state, zip, country.",
+        "example": {
+          "street": "1600 Broadway",
+          "street2": null,
+          "city": "Denver",
+          "state": "CO",
+          "zip": "80202",
+          "country": "US"
+        }
+      },
+      "sourceUrl": {
+        "type": ["string", "null"],
+        "title": "Source",
+        "description": "Link to the record in the state's open-data portal.",
+        "example": "https://data.colorado.gov/resource/4ykn-tg5h.json?%24where=entityid+%3D+%2720261234567%27"
+      },
+      "sourceDataset": {
+        "type": ["string", "null"],
+        "title": "Source dataset",
+        "description": "State open-data dataset the record came from.",
+        "example": "data.colorado.gov/4ykn-tg5h (Business Entities in Colorado)"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "New businesses",
+      "transformation": {
+        "fields": [
+          "formationDate",
+          "state",
+          "name",
+          "entityCategory",
+          "entityType",
+          "status",
+          "county",
+          "principalAddress",
+          "mailingAddress",
+          "registeredAgentName",
+          "entityId",
+          "sourceUrl"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "formationDate": {
+            "label": "Formed",
+            "format": "date"
+          },
+          "state": {
+            "label": "State",
+            "format": "text"
+          },
+          "name": {
+            "label": "Business name",
+            "format": "text"
+          },
+          "entityCategory": {
+            "label": "Category",
+            "format": "text"
+          },
+          "entityType": {
+            "label": "Entity type",
+            "format": "text"
+          },
+          "status": {
+            "label": "Status",
+            "format": "text"
+          },
+          "county": {
+            "label": "County",
+            "format": "text"
+          },
+          "principalAddress": {
+            "label": "Principal address",
+            "format": "object"
+          },
+          "mailingAddress": {
+            "label": "Mailing address",
+            "format": "object"
+          },
+          "registeredAgentName": {
+            "label": "Registered agent",
+            "format": "text"
+          },
+          "entityId": {
+            "label": "Entity ID",
+            "format": "text"
+          },
+          "sourceUrl": {
+            "label": "Source",
+            "format": "link"
+          }
+        }
+      }
+    }
+  }
+}

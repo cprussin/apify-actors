@@ -1,0 +1,17 @@
+{
+  "actorSpecification": 1,
+  "name": "google-flights-prices",
+  "title": "Google Flights Scraper: Prices, Itineraries & Date Ranges",
+  "description": "Google Flights prices and itineraries for any route: airlines, flight numbers, times, duration, stops, layovers and CO2 emissions. One-way or round trip, any cabin, or scan a date range for the cheapest day.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 1024,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}

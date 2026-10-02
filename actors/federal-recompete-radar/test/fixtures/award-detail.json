@@ -1,0 +1,152 @@
+{
+  "id": 100001,
+  "generated_unique_award_id": "CONT_AWD_36C10B22C0001_3600_-NONE-_-NONE-",
+  "piid": "36C10B22C0001",
+  "category": "contract",
+  "type": "D",
+  "type_description": "DEFINITIVE CONTRACT",
+  "description": "IT OPERATIONS AND MAINTENANCE SUPPORT SERVICES",
+  "total_obligation": 4250000.5,
+  "subaward_count": 0,
+  "total_subaward_amount": null,
+  "date_signed": "2022-03-15",
+  "base_exercised_options": 5100000.0,
+  "base_and_all_options": 8750000.0,
+  "parent_award": null,
+  "latest_transaction_contract_data": {
+    "idv_type_description": null,
+    "type_of_idc_description": null,
+    "referenced_idv_agency_iden": null,
+    "referenced_idv_agency_desc": null,
+    "solicitation_identifier": "36C10B21R0042",
+    "solicitation_procedures": "NP",
+    "number_of_offers_received": "3",
+    "extent_competed": "A",
+    "type_set_aside": "SDVOSBC",
+    "type_set_aside_description": "SERVICE DISABLED VETERAN OWNED SMALL BUSINESS SET-ASIDE",
+    "evaluated_preference": "NONE",
+    "fed_biz_opps": "Y",
+    "fed_biz_opps_description": "YES",
+    "small_business_competitive": false,
+    "product_or_service_code": "DA01",
+    "naics": "541512",
+    "naics_description": "COMPUTER SYSTEMS DESIGN SERVICES",
+    "type_of_contract_pricing": "J",
+    "type_of_contract_pricing_description": "FIRM FIXED PRICE",
+    "extent_competed_description": "FULL AND OPEN COMPETITION",
+    "product_or_service_description": "IT AND TELECOM - BUSINESS APPLICATION/APPLICATION DEVELOPMENT SUPPORT SERVICES (LABOR)"
+  },
+  "funding_agency": {
+    "id": 561,
+    "has_agency_page": true,
+    "toptier_agency": {
+      "name": "Department of Veterans Affairs",
+      "code": "036",
+      "abbreviation": "VA",
+      "slug": "department-of-veterans-affairs"
+    },
+    "subtier_agency": {
+      "name": "Veterans Affairs, Department of",
+      "code": "3600",
+      "abbreviation": "VA"
+    },
+    "office_agency_name": "TECHNOLOGY ACQUISITION CENTER NJ (36C10B)"
+  },
+  "awarding_agency": {
+    "id": 561,
+    "has_agency_page": true,
+    "toptier_agency": {
+      "name": "Department of Veterans Affairs",
+      "code": "036",
+      "abbreviation": "VA",
+      "slug": "department-of-veterans-affairs"
+    },
+    "subtier_agency": {
+      "name": "Veterans Affairs, Department of",
+      "code": "3600",
+      "abbreviation": "VA"
+    },
+    "office_agency_name": "TECHNOLOGY ACQUISITION CENTER NJ (36C10B)"
+  },
+  "period_of_performance": {
+    "start_date": "2022-04-01",
+    "end_date": "2027-03-29",
+    "last_modified_date": "2026-08-14 09:12:33",
+    "potential_end_date": "2029-03-31 00:00:00"
+  },
+  "recipient": {
+    "recipient_hash": "0f0e3c0a-2b55-7f6e-7d0b-5a1f7a7a4b1e-C",
+    "recipient_name": "ACME FEDERAL SOLUTIONS LLC",
+    "recipient_uei": "ABCDEF123456",
+    "recipient_unique_id": null,
+    "parent_recipient_hash": null,
+    "parent_recipient_name": "ACME HOLDINGS INC",
+    "parent_recipient_uei": "PARENT123456",
+    "parent_recipient_unique_id": null,
+    "business_categories": [
+      "Category Business",
+      "Small Business",
+      "Service Disabled Veteran Owned Business"
+    ],
+    "location": {
+      "location_country_code": "USA",
+      "country_name": "UNITED STATES",
+      "state_code": "VA",
+      "state_name": "VIRGINIA",
+      "city_name": "RESTON",
+      "county_code": "059",
+      "county_name": "FAIRFAX",
+      "address_line1": "123 MAIN ST",
+      "address_line2": null,
+      "address_line3": null,
+      "congressional_code": "11",
+      "zip4": "1234",
+      "zip5": "20190",
+      "foreign_postal_code": null,
+      "foreign_province": null
+    }
+  },
+  "place_of_performance": {
+    "location_country_code": "USA",
+    "country_name": "UNITED STATES",
+    "county_code": "013",
+    "county_name": "ARLINGTON",
+    "city_name": "ARLINGTON",
+    "state_code": "VA",
+    "state_name": "VIRGINIA",
+    "congressional_code": "08",
+    "zip4": "2201",
+    "zip5": "22201",
+    "address_line1": null,
+    "address_line2": null,
+    "address_line3": null,
+    "foreign_province": null,
+    "foreign_postal_code": null
+  },
+  "psc_hierarchy": {
+    "toptier_code": { "code": "D", "description": "IT AND TELECOM" },
+    "midtier_code": {
+      "code": "DA",
+      "description": "IT AND TELECOM - BUSINESS APPLICATION"
+    },
+    "subtier_code": {},
+    "base_code": {
+      "code": "DA01",
+      "description": "IT AND TELECOM - BUSINESS APPLICATION/APPLICATION DEVELOPMENT SUPPORT SERVICES (LABOR)"
+    }
+  },
+  "naics_hierarchy": {
+    "toptier_code": {
+      "code": "54",
+      "description": "Professional, Scientific, and Technical Services"
+    },
+    "midtier_code": {
+      "code": "5415",
+      "description": "Computer Systems Design and Related Services"
+    },
+    "base_code": {
+      "code": "541512",
+      "description": "Computer Systems Design Services"
+    }
+  }
+}

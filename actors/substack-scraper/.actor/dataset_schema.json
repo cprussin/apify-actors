@@ -1,0 +1,234 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "publication": {
+        "type": ["string", "null"],
+        "title": "Publication host",
+        "description": "Publication host (custom domain if any).",
+        "example": "www.lennysnewsletter.com"
+      },
+      "publicationName": {
+        "type": ["string", "null"],
+        "title": "Publication",
+        "description": "Publication display name.",
+        "example": "Lenny's Newsletter"
+      },
+      "postId": {
+        "type": ["number", "null"],
+        "title": "Post ID",
+        "description": "Substack post ID.",
+        "example": 216168140
+      },
+      "title": {
+        "type": ["string", "null"],
+        "title": "Title",
+        "description": "Post title.",
+        "example": "Advanced evals: How to find (and fix) hidden AI failures in your product"
+      },
+      "subtitle": {
+        "type": ["string", "null"],
+        "title": "Subtitle",
+        "description": "Post subtitle.",
+        "example": "Why you should never skip error discovery"
+      },
+      "slug": {
+        "type": ["string", "null"],
+        "title": "Slug",
+        "description": "Post URL slug.",
+        "example": "advanced-evals-how-to-find-and-fix"
+      },
+      "url": {
+        "type": ["string", "null"],
+        "title": "URL",
+        "description": "Post URL.",
+        "example": "https://www.lennysnewsletter.com/p/advanced-evals-how-to-find-and-fix"
+      },
+      "postDate": {
+        "type": ["string", "null"],
+        "title": "Date",
+        "description": "Publish time (ISO 8601 UTC).",
+        "example": "2026-09-22T12:45:14.998Z"
+      },
+      "audience": {
+        "type": ["string", "null"],
+        "title": "Audience",
+        "description": "free or paid.",
+        "example": "paid"
+      },
+      "type": {
+        "type": ["string", "null"],
+        "title": "Type",
+        "description": "Post type, e.g. newsletter, podcast or thread.",
+        "example": "newsletter"
+      },
+      "likes": {
+        "type": ["number", "null"],
+        "title": "Likes",
+        "description": "Reaction (heart) count.",
+        "example": 330
+      },
+      "restacks": {
+        "type": ["number", "null"],
+        "title": "Restacks",
+        "description": "Times the post was shared on Substack Notes.",
+        "example": 16
+      },
+      "commentCount": {
+        "type": ["number", "null"],
+        "title": "Comments",
+        "description": "Comment count.",
+        "example": 4
+      },
+      "wordcount": {
+        "type": ["number", "null"],
+        "title": "Words",
+        "description": "Word count of the whole post, including any paywalled part.",
+        "example": 3807
+      },
+      "authors": {
+        "type": ["array", "null"],
+        "title": "Authors",
+        "description": "Authors: id, name, handle.",
+        "example": [
+          {
+            "id": 2260358,
+            "name": "Hamel Husain",
+            "handle": "hamelhusain"
+          },
+          {
+            "id": 58144420,
+            "name": "Shreya Shankar",
+            "handle": "shreyashan"
+          }
+        ]
+      },
+      "coverImage": {
+        "type": ["string", "null"],
+        "title": "Cover",
+        "description": "Cover image URL.",
+        "example": "https://substackcdn.com/image/fetch/.../6f6018cf-fa53-4f40-99d9-b1c9980dd031_1456x970.png"
+      },
+      "section": {
+        "type": ["string", "null"],
+        "title": "Section",
+        "description": "Publication section, if any.",
+        "example": "Podcast"
+      },
+      "tags": {
+        "type": ["array", "null"],
+        "title": "Tags",
+        "description": "Post tags.",
+        "example": ["AI"]
+      },
+      "bodyHtml": {
+        "type": ["string", "null"],
+        "title": "HTML",
+        "description": "Public post HTML (only with includeContent; preview only for paid posts).",
+        "example": "<p><em><span>👋 Hey there, I’m Lenny. …"
+      },
+      "bodyText": {
+        "type": ["string", "null"],
+        "title": "Text",
+        "description": "Public post as plain text (only with includeContent).",
+        "example": "👋 Hey there, I’m Lenny. Each week, I share deeply researched product, growth, and career advice. …"
+      },
+      "truncated": {
+        "type": ["boolean", "null"],
+        "title": "Truncated",
+        "description": "True when the body is the public preview of a paid post (only with includeContent).",
+        "example": true
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Posts",
+      "transformation": {
+        "fields": [
+          "postDate",
+          "publicationName",
+          "title",
+          "subtitle",
+          "audience",
+          "type",
+          "likes",
+          "commentCount",
+          "restacks",
+          "wordcount",
+          "authors",
+          "truncated",
+          "bodyText",
+          "coverImage",
+          "url"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "postDate": {
+            "label": "Date",
+            "format": "date"
+          },
+          "publicationName": {
+            "label": "Publication",
+            "format": "text"
+          },
+          "title": {
+            "label": "Title",
+            "format": "text"
+          },
+          "subtitle": {
+            "label": "Subtitle",
+            "format": "text"
+          },
+          "audience": {
+            "label": "Audience",
+            "format": "text"
+          },
+          "type": {
+            "label": "Type",
+            "format": "text"
+          },
+          "likes": {
+            "label": "Likes",
+            "format": "number"
+          },
+          "commentCount": {
+            "label": "Comments",
+            "format": "number"
+          },
+          "restacks": {
+            "label": "Restacks",
+            "format": "number"
+          },
+          "wordcount": {
+            "label": "Words",
+            "format": "number"
+          },
+          "authors": {
+            "label": "Authors",
+            "format": "array"
+          },
+          "truncated": {
+            "label": "Truncated",
+            "format": "boolean"
+          },
+          "bodyText": {
+            "label": "Text",
+            "format": "text"
+          },
+          "coverImage": {
+            "label": "Cover",
+            "format": "image"
+          },
+          "url": {
+            "label": "URL",
+            "format": "link"
+          }
+        }
+      }
+    }
+  }
+}

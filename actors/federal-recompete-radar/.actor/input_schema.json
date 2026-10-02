@@ -1,0 +1,126 @@
+{
+  "title": "Federal Recompete Radar input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "endsInMonthsMin": {
+      "title": "Ends in at least (months)",
+      "type": "integer",
+      "description": "Only contracts whose current period of performance ends at least this many months from today. Use 0 to include contracts ending now.",
+      "editor": "number",
+      "minimum": 0,
+      "maximum": 120,
+      "default": 6,
+      "prefill": 6,
+      "sectionCaption": "Expiry window"
+    },
+    "endsInMonthsMax": {
+      "title": "Ends in at most (months)",
+      "type": "integer",
+      "description": "Only contracts whose current period of performance ends at most this many months from today.",
+      "editor": "number",
+      "minimum": 0,
+      "maximum": 120,
+      "default": 18,
+      "prefill": 18
+    },
+    "naicsCodes": {
+      "title": "NAICS codes",
+      "type": "array",
+      "description": "NAICS codes to include, e.g. 541512 (Computer Systems Design Services). 2- or 4-digit prefixes are accepted. Leave empty for all industries.",
+      "editor": "stringList",
+      "prefill": ["541512"],
+      "sectionCaption": "What"
+    },
+    "pscCodes": {
+      "title": "PSC codes",
+      "type": "array",
+      "description": "Product/Service Codes to include, e.g. DA01 or R425.",
+      "editor": "stringList"
+    },
+    "keywords": {
+      "title": "Keywords",
+      "type": "array",
+      "description": "Free-text keywords matched against award descriptions and other fields.",
+      "editor": "stringList"
+    },
+    "awardTypes": {
+      "title": "Contract award types",
+      "type": "array",
+      "description": "USAspending contract type codes: A = BPA call, B = purchase order, C = delivery order, D = definitive contract. Default: all four.",
+      "editor": "stringList"
+    },
+    "awardingAgencies": {
+      "title": "Awarding agencies (top tier)",
+      "type": "array",
+      "description": "Exact USAspending top-tier agency names, e.g. \"Department of Defense\", \"Department of Veterans Affairs\".",
+      "editor": "stringList",
+      "sectionCaption": "Who & where"
+    },
+    "awardingSubAgencies": {
+      "title": "Awarding sub-agencies",
+      "type": "array",
+      "description": "Exact USAspending sub-tier agency names, e.g. \"Department of the Army\", \"Defense Information Systems Agency\".",
+      "editor": "stringList"
+    },
+    "placeOfPerformanceStates": {
+      "title": "Place of performance states",
+      "type": "array",
+      "description": "Two-letter US state codes, e.g. VA, MD, DC.",
+      "editor": "stringList"
+    },
+    "setAsideTypes": {
+      "title": "Set-aside types",
+      "type": "array",
+      "description": "FPDS set-aside codes, e.g. SBA (small business), 8A, 8AN (8(a) sole source), HZC (HUBZone), SDVOSBC (service-disabled veteran), WOSB, EDWOSB, NONE.",
+      "editor": "stringList"
+    },
+    "minAwardValue": {
+      "title": "Min obligated amount (USD)",
+      "type": "integer",
+      "description": "Minimum total obligated amount of the award.",
+      "editor": "number",
+      "minimum": 0,
+      "prefill": 1000000,
+      "sectionCaption": "Value"
+    },
+    "maxAwardValue": {
+      "title": "Max obligated amount (USD)",
+      "type": "integer",
+      "description": "Maximum total obligated amount of the award.",
+      "editor": "number",
+      "minimum": 0
+    },
+    "minPotentialValue": {
+      "title": "Min potential value (USD)",
+      "type": "integer",
+      "description": "Minimum base-and-all-options value. Applied after fetching award details.",
+      "editor": "number",
+      "minimum": 0
+    },
+    "maxResults": {
+      "title": "Max results",
+      "type": "integer",
+      "description": "Maximum number of contracts to return. Each result is billed as one event.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 10000,
+      "default": 25,
+      "prefill": 25,
+      "sectionCaption": "Output"
+    },
+    "includeDetails": {
+      "title": "Include award details",
+      "type": "boolean",
+      "description": "Fetch each award's detail record for potential end date, potential value, set-aside, contracting office and PIID. Slower but much richer.",
+      "default": true
+    },
+    "onlyNew": {
+      "title": "Only new contracts (delta mode)",
+      "type": "boolean",
+      "description": "Skip contracts already returned by earlier runs with the same search settings. Ideal for scheduled weekly alerts.",
+      "default": false
+    }
+  },
+  "required": []
+}

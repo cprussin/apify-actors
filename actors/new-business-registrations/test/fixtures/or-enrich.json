@@ -1,0 +1,40 @@
+[
+  {
+    "registry_number": "262244792",
+    "business_name": "TALOS VENTURES LLC",
+    "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+    "registry_date": "2026-08-31T16:56:42.000",
+    "associated_name_type": "MAILING ADDRESS",
+    "address": "PO BOX 42",
+    "city": "SALEM",
+    "state": "OR",
+    "zip": "97308"
+  },
+  {
+    "registry_number": "262244792",
+    "business_name": "TALOS VENTURES LLC",
+    "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+    "registry_date": "2026-08-31T16:56:42.000",
+    "associated_name_type": "REGISTERED AGENT",
+    "first_name": "STEPHANIE",
+    "last_name": "OTT",
+    "address": "1615 NW 20TH ST",
+    "address_continued": "UNIT A",
+    "city": "LINCOLN CITY",
+    "state": "OR",
+    "zip": "97367"
+  },
+  {
+    "registry_number": "261783394",
+    "business_name": "EMPOWER BROKERAGE, INC.",
+    "entity_type": "FOREIGN BUSINESS CORPORATION",
+    "registry_date": "2026-08-31T14:56:20.000",
+    "associated_name_type": "REGISTERED AGENT",
+    "entity_of_record_reg_number": "123456789",
+    "entity_of_record_name": "CT CORPORATION SYSTEM",
+    "address": "780 COMMERCIAL ST SE STE 100",
+    "city": "SALEM",
+    "state": "OR",
+    "zip": "97301"
+  }
+]

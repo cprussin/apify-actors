@@ -1,0 +1,21 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output",
+  "properties": {
+    "products": {
+      "type": "string",
+      "title": "Products",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=products"
+    },
+    "reviews": {
+      "type": "string",
+      "title": "Reviews",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=reviews"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Run summary",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/SUMMARY"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "actorSpecification": 1,
+  "name": "aliexpress-scraper",
+  "title": "AliExpress Scraper: Products, Prices & Reviews",
+  "description": "Scrape AliExpress search results (price, sale price, orders sold, rating, images, shipping) and buyer reviews (stars, text, photos, country, SKU). Keywords, search URLs or product IDs. No login.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 1024,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}

@@ -1,0 +1,135 @@
+{
+  "code": 0,
+  "message": "OK",
+  "ttl": 1,
+  "data": {
+    "View": {
+      "bvid": "BV18fhb65EGs",
+      "aid": 117320588531711,
+      "videos": 1,
+      "tid": 17,
+      "tid_v2": 2079,
+      "tname": "",
+      "tname_v2": "",
+      "copyright": 3,
+      "pic": "http://i1.hdslb.com/bfs/archive/2e42752824225a1c578db1d66fe7ea727c9b7a68.jpg",
+      "title": "超市里已经……没有人类了……",
+      "pubdate": 1790238000,
+      "ctime": 1790171297,
+      "desc": "游戏：午夜轮班\n如果喜欢看我们玩多人游戏，能不能给这个视频点个赞！！我一定尽快更新！！",
+      "duration": 2022,
+      "owner": {
+        "mid": 546195,
+        "name": "老番茄",
+        "face": "http://i0.hdslb.com/bfs/face/bc5ca101313d4db223c395d64779e76eb3482d60.jpg"
+      },
+      "stat": {
+        "aid": 117320588531711,
+        "view": 3234559,
+        "danmaku": 9163,
+        "reply": 1965,
+        "favorite": 66249,
+        "coin": 99430,
+        "share": 7685,
+        "now_rank": 0,
+        "his_rank": 4,
+        "like": 239464,
+        "dislike": 0,
+        "evaluation": "",
+        "vt": 0
+      },
+      "cid": 42140303429,
+      "pages": [
+        {
+          "cid": 42140303429,
+          "page": 1,
+          "from": "vupload",
+          "part": "超市里已经……没有人类了……",
+          "duration": 2022,
+          "vid": "",
+          "weblink": "",
+          "dimension": {
+            "width": 3840,
+            "height": 2160,
+            "rotate": 0
+          },
+          "first_frame": "http://i0.hdslb.com/bfs/storyff/_00002fdhchpukvtpd2cecaf5vpa3tyb_firsti.jpg",
+          "ctime": 1790171297,
+          "asr_language": "cmn"
+        }
+      ]
+    },
+    "Tags": [
+      {
+        "tag_id": 12477,
+        "tag_name": "推荐宝藏游戏",
+        "music_id": "",
+        "tag_type": "topic",
+        "jump_url": "https://m.bilibili.com/topic-detail?topic_id=12477&topic_name=%E6%8E%A8%E8%8D%90%E5%AE%9D%E8%97%8F%E6%B8%B8%E6%88%8F"
+      },
+      {
+        "tag_id": 295610,
+        "tag_name": "老番茄",
+        "music_id": "",
+        "tag_type": "old_channel",
+        "jump_url": ""
+      },
+      {
+        "tag_id": 1833,
+        "tag_name": "搞笑",
+        "music_id": "",
+        "tag_type": "old_channel",
+        "jump_url": ""
+      },
+      {
+        "tag_id": 841,
+        "tag_name": "恐怖",
+        "music_id": "",
+        "tag_type": "old_channel",
+        "jump_url": ""
+      },
+      {
+        "tag_id": 76927597,
+        "tag_name": "午夜轮班",
+        "music_id": "",
+        "tag_type": "old_channel",
+        "jump_url": ""
+      },
+      {
+        "tag_id": 78558374,
+        "tag_name": "伪人超市",
+        "music_id": "",
+        "tag_type": "old_channel",
+        "jump_url": ""
+      },
+      {
+        "tag_id": 421428,
+        "tag_name": "沙雕",
+        "music_id": "",
+        "tag_type": "old_channel",
+        "jump_url": ""
+      },
+      {
+        "tag_id": 663834,
+        "tag_name": "某幻",
+        "music_id": "",
+        "tag_type": "old_channel",
+        "jump_url": ""
+      },
+      {
+        "tag_id": 2513991,
+        "tag_name": "中国boy",
+        "music_id": "",
+        "tag_type": "old_channel",
+        "jump_url": ""
+      },
+      {
+        "tag_id": 8685239,
+        "tag_name": "伪人",
+        "music_id": "",
+        "tag_type": "old_channel",
+        "jump_url": ""
+      }
+    ]
+  }
+}

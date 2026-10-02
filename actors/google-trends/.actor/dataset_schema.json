@@ -1,0 +1,284 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "dataset": {
+        "type": ["string", "null"],
+        "title": "Dataset",
+        "description": "interestOverTime, interestByRegion, relatedQueries, relatedTopics or trendingNow.",
+        "example": "interestOverTime"
+      },
+      "term": {
+        "type": ["string", "null"],
+        "title": "Term",
+        "description": "Search term (Explore) or trending search (Trending now).",
+        "example": "coffee"
+      },
+      "geo": {
+        "type": ["string", "null"],
+        "title": "Geo",
+        "description": "Location code; empty for worldwide.",
+        "example": "US"
+      },
+      "timeframe": {
+        "type": ["string", "null"],
+        "title": "Timeframe",
+        "description": "Google Trends timeframe.",
+        "example": "today 12-m"
+      },
+      "category": {
+        "type": ["number", "null"],
+        "title": "Category",
+        "description": "Google Trends category ID; 0 means all categories (Explore items).",
+        "example": 0
+      },
+      "property": {
+        "type": ["string", "null"],
+        "title": "Search type",
+        "description": "Google property: web, news, images, youtube or froogle (Explore items).",
+        "example": "web"
+      },
+      "resolution": {
+        "type": ["string", "null"],
+        "title": "Resolution",
+        "description": "Region resolution: COUNTRY, REGION, DMA or CITY (interestByRegion items).",
+        "example": "REGION"
+      },
+      "comparedWith": {
+        "type": ["array", "null"],
+        "title": "Compared with",
+        "description": "Other terms in the same comparison (Explore items).",
+        "example": ["tea"]
+      },
+      "anchorTerm": {
+        "type": ["string", "null"],
+        "title": "Anchor term",
+        "description": "Anchor term used to rescale batches when comparing more than 5 terms (Explore items).",
+        "example": "coffee"
+      },
+      "hasData": {
+        "type": ["boolean", "null"],
+        "title": "Has data",
+        "description": "Whether Google returned data for the term (Explore items).",
+        "example": true
+      },
+      "rowCount": {
+        "type": ["number", "null"],
+        "title": "Rows",
+        "description": "Number of rows (Explore items).",
+        "example": 53
+      },
+      "rows": {
+        "type": ["array", "null"],
+        "title": "Rows (data)",
+        "description": "Data rows; shape depends on dataset (Explore items).",
+        "example": [
+          {
+            "date": "2025-09-28T00:00:00.000Z",
+            "formattedTime": "Sep 28 – Oct 4, 2025",
+            "value": 74,
+            "normalizedValue": 74,
+            "hasData": true,
+            "isPartial": false
+          }
+        ]
+      },
+      "exploreUrl": {
+        "type": ["string", "null"],
+        "title": "Google Trends",
+        "description": "Opens the query on Google Trends.",
+        "example": "https://trends.google.com/trends/explore?q=coffee%2Ctea&date=today+12-m&geo=US&hl=en-US"
+      },
+      "searchVolume": {
+        "type": ["number", "null"],
+        "title": "Searches",
+        "description": "Google's rounded lower bound of searches (Trending now items).",
+        "example": 100000
+      },
+      "increasePercent": {
+        "type": ["number", "null"],
+        "title": "Increase %",
+        "description": "Search increase in percent (Trending now items).",
+        "example": 1000
+      },
+      "startedAt": {
+        "type": ["string", "null"],
+        "title": "Started",
+        "description": "When the trend started (ISO 8601 UTC; Trending now items).",
+        "example": "2026-09-28T23:00:00.000Z"
+      },
+      "endedAt": {
+        "type": ["string", "null"],
+        "title": "Ended",
+        "description": "When the trend ended; null while active (Trending now items).",
+        "example": "2026-09-29T20:00:00.000Z"
+      },
+      "isActive": {
+        "type": ["boolean", "null"],
+        "title": "Active",
+        "description": "Whether the trend is still active (Trending now items).",
+        "example": true
+      },
+      "categories": {
+        "type": ["array", "null"],
+        "title": "Categories",
+        "description": "Trend categories (Trending now items).",
+        "example": ["Food and Drink"]
+      },
+      "relatedQueries": {
+        "type": ["array", "null"],
+        "title": "Related queries",
+        "description": "Related searches (Trending now items).",
+        "example": ["national coffee day deals", "free coffee today"]
+      },
+      "newsArticleCount": {
+        "type": ["number", "null"],
+        "title": "News articles",
+        "description": "Number of news articles linked to the trend (Trending now items).",
+        "example": 9
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Results",
+      "transformation": {
+        "fields": [
+          "dataset",
+          "term",
+          "geo",
+          "timeframe",
+          "rowCount",
+          "comparedWith",
+          "resolution",
+          "category",
+          "property",
+          "anchorTerm",
+          "exploreUrl",
+          "rows"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "dataset": {
+            "label": "Dataset",
+            "format": "text"
+          },
+          "term": {
+            "label": "Term",
+            "format": "text"
+          },
+          "geo": {
+            "label": "Geo",
+            "format": "text"
+          },
+          "timeframe": {
+            "label": "Timeframe",
+            "format": "text"
+          },
+          "rowCount": {
+            "label": "Rows",
+            "format": "number"
+          },
+          "comparedWith": {
+            "label": "Compared with",
+            "format": "array"
+          },
+          "resolution": {
+            "label": "Resolution",
+            "format": "text"
+          },
+          "category": {
+            "label": "Category",
+            "format": "number"
+          },
+          "property": {
+            "label": "Search type",
+            "format": "text"
+          },
+          "anchorTerm": {
+            "label": "Anchor term",
+            "format": "text"
+          },
+          "exploreUrl": {
+            "label": "Google Trends",
+            "format": "link"
+          },
+          "rows": {
+            "label": "Rows (data)",
+            "format": "array"
+          }
+        }
+      }
+    },
+    "trending": {
+      "title": "Trending now",
+      "transformation": {
+        "fields": [
+          "term",
+          "geo",
+          "searchVolume",
+          "increasePercent",
+          "startedAt",
+          "endedAt",
+          "isActive",
+          "categories",
+          "relatedQueries",
+          "newsArticleCount",
+          "exploreUrl"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "term": {
+            "label": "Trend",
+            "format": "text"
+          },
+          "geo": {
+            "label": "Geo",
+            "format": "text"
+          },
+          "searchVolume": {
+            "label": "Searches",
+            "format": "number"
+          },
+          "increasePercent": {
+            "label": "Increase %",
+            "format": "number"
+          },
+          "startedAt": {
+            "label": "Started",
+            "format": "date"
+          },
+          "endedAt": {
+            "label": "Ended",
+            "format": "date"
+          },
+          "isActive": {
+            "label": "Active",
+            "format": "boolean"
+          },
+          "categories": {
+            "label": "Categories",
+            "format": "array"
+          },
+          "relatedQueries": {
+            "label": "Related queries",
+            "format": "array"
+          },
+          "newsArticleCount": {
+            "label": "News articles",
+            "format": "number"
+          },
+          "exploreUrl": {
+            "label": "Google Trends",
+            "format": "link"
+          }
+        }
+      }
+    }
+  }
+}

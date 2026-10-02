@@ -1,0 +1,212 @@
+{
+  "code": 0,
+  "message": "OK",
+  "ttl": 1,
+  "data": {
+    "list": {
+      "slist": [],
+      "tlist": {
+        "3": {
+          "tid": 3,
+          "count": 23,
+          "name": "音乐"
+        },
+        "4": {
+          "tid": 4,
+          "count": 532,
+          "name": "游戏"
+        },
+        "5": {
+          "tid": 5,
+          "count": 7,
+          "name": "娱乐"
+        },
+        "160": {
+          "tid": 160,
+          "count": 110,
+          "name": "生活"
+        },
+        "181": {
+          "tid": 181,
+          "count": 2,
+          "name": "影视"
+        },
+        "211": {
+          "tid": 211,
+          "count": 2,
+          "name": "美食"
+        },
+        "217": {
+          "tid": 217,
+          "count": 1,
+          "name": "动物圈"
+        },
+        "223": {
+          "tid": 223,
+          "count": 1,
+          "name": "汽车"
+        }
+      },
+      "vlist": [
+        {
+          "comment": 583,
+          "typeid": 17,
+          "play": 187696,
+          "pic": "http://i2.hdslb.com/bfs/archive/462781c040fdb9dd4584f0ba9cf4c00cd1fba795.jpg",
+          "subtitle": "",
+          "description": "别管难听不难听，你就说发没发出声来吧。",
+          "copyright": "3",
+          "title": "我在一天内学会了5个乐器！！",
+          "review": 0,
+          "author": "老番茄",
+          "mid": 546195,
+          "created": 1790739000,
+          "length": "12:07",
+          "video_review": 1109,
+          "aid": 117354226849930,
+          "bvid": "BV1feaH63Epk",
+          "hide_click": false,
+          "is_pay": 0,
+          "is_union_video": 0,
+          "is_steins_gate": 0,
+          "is_live_playback": 0,
+          "is_lesson_video": 0,
+          "is_lesson_finished": 0,
+          "lesson_update_info": "",
+          "jump_url": "",
+          "meta": null,
+          "is_avoided": 0,
+          "season_id": 0,
+          "attribute": 16384,
+          "is_charging_arc": false,
+          "elec_arc_type": 0,
+          "elec_arc_badge": "",
+          "vt": 0,
+          "enable_vt": 0,
+          "vt_display": "",
+          "playback_position": 0,
+          "is_self_view": false,
+          "view_self_type": 0
+        },
+        {
+          "comment": 1965,
+          "typeid": 17,
+          "play": 3234773,
+          "pic": "http://i1.hdslb.com/bfs/archive/2e42752824225a1c578db1d66fe7ea727c9b7a68.jpg",
+          "subtitle": "",
+          "description": "游戏：午夜轮班\n如果喜欢看我们玩多人游戏，能不能给这个视频点个赞！！我一定尽快更新！！",
+          "copyright": "3",
+          "title": "超市里已经……没有人类了……",
+          "review": 0,
+          "author": "老番茄",
+          "mid": 546195,
+          "created": 1790238000,
+          "length": "33:42",
+          "video_review": 9163,
+          "aid": 117320588531711,
+          "bvid": "BV18fhb65EGs",
+          "hide_click": false,
+          "is_pay": 0,
+          "is_union_video": 1,
+          "is_steins_gate": 0,
+          "is_live_playback": 0,
+          "is_lesson_video": 0,
+          "is_lesson_finished": 0,
+          "lesson_update_info": "",
+          "jump_url": "",
+          "meta": null,
+          "is_avoided": 0,
+          "season_id": 0,
+          "attribute": 16793600,
+          "is_charging_arc": false,
+          "elec_arc_type": 0,
+          "elec_arc_badge": "",
+          "vt": 0,
+          "enable_vt": 0,
+          "vt_display": "",
+          "playback_position": 0,
+          "is_self_view": false,
+          "view_self_type": 0
+        },
+        {
+          "comment": 1657,
+          "typeid": 76,
+          "play": 1355436,
+          "pic": "http://i2.hdslb.com/bfs/archive/3f3e6baea80ee87886dcef05ad2812e3a215c976.jpg",
+          "subtitle": "",
+          "description": "听着...所谓速度，不是手忙脚乱的焦急，也不是花里胡哨的炫技，而是缜密规划的笃定，和分毫不差的稳定！",
+          "copyright": "3",
+          "title": "10分钟做6道菜？我们挑战世界大赛的硬核真题！",
+          "review": 0,
+          "author": "绵羊料理",
+          "mid": 18202105,
+          "created": 1789876800,
+          "length": "09:12",
+          "video_review": 1987,
+          "aid": 117292385962971,
+          "bvid": "BV1HYeS6YEEZ",
+          "hide_click": false,
+          "is_pay": 0,
+          "is_union_video": 1,
+          "is_steins_gate": 0,
+          "is_live_playback": 0,
+          "is_lesson_video": 0,
+          "is_lesson_finished": 0,
+          "lesson_update_info": "",
+          "jump_url": "",
+          "meta": {
+            "id": 134,
+            "title": "绵羊料理，你减肥路上的绊脚石！",
+            "cover": "https://archive.biliimg.com/bfs/archive/05dbe1815e47d7d558818da5c6f4afe5a32ea8c4.jpg",
+            "mid": 18202105,
+            "intro": "",
+            "sign_state": 0,
+            "attribute": 128,
+            "stat": {
+              "season_id": 134,
+              "view": 1096359124,
+              "danmaku": 2983977,
+              "reply": 670107,
+              "favorite": 9925277,
+              "coin": 36232797,
+              "share": 1974627,
+              "like": 67276014,
+              "mtime": 1790759103,
+              "vt": 0,
+              "vv": 0
+            },
+            "ep_count": 158,
+            "first_aid": 117324816387613,
+            "ptime": 1790242444,
+            "ep_num": 158,
+            "show": 1
+          },
+          "is_avoided": 0,
+          "season_id": 134,
+          "attribute": 16793600,
+          "is_charging_arc": false,
+          "elec_arc_type": 0,
+          "elec_arc_badge": "",
+          "vt": 0,
+          "enable_vt": 0,
+          "vt_display": "",
+          "playback_position": 0,
+          "is_self_view": false,
+          "view_self_type": 0
+        }
+      ]
+    },
+    "page": {
+      "pn": 1,
+      "ps": 3,
+      "count": 678
+    },
+    "episodic_button": {
+      "text": "播放全部",
+      "uri": "//www.bilibili.com/medialist/play/546195?from=space"
+    },
+    "is_risk": false,
+    "gaia_res_type": 0,
+    "gaia_data": null
+  }
+}

@@ -1,0 +1,114 @@
+{
+ "data": {
+  "currentPage": 1,
+  "evaViewList": [
+   {
+    "aigc": false,
+    "anonymous": true,
+    "buyerAddFbContent": "Olvide mencionar que la carcasa trae esos protector incluido pero yo se los quite porque siento que las foto y videos perdian calidad",
+    "buyerAddFbDate": "25 Feb 2026",
+    "buyerAddFbDays": 0,
+    "buyerAddFbImages": [
+     "https://ae-pic-a1.aliexpress-media.com/kf/Acf7a12b32eb24365b7f34f2960efa0ba8.jpg"
+    ],
+    "buyerAddFbThumbnails": [
+     "https://ae-pic-a1.aliexpress-media.com/kf/Acf7a12b32eb24365b7f34f2960efa0ba8.jpg_220x220.jpg"
+    ],
+    "buyerCountry": "CL",
+    "buyerEval": 100,
+    "buyerFbType": {
+     "crowdSourcingPersonName": "AliExpress Shopper",
+     "sourceLang": "en",
+     "typeTranslationAccepted": "crowdsourcing"
+    },
+    "buyerFeedback": "He comprado la carcasa en 2 ocasiones para modelos diferentes. Es agradable al tacto es matte y los botones muy comodos.   No me convence la parte del audio que vienen con agujeros para cada uno. Me gusta que sea abierto pero es cosa de gusto, lo demás todo bien.",
+    "buyerName": "AliExpress Shopper",
+    "buyerProductFeedBack": "",
+    "downVoteCount": 0,
+    "evalDate": "25 Feb 2026",
+    "evaluationId": 60095694216083490,
+    "evaluationIdStr": "60095694216083489",
+    "images": [
+     "https://ae-pic-a1.aliexpress-media.com/kf/A1e772999291b4e8393e89614571fe644U.jpg",
+     "https://ae-pic-a1.aliexpress-media.com/kf/A0305f4aa45b344f8b252fa4cac9f21792.jpg",
+     "https://ae-pic-a1.aliexpress-media.com/kf/A9a9a6d74286c4b65a89f55d2a1175332O.jpg"
+    ],
+    "independentSite": false,
+    "logistics": "AliExpress Selection Standard Shipping",
+    "reviewType": "REVIEW",
+    "samePurchaseSuggestion": "Buy the same",
+    "selectedIcon": "https://ae-pic-a1.aliexpress-media.com/kf/S2df5f3fa0d8242b1a0bbb1cc92cab109P/221x221.png",
+    "selectedReview": true,
+    "skuInfo": "Color:Gray Material:For iPhone 11Pro Max ",
+    "status": "1",
+    "thirdParty": false,
+    "thumbnails": [
+     "https://ae-pic-a1.aliexpress-media.com/kf/A1e772999291b4e8393e89614571fe644U.jpg_220x220.jpg",
+     "https://ae-pic-a1.aliexpress-media.com/kf/A0305f4aa45b344f8b252fa4cac9f21792.jpg_220x220.jpg",
+     "https://ae-pic-a1.aliexpress-media.com/kf/A9a9a6d74286c4b65a89f55d2a1175332O.jpg_220x220.jpg"
+    ],
+    "trendyol": false,
+    "upVoteCount": 0
+   }
+  ],
+  "filterInfo": {
+   "currentFilter": "additional",
+   "filterStatistic": [
+    {
+     "filterCode": "additional",
+     "filterCount": 85
+    },
+    {
+     "filterCode": "local"
+    },
+    {
+     "filterCode": "with_personal",
+     "filterCount": 0
+    },
+    {
+     "filterCode": "image",
+     "filterCount": 633
+    },
+    {
+     "filterCode": "all",
+     "filterCount": 13029
+    }
+   ]
+  },
+  "impressionDTOList": [],
+  "pageSize": 20,
+  "productEvaluationStatistic": {
+   "evarageStar": 4.7,
+   "evarageStarRage": 94.4,
+   "fiveStarNum": 11103,
+   "fiveStarRate": 84.8,
+   "fourStarNum": 1120,
+   "fourStarRate": 8.6,
+   "negativeNum": 540,
+   "negativeRate": 4.1,
+   "neutralNum": 330,
+   "neutralRate": 2.5,
+   "oneStarNum": 402,
+   "oneStarRate": 3,
+   "positiveNum": 12223,
+   "positiveRate": 93.4,
+   "threeStarNum": 330,
+   "threeStarRate": 2.5,
+   "totalNum": 13093,
+   "twoStarNum": 138,
+   "twoStarRate": 1.1
+  },
+  "productType": "ORDINARY",
+  "reviewStructuredLabelDTOList": [],
+  "totalNum": 85,
+  "totalPage": 5,
+  "version": "0.0.0"
+ },
+ "helpful": {
+  "60095694216083489": {
+   "showButton": "yes",
+   "useful": 4,
+   "useless": 0
+  }
+ }
+}

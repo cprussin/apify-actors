@@ -1,0 +1,112 @@
+{
+  "title": "New Business Registrations input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "states": {
+      "title": "States",
+      "type": "array",
+      "description": "States to search. Leave empty for all supported states.",
+      "editor": "select",
+      "items": {
+        "type": "string",
+        "enum": ["CO", "CT", "NY", "OR", "PA", "TX"],
+        "enumTitles": [
+          "Colorado",
+          "Connecticut",
+          "New York",
+          "Oregon",
+          "Pennsylvania",
+          "Texas"
+        ]
+      },
+      "prefill": ["CO", "CT", "NY", "OR", "PA", "TX"],
+      "sectionCaption": "Where & when"
+    },
+    "formedWithinDays": {
+      "title": "Formed within the last (days)",
+      "type": "integer",
+      "description": "Only businesses registered in the last N days. Ignored when \"Formed on or after\" is set. States publish with different delays (see README), so 30 days covers all of them.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 3650,
+      "default": 30,
+      "prefill": 30
+    },
+    "formedAfter": {
+      "title": "Formed on or after",
+      "type": "string",
+      "description": "Start date (YYYY-MM-DD). Overrides \"Formed within the last (days)\".",
+      "editor": "datepicker",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "formedBefore": {
+      "title": "Formed on or before",
+      "type": "string",
+      "description": "End date (YYYY-MM-DD). Default: today.",
+      "editor": "datepicker",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "entityTypes": {
+      "title": "Entity types",
+      "type": "array",
+      "description": "Normalized entity categories to include. Leave empty for all.",
+      "editor": "select",
+      "items": {
+        "type": "string",
+        "enum": ["llc", "corporation", "nonprofit", "partnership", "other"],
+        "enumTitles": [
+          "LLC",
+          "Corporation",
+          "Nonprofit",
+          "Partnership (LP, LLP)",
+          "Other"
+        ]
+      },
+      "prefill": ["llc", "corporation"],
+      "sectionCaption": "Filters"
+    },
+    "cities": {
+      "title": "Cities",
+      "type": "array",
+      "description": "Exact city names, matched case-insensitively against the business address, e.g. Denver, Portland.",
+      "editor": "stringList"
+    },
+    "zipCodes": {
+      "title": "ZIP codes",
+      "type": "array",
+      "description": "5-digit ZIP codes or 3-4 digit prefixes, e.g. 80202 or 802.",
+      "editor": "stringList"
+    },
+    "counties": {
+      "title": "Counties",
+      "type": "array",
+      "description": "County names, e.g. Kings, Allegheny. Only NY and PA publish counties; other states are skipped when this is set.",
+      "editor": "stringList"
+    },
+    "nameKeywords": {
+      "title": "Keywords in business name",
+      "type": "array",
+      "description": "Only businesses whose name contains any of these words, e.g. roofing, dental, construction.",
+      "editor": "stringList"
+    },
+    "maxResults": {
+      "title": "Max results",
+      "type": "integer",
+      "description": "Maximum number of businesses to return across all states. Each result is billed as one event.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 50000,
+      "default": 100,
+      "prefill": 100,
+      "sectionCaption": "Output"
+    },
+    "onlyNew": {
+      "title": "Only new businesses (delta mode)",
+      "type": "boolean",
+      "description": "Skip businesses already returned by earlier runs with the same search settings. Ideal for scheduled daily or weekly runs.",
+      "default": false
+    }
+  },
+  "required": []
+}

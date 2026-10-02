@@ -1,0 +1,279 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "bvid": {
+        "type": ["string", "null"],
+        "title": "BV id",
+        "description": "Bilibili video BV id.",
+        "example": "BV1LiaJ6AEhx"
+      },
+      "aid": {
+        "type": ["number", "null"],
+        "title": "AV id",
+        "description": "Bilibili numeric video id (aid).",
+        "example": 117353438381842
+      },
+      "title": {
+        "type": ["string", "null"],
+        "title": "Title",
+        "description": "Video title.",
+        "example": "吹哨的代价：为什么发现问题的人，最后先成了问题？"
+      },
+      "description": {
+        "type": ["string", "null"],
+        "title": "Description",
+        "description": "Video description.",
+        "example": "见过全员在场的“合法谋杀”吗？…"
+      },
+      "url": {
+        "type": ["string", "null"],
+        "title": "URL",
+        "description": "Video page URL.",
+        "example": "https://www.bilibili.com/video/BV1LiaJ6AEhx"
+      },
+      "author": {
+        "type": ["object", "null"],
+        "title": "Channel",
+        "description": "Uploader: mid (channel UID) and name.",
+        "example": {
+          "mid": "1208823126",
+          "name": "大圆镜科普"
+        }
+      },
+      "publishDate": {
+        "type": ["string", "null"],
+        "title": "Published",
+        "description": "Publish time (ISO 8601 UTC).",
+        "example": "2026-09-29T09:00:00.000Z"
+      },
+      "durationSec": {
+        "type": ["number", "null"],
+        "title": "Duration (s)",
+        "description": "Video duration in seconds.",
+        "example": 476
+      },
+      "views": {
+        "type": ["number", "null"],
+        "title": "Views",
+        "description": "View count when scraped.",
+        "example": 478970
+      },
+      "likes": {
+        "type": ["number", "null"],
+        "title": "Likes",
+        "description": "Like count when scraped.",
+        "example": 45463
+      },
+      "coins": {
+        "type": ["number", "null"],
+        "title": "Coins",
+        "description": "Coins given to the video.",
+        "example": 3337
+      },
+      "favorites": {
+        "type": ["number", "null"],
+        "title": "Favorites",
+        "description": "Times the video was added to favorites.",
+        "example": 10738
+      },
+      "shares": {
+        "type": ["number", "null"],
+        "title": "Shares",
+        "description": "Share count.",
+        "example": 1121
+      },
+      "danmaku": {
+        "type": ["number", "null"],
+        "title": "Danmaku",
+        "description": "Number of danmaku (bullet comments).",
+        "example": 947
+      },
+      "replies": {
+        "type": ["number", "null"],
+        "title": "Comments (total)",
+        "description": "Total comment count on the video.",
+        "example": 1963
+      },
+      "tags": {
+        "type": ["array", "null"],
+        "title": "Tags",
+        "description": "Video tags.",
+        "example": ["社会心理学", "组织沉默", "吹哨人"]
+      },
+      "cover": {
+        "type": ["string", "null"],
+        "title": "Cover",
+        "description": "Cover image URL.",
+        "example": "https://i1.hdslb.com/bfs/archive/33f7ddb4f23818b7e08baaec98690040c8128de6.jpg"
+      },
+      "category": {
+        "type": ["string", "null"],
+        "title": "Category",
+        "description": "Bilibili category name, when the listing provides it.",
+        "example": "科学科普"
+      },
+      "categoryId": {
+        "type": ["number", "null"],
+        "title": "Category ID",
+        "description": "Bilibili category ID.",
+        "example": 201
+      },
+      "parts": {
+        "type": ["number", "null"],
+        "title": "Parts",
+        "description": "Number of parts in a multi-part video.",
+        "example": 1
+      },
+      "source": {
+        "type": ["string", "null"],
+        "title": "Source",
+        "description": "How the video was found: trending, search:<keyword>, user:<UID> or video.",
+        "example": "trending"
+      },
+      "comments": {
+        "type": ["array", "null"],
+        "title": "Scraped comments",
+        "description": "Scraped comments (only with Include comments): rpid, parentRpid, text, author, likes, date, replyCount.",
+        "example": [
+          {
+            "rpid": "318994201744",
+            "parentRpid": null,
+            "text": "如果上级决定有误，你会站出来做吹哨人吗？",
+            "author": {
+              "mid": "1208823126",
+              "name": "大圆镜科普"
+            },
+            "likes": 2274,
+            "date": "2026-09-29T09:01:47.000Z",
+            "replyCount": 200
+          },
+          {
+            "rpid": "315435069665",
+            "parentRpid": "318994201744",
+            "text": "会。",
+            "author": {
+              "mid": "2328353",
+              "name": "答题算错怎么办"
+            },
+            "likes": 29,
+            "date": "2026-09-29T09:02:16.000Z",
+            "replyCount": 0
+          }
+        ]
+      },
+      "scrapedAt": {
+        "type": ["string", "null"],
+        "title": "Scraped at",
+        "description": "When the video was scraped (ISO 8601 UTC).",
+        "example": "2026-09-30T09:14:04.043Z"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Videos",
+      "transformation": {
+        "fields": [
+          "cover",
+          "title",
+          "url",
+          "author.name",
+          "publishDate",
+          "views",
+          "likes",
+          "coins",
+          "favorites",
+          "shares",
+          "danmaku",
+          "replies",
+          "durationSec",
+          "category",
+          "tags",
+          "comments",
+          "bvid",
+          "source"
+        ],
+        "flatten": ["author"]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "cover": {
+            "label": "Cover",
+            "format": "image"
+          },
+          "title": {
+            "label": "Title",
+            "format": "text"
+          },
+          "url": {
+            "label": "URL",
+            "format": "link"
+          },
+          "author.name": {
+            "label": "Channel",
+            "format": "text"
+          },
+          "publishDate": {
+            "label": "Published",
+            "format": "date"
+          },
+          "views": {
+            "label": "Views",
+            "format": "number"
+          },
+          "likes": {
+            "label": "Likes",
+            "format": "number"
+          },
+          "coins": {
+            "label": "Coins",
+            "format": "number"
+          },
+          "favorites": {
+            "label": "Favorites",
+            "format": "number"
+          },
+          "shares": {
+            "label": "Shares",
+            "format": "number"
+          },
+          "danmaku": {
+            "label": "Danmaku",
+            "format": "number"
+          },
+          "replies": {
+            "label": "Comments (total)",
+            "format": "number"
+          },
+          "durationSec": {
+            "label": "Duration (s)",
+            "format": "number"
+          },
+          "category": {
+            "label": "Category",
+            "format": "text"
+          },
+          "tags": {
+            "label": "Tags",
+            "format": "array"
+          },
+          "comments": {
+            "label": "Scraped comments",
+            "format": "array"
+          },
+          "bvid": {
+            "label": "BV id",
+            "format": "text"
+          },
+          "source": {
+            "label": "Source",
+            "format": "text"
+          }
+        }
+      }
+    }
+  }
+}

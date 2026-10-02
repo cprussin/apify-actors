@@ -1,0 +1,367 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": ["string", "null"],
+        "title": "Type",
+        "description": "Item type: post, channel or error.",
+        "example": "post"
+      },
+      "channel": {
+        "type": ["string", "null"],
+        "title": "Channel",
+        "description": "Channel username.",
+        "example": "durov_russia"
+      },
+      "postId": {
+        "type": ["number", "null"],
+        "title": "Post ID",
+        "description": "Message number in the channel (post items).",
+        "example": 63
+      },
+      "date": {
+        "type": ["string", "null"],
+        "title": "Date",
+        "description": "Post time (ISO 8601 UTC; post items).",
+        "example": "2025-11-22T17:22:48.000Z"
+      },
+      "edited": {
+        "type": ["boolean", "null"],
+        "title": "Edited",
+        "description": "Whether the post was edited (post items).",
+        "example": false
+      },
+      "author": {
+        "type": ["string", "null"],
+        "title": "Signature",
+        "description": "Post signature, when the channel enables signatures (post items).",
+        "example": "Pavel Durov"
+      },
+      "text": {
+        "type": ["string", "null"],
+        "title": "Text",
+        "description": "Post text (post items).",
+        "example": "Папаха никогда не была просто шапкой. Это про то, откуда ты родом, про уважение и дисциплину. …"
+      },
+      "views": {
+        "type": ["number", "null"],
+        "title": "Views",
+        "description": "View count as shown by Telegram (post items).",
+        "example": 3260000
+      },
+      "reactions": {
+        "type": ["array", "null"],
+        "title": "Reactions",
+        "description": "Reactions: emoji, customEmojiId, paid, count (post items).",
+        "example": [
+          {
+            "emoji": null,
+            "customEmojiId": "5305565863728918192",
+            "paid": false,
+            "count": 32800
+          },
+          {
+            "emoji": "🫡",
+            "customEmojiId": null,
+            "paid": false,
+            "count": 9750
+          },
+          {
+            "emoji": "🏆",
+            "customEmojiId": null,
+            "paid": false,
+            "count": 5440
+          }
+        ]
+      },
+      "media": {
+        "type": ["array", "null"],
+        "title": "Media",
+        "description": "Attachments: type, url, thumbnailUrl, duration, title (post items).",
+        "example": [
+          {
+            "type": "video",
+            "url": "https://cdn4.telesco.pe/file/a0973c48eb.mp4?token=…",
+            "thumbnailUrl": "https://cdn4.telesco.pe/file/Xo1so….jpg",
+            "duration": "0:56",
+            "title": null
+          }
+        ]
+      },
+      "linkPreview": {
+        "type": ["object", "null"],
+        "title": "Link preview",
+        "description": "Link preview: url, siteName, title, description, imageUrl (post items).",
+        "example": {
+          "url": "https://telegram.org/blog",
+          "siteName": "Telegram",
+          "title": "Telegram Blog",
+          "description": null,
+          "imageUrl": null
+        }
+      },
+      "forwardedFrom": {
+        "type": ["object", "null"],
+        "title": "Forwarded from",
+        "description": "Original post for forwards: name, url, channel, postId (post items).",
+        "example": {
+          "name": "Khabib Nurmagomedov",
+          "url": "https://t.me/khabib_nurmagomedov/127",
+          "channel": "khabib_nurmagomedov",
+          "postId": 127
+        }
+      },
+      "replyTo": {
+        "type": ["object", "null"],
+        "title": "Reply to",
+        "description": "Post this replies to: name, url, channel, postId, text (post items).",
+        "example": {
+          "name": "Pavel Durov",
+          "url": "https://t.me/durov/400",
+          "channel": "durov",
+          "postId": 400,
+          "text": "…"
+        }
+      },
+      "links": {
+        "type": ["array", "null"],
+        "title": "Links",
+        "description": "URLs in the post text (post items).",
+        "example": ["https://telegram.org"]
+      },
+      "hashtags": {
+        "type": ["array", "null"],
+        "title": "Hashtags",
+        "description": "Hashtags in the post text (post items).",
+        "example": ["#telegram"]
+      },
+      "permalink": {
+        "type": ["string", "null"],
+        "title": "Link",
+        "description": "Post URL on t.me (post items).",
+        "example": "https://t.me/durov_russia/63"
+      },
+      "title": {
+        "type": ["string", "null"],
+        "title": "Title",
+        "description": "Channel title (channel items).",
+        "example": "Pavel Durov"
+      },
+      "description": {
+        "type": ["string", "null"],
+        "title": "Description",
+        "description": "Channel description (channel items).",
+        "example": "Founder of Telegram."
+      },
+      "subscribers": {
+        "type": ["number", "null"],
+        "title": "Subscribers",
+        "description": "Subscriber count (channel items).",
+        "example": 10579568
+      },
+      "photoUrl": {
+        "type": ["string", "null"],
+        "title": "Photo",
+        "description": "Channel photo URL (channel items).",
+        "example": "https://cdn4.telesco.pe/file/….jpg"
+      },
+      "verified": {
+        "type": ["boolean", "null"],
+        "title": "Verified",
+        "description": "Whether the channel is verified (channel items).",
+        "example": true
+      },
+      "counters": {
+        "type": ["object", "null"],
+        "title": "Counters",
+        "description": "Media counters shown by Telegram, e.g. photos, videos, links (channel items).",
+        "example": {
+          "photos": 102,
+          "videos": 46,
+          "links": 200
+        }
+      },
+      "url": {
+        "type": ["string", "null"],
+        "title": "URL",
+        "description": "Channel URL (channel items).",
+        "example": "https://t.me/durov"
+      },
+      "errorCode": {
+        "type": ["string", "null"],
+        "title": "Error code",
+        "description": "notFound, previewDisabled, notAChannel, invalidInput or failed (error items).",
+        "example": "notAChannel"
+      },
+      "error": {
+        "type": ["string", "null"],
+        "title": "Error",
+        "description": "Error message (error items).",
+        "example": "@wallstreetbets is a group, not a channel. Only public channel posts can be scraped."
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Posts",
+      "transformation": {
+        "fields": [
+          "type",
+          "channel",
+          "postId",
+          "date",
+          "text",
+          "views",
+          "reactions",
+          "media",
+          "links",
+          "hashtags",
+          "forwardedFrom",
+          "replyTo",
+          "edited",
+          "author",
+          "permalink",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "type": {
+            "label": "Type",
+            "format": "text"
+          },
+          "channel": {
+            "label": "Channel",
+            "format": "text"
+          },
+          "postId": {
+            "label": "Post ID",
+            "format": "number"
+          },
+          "date": {
+            "label": "Date",
+            "format": "date"
+          },
+          "text": {
+            "label": "Text",
+            "format": "text"
+          },
+          "views": {
+            "label": "Views",
+            "format": "number"
+          },
+          "reactions": {
+            "label": "Reactions",
+            "format": "array"
+          },
+          "media": {
+            "label": "Media",
+            "format": "array"
+          },
+          "links": {
+            "label": "Links",
+            "format": "array"
+          },
+          "hashtags": {
+            "label": "Hashtags",
+            "format": "array"
+          },
+          "forwardedFrom": {
+            "label": "Forwarded from",
+            "format": "object"
+          },
+          "replyTo": {
+            "label": "Reply to",
+            "format": "object"
+          },
+          "edited": {
+            "label": "Edited",
+            "format": "boolean"
+          },
+          "author": {
+            "label": "Signature",
+            "format": "text"
+          },
+          "permalink": {
+            "label": "Link",
+            "format": "link"
+          },
+          "error": {
+            "label": "Error",
+            "format": "text"
+          }
+        }
+      }
+    },
+    "channels": {
+      "title": "Channels",
+      "transformation": {
+        "fields": [
+          "type",
+          "channel",
+          "title",
+          "subscribers",
+          "description",
+          "verified",
+          "counters",
+          "photoUrl",
+          "url",
+          "errorCode",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "type": {
+            "label": "Type",
+            "format": "text"
+          },
+          "channel": {
+            "label": "Channel",
+            "format": "text"
+          },
+          "title": {
+            "label": "Title",
+            "format": "text"
+          },
+          "subscribers": {
+            "label": "Subscribers",
+            "format": "number"
+          },
+          "description": {
+            "label": "Description",
+            "format": "text"
+          },
+          "verified": {
+            "label": "Verified",
+            "format": "boolean"
+          },
+          "counters": {
+            "label": "Counters",
+            "format": "object"
+          },
+          "photoUrl": {
+            "label": "Photo",
+            "format": "image"
+          },
+          "url": {
+            "label": "URL",
+            "format": "link"
+          },
+          "errorCode": {
+            "label": "Error code",
+            "format": "text"
+          },
+          "error": {
+            "label": "Error",
+            "format": "text"
+          }
+        }
+      }
+    }
+  }
+}

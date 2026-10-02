@@ -1,0 +1,104 @@
+{
+  "title": "Bilibili Scraper input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "mode": {
+      "title": "What to scrape",
+      "type": "string",
+      "description": "trending = Bilibili's current popular (热门) videos; search = keyword search; videos = specific video URLs or BV ids; user = uploads of specific channels (UP主).",
+      "editor": "select",
+      "enum": ["trending", "search", "videos", "user"],
+      "enumTitles": [
+        "Trending videos",
+        "Search by keyword",
+        "Specific videos",
+        "Channel uploads"
+      ],
+      "default": "trending",
+      "prefill": "trending",
+      "sectionCaption": "Source"
+    },
+    "keywords": {
+      "title": "Search keywords (mode: search)",
+      "type": "array",
+      "description": "One search per keyword. Chinese keywords give the best results on Bilibili, e.g. 原神 or 人工智能; English works too.",
+      "editor": "stringList",
+      "prefill": ["原神"]
+    },
+    "searchOrder": {
+      "title": "Search order (mode: search)",
+      "type": "string",
+      "description": "Order of search results.",
+      "editor": "select",
+      "enum": ["relevance", "views", "newest", "danmaku", "favorites"],
+      "enumTitles": [
+        "Relevance",
+        "Most views",
+        "Newest",
+        "Most danmaku",
+        "Most favorites"
+      ],
+      "default": "relevance"
+    },
+    "videos": {
+      "title": "Video URLs or IDs (mode: videos)",
+      "type": "array",
+      "description": "https://www.bilibili.com/video/BV1xx411c7mD, BV1xx411c7mD or av170001. b23.tv short links aren't supported; open them and paste the full URL.",
+      "editor": "stringList",
+      "prefill": ["https://www.bilibili.com/video/BV1xx411c7mD"]
+    },
+    "userIds": {
+      "title": "Channels (mode: user)",
+      "type": "array",
+      "description": "Channel UID (546195), channel URL (https://space.bilibili.com/546195) or exact channel name (老番茄).",
+      "editor": "stringList",
+      "prefill": ["https://space.bilibili.com/546195"]
+    },
+    "maxItems": {
+      "title": "Max videos",
+      "type": "integer",
+      "description": "Max videos per keyword, per channel, or for trending. Each video is billed as one event.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 10000,
+      "default": 10,
+      "prefill": 10,
+      "sectionCaption": "Limits"
+    },
+    "includeComments": {
+      "title": "Include comments",
+      "type": "boolean",
+      "description": "Add the video's hot comments (with replies) to each video. Without login Bilibili only shows the first page: about 3 top-level comments plus up to 20 replies to each, so expect up to ~60 comments per video. Each comment is billed as one event.",
+      "default": true,
+      "prefill": true
+    },
+    "maxCommentsPerVideo": {
+      "title": "Max comments per video",
+      "type": "integer",
+      "description": "Stop adding comments to a video after this many.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 1000,
+      "default": 10,
+      "prefill": 10
+    },
+    "onlyNew": {
+      "title": "Only new videos (monitoring)",
+      "type": "boolean",
+      "description": "Return only videos not returned by an earlier run with the same mode, keywords, search order, videos and channels. Schedule the actor (e.g. daily) for new-upload alerts: the first run is a baseline, later runs output (and bill) only new videos. State is kept in the key-value store \"bilibili-scraper-state\" in your account.",
+      "default": false,
+      "sectionCaption": "Monitoring"
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Optional. Not needed normally. If Bilibili starts blocking requests (risk control, HTTP 412), try Apify Proxy.",
+      "editor": "proxy",
+      "default": { "useApifyProxy": false },
+      "prefill": { "useApifyProxy": false },
+      "sectionCaption": "Advanced"
+    }
+  },
+  "required": ["mode"]
+}

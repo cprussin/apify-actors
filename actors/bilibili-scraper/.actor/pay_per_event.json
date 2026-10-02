@@ -1,0 +1,13 @@
+{
+  "video": {
+    "eventTitle": "Video",
+    "eventDescription": "One Bilibili video with full stats and tags written to the dataset.",
+    "eventPriceUsd": 0.005,
+    "isPrimaryEvent": true
+  },
+  "comment": {
+    "eventTitle": "Comment",
+    "eventDescription": "One comment included in a video record (only when \"Include comments\" is on).",
+    "eventPriceUsd": 0.002
+  }
+}

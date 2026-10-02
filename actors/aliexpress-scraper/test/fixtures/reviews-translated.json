@@ -1,0 +1,181 @@
+{
+ "data": {
+  "currentPage": 1,
+  "evaViewList": [
+   {
+    "aigc": false,
+    "anonymous": false,
+    "buyerAddFbDays": 0,
+    "buyerCountry": "US",
+    "buyerEval": 100,
+    "buyerFbType": {
+     "crowdSourcingPersonName": "AliExpress Shopper",
+     "sourceLang": "en",
+     "typeTranslationAccepted": "crowdsourcing"
+    },
+    "buyerFeedback": "I like how this case looks and feels, and the magsafe works just fine. I like that it's not bulky - but I haven't tested how well it would protect against a fall (and hopefully I won't have to find out!).",
+    "buyerName": "a***r",
+    "buyerProductFeedBack": "",
+    "buyerTranslationFeedback": "I like how this case looks and feels, and the magsafe works just fine. I like that it's not bulky - but i haven't tested how well it would protect against a fall (and hopefully i won't have to find out! ).",
+    "downVoteCount": 0,
+    "evalDate": "16 Mar 2026",
+    "evaluationId": 60096035098342700,
+    "evaluationIdStr": "60096035098342703",
+    "independentSite": false,
+    "logistics": "AliExpress Selection Standard Shipping",
+    "reviewType": "REVIEW",
+    "samePurchaseSuggestion": "Buy the same",
+    "selectedReview": false,
+    "skuInfo": "Color:Blue Material:For iPhone 16 ",
+    "status": "1",
+    "thirdParty": false,
+    "trendyol": false,
+    "upVoteCount": 0
+   },
+   {
+    "aigc": false,
+    "anonymous": false,
+    "buyerAddFbDays": 0,
+    "buyerCountry": "US",
+    "buyerEval": 100,
+    "buyerFbType": {
+     "crowdSourcingPersonName": "AliExpress Shopper",
+     "sourceLang": "en",
+     "typeTranslationAccepted": "crowdsourcing"
+    },
+    "buyerFeedback": "Geweldig , heeft ook camera bescherming ",
+    "buyerName": "U***l",
+    "buyerProductFeedBack": "",
+    "buyerTranslationFeedback": "Great, also has camera protection.",
+    "downVoteCount": 0,
+    "evalDate": "05 Dec 2025",
+    "evaluationId": 30097063997418908,
+    "evaluationIdStr": "30097063997418909",
+    "independentSite": false,
+    "logistics": "Aliexpress Selection Premium shipping",
+    "reviewType": "REVIEW",
+    "samePurchaseSuggestion": "Buy the same",
+    "selectedReview": false,
+    "skuInfo": "Color:Dark Green Material:For iPhone 16 Pro ",
+    "status": "1",
+    "thirdParty": false,
+    "trendyol": false,
+    "upVoteCount": 0
+   }
+  ],
+  "filterInfo": {
+   "currentFilter": "all",
+   "filterStatistic": [
+    {
+     "filterCode": "additional",
+     "filterCount": 85
+    },
+    {
+     "filterCode": "local",
+     "filterCount": 922
+    },
+    {
+     "filterCode": "with_personal",
+     "filterCount": 0
+    },
+    {
+     "filterCode": "image",
+     "filterCount": 634
+    },
+    {
+     "filterCode": "all",
+     "filterCount": 13032
+    }
+   ]
+  },
+  "impressionDTOList": [
+   {
+    "content": "good quality",
+    "emotion": 1,
+    "id": "6521342",
+    "num": 409,
+    "productId": 1005007502032342,
+    "type": "impression"
+   },
+   {
+    "content": "excellent",
+    "emotion": 1,
+    "id": "6521866",
+    "num": 259,
+    "productId": 1005007502032342,
+    "type": "impression"
+   },
+   {
+    "content": "perfect fit",
+    "emotion": 1,
+    "id": "6521340",
+    "num": 215,
+    "productId": 1005007502032342,
+    "type": "impression"
+   },
+   {
+    "content": "perfect",
+    "emotion": 1,
+    "id": "6521407",
+    "num": 165,
+    "productId": 1005007502032342,
+    "type": "impression"
+   },
+   {
+    "content": "excellent quality",
+    "emotion": 1,
+    "id": "6521349",
+    "num": 161,
+    "productId": 1005007502032342,
+    "type": "impression"
+   },
+   {
+    "content": "fast delivery",
+    "emotion": 1,
+    "id": "6521410",
+    "num": 154,
+    "productId": 1005007502032342,
+    "type": "impression"
+   }
+  ],
+  "pageSize": 20,
+  "productEvaluationStatistic": {
+   "evarageStar": 4.7,
+   "evarageStarRage": 94.4,
+   "fiveStarNum": 11103,
+   "fiveStarRate": 84.8,
+   "fourStarNum": 1120,
+   "fourStarRate": 8.6,
+   "negativeNum": 540,
+   "negativeRate": 4.1,
+   "neutralNum": 330,
+   "neutralRate": 2.5,
+   "oneStarNum": 402,
+   "oneStarRate": 3,
+   "positiveNum": 12223,
+   "positiveRate": 93.4,
+   "threeStarNum": 330,
+   "threeStarRate": 2.5,
+   "totalNum": 13093,
+   "twoStarNum": 138,
+   "twoStarRate": 1.1
+  },
+  "productType": "ORDINARY",
+  "reviewStructuredLabelDTOList": [],
+  "totalNum": 13032,
+  "totalPage": 652,
+  "version": "0.0.0"
+ },
+ "helpful": {
+  "60096035098342703": {
+   "showButton": "yes",
+   "useful": 0,
+   "useless": 0
+  },
+  "30097063997418909": {
+   "showButton": "yes",
+   "useful": 0,
+   "useless": 0
+  }
+ }
+}

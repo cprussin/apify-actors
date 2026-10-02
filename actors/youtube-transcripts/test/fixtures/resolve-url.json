@@ -1,0 +1,20 @@
+{
+  "endpoint": {
+    "clickTrackingParams": "IhMIuJjL0p-UlwMVoswWCR3g6CQiMghleHRlcm5hbMoBBA5xA-w=",
+    "commandMetadata": {
+      "webCommandMetadata": {
+        "url": "/youtubei/v1/navigation/resolve_url",
+        "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+        "rootVe": 3611,
+        "apiUrl": "/youtubei/v1/browse"
+      },
+      "resolveUrlCommandMetadata": {
+        "isVanityUrl": true
+      }
+    },
+    "browseEndpoint": {
+      "browseId": "UCuAXFkgsw1L7xaCfnd5JJOw",
+      "params": "EgC4AQCSAwDyBgQKAjIA"
+    }
+  }
+}

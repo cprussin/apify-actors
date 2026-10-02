@@ -1,0 +1,74 @@
+{
+  "code": 0,
+  "message": "0",
+  "ttl": 1,
+  "data": {
+    "archives": [
+      {
+        "aid": 117354226849930,
+        "title": "我在一天内学会了5个乐器！！",
+        "pubdate": 1790739000,
+        "ctime": 1790683896,
+        "state": 0,
+        "pic": "http://i2.hdslb.com/bfs/archive/462781c040fdb9dd4584f0ba9cf4c00cd1fba795.jpg",
+        "duration": 727,
+        "stat": {
+          "view": 187696
+        },
+        "bvid": "BV1feaH63Epk",
+        "ugc_pay": 0,
+        "interactive_video": false,
+        "enable_vt": 0,
+        "vt_display": "",
+        "playback_position": 0,
+        "desc": "别管难听不难听，你就说发没发出声来吧。",
+        "upMid": 546195
+      },
+      {
+        "aid": 117320588531711,
+        "title": "超市里已经……没有人类了……",
+        "pubdate": 1790238000,
+        "ctime": 1790171297,
+        "state": 0,
+        "pic": "http://i1.hdslb.com/bfs/archive/2e42752824225a1c578db1d66fe7ea727c9b7a68.jpg",
+        "duration": 2022,
+        "stat": {
+          "view": 3234773
+        },
+        "bvid": "BV18fhb65EGs",
+        "ugc_pay": 0,
+        "interactive_video": false,
+        "enable_vt": 0,
+        "vt_display": "",
+        "playback_position": 0,
+        "desc": "游戏：午夜轮班\n如果喜欢看我们玩多人游戏，能不能给这个视频点个赞！！我一定尽快更新！！",
+        "upMid": 546195
+      },
+      {
+        "aid": 117292385962971,
+        "title": "10分钟做6道菜？我们挑战世界大赛的硬核真题！",
+        "pubdate": 1789876800,
+        "ctime": 1789740197,
+        "state": 0,
+        "pic": "http://i2.hdslb.com/bfs/archive/3f3e6baea80ee87886dcef05ad2812e3a215c976.jpg",
+        "duration": 552,
+        "stat": {
+          "view": 1355436
+        },
+        "bvid": "BV1HYeS6YEEZ",
+        "ugc_pay": 0,
+        "interactive_video": false,
+        "enable_vt": 0,
+        "vt_display": "",
+        "playback_position": 0,
+        "desc": "听着...所谓速度，不是手忙脚乱的焦急，也不是花里胡哨的炫技，而是缜密规划的笃定，和分毫不差的稳定！",
+        "upMid": 18202105
+      }
+    ],
+    "page": {
+      "num": 1,
+      "size": 3,
+      "total": 679
+    }
+  }
+}

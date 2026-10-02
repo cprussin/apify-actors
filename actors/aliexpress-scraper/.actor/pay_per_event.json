@@ -1,0 +1,18 @@
+{
+  "product": {
+    "eventTitle": "Product",
+    "eventDescription": "One AliExpress product from search results written to the dataset.",
+    "eventPriceUsd": 0.004,
+    "isPrimaryEvent": true
+  },
+  "review": {
+    "eventTitle": "Review",
+    "eventDescription": "One AliExpress buyer review written to the dataset.",
+    "eventPriceUsd": 0.002
+  },
+  "apify-actor-start": {
+    "eventTitle": "Actor start",
+    "eventDescription": "Synthetic start event (covers the first 5 s of compute).",
+    "eventPriceUsd": 5e-5
+  }
+}

@@ -1,0 +1,313 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": ["string", "null"],
+        "title": "ID",
+        "description": "Product Hunt post ID.",
+        "example": "1252633"
+      },
+      "name": {
+        "type": ["string", "null"],
+        "title": "Name",
+        "description": "Product name.",
+        "example": "Acme Agents"
+      },
+      "tagline": {
+        "type": ["string", "null"],
+        "title": "Tagline",
+        "description": "Launch tagline.",
+        "example": "AI agents that file your expense reports"
+      },
+      "description": {
+        "type": ["string", "null"],
+        "title": "Description",
+        "description": "Launch description (API mode).",
+        "example": "Acme connects to your inbox and card feed..."
+      },
+      "slug": {
+        "type": ["string", "null"],
+        "title": "Slug",
+        "description": "Product Hunt post slug (API mode).",
+        "example": "acme-agents"
+      },
+      "url": {
+        "type": ["string", "null"],
+        "title": "Product Hunt URL",
+        "description": "Launch page on Product Hunt.",
+        "example": "https://www.producthunt.com/posts/acme-agents"
+      },
+      "website": {
+        "type": ["string", "null"],
+        "title": "Website",
+        "description": "Product website URL.",
+        "example": "https://acme.example/"
+      },
+      "websiteRedirectUrl": {
+        "type": ["string", "null"],
+        "title": "Website redirect",
+        "description": "Product Hunt redirect link to the website.",
+        "example": "https://www.producthunt.com/r/ABCDEF"
+      },
+      "topics": {
+        "type": ["array", "null"],
+        "title": "Topics",
+        "description": "Product Hunt topics.",
+        "example": ["Artificial Intelligence", "Fintech"]
+      },
+      "votesCount": {
+        "type": ["number", "null"],
+        "title": "Upvotes",
+        "description": "Upvote count.",
+        "example": 293
+      },
+      "commentsCount": {
+        "type": ["number", "null"],
+        "title": "Comments",
+        "description": "Comment count (API mode).",
+        "example": 41
+      },
+      "reviewsCount": {
+        "type": ["number", "null"],
+        "title": "Reviews",
+        "description": "Number of product reviews.",
+        "example": 3
+      },
+      "reviewsRating": {
+        "type": ["number", "null"],
+        "title": "Review rating",
+        "description": "Average review rating.",
+        "example": 5
+      },
+      "dailyRank": {
+        "type": ["number", "null"],
+        "title": "Daily rank",
+        "description": "Rank on the daily leaderboard, when known.",
+        "example": 1
+      },
+      "weeklyRank": {
+        "type": ["number", "null"],
+        "title": "Weekly rank",
+        "description": "Rank on the weekly leaderboard, when known.",
+        "example": 3
+      },
+      "monthlyRank": {
+        "type": ["number", "null"],
+        "title": "Monthly rank",
+        "description": "Rank on the monthly leaderboard, when known.",
+        "example": 12
+      },
+      "launchDate": {
+        "type": ["string", "null"],
+        "title": "Launch date",
+        "description": "Pacific-Time launch day (YYYY-MM-DD).",
+        "example": "2026-09-17"
+      },
+      "createdAt": {
+        "type": ["string", "null"],
+        "title": "Created",
+        "description": "When the post was created (ISO 8601).",
+        "example": "2026-09-16T18:44:42Z"
+      },
+      "featuredAt": {
+        "type": ["string", "null"],
+        "title": "Featured at",
+        "description": "When the post was featured (ISO 8601).",
+        "example": "2026-09-17T07:01:00Z"
+      },
+      "featured": {
+        "type": ["boolean", "null"],
+        "title": "Featured",
+        "description": "Whether the launch was featured.",
+        "example": true
+      },
+      "thumbnail": {
+        "type": ["string", "null"],
+        "title": "Thumbnail",
+        "description": "Thumbnail image URL.",
+        "example": "https://ph-files.imgix.net/....png"
+      },
+      "media": {
+        "type": ["array", "null"],
+        "title": "Media",
+        "description": "Gallery media: type, url, videoUrl.",
+        "example": [
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/....png",
+            "videoUrl": null
+          }
+        ]
+      },
+      "hunter": {
+        "type": ["object", "null"],
+        "title": "Hunter",
+        "description": "Hunter: id, name, username, headline, profileUrl, twitterUsername, websiteUrl, avatarUrl.",
+        "example": {
+          "id": "123",
+          "name": "Jane Doe",
+          "username": "janedoe",
+          "headline": "Founder at Acme",
+          "profileUrl": "https://www.producthunt.com/@janedoe",
+          "twitterUsername": null,
+          "websiteUrl": null,
+          "avatarUrl": "https://ph-avatars.imgix.net/..."
+        }
+      },
+      "makers": {
+        "type": ["array", "null"],
+        "title": "Makers",
+        "description": "Makers (same shape as hunter); hidden users are left out.",
+        "example": [
+          {
+            "id": "456",
+            "name": "John Roe",
+            "username": "johnroe",
+            "headline": "CTO at Acme",
+            "profileUrl": "https://www.producthunt.com/@johnroe",
+            "twitterUsername": null,
+            "websiteUrl": null,
+            "avatarUrl": null
+          }
+        ]
+      },
+      "pricingType": {
+        "type": ["string", "null"],
+        "title": "Pricing",
+        "description": "Pricing type; not exposed by Product Hunt yet, always null.",
+        "example": "free"
+      },
+      "productLinks": {
+        "type": ["array", "null"],
+        "title": "Product links",
+        "description": "Product links: type, url.",
+        "example": [
+          {
+            "type": "website",
+            "url": "https://www.producthunt.com/r/ABCDEF"
+          }
+        ]
+      },
+      "comments": {
+        "type": ["array", "null"],
+        "title": "Comment threads",
+        "description": "Comments (only when requested): id, body, createdAt, votesCount, parentId, url, author.",
+        "example": [
+          {
+            "id": "c1",
+            "body": "Congrats on the launch!",
+            "createdAt": "2026-09-17T08:00:00Z",
+            "votesCount": 12,
+            "parentId": null,
+            "url": "https://www.producthunt.com/posts/acme-agents#comment-c1",
+            "author": null
+          }
+        ]
+      },
+      "source": {
+        "type": ["string", "null"],
+        "title": "Source",
+        "description": "Data source: feed (no token) or api (token).",
+        "example": "api"
+      },
+      "scrapedAt": {
+        "type": ["string", "null"],
+        "title": "Scraped at",
+        "description": "When the launch was scraped (ISO 8601 UTC).",
+        "example": "2026-09-29T18:00:00.000Z"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Launches",
+      "transformation": {
+        "fields": [
+          "thumbnail",
+          "name",
+          "tagline",
+          "votesCount",
+          "commentsCount",
+          "dailyRank",
+          "weeklyRank",
+          "launchDate",
+          "topics",
+          "website",
+          "url",
+          "hunter.name",
+          "makers",
+          "createdAt",
+          "source"
+        ],
+        "flatten": ["hunter"]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "thumbnail": {
+            "label": "Thumbnail",
+            "format": "image"
+          },
+          "name": {
+            "label": "Name",
+            "format": "text"
+          },
+          "tagline": {
+            "label": "Tagline",
+            "format": "text"
+          },
+          "votesCount": {
+            "label": "Upvotes",
+            "format": "number"
+          },
+          "commentsCount": {
+            "label": "Comments",
+            "format": "number"
+          },
+          "dailyRank": {
+            "label": "Daily rank",
+            "format": "number"
+          },
+          "weeklyRank": {
+            "label": "Weekly rank",
+            "format": "number"
+          },
+          "launchDate": {
+            "label": "Launch date",
+            "format": "date"
+          },
+          "topics": {
+            "label": "Topics",
+            "format": "array"
+          },
+          "website": {
+            "label": "Website",
+            "format": "link"
+          },
+          "url": {
+            "label": "Product Hunt URL",
+            "format": "link"
+          },
+          "hunter.name": {
+            "label": "Hunter",
+            "format": "text"
+          },
+          "makers": {
+            "label": "Makers",
+            "format": "array"
+          },
+          "createdAt": {
+            "label": "Created",
+            "format": "date"
+          },
+          "source": {
+            "label": "Source",
+            "format": "text"
+          }
+        }
+      }
+    }
+  }
+}

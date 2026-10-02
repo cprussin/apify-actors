@@ -1,0 +1,121 @@
+{
+  "code": 0,
+  "message": "OK",
+  "ttl": 1,
+  "data": {
+    "seid": "12100941336656516656",
+    "page": 1,
+    "pagesize": 20,
+    "numResults": 1000,
+    "numPages": 50,
+    "suggest_keyword": "",
+    "rqt_type": "search",
+    "exp_list": {
+      "5504": true,
+      "6603": true,
+      "9902": true,
+      "9924": true,
+      "9931": true,
+      "9941": true,
+      "9961": true,
+      "100010": true,
+      "81701100": true
+    },
+    "egg_hit": 0,
+    "result": [
+      {
+        "type": "bili_user",
+        "mid": 546195,
+        "uname": "老番茄",
+        "usign": "新浪微博：_老番茄_",
+        "fans": 20806388,
+        "videos": 678,
+        "upic": "//i0.hdslb.com/bfs/face/bc5ca101313d4db223c395d64779e76eb3482d60.jpg",
+        "face_nft": 0,
+        "face_nft_type": 0,
+        "verify_info": "",
+        "level": 6,
+        "gender": 1,
+        "is_upuser": 1,
+        "is_live": 0,
+        "room_id": 21852,
+        "res": [
+          {
+            "aid": 117354226849930,
+            "bvid": "BV1feaH63Epk",
+            "title": "我在一天内学会了5个乐器！！",
+            "pubdate": 1790739000,
+            "arcurl": "http://www.bilibili.com/video/av117354226849930",
+            "pic": "//i0.hdslb.com/bfs/archive/462781c040fdb9dd4584f0ba9cf4c00cd1fba795.jpg",
+            "play": "187103",
+            "dm": 1109,
+            "coin": 4402,
+            "fav": 3170,
+            "desc": "别管难听不难听，你就说发没发出声来吧。",
+            "duration": "12:7",
+            "is_pay": 0,
+            "is_union_video": 0,
+            "is_charge_video": 0,
+            "vt": 0,
+            "enable_vt": 0,
+            "vt_display": ""
+          }
+        ],
+        "official_verify": {
+          "type": 0,
+          "desc": "2025百大UP主、2025年度商业影响力奖UP主、2022年度联合创作奖UP主"
+        },
+        "hit_columns": ["uname"],
+        "is_senior_member": 0
+      },
+      {
+        "type": "bili_user",
+        "mid": 609013982,
+        "uname": "PPOMO老番茄",
+        "usign": "PPOMO的小小搬运工",
+        "fans": 96720,
+        "videos": 96,
+        "upic": "//i1.hdslb.com/bfs/face/c95178f76e64c175b07a8b8be4a035934a4edf28.jpg",
+        "face_nft": 0,
+        "face_nft_type": 0,
+        "verify_info": "",
+        "level": 5,
+        "gender": 3,
+        "is_upuser": 1,
+        "is_live": 0,
+        "room_id": 23684798,
+        "res": [
+          {
+            "aid": 113232131920755,
+            "bvid": "BV1DJxveTEJm",
+            "title": "【PPOMO】昏昏欲睡的头皮按摩和刷头轻拍",
+            "pubdate": 1727785836,
+            "arcurl": "http://www.bilibili.com/video/av113232131920755",
+            "pic": "//i1.hdslb.com/bfs/archive/ded38147987d6d31d8eb511972a1d3a5debb38d0.jpg",
+            "play": "114862",
+            "dm": 5,
+            "coin": 68,
+            "fav": 727,
+            "desc": "YouTub",
+            "duration": "55:33",
+            "is_pay": 0,
+            "is_union_video": 0,
+            "is_charge_video": 0,
+            "vt": 0,
+            "enable_vt": 0,
+            "vt_display": ""
+          }
+        ],
+        "official_verify": {
+          "type": 127,
+          "desc": ""
+        },
+        "hit_columns": ["uname"],
+        "is_senior_member": 0
+      }
+    ],
+    "show_column": 0,
+    "in_black_key": 0,
+    "in_white_key": 0
+  }
+}

@@ -1,0 +1,59 @@
+{
+ "data": {
+  "currentPage": 1,
+  "evaViewList": [],
+  "filterInfo": {
+   "currentFilter": "all",
+   "filterStatistic": [
+    {
+     "filterCode": "additional",
+     "filterCount": 0
+    },
+    {
+     "filterCode": "local",
+     "filterCount": 0
+    },
+    {
+     "filterCode": "with_personal",
+     "filterCount": 0
+    },
+    {
+     "filterCode": "image",
+     "filterCount": 0
+    },
+    {
+     "filterCode": "all",
+     "filterCount": 0
+    }
+   ]
+  },
+  "impressionDTOList": [],
+  "pageSize": 20,
+  "productEvaluationStatistic": {
+   "evarageStar": 0,
+   "evarageStarRage": 0,
+   "fiveStarNum": 0,
+   "fiveStarRate": 0,
+   "fourStarNum": 0,
+   "fourStarRate": 0,
+   "negativeNum": 0,
+   "negativeRate": 0,
+   "neutralNum": 0,
+   "neutralRate": 0,
+   "oneStarNum": 0,
+   "oneStarRate": 0,
+   "positiveNum": 0,
+   "positiveRate": 0,
+   "threeStarNum": 0,
+   "threeStarRate": 0,
+   "totalNum": 0,
+   "twoStarNum": 0,
+   "twoStarRate": 0
+  },
+  "productType": "ORDINARY",
+  "reviewStructuredLabelDTOList": [],
+  "totalNum": 0,
+  "totalPage": 0,
+  "version": "0.0.0"
+ }
+}

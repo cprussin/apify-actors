@@ -1,0 +1,86 @@
+{
+  "title": "Trustpilot Reviews input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "companies": {
+      "title": "Companies",
+      "type": "array",
+      "description": "Company domains (e.g. amazon.com) or Trustpilot review page URLs (e.g. https://www.trustpilot.com/review/www.amazon.com).",
+      "editor": "stringList",
+      "prefill": ["apify.com"],
+      "default": ["apify.com"],
+      "sectionCaption": "Companies"
+    },
+    "maxReviewsPerCompany": {
+      "title": "Max reviews per company",
+      "type": "integer",
+      "description": "Maximum reviews to return for each company. Each review is billed as one event. Trustpilot shows logged-out visitors 200 reviews per filter; above 200 the actor splits the request by star rating, for up to 1,000 per company and language.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 1000,
+      "default": 20,
+      "prefill": 20
+    },
+    "stars": {
+      "title": "Star ratings",
+      "type": "array",
+      "description": "Only reviews with these star ratings. Leave empty for all.",
+      "editor": "select",
+      "items": {
+        "type": "string",
+        "enum": ["1", "2", "3", "4", "5"],
+        "enumTitles": ["1 star", "2 stars", "3 stars", "4 stars", "5 stars"]
+      },
+      "sectionCaption": "Filters"
+    },
+    "language": {
+      "title": "Review language",
+      "type": "string",
+      "description": "\"all\" or a 2-letter language code (en, de, fr, es, it, nl, da, sv, pt, pl, ...).",
+      "editor": "textfield",
+      "pattern": "^(all|[a-zA-Z]{2})$",
+      "default": "all",
+      "prefill": "all"
+    },
+    "sort": {
+      "title": "Sort",
+      "type": "string",
+      "description": "Most recent first, or Trustpilot's relevance order. Delta mode (\"Only reviews since\") always uses most recent.",
+      "editor": "select",
+      "enum": ["recency", "relevance"],
+      "enumTitles": ["Most recent", "Most relevant"],
+      "default": "recency"
+    },
+    "sinceDate": {
+      "title": "Only reviews since (delta mode)",
+      "type": "string",
+      "description": "Only reviews published on or after this date (YYYY-MM-DD). Paging stops once older reviews are reached, so scheduled runs only pay for new reviews.",
+      "editor": "datepicker",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "onlyNew": {
+      "title": "Only new reviews (monitoring)",
+      "type": "boolean",
+      "description": "Return only reviews not returned by an earlier run with the same companies, stars and language. Schedule the actor daily for new-review alerts: the first run is a baseline, later runs output (and bill) only new reviews. State is kept in the key-value store \"trustpilot-reviews-state\" in your account.",
+      "default": false
+    },
+    "includeCompanyInfo": {
+      "title": "Include company profile",
+      "type": "boolean",
+      "description": "Add a \"company\" object to each review: website, categories, country, contact details, reply rate and star distribution. Company name, TrustScore and total reviews are always included.",
+      "default": true,
+      "sectionCaption": "Output"
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Optional. The actor works without a proxy. Use Apify Proxy (e.g. residential) if you run many companies and see blocking.",
+      "editor": "proxy",
+      "default": { "useApifyProxy": false },
+      "prefill": { "useApifyProxy": false },
+      "sectionCaption": "Advanced"
+    }
+  },
+  "required": ["companies"]
+}

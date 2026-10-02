@@ -1,0 +1,119 @@
+{
+  "title": "Google Ads Transparency Scraper input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "advertisers": {
+      "title": "Advertisers",
+      "type": "array",
+      "description": "Who to look up. Each line can be an advertiser name (e.g. Nike; the best-matching advertiser with the most ads is used), an advertiser ID (AR followed by digits), a Transparency Center advertiser URL, or a website domain (e.g. nike.com: all ads pointing to that domain, from any advertiser).",
+      "editor": "stringList",
+      "prefill": ["Nike"],
+      "default": ["Nike"],
+      "sectionCaption": "What to scrape"
+    },
+    "mode": {
+      "title": "Mode",
+      "type": "string",
+      "description": "Ads = the ads of each advertiser. Advertiser search = only look up names and return matching advertisers with their AR ID, country and ad count (no ads).",
+      "editor": "select",
+      "enum": ["ads", "advertisers"],
+      "enumTitles": ["Ads", "Advertiser search (name -> ID)"],
+      "default": "ads"
+    },
+    "maxAdsPerAdvertiser": {
+      "title": "Max ads per advertiser",
+      "type": "integer",
+      "description": "Stop after this many ads for each advertiser/domain. Newest ads come first. Each ad is one result.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 100000,
+      "prefill": 20,
+      "default": 20
+    },
+    "region": {
+      "title": "Region (country where ads were shown)",
+      "type": "string",
+      "description": "2-letter country code (US, GB, DE, IN, BR, ...). Leave empty for ads shown anywhere.",
+      "editor": "textfield",
+      "prefill": "US",
+      "default": "US",
+      "sectionCaption": "Filters"
+    },
+    "formats": {
+      "title": "Ad formats",
+      "type": "array",
+      "description": "Only these formats. Empty = all.",
+      "editor": "select",
+      "items": {
+        "type": "string",
+        "enum": ["text", "image", "video"],
+        "enumTitles": ["Text", "Image", "Video"]
+      }
+    },
+    "platform": {
+      "title": "Platform",
+      "type": "string",
+      "description": "Only ads shown on this Google platform. Empty = all platforms.",
+      "editor": "select",
+      "enum": ["", "SEARCH", "YOUTUBE", "MAPS", "PLAY", "SHOPPING"],
+      "enumTitles": [
+        "All platforms",
+        "Google Search",
+        "YouTube",
+        "Google Maps",
+        "Google Play",
+        "Google Shopping"
+      ],
+      "default": ""
+    },
+    "dateFrom": {
+      "title": "Shown from",
+      "type": "string",
+      "description": "Only ads shown on or after this date: YYYY-MM-DD, or relative like \"30 days\". Empty = any time.",
+      "editor": "textfield"
+    },
+    "dateTo": {
+      "title": "Shown until",
+      "type": "string",
+      "description": "Only ads shown on or before this date (YYYY-MM-DD). Defaults to today when Shown from is set.",
+      "editor": "textfield"
+    },
+    "includeAdContent": {
+      "title": "Include ad content (text, images, video)",
+      "type": "boolean",
+      "description": "Download each ad's preview to extract headline, description, display URL, image URLs and YouTube video. Turn off for faster runs with only IDs, dates and formats.",
+      "default": true,
+      "sectionCaption": "Options"
+    },
+    "maxAdvertisersPerQuery": {
+      "title": "Advertiser search: max results per name",
+      "type": "integer",
+      "description": "Advertiser search mode: how many matching advertisers to return per name.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 10
+    },
+    "onlyNew": {
+      "title": "Only new items (monitoring)",
+      "type": "boolean",
+      "description": "Return only ads (or, in advertiser search mode, advertisers) not returned by an earlier run with the same advertisers, region, formats and platform. Schedule the actor (e.g. daily) for new-ad alerts: the first run is a baseline, later runs output (and bill) only new ads. Dates are not part of the key, so relative dates work. State is kept in the key-value store \"google-ads-transparency-state\" in your account.",
+      "default": false,
+      "sectionCaption": "Monitoring"
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Not needed for most runs. By default the actor connects directly and, only if Google starts rate-limiting, switches to Apify's datacenter proxy (new IP on every block). Residential proxies are not required.",
+      "editor": "proxy",
+      "default": {
+        "useApifyProxy": false
+      },
+      "prefill": {
+        "useApifyProxy": false
+      },
+      "sectionCaption": "Advanced"
+    }
+  }
+}

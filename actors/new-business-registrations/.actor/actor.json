@@ -1,0 +1,17 @@
+{
+  "actorSpecification": 1,
+  "name": "new-business-registrations",
+  "title": "New Business Registrations - New LLC & Corporation Leads",
+  "description": "Daily feed of newly registered LLCs and corporations from official state registries (CO, CT, NY, OR, PA, TX) in one normalized schema, with addresses and registered agents. Delta mode returns only new businesses.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 1024,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}

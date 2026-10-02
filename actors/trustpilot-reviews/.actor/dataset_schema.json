@@ -1,0 +1,267 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "companyDomain": {
+        "type": ["string", "null"],
+        "title": "Company domain",
+        "description": "Trustpilot's identifier for the company, usually its domain.",
+        "example": "gymshark.com"
+      },
+      "companyName": {
+        "type": ["string", "null"],
+        "title": "Company",
+        "description": "Company display name on Trustpilot.",
+        "example": "Gymshark"
+      },
+      "trustScore": {
+        "type": ["number", "null"],
+        "title": "TrustScore",
+        "description": "Company TrustScore (1-5).",
+        "example": 4.3
+      },
+      "totalReviews": {
+        "type": ["number", "null"],
+        "title": "Total reviews",
+        "description": "Total number of reviews on the company's Trustpilot profile.",
+        "example": 41930
+      },
+      "reviewId": {
+        "type": ["string", "null"],
+        "title": "Review ID",
+        "description": "Trustpilot review ID.",
+        "example": "6abb2f0e8a1c4d5e6f708192"
+      },
+      "rating": {
+        "type": ["number", "null"],
+        "title": "Stars",
+        "description": "Star rating given by the reviewer (1-5).",
+        "example": 5
+      },
+      "title": {
+        "type": ["string", "null"],
+        "title": "Title",
+        "description": "Review title.",
+        "example": "Great fit and fast delivery"
+      },
+      "text": {
+        "type": ["string", "null"],
+        "title": "Review",
+        "description": "Full review text.",
+        "example": "Ordered two pairs of leggings, arrived in two days and the fit is perfect."
+      },
+      "author": {
+        "type": ["string", "null"],
+        "title": "Author",
+        "description": "Reviewer's display name.",
+        "example": "Sam K"
+      },
+      "authorCountry": {
+        "type": ["string", "null"],
+        "title": "Author country",
+        "description": "Reviewer's country code (ISO 3166-1 alpha-2).",
+        "example": "GB"
+      },
+      "authorReviewCount": {
+        "type": ["number", "null"],
+        "title": "Author's reviews",
+        "description": "Number of Trustpilot reviews the reviewer has written.",
+        "example": 3
+      },
+      "date": {
+        "type": ["string", "null"],
+        "title": "Published",
+        "description": "When the review was published (ISO 8601 UTC).",
+        "example": "2026-09-29T15:59:39.000Z"
+      },
+      "experienceDate": {
+        "type": ["string", "null"],
+        "title": "Experience date",
+        "description": "Date of experience entered by the reviewer (YYYY-MM-DD).",
+        "example": "2026-09-27"
+      },
+      "updatedDate": {
+        "type": ["string", "null"],
+        "title": "Updated",
+        "description": "When the review was last edited (ISO 8601 UTC); null if never edited.",
+        "example": "2026-09-30T08:12:44.000Z"
+      },
+      "verified": {
+        "type": ["boolean", "null"],
+        "title": "Verified",
+        "description": "Whether Trustpilot shows the review as verified.",
+        "example": true
+      },
+      "verificationSource": {
+        "type": ["string", "null"],
+        "title": "Verification source",
+        "description": "Trustpilot's verification source, e.g. invitation.",
+        "example": "invitation"
+      },
+      "companyReply": {
+        "type": ["string", "null"],
+        "title": "Company reply",
+        "description": "The company's public reply, if any.",
+        "example": "Hey Sam! Thanks so much for the lovely review..."
+      },
+      "companyReplyDate": {
+        "type": ["string", "null"],
+        "title": "Reply date",
+        "description": "When the company replied (ISO 8601 UTC).",
+        "example": "2026-09-29T16:30:11.000Z"
+      },
+      "language": {
+        "type": ["string", "null"],
+        "title": "Language",
+        "description": "Review language code.",
+        "example": "en"
+      },
+      "likes": {
+        "type": ["number", "null"],
+        "title": "Likes",
+        "description": "Number of 'useful' votes on the review.",
+        "example": 0
+      },
+      "url": {
+        "type": ["string", "null"],
+        "title": "Review URL",
+        "description": "Link to the review on Trustpilot.",
+        "example": "https://www.trustpilot.com/reviews/6abb2f0e8a1c4d5e6f708192"
+      },
+      "company": {
+        "type": ["object", "null"],
+        "title": "Company profile",
+        "description": "Company profile (only with includeCompanyInfo): trustpilotId, websiteUrl, stars, isClaimed, isClosed, country, categories, email, phone, address, city, zipCode, replyPercentage, averageDaysToReply, ratingDistribution (review counts by star) and profileUrl.",
+        "example": {
+          "trustpilotId": "4bdc3e4000006400050bd2c5",
+          "websiteUrl": "https://www.gymshark.com",
+          "stars": 4.5,
+          "isClaimed": true,
+          "isClosed": false,
+          "country": "GB",
+          "categories": ["Sportswear Store", "Clothing Store"],
+          "email": null,
+          "phone": null,
+          "address": null,
+          "city": null,
+          "zipCode": null,
+          "replyPercentage": 62.5,
+          "averageDaysToReply": 1,
+          "ratingDistribution": {
+            "1": 7000,
+            "2": 1382,
+            "3": 1103,
+            "4": 1730,
+            "5": 30715
+          },
+          "profileUrl": "https://www.trustpilot.com/review/gymshark.com"
+        }
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Reviews",
+      "transformation": {
+        "fields": [
+          "companyName",
+          "trustScore",
+          "rating",
+          "title",
+          "text",
+          "author",
+          "authorCountry",
+          "date",
+          "experienceDate",
+          "verified",
+          "companyReply",
+          "language",
+          "url",
+          "companyDomain",
+          "totalReviews",
+          "reviewId",
+          "authorReviewCount",
+          "companyReplyDate"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "companyName": {
+            "label": "Company",
+            "format": "text"
+          },
+          "trustScore": {
+            "label": "TrustScore",
+            "format": "number"
+          },
+          "rating": {
+            "label": "Stars",
+            "format": "number"
+          },
+          "title": {
+            "label": "Title",
+            "format": "text"
+          },
+          "text": {
+            "label": "Review",
+            "format": "text"
+          },
+          "author": {
+            "label": "Author",
+            "format": "text"
+          },
+          "authorCountry": {
+            "label": "Country",
+            "format": "text"
+          },
+          "date": {
+            "label": "Published",
+            "format": "date"
+          },
+          "experienceDate": {
+            "label": "Experience date",
+            "format": "date"
+          },
+          "verified": {
+            "label": "Verified",
+            "format": "boolean"
+          },
+          "companyReply": {
+            "label": "Company reply",
+            "format": "text"
+          },
+          "language": {
+            "label": "Language",
+            "format": "text"
+          },
+          "url": {
+            "label": "Review URL",
+            "format": "link"
+          },
+          "companyDomain": {
+            "label": "Domain",
+            "format": "text"
+          },
+          "totalReviews": {
+            "label": "Total reviews",
+            "format": "number"
+          },
+          "reviewId": {
+            "label": "Review ID",
+            "format": "text"
+          },
+          "authorReviewCount": {
+            "label": "Author's reviews",
+            "format": "number"
+          },
+          "companyReplyDate": {
+            "label": "Reply date",
+            "format": "date"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,176 @@
+{
+ "data": {
+  "currentPage": 1,
+  "evaViewList": [
+   {
+    "aigc": false,
+    "anonymous": false,
+    "buyerAddFbDays": 0,
+    "buyerCountry": "HR",
+    "buyerEval": 100,
+    "buyerFbType": {
+     "crowdSourcingPersonName": "AliExpress Shopper",
+     "sourceLang": "en",
+     "typeTranslationAccepted": "crowdsourcing"
+    },
+    "buyerFeedback": "Very good case, fits as expected, no problem. Magnet holds well. Fast shipping, I recommend the seller.   ",
+    "buyerGender": "M",
+    "buyerHeadPortrait": "https://gw.alicdn.com/tps/TB1CjX4LXXXXXbSXFXXXXXXXXXX-240-240.png",
+    "buyerName": "Z***c",
+    "buyerProductFeedBack": "",
+    "downVoteCount": 0,
+    "evalDate": "28 Oct 2025",
+    "evaluationId": 30095293965319340,
+    "evaluationIdStr": "30095293965319341",
+    "images": [
+     "https://ae-pic-a1.aliexpress-media.com/kf/A56c829b1ccae4cb18971e990d88bb36aU.jpg",
+     "https://ae-pic-a1.aliexpress-media.com/kf/A417b78447fa44a208a612041b69ada4db.jpg",
+     "https://ae-pic-a1.aliexpress-media.com/kf/Af69b710cffae48aea1897bbc168135b3B.jpg"
+    ],
+    "independentSite": false,
+    "logistics": "Aliexpress Selection Standard",
+    "reviewType": "REVIEW",
+    "samePurchaseSuggestion": "Buy the same",
+    "selectedIcon": "https://ae-pic-a1.aliexpress-media.com/kf/S2df5f3fa0d8242b1a0bbb1cc92cab109P/221x221.png",
+    "selectedReview": true,
+    "skuInfo": "Color:Black Material:For iPhone 13 Pro ",
+    "status": "1",
+    "thirdParty": false,
+    "thumbnails": [
+     "https://ae-pic-a1.aliexpress-media.com/kf/A56c829b1ccae4cb18971e990d88bb36aU.jpg_220x220.jpg",
+     "https://ae-pic-a1.aliexpress-media.com/kf/A417b78447fa44a208a612041b69ada4db.jpg_220x220.jpg",
+     "https://ae-pic-a1.aliexpress-media.com/kf/Af69b710cffae48aea1897bbc168135b3B.jpg_220x220.jpg"
+    ],
+    "trendyol": false,
+    "upVoteCount": 0
+   },
+   {
+    "aigc": false,
+    "anonymous": false,
+    "buyerAddFbDays": 0,
+    "buyerCountry": "UA",
+    "buyerEval": 100,
+    "buyerFbType": {
+     "crowdSourcingPersonName": "AliExpress Shopper",
+     "sourceLang": "en",
+     "typeTranslationAccepted": "crowdsourcing"
+    },
+    "buyerFeedback": "Очень понравилось качество чехла, это топ за свою цену по первым впечатлением, магнит держит хорошо, на 8/10, кнопки нажимаются идеально, что довольно редко в чехлах за такую цену. С уверенностью могу рекомендовать данный чехол к покупке!!!",
+    "buyerName": "M***o",
+    "buyerProductFeedBack": "",
+    "downVoteCount": 0,
+    "evalDate": "12 May 2026",
+    "evaluationId": 30103153423802812,
+    "evaluationIdStr": "30103153423802811",
+    "independentSite": false,
+    "logistics": "AliExpress Selection Standard Shipping",
+    "reviewType": "REVIEW",
+    "samePurchaseSuggestion": "Buy the same",
+    "selectedReview": false,
+    "skuInfo": "Color:Black Material:For iPhone 14 Pro ",
+    "status": "1",
+    "thirdParty": false,
+    "trendyol": false,
+    "upVoteCount": 0
+   },
+   {
+    "aigc": false,
+    "anonymous": false,
+    "buyerAddFbDays": 0,
+    "buyerCountry": "FR",
+    "buyerEval": 100,
+    "buyerFbType": {
+     "crowdSourcingPersonName": "AliExpress Shopper",
+     "sourceLang": "en",
+     "typeTranslationAccepted": "crowdsourcing"
+    },
+    "buyerFeedback": "C’est la seconde coque que j’achète pour un second téléphone. J’en suis pleinement satisfait. Elle a l’avantage de protéger les objectifs et est en plastique (que qui évite de rayer le téléphone si on l’enlève et le remettons. ",
+    "buyerName": "s***r",
+    "buyerProductFeedBack": "",
+    "downVoteCount": 0,
+    "evalDate": "17 Feb 2026",
+    "evaluationId": 30100199899053040,
+    "evaluationIdStr": "30100199899053040",
+    "independentSite": false,
+    "logistics": "AliExpress Selection Standard Shipping",
+    "reviewType": "REVIEW",
+    "samePurchaseSuggestion": "Buy the same",
+    "selectedReview": false,
+    "skuInfo": "Color:Gray Material:For iPhone 17Pro Max ",
+    "status": "1",
+    "thirdParty": false,
+    "trendyol": false,
+    "upVoteCount": 0
+   }
+  ],
+  "filterInfo": {
+   "currentFilter": "all",
+   "filterStatistic": [
+    {
+     "filterCode": "additional",
+     "filterCount": 85
+    },
+    {
+     "filterCode": "local"
+    },
+    {
+     "filterCode": "with_personal",
+     "filterCount": 0
+    },
+    {
+     "filterCode": "image",
+     "filterCount": 633
+    },
+    {
+     "filterCode": "all",
+     "filterCount": 13029
+    }
+   ]
+  },
+  "impressionDTOList": [],
+  "pageSize": 20,
+  "productEvaluationStatistic": {
+   "evarageStar": 4.7,
+   "evarageStarRage": 94.4,
+   "fiveStarNum": 11103,
+   "fiveStarRate": 84.8,
+   "fourStarNum": 1120,
+   "fourStarRate": 8.6,
+   "negativeNum": 540,
+   "negativeRate": 4.1,
+   "neutralNum": 330,
+   "neutralRate": 2.5,
+   "oneStarNum": 402,
+   "oneStarRate": 3,
+   "positiveNum": 12223,
+   "positiveRate": 93.4,
+   "threeStarNum": 330,
+   "threeStarRate": 2.5,
+   "totalNum": 13093,
+   "twoStarNum": 138,
+   "twoStarRate": 1.1
+  },
+  "productType": "ORDINARY",
+  "reviewStructuredLabelDTOList": [],
+  "totalNum": 13029,
+  "totalPage": 652,
+  "version": "0.0.0"
+ },
+ "helpful": {
+  "30095293965319341": {
+   "showButton": "yes",
+   "useful": 1,
+   "useless": 0
+  },
+  "30103153423802811": {
+   "showButton": "yes",
+   "useful": 1,
+   "useless": 0
+  },
+  "30100199899053040": {
+   "showButton": "yes",
+   "useful": 0,
+   "useless": 0
+  }
+ }
+}

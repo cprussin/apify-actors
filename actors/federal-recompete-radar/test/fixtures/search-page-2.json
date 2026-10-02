@@ -1,0 +1,89 @@
+{
+  "spending_level": "awards",
+  "limit": 100,
+  "results": [
+    {
+      "internal_id": 100003,
+      "Award ID": "36C10B22C0003",
+      "Recipient Name": "ACME FEDERAL SOLUTIONS LLC",
+      "Recipient UEI": "ABCDEF123456",
+      "Start Date": "2022-04-01",
+      "End Date": "2028-01-15",
+      "Award Amount": 4250000.5,
+      "Total Outlays": 3100000,
+      "Description": "IT OPERATIONS AND MAINTENANCE SUPPORT SERVICES",
+      "Contract Award Type": "DEFINITIVE CONTRACT",
+      "Awarding Agency": "Department of Veterans Affairs",
+      "Awarding Sub Agency": "Veterans Affairs, Department of",
+      "NAICS": {
+        "code": "541512",
+        "description": "COMPUTER SYSTEMS DESIGN SERVICES"
+      },
+      "PSC": {
+        "code": "DA01",
+        "description": "IT AND TELECOM - BUSINESS APPLICATION/APPLICATION DEVELOPMENT SUPPORT SERVICES (LABOR)"
+      },
+      "Primary Place of Performance": {
+        "location_country_code": "USA",
+        "country_name": "UNITED STATES",
+        "state_code": "VA",
+        "state_name": "Virginia",
+        "city_name": "ARLINGTON",
+        "county_code": "013",
+        "county_name": "ARLINGTON",
+        "congressional_code": "08",
+        "zip4": "2201",
+        "zip5": "22201"
+      },
+      "Last Modified Date": "2026-08-14 09:12:33",
+      "generated_internal_id": "CONT_AWD_36C10B22C0003_3600_-NONE-_-NONE-",
+      "awarding_agency_id": 561,
+      "agency_slug": "department-of-veterans-affairs"
+    },
+    {
+      "internal_id": 100004,
+      "Award ID": "36C10B22C0004",
+      "Recipient Name": "ACME FEDERAL SOLUTIONS LLC",
+      "Recipient UEI": "ABCDEF123456",
+      "Start Date": "2022-04-01",
+      "End Date": "2028-06-01",
+      "Award Amount": 4250000.5,
+      "Total Outlays": 3100000,
+      "Description": "IT OPERATIONS AND MAINTENANCE SUPPORT SERVICES",
+      "Contract Award Type": "DEFINITIVE CONTRACT",
+      "Awarding Agency": "Department of Veterans Affairs",
+      "Awarding Sub Agency": "Veterans Affairs, Department of",
+      "NAICS": {
+        "code": "541512",
+        "description": "COMPUTER SYSTEMS DESIGN SERVICES"
+      },
+      "PSC": {
+        "code": "DA01",
+        "description": "IT AND TELECOM - BUSINESS APPLICATION/APPLICATION DEVELOPMENT SUPPORT SERVICES (LABOR)"
+      },
+      "Primary Place of Performance": {
+        "location_country_code": "USA",
+        "country_name": "UNITED STATES",
+        "state_code": "VA",
+        "state_name": "Virginia",
+        "city_name": "ARLINGTON",
+        "county_code": "013",
+        "county_name": "ARLINGTON",
+        "congressional_code": "08",
+        "zip4": "2201",
+        "zip5": "22201"
+      },
+      "Last Modified Date": "2026-08-14 09:12:33",
+      "generated_internal_id": "CONT_AWD_36C10B22C0004_3600_-NONE-_-NONE-",
+      "awarding_agency_id": 561,
+      "agency_slug": "department-of-veterans-affairs"
+    }
+  ],
+  "page_metadata": {
+    "page": 1,
+    "hasNext": true,
+    "last_record_unique_id": 100004,
+    "last_record_sort_value": "1843430400000"
+  },
+  "messages": []
+}

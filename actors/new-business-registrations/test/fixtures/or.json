@@ -1,0 +1,26 @@
+[
+  {
+    "registry_number": "262244792",
+    "business_name": "TALOS VENTURES LLC",
+    "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+    "registry_date": "2026-08-31T16:56:42.000",
+    "associated_name_type": "PRINCIPAL PLACE OF BUSINESS",
+    "address": "942 WINDEMERE DR NW",
+    "city": "SALEM",
+    "state": "OR",
+    "zip": "97304",
+    "jurisdiction": "OREGON"
+  },
+  {
+    "registry_number": "261783394",
+    "business_name": "EMPOWER BROKERAGE, INC.",
+    "entity_type": "FOREIGN BUSINESS CORPORATION",
+    "registry_date": "2026-08-31T14:56:20.000",
+    "associated_name_type": "PRINCIPAL PLACE OF BUSINESS",
+    "address": "780 COMMERCIAL ST SE STE 100",
+    "city": "SALEM",
+    "state": "OR",
+    "zip": "97301",
+    "jurisdiction": "IDAHO"
+  }
+]

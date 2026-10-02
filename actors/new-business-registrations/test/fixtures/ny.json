@@ -1,0 +1,37 @@
+[
+  {
+    "dos_id": "7012345",
+    "current_entity_name": "BROOKLYN BAGEL WORKS LLC",
+    "initial_dos_filing_date": "2026-09-26T00:00:00.000",
+    "county": "KINGS",
+    "jurisdiction": "NEW YORK",
+    "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+    "dos_process_name": "THE LLC",
+    "dos_process_address_1": "100 ATLANTIC AVE",
+    "dos_process_city": "BROOKLYN",
+    "dos_process_state": "NY",
+    "dos_process_zip": "11201",
+    "registered_agent_name": "NORTHWEST REGISTERED AGENT LLC",
+    "registered_agent_address_1": "90 STATE ST",
+    "registered_agent_address_2": "STE 700",
+    "registered_agent_city": "ALBANY",
+    "registered_agent_state": "NY",
+    "registered_agent_zip": "12207"
+  },
+  {
+    "dos_id": "7012346",
+    "current_entity_name": "ACME WIDGETS INC.",
+    "initial_dos_filing_date": "2026-09-26T00:00:00.000",
+    "county": "NEW YORK",
+    "jurisdiction": "DELAWARE",
+    "entity_type": "FOREIGN BUSINESS CORPORATION",
+    "dos_process_address_1": "1 WORLD TRADE CTR",
+    "dos_process_city": "NEW YORK",
+    "dos_process_state": "NY",
+    "dos_process_zip": "10007",
+    "location_address_1": "350 5TH AVE",
+    "location_city": "NEW YORK",
+    "location_state": "NY",
+    "location_zip": "10118"
+  }
+]

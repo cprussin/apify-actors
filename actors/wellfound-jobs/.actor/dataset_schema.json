@@ -1,0 +1,311 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "jobId": {
+        "type": ["string", "null"],
+        "title": "Job ID",
+        "description": "Wellfound job ID.",
+        "example": "4639821"
+      },
+      "title": {
+        "type": ["string", "null"],
+        "title": "Job title",
+        "description": "Job title.",
+        "example": "Software Engineer"
+      },
+      "role": {
+        "type": ["string", "null"],
+        "title": "Role",
+        "description": "Wellfound role category.",
+        "example": "Software Engineer"
+      },
+      "jobUrl": {
+        "type": ["string", "null"],
+        "title": "Job",
+        "description": "Job page on Wellfound.",
+        "example": "https://wellfound.com/jobs/4639821-software-engineer"
+      },
+      "jobType": {
+        "type": ["string", "null"],
+        "title": "Job type",
+        "description": "Job type, e.g. full-time, contract or internship.",
+        "example": "full-time"
+      },
+      "postedAt": {
+        "type": ["string", "null"],
+        "title": "Posted",
+        "description": "When the job was posted (ISO 8601 UTC).",
+        "example": "2026-08-27T20:06:24.000Z"
+      },
+      "locations": {
+        "type": ["array", "null"],
+        "title": "Locations",
+        "description": "Job locations.",
+        "example": ["Denver", "San Francisco"]
+      },
+      "remote": {
+        "type": ["boolean", "null"],
+        "title": "Remote",
+        "description": "Whether the job allows remote work.",
+        "example": false
+      },
+      "workplace": {
+        "type": ["string", "null"],
+        "title": "Workplace",
+        "description": "onsite, remote or onsiteOrRemote.",
+        "example": "onsite"
+      },
+      "remoteLocations": {
+        "type": ["array", "null"],
+        "title": "Remote locations",
+        "description": "Regions a remote job accepts.",
+        "example": ["United States"]
+      },
+      "compensation": {
+        "type": ["string", "null"],
+        "title": "Compensation",
+        "description": "Compensation as posted.",
+        "example": "$150k – $176k"
+      },
+      "salaryMin": {
+        "type": ["number", "null"],
+        "title": "Salary min",
+        "description": "Minimum yearly salary in salaryCurrency.",
+        "example": 150000
+      },
+      "salaryMax": {
+        "type": ["number", "null"],
+        "title": "Salary max",
+        "description": "Maximum yearly salary in salaryCurrency.",
+        "example": 176000
+      },
+      "salaryCurrency": {
+        "type": ["string", "null"],
+        "title": "Currency",
+        "description": "Salary currency code.",
+        "example": "USD"
+      },
+      "equityMin": {
+        "type": ["number", "null"],
+        "title": "Equity min %",
+        "description": "Minimum equity in percent.",
+        "example": 0.1
+      },
+      "equityMax": {
+        "type": ["number", "null"],
+        "title": "Equity max %",
+        "description": "Maximum equity in percent.",
+        "example": 0.5
+      },
+      "hasEquity": {
+        "type": ["boolean", "null"],
+        "title": "Has equity",
+        "description": "false for No equity; null when not stated.",
+        "example": true
+      },
+      "yearsExperienceMin": {
+        "type": ["number", "null"],
+        "title": "Experience min (years)",
+        "description": "Minimum years of experience.",
+        "example": 3
+      },
+      "yearsExperienceMax": {
+        "type": ["number", "null"],
+        "title": "Experience max (years)",
+        "description": "Maximum years of experience.",
+        "example": 5
+      },
+      "description": {
+        "type": ["string", "null"],
+        "title": "Description",
+        "description": "Job description.",
+        "example": "As a Software Engineer at Checkr, you will work on high-impact engineering projects ..."
+      },
+      "companyId": {
+        "type": ["string", "null"],
+        "title": "Company ID",
+        "description": "Wellfound company ID.",
+        "example": "395014"
+      },
+      "companyName": {
+        "type": ["string", "null"],
+        "title": "Company",
+        "description": "Company name.",
+        "example": "Checkr"
+      },
+      "companySlug": {
+        "type": ["string", "null"],
+        "title": "Company slug",
+        "description": "Company slug on Wellfound.",
+        "example": "checkr"
+      },
+      "companyUrl": {
+        "type": ["string", "null"],
+        "title": "Company page",
+        "description": "Company page on Wellfound.",
+        "example": "https://wellfound.com/company/checkr"
+      },
+      "companyLogoUrl": {
+        "type": ["string", "null"],
+        "title": "Logo",
+        "description": "Company logo URL.",
+        "example": "https://photos.wellfound.com/startups/i/395014-2a2164ef6a8cd5954eb970228e62ce15-medium_jpg.jpg?buster=1692326450"
+      },
+      "companySize": {
+        "type": ["string", "null"],
+        "title": "Employees",
+        "description": "Employee count range.",
+        "example": "501-1000"
+      },
+      "companyStage": {
+        "type": ["string", "null"],
+        "title": "Stage",
+        "description": "Company stage badge (Early, Growth, Scale or Public Stage).",
+        "example": "Scale Stage"
+      },
+      "companyOneLiner": {
+        "type": ["string", "null"],
+        "title": "One-liner",
+        "description": "Company one-line pitch.",
+        "example": "The only background check company using artificial intelligence and machine learning"
+      },
+      "companyBadges": {
+        "type": ["array", "null"],
+        "title": "Badges",
+        "description": "Company badges shown by Wellfound.",
+        "example": [
+          "Actively Hiring",
+          "B2B",
+          "Top Investors",
+          "YC Funded",
+          "Valuation $1B+"
+        ]
+      },
+      "searchRole": {
+        "type": ["string", "null"],
+        "title": "Search role",
+        "description": "Role slug of the search that found the job.",
+        "example": "software-engineer"
+      },
+      "searchLocation": {
+        "type": ["string", "null"],
+        "title": "Search location",
+        "description": "Location slug of the search that found the job.",
+        "example": "san-francisco"
+      },
+      "searchUrl": {
+        "type": ["string", "null"],
+        "title": "Search URL",
+        "description": "Wellfound search page the job was found on.",
+        "example": "https://wellfound.com/role/l/software-engineer/san-francisco"
+      },
+      "scrapedAt": {
+        "type": ["string", "null"],
+        "title": "Scraped at",
+        "description": "When the job was scraped (ISO 8601 UTC).",
+        "example": "2026-10-01T00:00:00.000Z"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Jobs",
+      "transformation": {
+        "fields": [
+          "title",
+          "companyName",
+          "companyStage",
+          "companySize",
+          "locations",
+          "remote",
+          "salaryMin",
+          "salaryMax",
+          "salaryCurrency",
+          "equityMin",
+          "equityMax",
+          "jobType",
+          "postedAt",
+          "jobUrl",
+          "companyUrl",
+          "companyOneLiner",
+          "scrapedAt"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "title": {
+            "label": "Job title",
+            "format": "text"
+          },
+          "companyName": {
+            "label": "Company",
+            "format": "text"
+          },
+          "companyStage": {
+            "label": "Stage",
+            "format": "text"
+          },
+          "companySize": {
+            "label": "Employees",
+            "format": "text"
+          },
+          "locations": {
+            "label": "Locations",
+            "format": "array"
+          },
+          "remote": {
+            "label": "Remote",
+            "format": "boolean"
+          },
+          "salaryMin": {
+            "label": "Salary min",
+            "format": "number"
+          },
+          "salaryMax": {
+            "label": "Salary max",
+            "format": "number"
+          },
+          "salaryCurrency": {
+            "label": "Currency",
+            "format": "text"
+          },
+          "equityMin": {
+            "label": "Equity min %",
+            "format": "number"
+          },
+          "equityMax": {
+            "label": "Equity max %",
+            "format": "number"
+          },
+          "jobType": {
+            "label": "Job type",
+            "format": "text"
+          },
+          "postedAt": {
+            "label": "Posted",
+            "format": "date"
+          },
+          "jobUrl": {
+            "label": "Job",
+            "format": "link"
+          },
+          "companyUrl": {
+            "label": "Company page",
+            "format": "link"
+          },
+          "companyOneLiner": {
+            "label": "One-liner",
+            "format": "text"
+          },
+          "scrapedAt": {
+            "label": "Scraped at",
+            "format": "date"
+          }
+        }
+      }
+    }
+  }
+}

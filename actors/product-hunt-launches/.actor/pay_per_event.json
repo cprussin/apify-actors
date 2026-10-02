@@ -1,0 +1,13 @@
+{
+  "launch": {
+    "eventTitle": "Launch",
+    "eventDescription": "One Product Hunt launch written to the dataset.",
+    "eventPriceUsd": 0.001,
+    "isPrimaryEvent": true
+  },
+  "comment": {
+    "eventTitle": "Comment",
+    "eventDescription": "One comment included in a launch record (only when \"Include comments\" is on).",
+    "eventPriceUsd": 0.0003
+  }
+}

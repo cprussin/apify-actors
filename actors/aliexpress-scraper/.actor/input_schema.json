@@ -1,0 +1,122 @@
+{
+  "title": "AliExpress Scraper input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "keywords": {
+      "title": "Search keywords",
+      "type": "array",
+      "description": "What to search for on AliExpress, one search per keyword (e.g. \"wireless earbuds\", \"phone case\"). Each result page has about 60 products.",
+      "editor": "stringList",
+      "prefill": ["wireless earbuds"],
+      "default": ["wireless earbuds"],
+      "sectionCaption": "Search"
+    },
+    "searchUrls": {
+      "title": "Search URLs",
+      "type": "array",
+      "description": "Optional. AliExpress search or category result URLs, with any filters you set on the site, e.g. https://www.aliexpress.com/w/wholesale-phone-case.html?SortType=total_tranpro_desc. Not product pages (put those in Product IDs).",
+      "editor": "stringList"
+    },
+    "maxPagesPerKeyword": {
+      "title": "Max pages per search",
+      "type": "integer",
+      "description": "Result pages to read per keyword / search URL (about 60 products per page; AliExpress stops at 60 pages).",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 60,
+      "default": 1,
+      "prefill": 1
+    },
+    "sort": {
+      "title": "Sort by",
+      "type": "string",
+      "description": "Result order. Ignored for search URLs that already contain a SortType.",
+      "editor": "select",
+      "enum": ["default", "orders", "priceAsc", "priceDesc"],
+      "enumTitles": [
+        "Best match",
+        "Orders (best sellers)",
+        "Price: low to high",
+        "Price: high to low"
+      ],
+      "default": "default"
+    },
+    "includeReviews": {
+      "title": "Scrape reviews for search results",
+      "type": "boolean",
+      "description": "Also fetch buyer reviews for the top products of each search (see \"Reviews for top N products\").",
+      "default": true,
+      "sectionCaption": "Reviews"
+    },
+    "reviewsForTopProducts": {
+      "title": "Reviews for top N products",
+      "type": "integer",
+      "description": "Fetch reviews for the first N products of each search. 0 = every product found.",
+      "editor": "number",
+      "minimum": 0,
+      "default": 3,
+      "prefill": 3
+    },
+    "productIds": {
+      "title": "Product IDs or URLs (reviews only)",
+      "type": "array",
+      "description": "Optional. Products to fetch reviews for, without searching: item IDs (1005007502032342) or item URLs (https://www.aliexpress.com/item/1005007502032342.html).",
+      "editor": "stringList"
+    },
+    "maxReviewsPerProduct": {
+      "title": "Max reviews per product",
+      "type": "integer",
+      "description": "Stop after this many reviews per product (20 per request).",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 10000,
+      "default": 10,
+      "prefill": 10
+    },
+    "translateReviews": {
+      "title": "Translate reviews",
+      "type": "boolean",
+      "description": "Ask AliExpress for machine translations into the Language below (returned in translatedText). AliExpress then prefers reviews from buyers in the ship-to country, and dates may be localized.",
+      "default": false
+    },
+    "shipTo": {
+      "title": "Ship to country",
+      "type": "string",
+      "description": "Two-letter country code (US, GB, DE, FR, BR, ...). Prices, availability and delivery estimates depend on it. EU/UK searches return fewer fields (no rating or sold count) because AliExpress shows lean cards there.",
+      "editor": "textfield",
+      "default": "US",
+      "sectionCaption": "Region"
+    },
+    "currency": {
+      "title": "Currency",
+      "type": "string",
+      "description": "Three-letter currency code for prices (USD, EUR, GBP, BRL, ...).",
+      "editor": "textfield",
+      "default": "USD"
+    },
+    "language": {
+      "title": "Language",
+      "type": "string",
+      "description": "Two-letter language for titles and review translations (en, de, fr, es, pt, ...).",
+      "editor": "textfield",
+      "default": "en"
+    },
+    "onlyNew": {
+      "title": "Only new items (monitoring)",
+      "type": "boolean",
+      "description": "Return only products and reviews not returned by an earlier run with the same searches, product IDs, sort and ship-to country. Schedule the actor (e.g. daily) for new-listing and new-review alerts: the first run is a baseline, later runs output (and bill) only new items. Reviews stop after pages with nothing new. State is kept in the key-value store \"aliexpress-scraper-state\" in your account.",
+      "default": false,
+      "sectionCaption": "Monitoring"
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Optional. By default the actor connects directly and switches to Apify datacenter proxy automatically if AliExpress starts blocking. Set a proxy here to always use it.",
+      "editor": "proxy",
+      "default": { "useApifyProxy": false },
+      "prefill": { "useApifyProxy": false },
+      "sectionCaption": "Advanced"
+    }
+  }
+}

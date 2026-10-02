@@ -1,0 +1,69 @@
+{
+  "userReviewList": [
+    {
+      "userReviewId": "14603032413",
+      "body": "❤️‍🔥",
+      "date": "2026-09-28T11:36:54Z",
+      "name": "Dna2some",
+      "rating": 5,
+      "title": "Accurate, detailed & interesting",
+      "voteCount": 0,
+      "voteSum": 0,
+      "isEdited": false,
+      "viewUsersUserReviewsUrl": "https://itunes.apple.com/us/reviews?userProfileId=1120521758",
+      "voteUrl": "https://userpub.itunes.apple.com/WebObjects/MZUserPublishing.woa/wa/rateUserReview?userReviewId=14603032413",
+      "reportConcernUrl": "https://userpub.itunes.apple.com/WebObjects/MZUserPublishing.woa/wa/reportAConcernSubmit?cc=us",
+      "customerType": "Customers"
+    },
+    {
+      "userReviewId": "14600631164",
+      "body": "ask me questions",
+      "date": "2026-09-27T18:47:29Z",
+      "name": "Kadioglu.",
+      "rating": 5,
+      "title": "helper’s",
+      "voteCount": 0,
+      "voteSum": 0,
+      "isEdited": false,
+      "viewUsersUserReviewsUrl": "https://itunes.apple.com/us/reviews?userProfileId=1315180826",
+      "voteUrl": "https://userpub.itunes.apple.com/WebObjects/MZUserPublishing.woa/wa/rateUserReview?userReviewId=14600631164",
+      "reportConcernUrl": "https://userpub.itunes.apple.com/WebObjects/MZUserPublishing.woa/wa/reportAConcernSubmit?cc=us",
+      "customerType": "Customers"
+    },
+    {
+      "userReviewId": "14600383373",
+      "body": "I used to use this app a lot, and everything that was once free or accessible by watching an ad is now behind a paywall with no way of accessing it without paying. There also used to be a section where you can look ahead at the year you’ll have, and it’s gone. Greedy developers and the app sucks now.",
+      "date": "2026-09-27T17:30:35Z",
+      "name": "cursesuponthee",
+      "rating": 1,
+      "title": "Paywall",
+      "developerResponse": {
+        "id": 66735695,
+        "body": "Hi,\n\nThank you for your feedback! Please contact us at support-appstore@asknebula.com so our team can help.",
+        "modified": "2026-09-28T18:37:26Z"
+      },
+      "voteCount": 0,
+      "voteSum": 0,
+      "isEdited": false,
+      "viewUsersUserReviewsUrl": "https://itunes.apple.com/us/reviews?userProfileId=569708385",
+      "voteUrl": "https://userpub.itunes.apple.com/WebObjects/MZUserPublishing.woa/wa/rateUserReview?userReviewId=14600383373",
+      "reportConcernUrl": "https://userpub.itunes.apple.com/WebObjects/MZUserPublishing.woa/wa/reportAConcernSubmit?cc=us",
+      "customerType": "Customers"
+    },
+    {
+      "userReviewId": "14599020085",
+      "body": "I didn&#39;t sign up for any package but deducted my Apple Pay money",
+      "date": "2026-09-27T10:30:19Z",
+      "name": "Jaydennguye",
+      "rating": 1,
+      "title": "scam",
+      "voteCount": 0,
+      "voteSum": 0,
+      "isEdited": false,
+      "viewUsersUserReviewsUrl": "https://itunes.apple.com/us/reviews?userProfileId=1912297376",
+      "voteUrl": "https://userpub.itunes.apple.com/WebObjects/MZUserPublishing.woa/wa/rateUserReview?userReviewId=14599020085",
+      "reportConcernUrl": "https://userpub.itunes.apple.com/WebObjects/MZUserPublishing.woa/wa/reportAConcernSubmit?cc=us",
+      "customerType": "Customers"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "google-flights-prices",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Google Flights prices and itineraries for any route and date or date range.",
+  "main": "dist/main.js",
+  "scripts": {
+    "start": "node dist/main.js",
+    "start:dev": "tsx src/main.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "smoke": "tsx scripts/smoke.ts"
+  },
+  "dependencies": {
+    "apify": "^3.7.2",
+    "undici": "^7.30.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.4",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  }
+}

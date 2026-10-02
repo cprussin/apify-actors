@@ -1,0 +1,283 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "matchId": {
+        "type": ["string", "null"],
+        "title": "Match ID",
+        "description": "TennisExplorer match ID.",
+        "example": "3334240"
+      },
+      "date": {
+        "type": ["string", "null"],
+        "title": "Date",
+        "description": "Match date (YYYY-MM-DD, Central European time).",
+        "example": "2026-09-28"
+      },
+      "time": {
+        "type": ["string", "null"],
+        "title": "Time (CET)",
+        "description": "Start time (HH:MM, Central European time), when shown.",
+        "example": "13:25"
+      },
+      "tournament": {
+        "type": ["string", "null"],
+        "title": "Tournament",
+        "description": "Tournament name.",
+        "example": "Chengdu"
+      },
+      "tournamentUrl": {
+        "type": ["string", "null"],
+        "title": "Tournament URL",
+        "description": "Tournament page on TennisExplorer.",
+        "example": "https://www.tennisexplorer.com/chengdu/2026/atp-men/"
+      },
+      "tournamentCountry": {
+        "type": ["string", "null"],
+        "title": "Tournament country",
+        "description": "Tournament country code.",
+        "example": "CN"
+      },
+      "tour": {
+        "type": ["string", "null"],
+        "title": "Tour",
+        "description": "Tour, e.g. ATP, WTA, CHALLENGER, ITF_MEN.",
+        "example": "ATP"
+      },
+      "surface": {
+        "type": ["string", "null"],
+        "title": "Surface",
+        "description": "Court surface, e.g. hard, clay or grass.",
+        "example": "hard"
+      },
+      "round": {
+        "type": ["string", "null"],
+        "title": "Round",
+        "description": "Round, e.g. 1R, QF, SF, F, Q-1R.",
+        "example": "SF"
+      },
+      "player1": {
+        "type": ["object", "null"],
+        "title": "Player 1",
+        "description": "First-listed player: name, slug, country, seed, rank.",
+        "example": {
+          "name": "Hurkacz Hubert",
+          "slug": "hurkacz",
+          "country": null,
+          "seed": "5",
+          "rank": 41
+        }
+      },
+      "player2": {
+        "type": ["object", "null"],
+        "title": "Player 2",
+        "description": "Second-listed player: name, slug, country, seed, rank.",
+        "example": {
+          "name": "Shapovalov Denis",
+          "slug": "shapovalov",
+          "country": null,
+          "seed": "7",
+          "rank": 46
+        }
+      },
+      "winner": {
+        "type": ["string", "null"],
+        "title": "Winner side",
+        "description": "player1 or player2.",
+        "example": "player1"
+      },
+      "winnerName": {
+        "type": ["string", "null"],
+        "title": "Winner",
+        "description": "Winner's name.",
+        "example": "Hurkacz Hubert"
+      },
+      "setsPlayer1": {
+        "type": ["number", "null"],
+        "title": "Sets P1",
+        "description": "Sets won by player1.",
+        "example": 2
+      },
+      "setsPlayer2": {
+        "type": ["number", "null"],
+        "title": "Sets P2",
+        "description": "Sets won by player2.",
+        "example": 1
+      },
+      "setScores": {
+        "type": ["array", "null"],
+        "title": "Set scores",
+        "description": "Games per set: player1, player2, tiebreak (loser's tiebreak points).",
+        "example": [
+          {
+            "player1": 6,
+            "player2": 7,
+            "tiebreak": 8
+          },
+          {
+            "player1": 6,
+            "player2": 3,
+            "tiebreak": null
+          },
+          {
+            "player1": 6,
+            "player2": 3,
+            "tiebreak": null
+          }
+        ]
+      },
+      "score": {
+        "type": ["string", "null"],
+        "title": "Score",
+        "description": "Score from player1's view, e.g. 6-7(8) 6-3 6-3.",
+        "example": "6-7(8) 6-3 6-3"
+      },
+      "status": {
+        "type": ["string", "null"],
+        "title": "Status",
+        "description": "completed, retired or walkover.",
+        "example": "completed"
+      },
+      "oddsHome": {
+        "type": ["number", "null"],
+        "title": "Odds P1",
+        "description": "Closing decimal odds for player1 (TennisExplorer average).",
+        "example": 1.61
+      },
+      "oddsAway": {
+        "type": ["number", "null"],
+        "title": "Odds P2",
+        "description": "Closing decimal odds for player2 (TennisExplorer average).",
+        "example": 2.29
+      },
+      "bookmakerOdds": {
+        "type": ["array", "null"],
+        "title": "Bookmaker odds",
+        "description": "Per-bookmaker odds (only with includeBookmakerOdds): bookmaker, oddsHome, oddsAway, openingOddsHome, openingOddsAway.",
+        "example": [
+          {
+            "bookmaker": "bet-at-home",
+            "oddsHome": 1.58,
+            "oddsAway": 2.25,
+            "openingOddsHome": 1.55,
+            "openingOddsAway": 2.3
+          },
+          {
+            "bookmaker": "Pinnacle",
+            "oddsHome": 1.66,
+            "oddsAway": 2.37,
+            "openingOddsHome": 1.77,
+            "openingOddsAway": 2.16
+          }
+        ]
+      },
+      "url": {
+        "type": ["string", "null"],
+        "title": "URL",
+        "description": "Match page on TennisExplorer.",
+        "example": "https://www.tennisexplorer.com/match-detail/?id=3334240"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Matches",
+      "transformation": {
+        "fields": [
+          "date",
+          "tour",
+          "tournament",
+          "surface",
+          "round",
+          "player1.name",
+          "player2.name",
+          "winnerName",
+          "score",
+          "status",
+          "oddsHome",
+          "oddsAway",
+          "player1.seed",
+          "player2.seed",
+          "time",
+          "matchId",
+          "url"
+        ],
+        "flatten": ["player1", "player2"]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "date": {
+            "label": "Date",
+            "format": "date"
+          },
+          "tour": {
+            "label": "Tour",
+            "format": "text"
+          },
+          "tournament": {
+            "label": "Tournament",
+            "format": "text"
+          },
+          "surface": {
+            "label": "Surface",
+            "format": "text"
+          },
+          "round": {
+            "label": "Round",
+            "format": "text"
+          },
+          "player1.name": {
+            "label": "Player 1",
+            "format": "text"
+          },
+          "player2.name": {
+            "label": "Player 2",
+            "format": "text"
+          },
+          "winnerName": {
+            "label": "Winner",
+            "format": "text"
+          },
+          "score": {
+            "label": "Score",
+            "format": "text"
+          },
+          "status": {
+            "label": "Status",
+            "format": "text"
+          },
+          "oddsHome": {
+            "label": "Odds P1",
+            "format": "number"
+          },
+          "oddsAway": {
+            "label": "Odds P2",
+            "format": "number"
+          },
+          "player1.seed": {
+            "label": "Seed P1",
+            "format": "text"
+          },
+          "player2.seed": {
+            "label": "Seed P2",
+            "format": "text"
+          },
+          "time": {
+            "label": "Time (CET)",
+            "format": "text"
+          },
+          "matchId": {
+            "label": "Match ID",
+            "format": "text"
+          },
+          "url": {
+            "label": "URL",
+            "format": "link"
+          }
+        }
+      }
+    }
+  }
+}

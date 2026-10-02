@@ -1,0 +1,279 @@
+{
+  "feed": {
+    "author": {
+      "name": {
+        "label": "iTunes Store"
+      },
+      "uri": {
+        "label": "http://www.apple.com/itunes/"
+      }
+    },
+    "entry": [
+      {
+        "author": {
+          "uri": {
+            "label": "https://itunes.apple.com/us/reviews/id1120521758"
+          },
+          "name": {
+            "label": "Dna2some"
+          },
+          "label": ""
+        },
+        "updated": {
+          "label": "2026-09-28T04:36:54-07:00"
+        },
+        "im:rating": {
+          "label": "5"
+        },
+        "im:version": {
+          "label": "6.59.0"
+        },
+        "id": {
+          "label": "14603032413"
+        },
+        "title": {
+          "label": "Accurate, detailed & interesting"
+        },
+        "content": {
+          "label": "❤️‍🔥",
+          "attributes": {
+            "type": "text"
+          }
+        },
+        "link": {
+          "attributes": {
+            "rel": "related",
+            "href": "https://itunes.apple.com/us/review?id=1459969523&type=Purple%20Software"
+          }
+        },
+        "im:voteSum": {
+          "label": "0"
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "im:voteCount": {
+          "label": "0"
+        }
+      },
+      {
+        "author": {
+          "uri": {
+            "label": "https://itunes.apple.com/us/reviews/id1315180826"
+          },
+          "name": {
+            "label": "Kadioglu."
+          },
+          "label": ""
+        },
+        "updated": {
+          "label": "2026-09-27T11:47:29-07:00"
+        },
+        "im:rating": {
+          "label": "5"
+        },
+        "im:version": {
+          "label": "6.59.0"
+        },
+        "id": {
+          "label": "14600631164"
+        },
+        "title": {
+          "label": "helper’s"
+        },
+        "content": {
+          "label": "ask me questions",
+          "attributes": {
+            "type": "text"
+          }
+        },
+        "link": {
+          "attributes": {
+            "rel": "related",
+            "href": "https://itunes.apple.com/us/review?id=1459969523&type=Purple%20Software"
+          }
+        },
+        "im:voteSum": {
+          "label": "0"
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "im:voteCount": {
+          "label": "0"
+        }
+      },
+      {
+        "author": {
+          "uri": {
+            "label": "https://itunes.apple.com/us/reviews/id569708385"
+          },
+          "name": {
+            "label": "cursesuponthee"
+          },
+          "label": ""
+        },
+        "updated": {
+          "label": "2026-09-27T10:30:35-07:00"
+        },
+        "im:rating": {
+          "label": "1"
+        },
+        "im:version": {
+          "label": "6.59.0"
+        },
+        "id": {
+          "label": "14600383373"
+        },
+        "title": {
+          "label": "Paywall"
+        },
+        "content": {
+          "label": "I used to use this app a lot, and everything that was once free or accessible by watching an ad is now behind a paywall with no way of accessing it without paying. There also used to be a section where you can look ahead at the year you’ll have, and it’s gone. Greedy developers and the app sucks now.",
+          "attributes": {
+            "type": "text"
+          }
+        },
+        "link": {
+          "attributes": {
+            "rel": "related",
+            "href": "https://itunes.apple.com/us/review?id=1459969523&type=Purple%20Software"
+          }
+        },
+        "im:voteSum": {
+          "label": "0"
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "im:voteCount": {
+          "label": "0"
+        }
+      },
+      {
+        "author": {
+          "uri": {
+            "label": "https://itunes.apple.com/us/reviews/id1912297376"
+          },
+          "name": {
+            "label": "Jaydennguye"
+          },
+          "label": ""
+        },
+        "updated": {
+          "label": "2026-09-27T03:30:19-07:00"
+        },
+        "im:rating": {
+          "label": "1"
+        },
+        "im:version": {
+          "label": "6.59.0"
+        },
+        "id": {
+          "label": "14599020085"
+        },
+        "title": {
+          "label": "scam"
+        },
+        "content": {
+          "label": "I didn't sign up for any package but deducted my Apple Pay money",
+          "attributes": {
+            "type": "text"
+          }
+        },
+        "link": {
+          "attributes": {
+            "rel": "related",
+            "href": "https://itunes.apple.com/us/review?id=1459969523&type=Purple%20Software"
+          }
+        },
+        "im:voteSum": {
+          "label": "0"
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "im:voteCount": {
+          "label": "0"
+        }
+      },
+      {
+        "author": {
+          "uri": {
+            "label": "https://itunes.apple.com/us/reviews/id484661537"
+          },
+          "name": {
+            "label": "MahasinBaker"
+          },
+          "label": ""
+        },
+        "updated": {
+          "label": "2026-09-26T22:40:50-07:00"
+        },
+        "im:rating": {
+          "label": "5"
+        },
+        "im:version": {
+          "label": "6.59.0"
+        },
+        "id": {
+          "label": "14598327052"
+        },
+        "title": {
+          "label": "Great Results!"
+        },
+        "content": {
+          "label": "This app has been great. I started with asking questions about a recent breakup, and that section was extremely helpful. And then I moved on to talking to the psychics on here. Everyone I have spoken to has been extremely accurate. I’m really enjoying this app.",
+          "attributes": {
+            "type": "text"
+          }
+        },
+        "link": {
+          "attributes": {
+            "rel": "related",
+            "href": "https://itunes.apple.com/us/review?id=1459969523&type=Purple%20Software"
+          }
+        },
+        "im:voteSum": {
+          "label": "0"
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "im:voteCount": {
+          "label": "0"
+        }
+      }
+    ],
+    "updated": {
+      "label": "2026-09-29T09:57:08-07:00"
+    },
+    "rights": {
+      "label": "Copyright 2008 Apple Inc."
+    },
+    "title": {
+      "label": "iTunes Store: Customer Reviews"
+    },
+    "icon": {
+      "label": "http://itunes.apple.com/favicon.ico"
+    },
+    "id": {
+      "label": "https://itunes.apple.com/us/rss/customerreviews/page=1/id=1459969523/sortby=mostrecent/json"
+    }
+  }
+}

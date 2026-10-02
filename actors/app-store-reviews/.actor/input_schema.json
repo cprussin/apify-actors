@@ -1,0 +1,96 @@
+{
+  "title": "App Store & Google Play Reviews input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "apps": {
+      "title": "Apps",
+      "type": "array",
+      "description": "App Store or Google Play URLs, or IDs. The store is detected automatically: https://apps.apple.com/us/app/spotify-music-and-podcasts/id324684580, id324684580 or 324684580 = App Store; https://play.google.com/store/apps/details?id=com.spotify.music or com.spotify.music = Google Play. Prefix with apple: to use an iOS bundle ID (apple:com.spotify.client).",
+      "editor": "stringList",
+      "prefill": [
+        "https://apps.apple.com/us/app/spotify-music-and-podcasts/id324684580",
+        "https://play.google.com/store/apps/details?id=com.spotify.music"
+      ],
+      "default": [
+        "https://apps.apple.com/us/app/spotify-music-and-podcasts/id324684580",
+        "https://play.google.com/store/apps/details?id=com.spotify.music"
+      ],
+      "sectionCaption": "Apps"
+    },
+    "country": {
+      "title": "Country",
+      "type": "string",
+      "description": "Two-letter country code of the store (us, gb, de, fr, jp, br, in, ...). App Store reviews are per country; Google Play reviews are filtered by it.",
+      "editor": "textfield",
+      "default": "us",
+      "prefill": "us"
+    },
+    "language": {
+      "title": "Language (Google Play)",
+      "type": "string",
+      "description": "Two-letter language code (en, de, es, pt, ja, ...). Google Play returns reviews written in this language. The App Store has no language filter.",
+      "editor": "textfield",
+      "default": "en",
+      "prefill": "en"
+    },
+    "sort": {
+      "title": "Sort by",
+      "type": "string",
+      "description": "Newest first, or the store's \"most relevant\" / \"most helpful\" order.",
+      "editor": "select",
+      "enum": ["newest", "mostRelevant"],
+      "enumTitles": ["Newest", "Most relevant"],
+      "default": "newest",
+      "sectionCaption": "Reviews"
+    },
+    "maxReviewsPerApp": {
+      "title": "Max reviews per app",
+      "type": "integer",
+      "description": "Stop after this many reviews for each app. Each review is billed as one event.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 100000,
+      "default": 100,
+      "prefill": 20
+    },
+    "sinceDate": {
+      "title": "Only reviews since",
+      "type": "string",
+      "description": "Only reviews posted on or after this date: YYYY-MM-DD, or relative like \"7 days\" or \"1 month\". With sort = Newest, scraping stops as soon as older reviews are reached, so scheduled runs only pay for new reviews.",
+      "editor": "textfield"
+    },
+    "onlyNew": {
+      "title": "Only new reviews (monitoring)",
+      "type": "boolean",
+      "description": "Return only reviews not returned by an earlier run with the same apps, country, language and rating filter. Schedule the actor daily for new-review alerts: the first run is a baseline, later runs output (and bill) only new reviews. Forces sort = Newest. State is kept in the key-value store \"app-store-reviews-state\" in your account.",
+      "default": false
+    },
+    "minRating": {
+      "title": "Min rating",
+      "type": "integer",
+      "description": "Only reviews with at least this many stars (1-5).",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "maxRating": {
+      "title": "Max rating",
+      "type": "integer",
+      "description": "Only reviews with at most this many stars (1-5). Set to 2 to collect complaints only.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Optional. Not needed for normal volumes; use Apify Proxy for very large runs if the stores start rate-limiting.",
+      "editor": "proxy",
+      "default": { "useApifyProxy": false },
+      "prefill": { "useApifyProxy": false },
+      "sectionCaption": "Advanced"
+    }
+  },
+  "required": ["apps"]
+}

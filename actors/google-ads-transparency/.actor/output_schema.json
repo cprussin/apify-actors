@@ -1,0 +1,16 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output",
+  "properties": {
+    "ads": {
+      "type": "string",
+      "title": "Ads",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=ads"
+    },
+    "advertisers": {
+      "type": "string",
+      "title": "Advertisers (advertiser search mode)",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=advertisers"
+    }
+  }
+}

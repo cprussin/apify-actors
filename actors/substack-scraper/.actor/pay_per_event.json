@@ -1,0 +1,13 @@
+{
+  "post": {
+    "eventTitle": "Post (metadata)",
+    "eventDescription": "One Substack post with metadata (title, date, audience, likes, comments, word count, authors) written to the dataset.",
+    "eventPriceUsd": 0.0015,
+    "isPrimaryEvent": true
+  },
+  "post-with-content": {
+    "eventTitle": "Post with content",
+    "eventDescription": "One Substack post with metadata plus its public body as HTML and plain text. Charged instead of Post (metadata), not in addition.",
+    "eventPriceUsd": 0.003
+  }
+}

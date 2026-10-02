@@ -1,0 +1,18 @@
+{
+  "ad": {
+    "eventTitle": "Ad",
+    "eventDescription": "One ad (creative) from the Google Ads Transparency Center written to the dataset, including its preview content (text, images, video) when available.",
+    "eventPriceUsd": 0.0018,
+    "isPrimaryEvent": true
+  },
+  "advertiser": {
+    "eventTitle": "Advertiser",
+    "eventDescription": "One advertiser returned by advertiser search mode (name, AR ID, country, ad count).",
+    "eventPriceUsd": 0.0018
+  },
+  "apify-actor-start": {
+    "eventTitle": "Actor start",
+    "eventDescription": "Synthetic start event (covers the first 5 s of compute).",
+    "eventPriceUsd": 5e-5
+  }
+}

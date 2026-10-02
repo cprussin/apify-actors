@@ -1,0 +1,28 @@
+[
+  {
+    "id": "001t000000AbCdEAAV",
+    "name": "Nutmeg Payroll Partners LLC",
+    "business_type": "LLC",
+    "status": "Active",
+    "accountnumber": "2912345",
+    "date_registration": "2026-09-22T00:00:00.000",
+    "citizenship": "Domestic",
+    "state_or_territory_formation": "Connecticut",
+    "naics_code": "541214",
+    "billingstreet": "55 Church St",
+    "billingcity": "New Haven",
+    "billingstate": "CT",
+    "billingpostalcode": "06510"
+  },
+  {
+    "id": "001t000000AbCdFAAV",
+    "name": "Hartford Youth Soccer, Inc.",
+    "business_type": "Non-Stock",
+    "status": "Active",
+    "accountnumber": "2912346",
+    "date_registration": "2026-09-21T00:00:00.000",
+    "citizenship": "Domestic",
+    "billingcity": "Hartford",
+    "billingstate": "CT"
+  }
+]

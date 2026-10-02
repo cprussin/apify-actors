@@ -1,0 +1,198 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "store": {
+        "type": ["string", "null"],
+        "title": "Store",
+        "description": "Which store the review is from: apple or google.",
+        "example": "apple"
+      },
+      "appId": {
+        "type": ["string", "null"],
+        "title": "App ID",
+        "description": "Apple numeric app ID or Google Play package name.",
+        "example": "324684580"
+      },
+      "appName": {
+        "type": ["string", "null"],
+        "title": "App",
+        "description": "App name as shown in the store.",
+        "example": "Spotify: Music and Podcasts"
+      },
+      "reviewId": {
+        "type": ["string", "null"],
+        "title": "Review ID",
+        "description": "Store review ID.",
+        "example": "14603399497"
+      },
+      "rating": {
+        "type": ["number", "null"],
+        "title": "Rating",
+        "description": "Star rating (1-5).",
+        "example": 5
+      },
+      "title": {
+        "type": ["string", "null"],
+        "title": "Title",
+        "description": "Review title (App Store only; null on Google Play).",
+        "example": "Always there"
+      },
+      "text": {
+        "type": ["string", "null"],
+        "title": "Review",
+        "description": "Review text.",
+        "example": "Thanks Spotify for keeping the music going offline out in the back woods!"
+      },
+      "author": {
+        "type": ["string", "null"],
+        "title": "Author",
+        "description": "Reviewer's public nickname.",
+        "example": "zephyr322"
+      },
+      "date": {
+        "type": ["string", "null"],
+        "title": "Date",
+        "description": "When the review was posted (ISO 8601 UTC).",
+        "example": "2026-09-28T13:34:02.000Z"
+      },
+      "appVersion": {
+        "type": ["string", "null"],
+        "title": "Version",
+        "description": "App version the reviewer used, when known.",
+        "example": "9.1.86"
+      },
+      "developerReply": {
+        "type": ["string", "null"],
+        "title": "Developer reply",
+        "description": "The developer's reply, if any.",
+        "example": "Please reach out at reviews@robinhood.com. We’ll take a closer look and do our best to find a fix quickly."
+      },
+      "developerReplyDate": {
+        "type": ["string", "null"],
+        "title": "Reply date",
+        "description": "When the developer replied (ISO 8601 UTC).",
+        "example": "2026-09-28T16:41:28.000Z"
+      },
+      "helpfulCount": {
+        "type": ["number", "null"],
+        "title": "Helpful",
+        "description": "Helpful votes (App Store) or thumbs-up (Google Play).",
+        "example": 0
+      },
+      "country": {
+        "type": ["string", "null"],
+        "title": "Country",
+        "description": "Store country code the review was fetched from.",
+        "example": "us"
+      },
+      "language": {
+        "type": ["string", "null"],
+        "title": "Language",
+        "description": "Requested review language (Google Play only; null for the App Store).",
+        "example": "en"
+      },
+      "url": {
+        "type": ["string", "null"],
+        "title": "URL",
+        "description": "Link to the review (Google Play) or the app's reviews page (App Store).",
+        "example": "https://apps.apple.com/us/app/id324684580?see-all=reviews"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Reviews",
+      "transformation": {
+        "fields": [
+          "date",
+          "store",
+          "appName",
+          "rating",
+          "title",
+          "text",
+          "author",
+          "appVersion",
+          "developerReply",
+          "developerReplyDate",
+          "helpfulCount",
+          "country",
+          "language",
+          "appId",
+          "reviewId",
+          "url"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "date": {
+            "label": "Date",
+            "format": "date"
+          },
+          "store": {
+            "label": "Store",
+            "format": "text"
+          },
+          "appName": {
+            "label": "App",
+            "format": "text"
+          },
+          "rating": {
+            "label": "Rating",
+            "format": "number"
+          },
+          "title": {
+            "label": "Title",
+            "format": "text"
+          },
+          "text": {
+            "label": "Review",
+            "format": "text"
+          },
+          "author": {
+            "label": "Author",
+            "format": "text"
+          },
+          "appVersion": {
+            "label": "Version",
+            "format": "text"
+          },
+          "developerReply": {
+            "label": "Developer reply",
+            "format": "text"
+          },
+          "developerReplyDate": {
+            "label": "Reply date",
+            "format": "date"
+          },
+          "helpfulCount": {
+            "label": "Helpful",
+            "format": "number"
+          },
+          "country": {
+            "label": "Country",
+            "format": "text"
+          },
+          "language": {
+            "label": "Language",
+            "format": "text"
+          },
+          "appId": {
+            "label": "App ID",
+            "format": "text"
+          },
+          "reviewId": {
+            "label": "Review ID",
+            "format": "text"
+          },
+          "url": {
+            "label": "URL",
+            "format": "link"
+          }
+        }
+      }
+    }
+  }
+}

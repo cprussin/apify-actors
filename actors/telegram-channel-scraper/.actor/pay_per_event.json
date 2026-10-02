@@ -1,0 +1,13 @@
+{
+  "post": {
+    "eventTitle": "Post",
+    "eventDescription": "One public Telegram channel post written to the dataset.",
+    "eventPriceUsd": 0.002,
+    "isPrimaryEvent": true
+  },
+  "channel-info": {
+    "eventTitle": "Channel info",
+    "eventDescription": "One channel profile (title, description, subscribers, photo) written to the dataset.",
+    "eventPriceUsd": 0.001
+  }
+}

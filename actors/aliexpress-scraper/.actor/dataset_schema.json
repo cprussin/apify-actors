@@ -1,0 +1,458 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": ["string", "null"],
+        "title": "Type",
+        "description": "Item type: product (search result) or review.",
+        "example": "product"
+      },
+      "productId": {
+        "type": ["string", "null"],
+        "title": "Product ID",
+        "description": "AliExpress product ID.",
+        "example": "1005011807602955"
+      },
+      "title": {
+        "type": ["string", "null"],
+        "title": "Title",
+        "description": "Product title (product items).",
+        "example": "2026 New Air 3 Pro 3 Bluetooth Wireless Earbuds with Heart Rate Monitoring, Active Noise Cancellation…"
+      },
+      "url": {
+        "type": ["string", "null"],
+        "title": "URL",
+        "description": "Product page URL (product items).",
+        "example": "https://www.aliexpress.com/item/1005011807602955.html"
+      },
+      "imageUrl": {
+        "type": ["string", "null"],
+        "title": "Image",
+        "description": "Main product image URL (product items).",
+        "example": "https://ae-pic-a1.aliexpress-media.com/kf/Sa57a4580c1274b01988d5df3fa8e76cbx.jpg"
+      },
+      "images": {
+        "type": ["array", "null"],
+        "title": "Images",
+        "description": "Product image URLs (products) or review photo URLs (reviews).",
+        "example": [
+          "https://ae-pic-a1.aliexpress-media.com/kf/Sa57a4580c1274b01988d5df3fa8e76cbx.jpg",
+          "…"
+        ]
+      },
+      "price": {
+        "type": ["number", "null"],
+        "title": "Price",
+        "description": "Price shown in search results, in currency (product items).",
+        "example": 21.11
+      },
+      "originalPrice": {
+        "type": ["number", "null"],
+        "title": "Original price",
+        "description": "List price before discount, when shown (product items).",
+        "example": 57.2
+      },
+      "discountPercent": {
+        "type": ["number", "null"],
+        "title": "Discount %",
+        "description": "Discount percentage, when shown (product items).",
+        "example": 63
+      },
+      "currency": {
+        "type": ["string", "null"],
+        "title": "Currency",
+        "description": "Currency code of the prices (product items).",
+        "example": "USD"
+      },
+      "formattedPrice": {
+        "type": ["string", "null"],
+        "title": "Formatted price",
+        "description": "Price as displayed by AliExpress (product items).",
+        "example": "US $21.11"
+      },
+      "soldCount": {
+        "type": ["number", "null"],
+        "title": "Sold",
+        "description": "Number of orders (product items).",
+        "example": 4084
+      },
+      "soldText": {
+        "type": ["string", "null"],
+        "title": "Sold text",
+        "description": "Sold count as displayed, e.g. 4,000+ sold (product items).",
+        "example": "4,000+ sold"
+      },
+      "rating": {
+        "type": ["number", "null"],
+        "title": "Rating",
+        "description": "Average product rating (products) or review stars 1-5 (reviews).",
+        "example": 4.9
+      },
+      "storeName": {
+        "type": ["string", "null"],
+        "title": "Store",
+        "description": "Seller store name, when included in search results (product items).",
+        "example": "Shop1105233629 Store"
+      },
+      "isAd": {
+        "type": ["boolean", "null"],
+        "title": "Ad",
+        "description": "Whether the result is a sponsored listing (product items).",
+        "example": false
+      },
+      "isChoice": {
+        "type": ["boolean", "null"],
+        "title": "Choice",
+        "description": "Whether the product has the AliExpress Choice badge (product items).",
+        "example": false
+      },
+      "shipping": {
+        "type": ["string", "null"],
+        "title": "Shipping",
+        "description": "Shipping badge text, e.g. Free shipping (product items).",
+        "example": "Free shipping"
+      },
+      "delivery": {
+        "type": ["string", "null"],
+        "title": "Delivery",
+        "description": "Delivery estimate badge text (product items).",
+        "example": "Delivery: Oct 05 - 12"
+      },
+      "sellingPoints": {
+        "type": ["array", "null"],
+        "title": "Selling points",
+        "description": "Promotional badges shown on the result card (product items).",
+        "example": ["New shoppers save $36.09"]
+      },
+      "categoryIds": {
+        "type": ["array", "null"],
+        "title": "Category IDs",
+        "description": "AliExpress category IDs (product items).",
+        "example": ["44", "100000306", "63705"]
+      },
+      "listedAt": {
+        "type": ["string", "null"],
+        "title": "Listed",
+        "description": "Date the product was listed (YYYY-MM-DD), when known (product items).",
+        "example": "2026-03-09"
+      },
+      "searchKeyword": {
+        "type": ["string", "null"],
+        "title": "Keyword",
+        "description": "Search keyword that found the product (product items).",
+        "example": "wireless earbuds"
+      },
+      "searchUrl": {
+        "type": ["string", "null"],
+        "title": "Search URL",
+        "description": "Search results page URL (product items).",
+        "example": "https://www.aliexpress.com/w/wholesale-wireless-earbuds.html?page=1"
+      },
+      "searchPage": {
+        "type": ["number", "null"],
+        "title": "Search page",
+        "description": "Search results page number (product items).",
+        "example": 1
+      },
+      "position": {
+        "type": ["number", "null"],
+        "title": "Rank",
+        "description": "Position in the search results (product items).",
+        "example": 1
+      },
+      "shipTo": {
+        "type": ["string", "null"],
+        "title": "Ship to",
+        "description": "Ship-to country used for the search (product items).",
+        "example": "US"
+      },
+      "productTitle": {
+        "type": ["string", "null"],
+        "title": "Product",
+        "description": "Title of the reviewed product (review items).",
+        "example": "2026 New Air 3 Pro 3 Bluetooth Wireless Earbuds…"
+      },
+      "reviewId": {
+        "type": ["string", "null"],
+        "title": "Review ID",
+        "description": "AliExpress review ID (review items).",
+        "example": "60096451623486425"
+      },
+      "text": {
+        "type": ["string", "null"],
+        "title": "Review",
+        "description": "Review text (review items).",
+        "example": "Exactly as described. Decent sound. Stable connection. 3-4hr battery life…"
+      },
+      "translatedText": {
+        "type": ["string", "null"],
+        "title": "Translation",
+        "description": "Machine translation of the review, when requested (review items).",
+        "example": "Exactly as described. Decent sound."
+      },
+      "date": {
+        "type": ["string", "null"],
+        "title": "Date",
+        "description": "Review date (YYYY-MM-DD) (review items).",
+        "example": "2026-04-07"
+      },
+      "dateText": {
+        "type": ["string", "null"],
+        "title": "Date text",
+        "description": "Review date as displayed by AliExpress (review items).",
+        "example": "07 Apr 2026"
+      },
+      "buyerName": {
+        "type": ["string", "null"],
+        "title": "Buyer",
+        "description": "Masked buyer name (review items).",
+        "example": "j***i"
+      },
+      "buyerCountry": {
+        "type": ["string", "null"],
+        "title": "Country",
+        "description": "Buyer's country code (review items).",
+        "example": "US"
+      },
+      "skuInfo": {
+        "type": ["string", "null"],
+        "title": "Variant",
+        "description": "Product variant the buyer purchased (review items).",
+        "example": "Color:Blackpods A7"
+      },
+      "helpfulCount": {
+        "type": ["number", "null"],
+        "title": "Helpful",
+        "description": "Helpful votes (review items).",
+        "example": 6
+      },
+      "unhelpfulCount": {
+        "type": ["number", "null"],
+        "title": "Unhelpful",
+        "description": "Unhelpful votes (review items).",
+        "example": 0
+      },
+      "additionalFeedback": {
+        "type": ["string", "null"],
+        "title": "Follow-up",
+        "description": "The buyer's follow-up review, if any (review items).",
+        "example": "Still working well after a month."
+      },
+      "additionalFeedbackDate": {
+        "type": ["string", "null"],
+        "title": "Follow-up date",
+        "description": "Date of the follow-up review (review items).",
+        "example": "2026-05-10"
+      },
+      "additionalImages": {
+        "type": ["array", "null"],
+        "title": "Follow-up photos",
+        "description": "Photo URLs attached to the follow-up review (review items).",
+        "example": []
+      },
+      "logistics": {
+        "type": ["string", "null"],
+        "title": "Shipping method",
+        "description": "Shipping method the buyer used (review items).",
+        "example": "AliExpress Standard Shipping"
+      },
+      "productUrl": {
+        "type": ["string", "null"],
+        "title": "Product URL",
+        "description": "Product page URL (review items).",
+        "example": "https://www.aliexpress.com/item/1005011807602955.html"
+      },
+      "scrapedAt": {
+        "type": ["string", "null"],
+        "title": "Scraped at",
+        "description": "When the item was scraped (ISO 8601 UTC).",
+        "example": "2026-09-30T05:14:58.671Z"
+      }
+    }
+  },
+  "views": {
+    "products": {
+      "title": "Products",
+      "description": "Search results (items with type = product).",
+      "transformation": {
+        "fields": [
+          "type",
+          "imageUrl",
+          "title",
+          "price",
+          "originalPrice",
+          "discountPercent",
+          "currency",
+          "soldCount",
+          "rating",
+          "storeName",
+          "delivery",
+          "isAd",
+          "searchKeyword",
+          "position",
+          "productId",
+          "url"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "type": {
+            "label": "Type",
+            "format": "text"
+          },
+          "imageUrl": {
+            "label": "Image",
+            "format": "image"
+          },
+          "title": {
+            "label": "Title",
+            "format": "text"
+          },
+          "price": {
+            "label": "Price",
+            "format": "number"
+          },
+          "originalPrice": {
+            "label": "Original price",
+            "format": "number"
+          },
+          "discountPercent": {
+            "label": "Discount %",
+            "format": "number"
+          },
+          "currency": {
+            "label": "Currency",
+            "format": "text"
+          },
+          "soldCount": {
+            "label": "Sold",
+            "format": "number"
+          },
+          "rating": {
+            "label": "Rating",
+            "format": "number"
+          },
+          "storeName": {
+            "label": "Store",
+            "format": "text"
+          },
+          "delivery": {
+            "label": "Delivery",
+            "format": "text"
+          },
+          "isAd": {
+            "label": "Ad",
+            "format": "boolean"
+          },
+          "searchKeyword": {
+            "label": "Keyword",
+            "format": "text"
+          },
+          "position": {
+            "label": "Rank",
+            "format": "number"
+          },
+          "productId": {
+            "label": "Product ID",
+            "format": "text"
+          },
+          "url": {
+            "label": "URL",
+            "format": "link"
+          }
+        }
+      }
+    },
+    "reviews": {
+      "title": "Reviews",
+      "description": "Buyer reviews (items with type = review).",
+      "transformation": {
+        "fields": [
+          "type",
+          "date",
+          "rating",
+          "text",
+          "translatedText",
+          "buyerCountry",
+          "buyerName",
+          "skuInfo",
+          "images",
+          "helpfulCount",
+          "additionalFeedback",
+          "productTitle",
+          "productId",
+          "reviewId",
+          "productUrl"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "type": {
+            "label": "Type",
+            "format": "text"
+          },
+          "date": {
+            "label": "Date",
+            "format": "date"
+          },
+          "rating": {
+            "label": "Stars",
+            "format": "number"
+          },
+          "text": {
+            "label": "Review",
+            "format": "text"
+          },
+          "translatedText": {
+            "label": "Translation",
+            "format": "text"
+          },
+          "buyerCountry": {
+            "label": "Country",
+            "format": "text"
+          },
+          "buyerName": {
+            "label": "Buyer",
+            "format": "text"
+          },
+          "skuInfo": {
+            "label": "Variant",
+            "format": "text"
+          },
+          "images": {
+            "label": "Photos",
+            "format": "array"
+          },
+          "helpfulCount": {
+            "label": "Helpful",
+            "format": "number"
+          },
+          "additionalFeedback": {
+            "label": "Follow-up",
+            "format": "text"
+          },
+          "productTitle": {
+            "label": "Product",
+            "format": "text"
+          },
+          "productId": {
+            "label": "Product ID",
+            "format": "text"
+          },
+          "reviewId": {
+            "label": "Review ID",
+            "format": "text"
+          },
+          "productUrl": {
+            "label": "Product URL",
+            "format": "link"
+          }
+        }
+      }
+    }
+  }
+}

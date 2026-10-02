@@ -1,0 +1,17 @@
+{
+  "actorSpecification": 1,
+  "name": "app-store-reviews",
+  "title": "App Store & Google Play Reviews Scraper",
+  "description": "Apple App Store and Google Play reviews in one schema: rating, text, author, date, app version, developer reply, helpful votes. Any country; newest-first delta mode.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 1024,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}

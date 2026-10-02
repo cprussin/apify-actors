@@ -1,0 +1,99 @@
+{
+  "title": "Google Flights Scraper input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "routes": {
+      "title": "Routes",
+      "type": "array",
+      "description": "Flights to search. Each route has <code>origin</code> and <code>destination</code> (IATA airport or city codes, e.g. JFK, LHR, NYC) and a <code>date</code> or a <code>dateFrom</code>/<code>dateTo</code> range (one search per day). Dates: YYYY-MM-DD or <code>+N</code> days from today. Round trips: add <code>returnDate</code> or <code>stayDays</code> (nights; works with ranges). Shorthand like <code>\"JFK-LHR 2026-11-15\"</code> works too.",
+      "editor": "json",
+      "prefill": [{ "origin": "JFK", "destination": "LHR", "date": "+30" }],
+      "default": [{ "origin": "JFK", "destination": "LHR", "date": "+30" }],
+      "sectionCaption": "What to search"
+    },
+    "adults": {
+      "title": "Adults",
+      "type": "integer",
+      "description": "Number of adult passengers (1-9). Prices are the total for all passengers.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 9,
+      "default": 1
+    },
+    "cabinClass": {
+      "title": "Cabin class",
+      "type": "string",
+      "description": "Seat class to price.",
+      "editor": "select",
+      "enum": ["economy", "premiumEconomy", "business", "first"],
+      "enumTitles": ["Economy", "Premium economy", "Business", "First"],
+      "default": "economy"
+    },
+    "maxStops": {
+      "title": "Max stops",
+      "type": "string",
+      "description": "Only return itineraries with at most this many stops.",
+      "editor": "select",
+      "enum": ["any", "0", "1", "2"],
+      "enumTitles": [
+        "Any number of stops",
+        "Nonstop only",
+        "1 stop or fewer",
+        "2 stops or fewer"
+      ],
+      "default": "any"
+    },
+    "maxItineraries": {
+      "title": "Max itineraries per search",
+      "type": "integer",
+      "description": "Stop after this many itineraries for each route and date (Google's order: best flights first, then the rest). Google's results page lists up to ~30 itineraries per search. Each itinerary is one result.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 10
+    },
+    "currency": {
+      "title": "Currency",
+      "type": "string",
+      "description": "ISO currency code for prices, e.g. USD, EUR, GBP, JPY.",
+      "editor": "textfield",
+      "default": "USD",
+      "sectionCaption": "Locale"
+    },
+    "country": {
+      "title": "Country",
+      "type": "string",
+      "description": "Point-of-sale country (gl), e.g. US, GB, DE. Prices and availability can differ by country.",
+      "editor": "textfield",
+      "default": "US"
+    },
+    "language": {
+      "title": "Language",
+      "type": "string",
+      "description": "Interface language (hl), e.g. en, de, fr. Affects airport and airline names.",
+      "editor": "textfield",
+      "default": "en"
+    },
+    "onlyNew": {
+      "title": "Only new or changed prices (monitoring)",
+      "type": "boolean",
+      "description": "Return only itineraries that are new or whose price changed since an earlier run with the same routes, passengers, cabin, stops, currency and country. Schedule the actor for price alerts: the first run is a baseline, later runs output (and bill) only new or re-priced itineraries. Works best with fixed dates. State is kept in the key-value store \"google-flights-prices-state\" in your account.",
+      "default": false,
+      "sectionCaption": "Monitoring"
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Apify Proxy (datacenter is enough). The actor switches to a new IP whenever Google blocks or rate-limits a request, and falls back to direct requests if the proxy keeps failing.",
+      "editor": "proxy",
+      "default": {
+        "useApifyProxy": true
+      },
+      "prefill": {
+        "useApifyProxy": true
+      },
+      "sectionCaption": "Advanced"
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "title": "Telegram Channel Scraper input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "channels": {
+      "title": "Channels",
+      "type": "array",
+      "description": "Public Telegram channels: usernames or links. Any of these work: durov, @durov, https://t.me/durov, https://t.me/s/durov, https://t.me/durov/123. Private channels, invite links (t.me/+...) and groups are not supported.",
+      "editor": "stringList",
+      "prefill": ["durov", "https://t.me/telegram"],
+      "default": ["durov", "https://t.me/telegram"],
+      "sectionCaption": "Channels"
+    },
+    "maxPostsPerChannel": {
+      "title": "Max posts per channel",
+      "type": "integer",
+      "description": "Stop after this many posts for each channel, newest first. Each post is billed as one event.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 100000,
+      "default": 100,
+      "prefill": 20
+    },
+    "sinceDate": {
+      "title": "Only posts since",
+      "type": "string",
+      "description": "Only posts published on or after this date: YYYY-MM-DD, an ISO timestamp, or relative like \"24 hours\", \"7 days\" or \"1 month\". Scraping stops when older posts are reached, so scheduled runs only pay for new posts.",
+      "editor": "textfield"
+    },
+    "includeChannelInfo": {
+      "title": "Include channel info",
+      "type": "boolean",
+      "description": "Add one item per channel with its title, description, exact subscriber count, photo and media counters. Billed as one channel-info event per channel.",
+      "default": true
+    },
+    "onlyNew": {
+      "title": "Only new posts (monitoring)",
+      "type": "boolean",
+      "description": "Return only posts not returned by an earlier run with the same channels. Schedule the actor (e.g. hourly or daily) for new-post alerts: the first run is a baseline, later runs output (and bill) only new posts and stop reading each channel after 3 known posts in a row. State is kept in the key-value store \"telegram-channel-scraper-state\" in your account.",
+      "default": false,
+      "sectionCaption": "Monitoring"
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Optional. Not needed for normal volumes. Use Apify Proxy for very large runs if Telegram starts rate-limiting.",
+      "editor": "proxy",
+      "default": { "useApifyProxy": false },
+      "prefill": { "useApifyProxy": false },
+      "sectionCaption": "Advanced"
+    }
+  },
+  "required": ["channels"]
+}

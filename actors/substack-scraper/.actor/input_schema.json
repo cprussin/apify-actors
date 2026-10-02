@@ -1,0 +1,69 @@
+{
+  "title": "Substack Scraper input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "publications": {
+      "title": "Publications or posts",
+      "type": "array",
+      "description": "Substack publications or single posts. Accepts a subdomain (lenny or lenny.substack.com), a custom domain (www.lennysnewsletter.com), any publication URL, or a post URL (https://name.substack.com/p/post-slug).",
+      "editor": "stringList",
+      "prefill": [
+        "https://www.lennysnewsletter.com",
+        "astralcodexten.substack.com"
+      ],
+      "default": [
+        "https://www.lennysnewsletter.com",
+        "astralcodexten.substack.com"
+      ],
+      "sectionCaption": "Publications"
+    },
+    "maxPostsPerPublication": {
+      "title": "Max posts per publication",
+      "type": "integer",
+      "description": "Stop after this many posts for each publication (newest first). Each post is billed as one event.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 100000,
+      "default": 20,
+      "prefill": 10
+    },
+    "includeContent": {
+      "title": "Include post content (HTML + text)",
+      "type": "boolean",
+      "description": "Also download each post's body as HTML and plain text. Paid posts only include the public preview (marked truncated: true). Billed at the post-with-content price instead of the metadata price.",
+      "default": false,
+      "sectionCaption": "Content"
+    },
+    "sinceDate": {
+      "title": "Only posts since",
+      "type": "string",
+      "description": "Only posts published on or after this date: YYYY-MM-DD, or relative like \"7 days\" or \"1 month\". Scraping stops as soon as older posts are reached, so scheduled runs only pay for new posts.",
+      "editor": "textfield",
+      "sectionCaption": "Filters"
+    },
+    "search": {
+      "title": "Search keyword",
+      "type": "string",
+      "description": "Optional. Only posts matching this keyword, using the publication's own archive search. Results are ordered by relevance, not date.",
+      "editor": "textfield"
+    },
+    "onlyNew": {
+      "title": "Only new posts (monitoring)",
+      "type": "boolean",
+      "description": "Return only posts not returned by an earlier run with the same publications and search. Schedule the actor (e.g. daily) for new-post alerts: the first run is a baseline, later runs output (and bill) only new posts and stop reading each archive after 3 known posts in a row. State is kept in the key-value store \"substack-scraper-state\" in your account.",
+      "default": false,
+      "sectionCaption": "Monitoring"
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Optional. Not needed normally; use Apify Proxy only if Substack starts rate-limiting very large runs.",
+      "editor": "proxy",
+      "default": { "useApifyProxy": false },
+      "prefill": { "useApifyProxy": false },
+      "sectionCaption": "Advanced"
+    }
+  },
+  "required": ["publications"]
+}

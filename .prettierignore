@@ -1,0 +1,9 @@
+dist
+node_modules
+storage
+package-lock.json
+actors/telegram-channel-scraper/test/fixtures
+actors/aliexpress-scraper/test/fixtures
+actors/tennis-matches-odds/test/fixtures
+actors/google-flights-prices/test/fixtures
+actors/wellfound-jobs/test/fixtures

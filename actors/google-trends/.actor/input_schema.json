@@ -1,0 +1,196 @@
+{
+  "title": "Google Trends Scraper input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "mode": {
+      "title": "Mode",
+      "type": "string",
+      "description": "Explore = interest over time, by region and related queries/topics for your search terms (like trends.google.com/explore). Trending now = what is trending in a country right now (like trends.google.com/trending).",
+      "editor": "select",
+      "enum": ["explore", "trendingNow"],
+      "enumTitles": ["Explore search terms", "Trending now"],
+      "default": "explore",
+      "sectionCaption": "What to scrape"
+    },
+    "searchTerms": {
+      "title": "Search terms",
+      "type": "array",
+      "description": "Keywords to look up (Explore mode). Up to 5 are compared on one scale per Google request; with more, the actor batches them automatically and repeats the FIRST term in every batch so all terms can be put on one scale (see normalizedValue). Pick a reasonably popular first term.",
+      "editor": "stringList",
+      "prefill": ["coffee", "tea"],
+      "default": ["coffee", "tea"]
+    },
+    "datasets": {
+      "title": "Datasets",
+      "type": "array",
+      "description": "Which Google Trends data to return for each search term (Explore mode). Each term x dataset is one result. Note: Google currently often returns no related topics; such results are returned empty and not charged.",
+      "editor": "select",
+      "items": {
+        "type": "string",
+        "enum": [
+          "interestOverTime",
+          "interestByRegion",
+          "relatedQueries",
+          "relatedTopics"
+        ],
+        "enumTitles": [
+          "Interest over time",
+          "Interest by region",
+          "Related queries (top + rising)",
+          "Related topics (top + rising)"
+        ]
+      },
+      "prefill": ["interestOverTime", "interestByRegion", "relatedQueries"],
+      "default": ["interestOverTime", "interestByRegion", "relatedQueries"]
+    },
+    "geo": {
+      "title": "Location (geo)",
+      "type": "string",
+      "description": "Empty = worldwide. Otherwise a country code (US, GB, DE, IN, ...), a region (US-CA, GB-ENG) or a US metro (US-NY-501). Trending now needs a country code.",
+      "editor": "textfield",
+      "default": "US",
+      "prefill": "US",
+      "sectionCaption": "Filters"
+    },
+    "timeframe": {
+      "title": "Timeframe",
+      "type": "string",
+      "description": "Time range. Choose Custom and set start/end date for any range since 2004. Google picks the granularity: minutes for 1-4 hours, hourly for up to 7 days, daily up to ~9 months, weekly up to 5 years, monthly beyond.",
+      "editor": "select",
+      "enum": [
+        "now 1-H",
+        "now 4-H",
+        "now 1-d",
+        "now 7-d",
+        "today 1-m",
+        "today 3-m",
+        "today 12-m",
+        "today 5-y",
+        "all",
+        "custom"
+      ],
+      "enumTitles": [
+        "Past hour",
+        "Past 4 hours",
+        "Past day",
+        "Past 7 days",
+        "Past 30 days",
+        "Past 90 days",
+        "Past 12 months",
+        "Past 5 years",
+        "2004 - present",
+        "Custom (start/end date)"
+      ],
+      "default": "today 12-m",
+      "prefill": "today 12-m"
+    },
+    "startDate": {
+      "title": "Start date (custom timeframe)",
+      "type": "string",
+      "description": "YYYY-MM-DD, or YYYY-MM-DDTHH for hourly data over at most 7 days. Setting it switches the timeframe to custom.",
+      "editor": "textfield"
+    },
+    "endDate": {
+      "title": "End date (custom timeframe)",
+      "type": "string",
+      "description": "YYYY-MM-DD (or YYYY-MM-DDTHH). Defaults to today.",
+      "editor": "textfield"
+    },
+    "category": {
+      "title": "Category",
+      "type": "integer",
+      "description": "Category ID (0 = all). Top-level: 3 Arts & Entertainment, 47 Autos & Vehicles, 44 Beauty & Fitness, 22 Books, 12 Business & Industrial, 5 Computers & Electronics, 7 Finance, 71 Food & Drink, 8 Games, 45 Health, 65 Hobbies, 11 Home & Garden, 13 Internet & Telecom, 958 Jobs & Education, 19 Law & Government, 16 News, 299 Online Communities, 14 People & Society, 66 Pets, 29 Real Estate, 533 Reference, 174 Science, 18 Shopping, 20 Sports, 67 Travel. Sub-category IDs: cat= in Trends URLs.",
+      "editor": "number",
+      "minimum": 0,
+      "default": 0
+    },
+    "property": {
+      "title": "Search type",
+      "type": "string",
+      "description": "Which Google search to measure.",
+      "editor": "select",
+      "enum": ["web", "news", "images", "youtube", "froogle"],
+      "enumTitles": [
+        "Web search",
+        "News search",
+        "Image search",
+        "YouTube search",
+        "Google Shopping"
+      ],
+      "default": "web"
+    },
+    "regionResolution": {
+      "title": "Region resolution",
+      "type": "string",
+      "description": "Level of the interest-by-region breakdown. Auto = countries for worldwide, sub-regions (states) for a country. DMA (metro areas) is US only.",
+      "editor": "select",
+      "enum": ["auto", "COUNTRY", "REGION", "DMA", "CITY"],
+      "enumTitles": [
+        "Auto",
+        "Country",
+        "Sub-region (state/province)",
+        "Metro (US DMA)",
+        "City"
+      ],
+      "default": "auto",
+      "sectionCaption": "Options"
+    },
+    "includeLowVolumeRegions": {
+      "title": "Include low-volume regions",
+      "type": "boolean",
+      "description": "Also return regions where Google has too little data (value 0, hasData false).",
+      "default": false
+    },
+    "language": {
+      "title": "Language",
+      "type": "string",
+      "description": "Interface language (hl), e.g. en-US, de, fr, ja. Affects region names, topic titles and date labels.",
+      "editor": "textfield",
+      "default": "en-US"
+    },
+    "trendingHours": {
+      "title": "Trending now: time window",
+      "type": "string",
+      "description": "Trending searches started in the past N hours (Trending now mode).",
+      "editor": "select",
+      "enum": ["4", "24", "48", "168"],
+      "enumTitles": [
+        "Past 4 hours",
+        "Past 24 hours",
+        "Past 48 hours",
+        "Past 7 days"
+      ],
+      "default": "24"
+    },
+    "maxTrendingSearches": {
+      "title": "Trending now: max results",
+      "type": "integer",
+      "description": "Stop after this many trending searches (Trending now mode). Each is one result.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 1000,
+      "default": 50
+    },
+    "onlyNew": {
+      "title": "Only new trending searches (monitoring)",
+      "type": "boolean",
+      "description": "Trending now only: return only trending searches not returned by an earlier run for the same country. Schedule the actor (e.g. every few hours) for new-trend alerts: the first run is a baseline, later runs output (and bill) only new searches. Ignored in Explore mode. State is kept in the key-value store \"google-trends-state\" in your account.",
+      "default": false,
+      "sectionCaption": "Monitoring"
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Google Trends rate-limits IP addresses after a handful of requests. Apify Proxy is strongly recommended; the actor switches to a new IP whenever Google returns 429.",
+      "editor": "proxy",
+      "default": {
+        "useApifyProxy": true
+      },
+      "prefill": {
+        "useApifyProxy": true
+      },
+      "sectionCaption": "Advanced"
+    }
+  }
+}

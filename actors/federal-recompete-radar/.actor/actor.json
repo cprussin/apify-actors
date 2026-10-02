@@ -1,0 +1,17 @@
+{
+  "actorSpecification": 1,
+  "name": "federal-recompete-radar",
+  "title": "Federal Recompete Radar - Expiring US Government Contracts",
+  "description": "Find US federal contracts whose period of performance ends soon (upcoming recompetes). Filter by NAICS, PSC, agency, state, set-aside and value. Data from USAspending.gov.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 1024,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}

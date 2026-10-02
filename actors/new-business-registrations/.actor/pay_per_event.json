@@ -1,0 +1,13 @@
+{
+  "business-record": {
+    "eventTitle": "Business record",
+    "eventDescription": "One newly registered business written to the dataset.",
+    "eventPriceUsd": 0.002,
+    "isPrimaryEvent": true
+  },
+  "apify-actor-start": {
+    "eventTitle": "Actor start",
+    "eventDescription": "Synthetic start event (covers the first 5 s of compute).",
+    "eventPriceUsd": 5e-5
+  }
+}

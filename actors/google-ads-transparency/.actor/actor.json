@@ -1,0 +1,17 @@
+{
+  "actorSpecification": 1,
+  "name": "google-ads-transparency",
+  "title": "Google Ads Transparency Scraper: Ads, Copy, Images & Video",
+  "description": "Scrape Google Ads Transparency Center: the ads any advertiser runs on Search, YouTube, Maps, Play & Shopping. Look up by name, AR ID or domain. Headline, text, images, video, dates.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 1024,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}

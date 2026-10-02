@@ -1,0 +1,17 @@
+{
+  "actorSpecification": 1,
+  "name": "google-trends",
+  "title": "Google Trends Scraper: Interest, Regions, Related & Trending",
+  "description": "Google Trends interest over time, by region/metro/city, related queries & topics (top + rising) and trending-now searches. Compare 5+ terms on one scale. Web, News, YouTube, Shopping.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 1024,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}

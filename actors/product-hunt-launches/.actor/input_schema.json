@@ -1,0 +1,139 @@
+{
+  "title": "Product Hunt Launches input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "mode": {
+      "title": "What to scrape",
+      "type": "string",
+      "description": "Latest launches: Product Hunt's current featured launches (no token needed). Topics: current launches in one or more topics (no token needed). Leaderboard: daily, weekly or monthly leaderboards for a date range (past dates need an API token). Posts: specific launch URLs (needs an API token).",
+      "editor": "select",
+      "enum": ["latest", "topics", "leaderboard", "posts"],
+      "enumTitles": [
+        "Latest launches",
+        "Topics / categories",
+        "Leaderboard (daily / weekly / monthly)",
+        "Specific launch URLs"
+      ],
+      "default": "latest",
+      "prefill": "latest",
+      "sectionCaption": "What to scrape"
+    },
+    "topics": {
+      "title": "Topics",
+      "type": "array",
+      "description": "Topic slugs or URLs, e.g. artificial-intelligence, developer-tools, productivity or https://www.producthunt.com/topics/saas. Used in Topics mode.",
+      "editor": "stringList",
+      "prefill": ["artificial-intelligence"]
+    },
+    "period": {
+      "title": "Leaderboard period",
+      "type": "string",
+      "description": "Leaderboard mode: one leaderboard per day, per week (Monday to Sunday) or per month, in Pacific Time like Product Hunt.",
+      "editor": "select",
+      "enum": ["daily", "weekly", "monthly"],
+      "enumTitles": ["Daily", "Weekly", "Monthly"],
+      "default": "daily"
+    },
+    "startDate": {
+      "title": "Start date",
+      "type": "string",
+      "description": "First day (YYYY-MM-DD, \"today\", \"yesterday\" or relative like \"7 days\"). Default: yesterday. With a token this also filters Topics mode.",
+      "editor": "textfield"
+    },
+    "endDate": {
+      "title": "End date",
+      "type": "string",
+      "description": "Last day, inclusive. Default: same as start date.",
+      "editor": "textfield"
+    },
+    "postUrls": {
+      "title": "Launch URLs",
+      "type": "array",
+      "description": "Posts mode: Product Hunt launch URLs (https://www.producthunt.com/posts/<slug> or /products/<product>/launches/<slug>), slugs or numeric IDs.",
+      "editor": "stringList"
+    },
+    "searchKeywords": {
+      "title": "Keywords",
+      "type": "string",
+      "description": "Optional. Only keep launches whose name, tagline, description or topics contain any of these comma-separated words (e.g. \"crm, sales, outreach\"). Filtered-out launches are not charged.",
+      "editor": "textfield",
+      "sectionCaption": "Filters and limits"
+    },
+    "maxItems": {
+      "title": "Max launches",
+      "type": "integer",
+      "description": "Stop after this many launches in total. Each launch is billed as one event.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 10000,
+      "default": 20,
+      "prefill": 20
+    },
+    "maxPerGroup": {
+      "title": "Max launches per period / topic",
+      "type": "integer",
+      "description": "Optional. E.g. 10 = the top 10 of each day in a daily leaderboard range, or 10 per topic.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 10000
+    },
+    "featuredOnly": {
+      "title": "Featured launches only",
+      "type": "boolean",
+      "description": "With a token: skip launches Product Hunt did not feature on the homepage. Leaderboards are always featured-only, like on the site.",
+      "default": true
+    },
+    "onlyNew": {
+      "title": "Only new launches (monitoring)",
+      "type": "boolean",
+      "description": "Return only launches not returned by an earlier run with the same mode, period, topics, posts, keywords and featured filter. Schedule the actor (e.g. daily) for new-launch or competitor alerts: the first run is a baseline, later runs output (and bill) only new launches. Dates are not part of the key. State is kept in the key-value store \"product-hunt-launches-state\" in your account.",
+      "default": false,
+      "sectionCaption": "Monitoring"
+    },
+    "apiToken": {
+      "title": "Product Hunt API token (optional)",
+      "type": "string",
+      "description": "Optional free developer token from https://www.producthunt.com/v2/oauth/applications (create an app, then \"Create Token\"). Unlocks historical leaderboards, specific URLs, descriptions, topics, media, makers and comments. Without it the actor uses Product Hunt's public feed.",
+      "editor": "textfield",
+      "isSecret": true,
+      "sectionCaption": "Product Hunt API (optional)"
+    },
+    "includeMakers": {
+      "title": "Include makers",
+      "type": "boolean",
+      "description": "With a token: add the makers of each launch. Product Hunt hides personal fields of most users from third-party apps; hidden fields are null.",
+      "default": true
+    },
+    "includeComments": {
+      "title": "Include comments",
+      "type": "boolean",
+      "description": "With a token: add the most upvoted comments to each launch. Each comment is billed as one (cheaper) comment event.",
+      "default": false
+    },
+    "maxCommentsPerLaunch": {
+      "title": "Max comments per launch",
+      "type": "integer",
+      "description": "Most upvoted comments first.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 500,
+      "default": 20
+    },
+    "resolveWebsites": {
+      "title": "Resolve website URLs",
+      "type": "boolean",
+      "description": "Follow Product Hunt's redirect link to get each product's real website. Best effort: skipped automatically if Product Hunt blocks it.",
+      "default": true,
+      "sectionCaption": "Advanced"
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Optional. Not needed: the feed and API are not rate-limited per IP for normal volumes.",
+      "editor": "proxy",
+      "default": { "useApifyProxy": false },
+      "prefill": { "useApifyProxy": false }
+    }
+  }
+}
