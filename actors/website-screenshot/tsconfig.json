@@ -1,0 +1,9 @@
+{
+  "//": "DOM lib: page.evaluate callbacks run in the browser.",
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "lib": ["ES2023", "DOM"]
+  },
+  "include": ["src", "test", "scripts"]
+}

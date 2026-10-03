@@ -1,0 +1,13 @@
+{
+  "screenshot": {
+    "eventTitle": "Screenshot",
+    "eventDescription": "One successful screenshot or PDF saved. Failed URLs are free.",
+    "eventPriceUsd": 0.003,
+    "isPrimaryEvent": true
+  },
+  "apify-actor-start": {
+    "eventTitle": "Actor start",
+    "eventDescription": "Synthetic start event (covers the first 5 s of compute).",
+    "eventPriceUsd": 5e-5
+  }
+}

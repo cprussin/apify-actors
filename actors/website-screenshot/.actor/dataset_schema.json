@@ -1,0 +1,172 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "url": {
+        "type": "string",
+        "title": "URL",
+        "description": "Requested URL.",
+        "example": "https://apify.com/"
+      },
+      "finalUrl": {
+        "type": ["string", "null"],
+        "title": "Final URL",
+        "description": "URL after redirects.",
+        "example": "https://apify.com/"
+      },
+      "status": {
+        "type": ["number", "null"],
+        "title": "HTTP status",
+        "description": "HTTP status of the page response.",
+        "example": 200
+      },
+      "screenshotKey": {
+        "type": ["string", "null"],
+        "title": "Record key",
+        "description": "Key of the file in the run's default key-value store.",
+        "example": "screenshot-0001-apify-com.png"
+      },
+      "screenshotUrl": {
+        "type": ["string", "null"],
+        "title": "Screenshot",
+        "description": "Public URL of the screenshot or PDF.",
+        "example": "https://api.apify.com/v2/key-value-stores/aBcD1234eFgH5678/records/screenshot-0001-apify-com.png"
+      },
+      "format": {
+        "type": "string",
+        "title": "Format",
+        "description": "File format: png, jpeg, webp or pdf.",
+        "example": "png"
+      },
+      "device": {
+        "type": "string",
+        "title": "Device",
+        "description": "Device preset: desktop, tablet or mobile.",
+        "example": "desktop"
+      },
+      "width": {
+        "type": ["number", "null"],
+        "title": "Width (px)",
+        "description": "Image width in pixels (PDF: page width in CSS px).",
+        "example": 1920
+      },
+      "height": {
+        "type": ["number", "null"],
+        "title": "Height (px)",
+        "description": "Image height in pixels (PDF: page height in CSS px).",
+        "example": 1080
+      },
+      "bytes": {
+        "type": ["number", "null"],
+        "title": "Size (bytes)",
+        "description": "File size in bytes.",
+        "example": 482113
+      },
+      "title": {
+        "type": ["string", "null"],
+        "title": "Page title",
+        "description": "The page's <title>.",
+        "example": "Apify: Full-stack web scraping and data extraction platform"
+      },
+      "loadTimeMs": {
+        "type": ["number", "null"],
+        "title": "Load time (ms)",
+        "description": "Time to load and capture the page, in milliseconds.",
+        "example": 2310
+      },
+      "waitUntil": {
+        "type": ["string", "null"],
+        "title": "Wait until",
+        "description": "Load event used; lighter than requested if the first attempt timed out.",
+        "example": "load"
+      },
+      "error": {
+        "type": ["string", "null"],
+        "title": "Error",
+        "description": "Why the URL failed (not billed), or null on success.",
+        "example": null
+      },
+      "capturedAt": {
+        "type": "string",
+        "title": "Captured at",
+        "description": "When the page was captured (ISO 8601 UTC).",
+        "example": "2026-10-02T00:00:00.000Z"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Screenshots",
+      "transformation": {
+        "fields": [
+          "screenshotUrl",
+          "url",
+          "finalUrl",
+          "status",
+          "title",
+          "format",
+          "width",
+          "height",
+          "bytes",
+          "loadTimeMs",
+          "error",
+          "capturedAt"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "screenshotUrl": {
+            "label": "Screenshot",
+            "format": "image"
+          },
+          "url": {
+            "label": "URL",
+            "format": "link"
+          },
+          "finalUrl": {
+            "label": "Final URL",
+            "format": "link"
+          },
+          "status": {
+            "label": "Status",
+            "format": "number"
+          },
+          "title": {
+            "label": "Page title",
+            "format": "text"
+          },
+          "format": {
+            "label": "Format",
+            "format": "text"
+          },
+          "width": {
+            "label": "Width",
+            "format": "number"
+          },
+          "height": {
+            "label": "Height",
+            "format": "number"
+          },
+          "bytes": {
+            "label": "Bytes",
+            "format": "number"
+          },
+          "loadTimeMs": {
+            "label": "Load time (ms)",
+            "format": "number"
+          },
+          "error": {
+            "label": "Error",
+            "format": "text"
+          },
+          "capturedAt": {
+            "label": "Captured at",
+            "format": "date"
+          }
+        }
+      }
+    }
+  }
+}

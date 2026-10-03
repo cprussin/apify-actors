@@ -1,0 +1,17 @@
+{
+  "actorSpecification": 1,
+  "name": "ycombinator-companies",
+  "title": "Y Combinator Companies & Jobs Scraper: YC Startup Directory",
+  "description": "Every Y Combinator startup as JSON: one-liner, description, batch, status, industries, regions, team size, website, launch date and hiring flag, filtered by batch, industry, region or tags. Plus YC startup jobs with salary and equity.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 1024,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}

@@ -1,0 +1,17 @@
+{
+  "actorSpecification": 1,
+  "name": "foundit-jobs",
+  "title": "Foundit Jobs Scraper: India Jobs, Salary & Skills",
+  "description": "Job listings from Foundit (formerly Monster India) by keyword and city: title, company, locations, experience range, salary, skills, posted date and job URL. Newest-first monitoring mode for new-job alerts. No login needed.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 1024,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}

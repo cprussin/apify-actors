@@ -1,0 +1,153 @@
+{
+  "title": "Eventbrite Events Scraper input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "locations": {
+      "title": "Locations",
+      "type": "array",
+      "description": "Eventbrite location slugs, as in eventbrite.com/d/<b>ny--new-york</b>/events/: <code>ny--new-york</code>, <code>ca--san-francisco</code>, <code>united-kingdom--london</code>, <code>germany--berlin</code>, or <code>online</code> for online events. Each location is searched with the filters below.",
+      "editor": "stringList",
+      "prefill": ["ny--new-york"],
+      "sectionCaption": "What to search"
+    },
+    "startUrls": {
+      "title": "Start URLs",
+      "type": "array",
+      "description": "Optional Eventbrite search pages, e.g. <code>https://www.eventbrite.com/d/ny--new-york/music--events--this-weekend/</code>, or event pages, e.g. <code>https://www.eventbrite.com/e/some-event-tickets-123456789012</code>. A <code>?page=N</code> parameter sets the first page. The filters below don't apply to start URLs.",
+      "editor": "stringList"
+    },
+    "category": {
+      "title": "Category",
+      "type": "string",
+      "description": "Only events in this Eventbrite category.",
+      "editor": "select",
+      "enum": [
+        "any",
+        "music",
+        "nightlife",
+        "business",
+        "food-and-drink",
+        "community",
+        "arts",
+        "film-and-media",
+        "sports-and-fitness",
+        "health",
+        "science-and-tech",
+        "travel-and-outdoor",
+        "charity-and-causes",
+        "spirituality",
+        "family-and-education",
+        "holiday",
+        "seasonal",
+        "government",
+        "fashion",
+        "home-and-lifestyle",
+        "auto-boat-and-air",
+        "hobbies",
+        "school-activities",
+        "dating",
+        "other"
+      ],
+      "enumTitles": [
+        "Any category",
+        "Music",
+        "Nightlife",
+        "Business & Professional",
+        "Food & Drink",
+        "Community & Culture",
+        "Performing & Visual Arts",
+        "Film, Media & Entertainment",
+        "Sports & Fitness",
+        "Health & Wellness",
+        "Science & Technology",
+        "Travel & Outdoor",
+        "Charity & Causes",
+        "Religion & Spirituality",
+        "Family & Education",
+        "Holiday",
+        "Seasonal",
+        "Government & Politics",
+        "Fashion & Beauty",
+        "Home & Lifestyle",
+        "Auto, Boat & Air",
+        "Hobbies & Special Interest",
+        "School Activities",
+        "Dating",
+        "Other"
+      ],
+      "default": "any"
+    },
+    "dateFilter": {
+      "title": "Date",
+      "type": "string",
+      "description": "Only events in this date range (in the event's local time).",
+      "editor": "select",
+      "enum": [
+        "any",
+        "today",
+        "tomorrow",
+        "this-weekend",
+        "this-week",
+        "next-week",
+        "this-month",
+        "next-month"
+      ],
+      "enumTitles": [
+        "Any upcoming date",
+        "Today",
+        "Tomorrow",
+        "This weekend",
+        "This week",
+        "Next week",
+        "This month",
+        "Next month"
+      ],
+      "default": "any"
+    },
+    "keyword": {
+      "title": "Keyword",
+      "type": "string",
+      "description": "Optional search keyword, e.g. <code>jazz</code>, <code>startup</code> or <code>wine tasting</code>.",
+      "editor": "textfield"
+    },
+    "maxEvents": {
+      "title": "Max events",
+      "type": "integer",
+      "description": "Stop after this many events in total, across all searches. Each event is billed as one event.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 10000,
+      "default": 20,
+      "prefill": 20,
+      "sectionCaption": "Limits"
+    },
+    "includeDetails": {
+      "title": "Include event details",
+      "type": "boolean",
+      "description": "Open each event's page for the organizer, ticket price range, currency, sales status and full description (one extra request per event). Turn off for faster runs with search data only.",
+      "editor": "checkbox",
+      "default": true
+    },
+    "onlyNew": {
+      "title": "Only new events (monitoring)",
+      "type": "boolean",
+      "description": "Return only events not returned by an earlier run with the same locations, category, date filter, keyword and start URLs. Schedule the actor (e.g. daily) for new-event alerts: the first run is a baseline, later runs output (and bill) only new events, and skip their event pages. State is kept in the key-value store \"eventbrite-events-state\" in your account.",
+      "default": false,
+      "sectionCaption": "Monitoring"
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Apify Proxy (datacenter is enough). The actor switches to a new IP whenever Eventbrite blocks or rate-limits a request, and falls back to direct requests if the proxy keeps failing.",
+      "editor": "proxy",
+      "default": {
+        "useApifyProxy": true
+      },
+      "prefill": {
+        "useApifyProxy": true
+      },
+      "sectionCaption": "Advanced"
+    }
+  }
+}

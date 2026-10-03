@@ -1,0 +1,521 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "companyId": {
+        "type": ["string", "null"],
+        "title": "Company ID",
+        "description": "YC directory company ID.",
+        "example": "30832"
+      },
+      "name": {
+        "type": ["string", "null"],
+        "title": "Name",
+        "description": "Company name.",
+        "example": "F2"
+      },
+      "slug": {
+        "type": ["string", "null"],
+        "title": "Slug",
+        "description": "Company slug on ycombinator.com.",
+        "example": "f2"
+      },
+      "formerNames": {
+        "type": ["array", "null"],
+        "title": "Former names",
+        "description": "Previous company names.",
+        "example": []
+      },
+      "oneLiner": {
+        "type": ["string", "null"],
+        "title": "One-liner",
+        "description": "Short company description.",
+        "example": "The AI platform for private markets investors"
+      },
+      "longDescription": {
+        "type": ["string", "null"],
+        "title": "Description",
+        "description": "Long company description.",
+        "example": "F2 is the AI platform for private markets investors. ..."
+      },
+      "batch": {
+        "type": ["string", "null"],
+        "title": "Batch",
+        "description": "YC batch.",
+        "example": "Summer 2025"
+      },
+      "batchCode": {
+        "type": ["string", "null"],
+        "title": "Batch code",
+        "description": "Short batch code (W, X = Spring, S, F + year).",
+        "example": "S25"
+      },
+      "status": {
+        "type": ["string", "null"],
+        "title": "Status",
+        "description": "Active, Acquired, Inactive or Public.",
+        "example": "Active"
+      },
+      "stage": {
+        "type": ["string", "null"],
+        "title": "Stage",
+        "description": "Company stage, e.g. Early or Growth.",
+        "example": "Early"
+      },
+      "industry": {
+        "type": ["string", "null"],
+        "title": "Industry",
+        "description": "Primary industry.",
+        "example": "B2B"
+      },
+      "subindustry": {
+        "type": ["string", "null"],
+        "title": "Sub-industry",
+        "description": "Primary sub-industry.",
+        "example": "Engineering, Product and Design"
+      },
+      "industries": {
+        "type": ["array", "null"],
+        "title": "Industries",
+        "description": "Industries and sub-industries.",
+        "example": ["B2B", "Engineering, Product and Design"]
+      },
+      "regions": {
+        "type": ["array", "null"],
+        "title": "Regions",
+        "description": "Regions and countries.",
+        "example": ["United States of America", "America / Canada", "Remote"]
+      },
+      "locations": {
+        "type": ["string", "null"],
+        "title": "Locations",
+        "description": "Office locations.",
+        "example": "New York City, NY, USA"
+      },
+      "tags": {
+        "type": ["array", "null"],
+        "title": "Tags",
+        "description": "Company tags.",
+        "example": ["AI"]
+      },
+      "teamSize": {
+        "type": ["number", "null"],
+        "title": "Team size",
+        "description": "Number of employees.",
+        "example": 15
+      },
+      "website": {
+        "type": ["string", "null"],
+        "title": "Website",
+        "description": "Company website.",
+        "example": "http://f2.ai"
+      },
+      "ycUrl": {
+        "type": ["string", "null"],
+        "title": "YC page",
+        "description": "Company page on ycombinator.com.",
+        "example": "https://www.ycombinator.com/companies/f2"
+      },
+      "jobsUrl": {
+        "type": ["string", "null"],
+        "title": "Jobs page",
+        "description": "YC jobs page (when hiring).",
+        "example": "https://www.ycombinator.com/companies/f2/jobs"
+      },
+      "launchedAt": {
+        "type": ["string", "null"],
+        "title": "Launched",
+        "description": "When the company launched on YC (ISO 8601 UTC).",
+        "example": "2025-11-10T15:49:41.000Z"
+      },
+      "isHiring": {
+        "type": ["boolean", "null"],
+        "title": "Hiring",
+        "description": "Has open jobs on YC's job board.",
+        "example": true
+      },
+      "topCompany": {
+        "type": ["boolean", "null"],
+        "title": "Top company",
+        "description": "On YC's Top Companies list.",
+        "example": false
+      },
+      "nonprofit": {
+        "type": ["boolean", "null"],
+        "title": "Nonprofit",
+        "description": "Nonprofit organization.",
+        "example": false
+      },
+      "logoUrl": {
+        "type": ["string", "null"],
+        "title": "Logo",
+        "description": "Company logo URL.",
+        "example": "https://bookface-images.s3.amazonaws.com/small_logos/976c3cad3814111f1af6d087f0a0fe249be74b42.png"
+      },
+      "jobId": {
+        "type": ["string", "null"],
+        "title": "Job ID",
+        "description": "YC job ID.",
+        "example": "94746"
+      },
+      "title": {
+        "type": ["string", "null"],
+        "title": "Job title",
+        "description": "Job title.",
+        "example": "Applied AI Engineer"
+      },
+      "jobUrl": {
+        "type": ["string", "null"],
+        "title": "Job",
+        "description": "Job page on ycombinator.com.",
+        "example": "https://www.ycombinator.com/companies/infer/jobs/1DhbYdF-applied-ai-engineer"
+      },
+      "applyUrl": {
+        "type": ["string", "null"],
+        "title": "Apply",
+        "description": "Apply link (Work at a Startup).",
+        "example": "https://account.ycombinator.com/authenticate?continue=..."
+      },
+      "companyName": {
+        "type": ["string", "null"],
+        "title": "Company",
+        "description": "Company name.",
+        "example": "Infer"
+      },
+      "companySlug": {
+        "type": ["string", "null"],
+        "title": "Company slug",
+        "description": "Company slug on ycombinator.com.",
+        "example": "infer"
+      },
+      "companyUrl": {
+        "type": ["string", "null"],
+        "title": "Company page",
+        "description": "Company page on ycombinator.com.",
+        "example": "https://www.ycombinator.com/companies/infer"
+      },
+      "companyBatch": {
+        "type": ["string", "null"],
+        "title": "Company batch",
+        "description": "Company's YC batch code.",
+        "example": "S21"
+      },
+      "companyOneLiner": {
+        "type": ["string", "null"],
+        "title": "Company one-liner",
+        "description": "Short company description.",
+        "example": "Operating system for insurance agencies"
+      },
+      "companyLogoUrl": {
+        "type": ["string", "null"],
+        "title": "Company logo",
+        "description": "Company logo URL.",
+        "example": "https://bookface-images.s3.amazonaws.com/small_logos/f093ce23ca35f332213eeee11dee08581cefba9d.png"
+      },
+      "location": {
+        "type": ["string", "null"],
+        "title": "Location",
+        "description": "Job location as posted.",
+        "example": "Bengaluru, KA, IN / Remote (IN)"
+      },
+      "remote": {
+        "type": ["boolean", "null"],
+        "title": "Remote",
+        "description": "Whether the job allows remote work.",
+        "example": true
+      },
+      "jobType": {
+        "type": ["string", "null"],
+        "title": "Job type",
+        "description": "Full-time, Part-time, Contract or Internship.",
+        "example": "Full-time"
+      },
+      "role": {
+        "type": ["string", "null"],
+        "title": "Role",
+        "description": "Role category.",
+        "example": "Engineering"
+      },
+      "roleCategory": {
+        "type": ["string", "null"],
+        "title": "Role key",
+        "description": "Role category key.",
+        "example": "eng"
+      },
+      "roleSubtype": {
+        "type": ["string", "null"],
+        "title": "Specialty",
+        "description": "Role specialty, e.g. Backend or Full stack.",
+        "example": "Machine learning"
+      },
+      "salaryRange": {
+        "type": ["string", "null"],
+        "title": "Salary",
+        "description": "Salary range as posted.",
+        "example": "₹2M - ₹5M INR"
+      },
+      "salaryMin": {
+        "type": ["number", "null"],
+        "title": "Salary min",
+        "description": "Minimum salary in salaryCurrency.",
+        "example": 2000000
+      },
+      "salaryMax": {
+        "type": ["number", "null"],
+        "title": "Salary max",
+        "description": "Maximum salary in salaryCurrency.",
+        "example": 5000000
+      },
+      "salaryCurrency": {
+        "type": ["string", "null"],
+        "title": "Currency",
+        "description": "Salary currency code.",
+        "example": "INR"
+      },
+      "salaryPeriod": {
+        "type": ["string", "null"],
+        "title": "Pay period",
+        "description": "Pay period when stated (e.g. monthly); otherwise usually yearly.",
+        "example": null
+      },
+      "equityRange": {
+        "type": ["string", "null"],
+        "title": "Equity",
+        "description": "Equity range as posted.",
+        "example": "0.01% - 0.20%"
+      },
+      "equityMin": {
+        "type": ["number", "null"],
+        "title": "Equity min %",
+        "description": "Minimum equity in percent.",
+        "example": 0.01
+      },
+      "equityMax": {
+        "type": ["number", "null"],
+        "title": "Equity max %",
+        "description": "Maximum equity in percent.",
+        "example": 0.2
+      },
+      "experience": {
+        "type": ["string", "null"],
+        "title": "Experience",
+        "description": "Minimum experience as posted.",
+        "example": "3+ years"
+      },
+      "minExperienceYears": {
+        "type": ["number", "null"],
+        "title": "Experience (years)",
+        "description": "Minimum years of experience (0 = new grads ok).",
+        "example": 3
+      },
+      "visa": {
+        "type": ["string", "null"],
+        "title": "Visa",
+        "description": "Visa sponsorship / requirement.",
+        "example": "US citizenship/visa not required"
+      },
+      "skills": {
+        "type": ["array", "null"],
+        "title": "Skills",
+        "description": "Required skills.",
+        "example": ["Python"]
+      },
+      "postedAgo": {
+        "type": ["string", "null"],
+        "title": "Posted",
+        "description": "How long ago the job was posted, as shown by YC.",
+        "example": "5 months"
+      },
+      "lastActive": {
+        "type": ["string", "null"],
+        "title": "Last active",
+        "description": "When the hiring company was last active.",
+        "example": "8 days"
+      },
+      "sourceUrl": {
+        "type": ["string", "null"],
+        "title": "Source",
+        "description": "YC page the job was found on.",
+        "example": "https://www.ycombinator.com/jobs/role/software-engineer"
+      },
+      "scrapedAt": {
+        "type": ["string", "null"],
+        "title": "Scraped at",
+        "description": "When the item was scraped (ISO 8601 UTC).",
+        "example": "2026-10-03T00:00:00.000Z"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Companies",
+      "transformation": {
+        "fields": [
+          "logoUrl",
+          "name",
+          "oneLiner",
+          "batch",
+          "status",
+          "industries",
+          "regions",
+          "teamSize",
+          "isHiring",
+          "topCompany",
+          "website",
+          "ycUrl",
+          "launchedAt"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "logoUrl": {
+            "label": "Logo",
+            "format": "image"
+          },
+          "name": {
+            "label": "Name",
+            "format": "text"
+          },
+          "oneLiner": {
+            "label": "One-liner",
+            "format": "text"
+          },
+          "batch": {
+            "label": "Batch",
+            "format": "text"
+          },
+          "status": {
+            "label": "Status",
+            "format": "text"
+          },
+          "industries": {
+            "label": "Industries",
+            "format": "array"
+          },
+          "regions": {
+            "label": "Regions",
+            "format": "array"
+          },
+          "teamSize": {
+            "label": "Team size",
+            "format": "number"
+          },
+          "isHiring": {
+            "label": "Hiring",
+            "format": "boolean"
+          },
+          "topCompany": {
+            "label": "Top company",
+            "format": "boolean"
+          },
+          "website": {
+            "label": "Website",
+            "format": "link"
+          },
+          "ycUrl": {
+            "label": "YC page",
+            "format": "link"
+          },
+          "launchedAt": {
+            "label": "Launched",
+            "format": "date"
+          }
+        }
+      }
+    },
+    "jobs": {
+      "title": "Jobs",
+      "transformation": {
+        "fields": [
+          "title",
+          "companyName",
+          "companyBatch",
+          "location",
+          "remote",
+          "salaryMin",
+          "salaryMax",
+          "salaryCurrency",
+          "equityMin",
+          "equityMax",
+          "minExperienceYears",
+          "jobType",
+          "role",
+          "postedAgo",
+          "jobUrl",
+          "companyUrl"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "title": {
+            "label": "Job title",
+            "format": "text"
+          },
+          "companyName": {
+            "label": "Company",
+            "format": "text"
+          },
+          "companyBatch": {
+            "label": "Company batch",
+            "format": "text"
+          },
+          "location": {
+            "label": "Location",
+            "format": "text"
+          },
+          "remote": {
+            "label": "Remote",
+            "format": "boolean"
+          },
+          "salaryMin": {
+            "label": "Salary min",
+            "format": "number"
+          },
+          "salaryMax": {
+            "label": "Salary max",
+            "format": "number"
+          },
+          "salaryCurrency": {
+            "label": "Currency",
+            "format": "text"
+          },
+          "equityMin": {
+            "label": "Equity min %",
+            "format": "number"
+          },
+          "equityMax": {
+            "label": "Equity max %",
+            "format": "number"
+          },
+          "minExperienceYears": {
+            "label": "Experience (years)",
+            "format": "number"
+          },
+          "jobType": {
+            "label": "Job type",
+            "format": "text"
+          },
+          "role": {
+            "label": "Role",
+            "format": "text"
+          },
+          "postedAgo": {
+            "label": "Posted",
+            "format": "text"
+          },
+          "jobUrl": {
+            "label": "Job",
+            "format": "link"
+          },
+          "companyUrl": {
+            "label": "Company page",
+            "format": "link"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "website-screenshot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Fast, reliable website screenshots (PNG, JPEG, WebP) and PDFs of any URL, full page or viewport, with device presets.",
+  "main": "dist/main.js",
+  "scripts": {
+    "start": "node dist/main.js",
+    "start:dev": "tsx src/main.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "smoke": "tsx scripts/smoke.ts"
+  },
+  "dependencies": {
+    "apify": "^3.7.2",
+    "playwright": "1.56.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.4",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  }
+}

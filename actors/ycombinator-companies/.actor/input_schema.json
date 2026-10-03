@@ -1,0 +1,176 @@
+{
+  "title": "Y Combinator Companies & Jobs input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "mode": {
+      "title": "What to scrape",
+      "type": "string",
+      "description": "Companies: the YC company directory (all ~6,000 YC startups), filtered by batch, industry, region, status, tags and more. Jobs: open jobs at YC startups by role (and location), from specific companies, or from all hiring companies that match the company filters.",
+      "editor": "select",
+      "enum": ["companies", "jobs"],
+      "enumTitles": ["Companies (YC directory)", "Jobs at YC startups"],
+      "default": "companies",
+      "prefill": "companies",
+      "sectionCaption": "What to scrape"
+    },
+    "query": {
+      "title": "Search",
+      "type": "string",
+      "description": "Optional free-text search over company names, one-liners and descriptions, e.g. <code>payments</code> or <code>AI agents</code>. Leave empty to list every company that matches the filters.",
+      "editor": "textfield",
+      "sectionCaption": "Company filters"
+    },
+    "batches": {
+      "title": "Batches",
+      "type": "array",
+      "description": "YC batches, e.g. <code>Summer 2025</code>, <code>Winter 2024</code>, <code>Spring 2026</code>, <code>Fall 2025</code>. Short codes work too: <code>S25</code>, <code>W24</code>, <code>X26</code> (Spring), <code>F25</code> (Fall). Leave empty for all batches.",
+      "editor": "stringList",
+      "prefill": ["Summer 2025"]
+    },
+    "industries": {
+      "title": "Industries",
+      "type": "array",
+      "description": "Industries or sub-industries as on ycombinator.com/companies, e.g. <code>B2B</code>, <code>Fintech</code>, <code>Healthcare</code>, <code>Engineering, Product and Design</code>, <code>Security</code>. A company matches if it has any of them.",
+      "editor": "stringList"
+    },
+    "regions": {
+      "title": "Regions",
+      "type": "array",
+      "description": "Company regions or countries, e.g. <code>United States of America</code>, <code>Europe</code>, <code>India</code>, <code>Latin America</code>, <code>Remote</code>, <code>Fully Remote</code>. A company matches if it has any of them.",
+      "editor": "stringList"
+    },
+    "statuses": {
+      "title": "Status",
+      "type": "array",
+      "description": "Only companies with any of these statuses. Leave empty for all.",
+      "editor": "select",
+      "items": {
+        "type": "string",
+        "enum": ["Active", "Acquired", "Inactive", "Public"],
+        "enumTitles": ["Active", "Acquired", "Inactive", "Public"]
+      }
+    },
+    "tags": {
+      "title": "Tags",
+      "type": "array",
+      "description": "Company tags, e.g. <code>Artificial Intelligence</code>, <code>Developer Tools</code>, <code>SaaS</code>, <code>Open Source</code>, <code>Robotics</code>. A company matches if it has any of them.",
+      "editor": "stringList"
+    },
+    "hiringOnly": {
+      "title": "Only companies that are hiring",
+      "type": "boolean",
+      "description": "Only companies with open jobs on YC's job board.",
+      "default": false
+    },
+    "topCompaniesOnly": {
+      "title": "Only YC top companies",
+      "type": "boolean",
+      "description": "Only companies on YC's Top Companies list.",
+      "default": false
+    },
+    "minTeamSize": {
+      "title": "Min team size",
+      "type": "integer",
+      "description": "Only companies with at least this many employees.",
+      "editor": "number",
+      "minimum": 0
+    },
+    "maxTeamSize": {
+      "title": "Max team size",
+      "type": "integer",
+      "description": "Only companies with at most this many employees.",
+      "editor": "number",
+      "minimum": 0
+    },
+    "sortBy": {
+      "title": "Sort companies by",
+      "type": "string",
+      "description": "Relevance: YC's default directory order. Launch date: newest launched companies first (ignored when Search is set).",
+      "editor": "select",
+      "enum": ["relevance", "launchDate"],
+      "enumTitles": ["Relevance (default)", "Launch date, newest first"],
+      "default": "relevance"
+    },
+    "jobRoles": {
+      "title": "Job roles",
+      "type": "array",
+      "description": "Jobs mode: YC job board roles. Each role reads ycombinator.com/jobs/role/&lt;role&gt; (in the job location below, if set). Leave empty to use only company jobs pages, or all roles in the job location.",
+      "editor": "select",
+      "items": {
+        "type": "string",
+        "enum": [
+          "software-engineer",
+          "designer",
+          "product-manager",
+          "recruiting-hr",
+          "sales-manager",
+          "marketing",
+          "support",
+          "operations",
+          "science",
+          "finance",
+          "legal"
+        ],
+        "enumTitles": [
+          "Software Engineer",
+          "Design & UI/UX",
+          "Product Manager",
+          "Recruiting & HR",
+          "Sales",
+          "Marketing",
+          "Support & Success",
+          "Operations",
+          "Science",
+          "Finance",
+          "Legal"
+        ]
+      },
+      "prefill": ["software-engineer"],
+      "sectionCaption": "Jobs"
+    },
+    "jobLocation": {
+      "title": "Job location",
+      "type": "string",
+      "description": "Jobs mode: optional location for the role pages, e.g. <code>remote</code>, <code>san-francisco</code>, <code>new-york</code>, <code>los-angeles</code>, <code>seattle</code>, <code>boston</code>, <code>austin</code>, <code>london</code>, <code>india</code>. Leave empty for all locations.",
+      "editor": "textfield"
+    },
+    "companySlugs": {
+      "title": "Companies",
+      "type": "array",
+      "description": "Jobs mode: YC company slugs or URLs, e.g. <code>stripe</code> or <code>https://www.ycombinator.com/companies/airbnb</code>. Reads each company's jobs page.",
+      "editor": "stringList"
+    },
+    "jobsFromFilteredCompanies": {
+      "title": "Jobs at companies matching the company filters",
+      "type": "boolean",
+      "description": "Jobs mode: also read the jobs page of every hiring company that matches the company filters above (batch, industry, region, tags, ...), e.g. all open jobs at Summer 2025 startups. One page request per company.",
+      "default": false
+    },
+    "maxItems": {
+      "title": "Max items",
+      "type": "integer",
+      "description": "Stop after this many companies (Companies mode) or jobs (Jobs mode). Each item is billed as one event.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 10000,
+      "default": 20,
+      "prefill": 20,
+      "sectionCaption": "Limits"
+    },
+    "onlyNew": {
+      "title": "Only new items (monitoring)",
+      "type": "boolean",
+      "description": "Return only companies or jobs not returned by an earlier run with the same mode and filters. Schedule the actor (e.g. daily) for new-company or new-job alerts: the first run is a baseline, later runs output (and bill) only new items. State is kept in the key-value store \"ycombinator-companies-state\" in your account.",
+      "default": false,
+      "sectionCaption": "Monitoring"
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Optional Apify Proxy for ycombinator.com pages (usually not needed). The company search itself uses YC's public search API directly.",
+      "editor": "proxy",
+      "sectionCaption": "Advanced"
+    }
+  }
+}

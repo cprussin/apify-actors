@@ -1,0 +1,63 @@
+{
+  "title": "Foundit Jobs Scraper input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "queries": {
+      "title": "Search queries",
+      "type": "array",
+      "description": "Keywords as you would type them on foundit.in, e.g. <code>python developer</code>, <code>data analyst</code>, <code>sales manager</code>. Each query is searched in every location below. Leave empty to list all jobs in the locations.",
+      "editor": "stringList",
+      "prefill": ["python developer"],
+      "sectionCaption": "What to search"
+    },
+    "locations": {
+      "title": "Locations",
+      "type": "array",
+      "description": "Optional city or country filter, one per entry, e.g. <code>Bangalore</code>, <code>Pune</code>, <code>Mumbai</code>, <code>Delhi</code>, <code>Singapore</code> or <code>Remote</code>. Leave empty to search everywhere (India, plus Gulf and Southeast Asia jobs Foundit lists).",
+      "editor": "stringList",
+      "prefill": ["Bangalore"]
+    },
+    "sortBy": {
+      "title": "Sort by",
+      "type": "string",
+      "description": "<code>date</code>: most recently posted or refreshed jobs first (best for monitoring). <code>relevance</code>: Foundit's default ranking.",
+      "editor": "select",
+      "enum": ["date", "relevance"],
+      "enumTitles": ["Newest first", "Relevance"],
+      "default": "date"
+    },
+    "maxItems": {
+      "title": "Max jobs",
+      "type": "integer",
+      "description": "Stop after this many jobs in total, across all searches. Each job is billed as one event.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 10000,
+      "default": 20,
+      "prefill": 20,
+      "sectionCaption": "Limits"
+    },
+    "includeDescription": {
+      "title": "Include full description",
+      "type": "boolean",
+      "description": "Add the full job description (plain text) to each job. Every job always has a short <code>descriptionSnippet</code>.",
+      "editor": "checkbox",
+      "default": false
+    },
+    "onlyNew": {
+      "title": "Only new jobs (monitoring)",
+      "type": "boolean",
+      "description": "Return only jobs not returned by an earlier run with the same queries and locations. Schedule the actor (e.g. daily) for new-job alerts: the first run is a baseline, later runs output (and bill) only new jobs. State is kept in the key-value store \"foundit-jobs-state\" in your account.",
+      "default": false,
+      "sectionCaption": "Monitoring"
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Optional Apify Proxy. Not needed normally: the Foundit API answers datacenter IPs directly. If set, the actor switches to a new IP whenever a request is blocked or rate-limited.",
+      "editor": "proxy",
+      "sectionCaption": "Advanced"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "event": {
+    "eventTitle": "Event",
+    "eventDescription": "One Eventbrite event written to the dataset.",
+    "eventPriceUsd": 0.005,
+    "isPrimaryEvent": true
+  },
+  "apify-actor-start": {
+    "eventTitle": "Actor start",
+    "eventDescription": "Synthetic start event (covers the first 5 s of compute).",
+    "eventPriceUsd": 5e-5
+  }
+}

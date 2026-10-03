@@ -214,3 +214,4 @@ Yes, like any Apify actor: Apify API, JavaScript/Python clients, Make, Zapier, n
 - [google-trends](https://apify.com/cprussin/google-trends): Google Trends interest over time, regions, related queries and trending searches.
 - [google-ads-transparency](https://apify.com/cprussin/google-ads-transparency): Ads from the Google Ads Transparency Center by advertiser or domain.
 - [app-store-reviews](https://apify.com/cprussin/app-store-reviews): App Store and Google Play reviews for any app.
+- [ycombinator-companies](https://apify.com/cprussin/ycombinator-companies): Y Combinator company directory by batch, industry and region, plus YC startup jobs.

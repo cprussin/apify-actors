@@ -1,0 +1,340 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "eventId": {
+        "type": ["string", "null"],
+        "title": "Event ID",
+        "description": "Eventbrite event ID.",
+        "example": "1990839672051"
+      },
+      "name": {
+        "type": ["string", "null"],
+        "title": "Event",
+        "description": "Event name.",
+        "example": "Friday Night Lights at Mama Taco Everyone FREE B4 12am w/RSVP"
+      },
+      "url": {
+        "type": ["string", "null"],
+        "title": "Event page",
+        "description": "Eventbrite event page URL.",
+        "example": "https://www.eventbrite.com/e/friday-night-lights-at-mama-taco-everyone-free-b4-12am-wrsvp-tickets-1990839672051"
+      },
+      "startDate": {
+        "type": ["string", "null"],
+        "title": "Starts (local)",
+        "description": "Start time in the venue's local time.",
+        "example": "2026-10-02T20:00:00"
+      },
+      "endDate": {
+        "type": ["string", "null"],
+        "title": "Ends (local)",
+        "description": "End time in the venue's local time.",
+        "example": "2026-10-03T04:00:00"
+      },
+      "timezone": {
+        "type": ["string", "null"],
+        "title": "Time zone",
+        "description": "IANA time zone of the event.",
+        "example": "America/New_York"
+      },
+      "startUtc": {
+        "type": ["string", "null"],
+        "title": "Starts (UTC)",
+        "description": "Start time in UTC (ISO 8601).",
+        "example": "2026-10-03T00:00:00.000Z"
+      },
+      "endUtc": {
+        "type": ["string", "null"],
+        "title": "Ends (UTC)",
+        "description": "End time in UTC (ISO 8601).",
+        "example": "2026-10-03T08:00:00.000Z"
+      },
+      "isOnline": {
+        "type": ["boolean", "null"],
+        "title": "Online",
+        "description": "Whether the event is online.",
+        "example": false
+      },
+      "venueName": {
+        "type": ["string", "null"],
+        "title": "Venue",
+        "description": "Venue name.",
+        "example": "MAMATACO"
+      },
+      "venueAddress": {
+        "type": ["string", "null"],
+        "title": "Address",
+        "description": "Full venue address.",
+        "example": "880 Flushing Avenue, Brooklyn, NY 11206"
+      },
+      "venueCity": {
+        "type": ["string", "null"],
+        "title": "City",
+        "description": "Venue city.",
+        "example": "Brooklyn"
+      },
+      "venueRegion": {
+        "type": ["string", "null"],
+        "title": "Region",
+        "description": "Venue state or region.",
+        "example": "NY"
+      },
+      "venuePostalCode": {
+        "type": ["string", "null"],
+        "title": "Postal code",
+        "description": "Venue postal code.",
+        "example": "11206"
+      },
+      "venueCountry": {
+        "type": ["string", "null"],
+        "title": "Country",
+        "description": "Venue country code.",
+        "example": "US"
+      },
+      "latitude": {
+        "type": ["number", "null"],
+        "title": "Latitude",
+        "description": "Venue latitude.",
+        "example": 40.7018895
+      },
+      "longitude": {
+        "type": ["number", "null"],
+        "title": "Longitude",
+        "description": "Venue longitude.",
+        "example": -73.936578
+      },
+      "organizerId": {
+        "type": ["string", "null"],
+        "title": "Organizer ID",
+        "description": "Eventbrite organizer ID.",
+        "example": "5494940201"
+      },
+      "organizerName": {
+        "type": ["string", "null"],
+        "title": "Organizer",
+        "description": "Organizer name (needs Include event details).",
+        "example": "JiggyTime Ent"
+      },
+      "organizerUrl": {
+        "type": ["string", "null"],
+        "title": "Organizer page",
+        "description": "Organizer profile URL (needs Include event details).",
+        "example": "https://www.eventbrite.com/o/jiggytime-ent-5494940201"
+      },
+      "isFree": {
+        "type": ["boolean", "null"],
+        "title": "Free",
+        "description": "Whether the event is free (needs Include event details).",
+        "example": false
+      },
+      "priceMin": {
+        "type": ["number", "null"],
+        "title": "Price min",
+        "description": "Lowest ticket price in currency (needs Include event details).",
+        "example": 0
+      },
+      "priceMax": {
+        "type": ["number", "null"],
+        "title": "Price max",
+        "description": "Highest ticket price in currency (needs Include event details).",
+        "example": 55.2
+      },
+      "currency": {
+        "type": ["string", "null"],
+        "title": "Currency",
+        "description": "Ticket price currency code.",
+        "example": "USD"
+      },
+      "salesStatus": {
+        "type": ["string", "null"],
+        "title": "Sales status",
+        "description": "Ticket sales status, e.g. on_sale or sold_out.",
+        "example": "on_sale"
+      },
+      "category": {
+        "type": ["string", "null"],
+        "title": "Category",
+        "description": "Eventbrite category.",
+        "example": "Music"
+      },
+      "subcategory": {
+        "type": ["string", "null"],
+        "title": "Subcategory",
+        "description": "Eventbrite subcategory.",
+        "example": "Hip Hop / Rap"
+      },
+      "format": {
+        "type": ["string", "null"],
+        "title": "Format",
+        "description": "Event format, e.g. Conference or Party or Social Gathering.",
+        "example": "Party or Social Gathering"
+      },
+      "tags": {
+        "type": ["array", "null"],
+        "title": "Tags",
+        "description": "Event tags.",
+        "example": [
+          "Reggae",
+          "Afrobeats",
+          "Reggaeton",
+          "Dancehall",
+          "Nycnightlife"
+        ]
+      },
+      "imageUrl": {
+        "type": ["string", "null"],
+        "title": "Image",
+        "description": "Event image URL.",
+        "example": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F1194695043%2F48251508672%2F1%2Foriginal.20260930-042650?auto=format%2Ccompress&q=75&sharp=10&s=f70b4f5ae73f4aa7fe2af627fbec8fc7"
+      },
+      "summary": {
+        "type": ["string", "null"],
+        "title": "Summary",
+        "description": "Short event summary.",
+        "example": "Kick off your weekend with free entry before midnight when you RSVP for the ultimate Friday night bash!"
+      },
+      "description": {
+        "type": ["string", "null"],
+        "title": "Description",
+        "description": "Full event description (only with Include event details).",
+        "example": "FRIDAY, OCTOBER 2ND | 8PM - 4AM\nLIBRA SZN TAKEOVER BROOKLYN'S #1 FRIDAY NIGHT PARTY\n..."
+      },
+      "isCancelled": {
+        "type": ["boolean", "null"],
+        "title": "Cancelled",
+        "description": "Whether the event is cancelled.",
+        "example": false
+      },
+      "seriesId": {
+        "type": ["string", "null"],
+        "title": "Series ID",
+        "description": "ID of the event series for recurring events.",
+        "example": "1990839672050"
+      },
+      "publishedAt": {
+        "type": ["string", "null"],
+        "title": "Published",
+        "description": "When the event was published (ISO 8601).",
+        "example": "2026-06-02T05:10:10Z"
+      },
+      "searchUrl": {
+        "type": ["string", "null"],
+        "title": "Search URL",
+        "description": "Eventbrite search page the event was found on.",
+        "example": "https://www.eventbrite.com/d/ny--new-york/all-events/"
+      },
+      "scrapedAt": {
+        "type": ["string", "null"],
+        "title": "Scraped at",
+        "description": "When the event was scraped (ISO 8601 UTC).",
+        "example": "2026-10-01T00:00:00.000Z"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Events",
+      "transformation": {
+        "fields": [
+          "name",
+          "startDate",
+          "endDate",
+          "timezone",
+          "venueName",
+          "venueAddress",
+          "venueCity",
+          "isOnline",
+          "organizerName",
+          "isFree",
+          "priceMin",
+          "priceMax",
+          "currency",
+          "category",
+          "summary",
+          "url",
+          "imageUrl",
+          "scrapedAt"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "name": {
+            "label": "Event",
+            "format": "text"
+          },
+          "startDate": {
+            "label": "Starts (local)",
+            "format": "text"
+          },
+          "endDate": {
+            "label": "Ends (local)",
+            "format": "text"
+          },
+          "timezone": {
+            "label": "Time zone",
+            "format": "text"
+          },
+          "venueName": {
+            "label": "Venue",
+            "format": "text"
+          },
+          "venueAddress": {
+            "label": "Address",
+            "format": "text"
+          },
+          "venueCity": {
+            "label": "City",
+            "format": "text"
+          },
+          "isOnline": {
+            "label": "Online",
+            "format": "boolean"
+          },
+          "organizerName": {
+            "label": "Organizer",
+            "format": "text"
+          },
+          "isFree": {
+            "label": "Free",
+            "format": "boolean"
+          },
+          "priceMin": {
+            "label": "Price min",
+            "format": "number"
+          },
+          "priceMax": {
+            "label": "Price max",
+            "format": "number"
+          },
+          "currency": {
+            "label": "Currency",
+            "format": "text"
+          },
+          "category": {
+            "label": "Category",
+            "format": "text"
+          },
+          "summary": {
+            "label": "Summary",
+            "format": "text"
+          },
+          "url": {
+            "label": "Event page",
+            "format": "link"
+          },
+          "imageUrl": {
+            "label": "Image",
+            "format": "image"
+          },
+          "scrapedAt": {
+            "label": "Scraped at",
+            "format": "date"
+          }
+        }
+      }
+    }
+  }
+}

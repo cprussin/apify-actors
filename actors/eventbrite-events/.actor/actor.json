@@ -1,0 +1,17 @@
+{
+  "actorSpecification": 1,
+  "name": "eventbrite-events",
+  "title": "Eventbrite Events Scraper: Venues, Organizers & Prices",
+  "description": "Events from Eventbrite by city, category, date and keyword: name, start/end time and time zone, venue with address and coordinates, online flag, organizer, ticket price range, category, tags, image and full description. No login needed.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 1024,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}

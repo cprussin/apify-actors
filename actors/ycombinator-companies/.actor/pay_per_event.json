@@ -1,0 +1,13 @@
+{
+  "company": {
+    "eventTitle": "Company",
+    "eventDescription": "One Y Combinator company written to the dataset (Companies mode).",
+    "eventPriceUsd": 0.003,
+    "isPrimaryEvent": true
+  },
+  "job": {
+    "eventTitle": "Job",
+    "eventDescription": "One YC startup job written to the dataset (Jobs mode).",
+    "eventPriceUsd": 0.003
+  }
+}

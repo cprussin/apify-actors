@@ -1,0 +1,267 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "jobId": {
+        "type": ["string", "null"],
+        "title": "Job ID",
+        "description": "Foundit job ID.",
+        "example": "61745075"
+      },
+      "title": {
+        "type": ["string", "null"],
+        "title": "Job title",
+        "description": "Job title.",
+        "example": "Machine Learning Engineer (AI/ML)"
+      },
+      "companyName": {
+        "type": ["string", "null"],
+        "title": "Company",
+        "description": "Company name; null when the recruiter hides it.",
+        "example": "Rarr Technologies Private Limited"
+      },
+      "companyId": {
+        "type": ["string", "null"],
+        "title": "Company ID",
+        "description": "Foundit company ID.",
+        "example": "1248443"
+      },
+      "companyLogoUrl": {
+        "type": ["string", "null"],
+        "title": "Logo",
+        "description": "Company logo URL.",
+        "example": "https://media.monsterindia.com/logos/xSP_Qualysinx/jdlogo.gif"
+      },
+      "locations": {
+        "type": ["array", "null"],
+        "title": "Locations",
+        "description": "Job locations as listed: cities, or a country for country-wide entries.",
+        "example": ["Bengaluru / Bangalore", "Pune", "India"]
+      },
+      "country": {
+        "type": ["string", "null"],
+        "title": "Country",
+        "description": "Job country.",
+        "example": "India"
+      },
+      "remote": {
+        "type": ["boolean", "null"],
+        "title": "Remote",
+        "description": "Whether the job is listed as remote.",
+        "example": false
+      },
+      "experienceMin": {
+        "type": ["number", "null"],
+        "title": "Experience min (years)",
+        "description": "Minimum years of experience.",
+        "example": 6
+      },
+      "experienceMax": {
+        "type": ["number", "null"],
+        "title": "Experience max (years)",
+        "description": "Maximum years of experience.",
+        "example": 9
+      },
+      "salaryMin": {
+        "type": ["number", "null"],
+        "title": "Salary min",
+        "description": "Minimum yearly salary in salaryCurrency; null when not disclosed.",
+        "example": 1300000
+      },
+      "salaryMax": {
+        "type": ["number", "null"],
+        "title": "Salary max",
+        "description": "Maximum yearly salary in salaryCurrency; null when not disclosed.",
+        "example": 1500000
+      },
+      "salaryCurrency": {
+        "type": ["string", "null"],
+        "title": "Currency",
+        "description": "Salary currency code.",
+        "example": "INR"
+      },
+      "skills": {
+        "type": ["array", "null"],
+        "title": "Skills",
+        "description": "Key skills listed on the job.",
+        "example": ["Python", "Machine Learning", "Tensorflow"]
+      },
+      "employmentTypes": {
+        "type": ["array", "null"],
+        "title": "Employment type",
+        "description": "Employment types, e.g. Full time, Part time.",
+        "example": ["Full time"]
+      },
+      "jobTypes": {
+        "type": ["array", "null"],
+        "title": "Job type",
+        "description": "Job types, e.g. Permanent Job, Contract Job.",
+        "example": ["Permanent Job"]
+      },
+      "industries": {
+        "type": ["array", "null"],
+        "title": "Industries",
+        "description": "Industries of the job.",
+        "example": ["IT/Computers - Software"]
+      },
+      "functions": {
+        "type": ["array", "null"],
+        "title": "Functions",
+        "description": "Job functions.",
+        "example": ["software development"]
+      },
+      "postedAt": {
+        "type": ["string", "null"],
+        "title": "Posted",
+        "description": "When the job was posted (ISO 8601 UTC).",
+        "example": "2026-08-07T11:47:09.000Z"
+      },
+      "updatedAt": {
+        "type": ["string", "null"],
+        "title": "Updated",
+        "description": "When the job was last updated or refreshed (ISO 8601 UTC).",
+        "example": "2026-10-02T20:54:50.000Z"
+      },
+      "closesAt": {
+        "type": ["string", "null"],
+        "title": "Closes",
+        "description": "When the job listing expires (ISO 8601 UTC).",
+        "example": "2026-12-01T18:30:00.000Z"
+      },
+      "applicants": {
+        "type": ["number", "null"],
+        "title": "Applicants",
+        "description": "Number of applicants on Foundit.",
+        "example": 368
+      },
+      "urgentlyHiring": {
+        "type": ["boolean", "null"],
+        "title": "Urgently hiring",
+        "description": "Whether the job is marked as urgently hiring.",
+        "example": false
+      },
+      "jobUrl": {
+        "type": ["string", "null"],
+        "title": "Job",
+        "description": "Job page on foundit.in.",
+        "example": "https://www.foundit.in/job/machine-learning-engineer-ai-ml-rarr-technologies-private-limited-bengaluru-bangalore-61745075"
+      },
+      "applyUrl": {
+        "type": ["string", "null"],
+        "title": "Apply URL",
+        "description": "External application page, when the job is applied for off Foundit.",
+        "example": "https://careers.example.com/jobs/12345"
+      },
+      "descriptionSnippet": {
+        "type": ["string", "null"],
+        "title": "Description snippet",
+        "description": "First ~300 characters of the job description (plain text).",
+        "example": "Role Overview We are looking for an experienced Data Science & Machine Learning Engineer with strong expertise in AI/ML, Python, and Deep Learning ..."
+      },
+      "description": {
+        "type": ["string", "null"],
+        "title": "Description",
+        "description": "Full job description (plain text), with includeDescription.",
+        "example": "Role Overview\nWe are looking for an experienced Data Science & Machine Learning Engineer ..."
+      },
+      "searchQuery": {
+        "type": ["string", "null"],
+        "title": "Search query",
+        "description": "Query of the search that found the job.",
+        "example": "python developer"
+      },
+      "searchLocation": {
+        "type": ["string", "null"],
+        "title": "Search location",
+        "description": "Location filter of the search that found the job.",
+        "example": "Bangalore"
+      },
+      "scrapedAt": {
+        "type": ["string", "null"],
+        "title": "Scraped at",
+        "description": "When the job was scraped (ISO 8601 UTC).",
+        "example": "2026-10-03T00:00:00.000Z"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Jobs",
+      "transformation": {
+        "fields": [
+          "title",
+          "companyName",
+          "locations",
+          "experienceMin",
+          "experienceMax",
+          "salaryMin",
+          "salaryMax",
+          "salaryCurrency",
+          "skills",
+          "postedAt",
+          "jobUrl",
+          "descriptionSnippet",
+          "scrapedAt"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "title": {
+            "label": "Job title",
+            "format": "text"
+          },
+          "companyName": {
+            "label": "Company",
+            "format": "text"
+          },
+          "locations": {
+            "label": "Locations",
+            "format": "array"
+          },
+          "experienceMin": {
+            "label": "Exp. min (yrs)",
+            "format": "number"
+          },
+          "experienceMax": {
+            "label": "Exp. max (yrs)",
+            "format": "number"
+          },
+          "salaryMin": {
+            "label": "Salary min",
+            "format": "number"
+          },
+          "salaryMax": {
+            "label": "Salary max",
+            "format": "number"
+          },
+          "salaryCurrency": {
+            "label": "Currency",
+            "format": "text"
+          },
+          "skills": {
+            "label": "Skills",
+            "format": "array"
+          },
+          "postedAt": {
+            "label": "Posted",
+            "format": "date"
+          },
+          "jobUrl": {
+            "label": "Job",
+            "format": "link"
+          },
+          "descriptionSnippet": {
+            "label": "Description",
+            "format": "text"
+          },
+          "scrapedAt": {
+            "label": "Scraped at",
+            "format": "date"
+          }
+        }
+      }
+    }
+  }
+}

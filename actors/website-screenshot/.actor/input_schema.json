@@ -1,0 +1,147 @@
+{
+  "title": "Website Screenshot input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "urls": {
+      "title": "URLs",
+      "type": "array",
+      "description": "Pages to capture, one per line, e.g. <code>https://apify.com</code>. <code>https://</code> is added when missing. Only these URLs are loaded; no links are followed. Each successful screenshot is billed as one event; failed URLs are free.",
+      "editor": "stringList",
+      "prefill": ["https://apify.com"],
+      "default": ["https://apify.com"],
+      "sectionCaption": "What to capture"
+    },
+    "startUrls": {
+      "title": "Start URLs",
+      "type": "array",
+      "description": "Optional alternative to URLs, in Apify's request-list format (e.g. from another actor or a file). Combined with URLs.",
+      "editor": "requestListSources"
+    },
+    "format": {
+      "title": "Format",
+      "type": "string",
+      "description": "Image format, or PDF (a vector PDF of the page with backgrounds).",
+      "editor": "select",
+      "enum": ["png", "jpeg", "webp", "pdf"],
+      "enumTitles": ["PNG", "JPEG", "WebP", "PDF"],
+      "default": "png"
+    },
+    "fullPage": {
+      "title": "Full page",
+      "type": "boolean",
+      "description": "Capture the whole scrollable page instead of just the viewport. For PDF, renders the whole page as one tall page.",
+      "editor": "checkbox",
+      "default": false
+    },
+    "device": {
+      "title": "Device",
+      "type": "string",
+      "description": "Viewport preset. Desktop: 1920x1080. Tablet: 820x1180 at 2x (iPad). Mobile: 390x844 at 2x (iPhone), with a mobile user agent and touch.",
+      "editor": "select",
+      "enum": ["desktop", "tablet", "mobile"],
+      "enumTitles": ["Desktop", "Tablet", "Mobile"],
+      "default": "desktop",
+      "sectionCaption": "Viewport"
+    },
+    "width": {
+      "title": "Viewport width (px)",
+      "type": "integer",
+      "description": "Overrides the device preset's viewport width.",
+      "editor": "number",
+      "minimum": 200,
+      "maximum": 3840
+    },
+    "height": {
+      "title": "Viewport height (px)",
+      "type": "integer",
+      "description": "Overrides the device preset's viewport height.",
+      "editor": "number",
+      "minimum": 200,
+      "maximum": 4320
+    },
+    "quality": {
+      "title": "Quality",
+      "type": "integer",
+      "description": "JPEG and WebP quality, 1-100. Lower is smaller.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 80
+    },
+    "waitUntil": {
+      "title": "Wait until",
+      "type": "string",
+      "description": "When the page counts as loaded. If it times out, the actor retries once with the next lighter option (Network idle → Load → DOM ready → first response).",
+      "editor": "select",
+      "enum": ["load", "domcontentloaded", "networkidle"],
+      "enumTitles": [
+        "Load (all resources)",
+        "DOM ready (fastest)",
+        "Network idle (slowest, most complete)"
+      ],
+      "default": "load",
+      "sectionCaption": "Page loading"
+    },
+    "delayMs": {
+      "title": "Extra delay (ms)",
+      "type": "integer",
+      "description": "Wait this long after the page loads, e.g. for animations or late content.",
+      "editor": "number",
+      "minimum": 0,
+      "maximum": 30000,
+      "default": 0
+    },
+    "waitForSelector": {
+      "title": "Wait for selector",
+      "type": "string",
+      "description": "Optional CSS selector to wait for before capturing, e.g. <code>#main</code>. The URL fails if it doesn't appear within the timeout.",
+      "editor": "textfield"
+    },
+    "selector": {
+      "title": "Capture element",
+      "type": "string",
+      "description": "Optional CSS selector: capture only the first matching element (e.g. <code>header</code> or <code>.pricing-table</code>) instead of the page. Ignored for PDF.",
+      "editor": "textfield"
+    },
+    "hideCookieBanners": {
+      "title": "Hide cookie banners",
+      "type": "boolean",
+      "description": "Hide common cookie-consent banners (OneTrust, Cookiebot, Usercentrics, Didomi, Quantcast and more) with CSS. Best-effort; nothing is clicked.",
+      "editor": "checkbox",
+      "default": true
+    },
+    "scrollToBottom": {
+      "title": "Scroll to bottom",
+      "type": "boolean",
+      "description": "Scroll through the page before capturing so lazy-loaded images and sections render. Useful with Full page.",
+      "editor": "checkbox",
+      "default": false
+    },
+    "timeoutSecs": {
+      "title": "Timeout per URL (s)",
+      "type": "integer",
+      "description": "Max time to load each page (and to wait for selectors).",
+      "editor": "number",
+      "minimum": 5,
+      "maximum": 180,
+      "default": 30,
+      "sectionCaption": "Advanced"
+    },
+    "maxConcurrency": {
+      "title": "Max concurrency",
+      "type": "integer",
+      "description": "Pages captured in parallel. 3 fits the default 2 GB memory; raise memory for more.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 10,
+      "default": 3
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Optional Apify Proxy, e.g. for sites that block datacenter IPs or to capture a page from another country. Off by default.",
+      "editor": "proxy"
+    }
+  }
+}
