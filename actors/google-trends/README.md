@@ -171,6 +171,6 @@ Use mode `trendingNow`, turn on `onlyNew` and run the actor on an [Apify schedul
 
 ## Related actors
 
-- [google-ads-transparency](https://apify.com/cprussin/google-ads-transparency): Ads from the Google Ads Transparency Center by advertiser or domain.
-- [product-hunt-launches](https://apify.com/cprussin/product-hunt-launches): Product Hunt launches, leaderboards, upvotes and makers.
-- [youtube-transcripts](https://apify.com/cprussin/youtube-transcripts): Captions and transcripts from YouTube videos and channels.
+- [google-ads-transparency](https://apify.com/cprussin/google-ads-transparency?fpr=to54nm): Ads from the Google Ads Transparency Center by advertiser or domain.
+- [product-hunt-launches](https://apify.com/cprussin/product-hunt-launches?fpr=to54nm): Product Hunt launches, leaderboards, upvotes and makers.
+- [youtube-transcripts](https://apify.com/cprussin/youtube-transcripts?fpr=to54nm): Captions and transcripts from YouTube videos and channels.

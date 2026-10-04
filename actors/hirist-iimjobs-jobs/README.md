@@ -137,7 +137,7 @@ Turn on `onlyNew` and run the actor on an [Apify schedule](https://docs.apify.co
 
 ## Related actors
 
-- [foundit-jobs](https://apify.com/cprussin/foundit-jobs): Indian job listings from Foundit (Monster India) with salary, experience and skills.
-- [wellfound-jobs](https://apify.com/cprussin/wellfound-jobs): Startup jobs from Wellfound (AngelList Talent) with salary, equity and company data.
-- [ycombinator-companies](https://apify.com/cprussin/ycombinator-companies): Y Combinator company directory by batch, industry and region, plus YC startup jobs.
-- [new-business-registrations](https://apify.com/cprussin/new-business-registrations): New LLC and corporation filings from state open-data portals.
+- [foundit-jobs](https://apify.com/cprussin/foundit-jobs?fpr=to54nm): Indian job listings from Foundit (Monster India) with salary, experience and skills.
+- [wellfound-jobs](https://apify.com/cprussin/wellfound-jobs?fpr=to54nm): Startup jobs from Wellfound (AngelList Talent) with salary, equity and company data.
+- [ycombinator-companies](https://apify.com/cprussin/ycombinator-companies?fpr=to54nm): Y Combinator company directory by batch, industry and region, plus YC startup jobs.
+- [new-business-registrations](https://apify.com/cprussin/new-business-registrations?fpr=to54nm): New LLC and corporation filings from state open-data portals.

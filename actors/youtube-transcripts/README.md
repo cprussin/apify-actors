@@ -161,6 +161,6 @@ Add channel or playlist URLs, turn on `onlyNew` and run the actor on an [Apify s
 
 ## Related actors
 
-- [substack-scraper](https://apify.com/cprussin/substack-scraper): Substack newsletter posts, content and public stats.
-- [bilibili-scraper](https://apify.com/cprussin/bilibili-scraper): Bilibili videos, comments, trending and search results.
-- [telegram-channel-scraper](https://apify.com/cprussin/telegram-channel-scraper): Posts, views and reactions from public Telegram channels.
+- [substack-scraper](https://apify.com/cprussin/substack-scraper?fpr=to54nm): Substack newsletter posts, content and public stats.
+- [bilibili-scraper](https://apify.com/cprussin/bilibili-scraper?fpr=to54nm): Bilibili videos, comments, trending and search results.
+- [telegram-channel-scraper](https://apify.com/cprussin/telegram-channel-scraper?fpr=to54nm): Posts, views and reactions from public Telegram channels.

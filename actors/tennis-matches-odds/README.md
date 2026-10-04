@@ -166,5 +166,5 @@ That's **$4 per 1,000 matches**, or $6 per 1,000 with per-bookmaker odds. Filter
 
 ## Related actors
 
-- [google-trends](https://apify.com/cprussin/google-trends): Google Trends interest over time, regions, related queries and trending searches.
-- [telegram-channel-scraper](https://apify.com/cprussin/telegram-channel-scraper): Posts, views and reactions from public Telegram channels.
+- [google-trends](https://apify.com/cprussin/google-trends?fpr=to54nm): Google Trends interest over time, regions, related queries and trending searches.
+- [telegram-channel-scraper](https://apify.com/cprussin/telegram-channel-scraper?fpr=to54nm): Posts, views and reactions from public Telegram channels.

@@ -183,6 +183,6 @@ Turn on `onlyNew` and run the actor on an [Apify schedule](https://docs.apify.co
 
 ## Related actors
 
-- [substack-scraper](https://apify.com/cprussin/substack-scraper): Substack newsletter posts, content and public stats.
-- [youtube-transcripts](https://apify.com/cprussin/youtube-transcripts): Captions and transcripts from YouTube videos and channels.
-- [bilibili-scraper](https://apify.com/cprussin/bilibili-scraper): Bilibili videos, comments, trending and search results.
+- [substack-scraper](https://apify.com/cprussin/substack-scraper?fpr=to54nm): Substack newsletter posts, content and public stats.
+- [youtube-transcripts](https://apify.com/cprussin/youtube-transcripts?fpr=to54nm): Captions and transcripts from YouTube videos and channels.
+- [bilibili-scraper](https://apify.com/cprussin/bilibili-scraper?fpr=to54nm): Bilibili videos, comments, trending and search results.

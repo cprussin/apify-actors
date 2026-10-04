@@ -173,6 +173,6 @@ Yes. Like any Apify actor, you can call it from the Apify API, the JavaScript an
 
 ## Related actors
 
-- [app-store-reviews](https://apify.com/cprussin/app-store-reviews): App Store and Google Play reviews for any app.
-- [google-ads-transparency](https://apify.com/cprussin/google-ads-transparency): Ads from the Google Ads Transparency Center by advertiser or domain.
-- [aliexpress-scraper](https://apify.com/cprussin/aliexpress-scraper): AliExpress product search results, prices and buyer reviews.
+- [app-store-reviews](https://apify.com/cprussin/app-store-reviews?fpr=to54nm): App Store and Google Play reviews for any app.
+- [google-ads-transparency](https://apify.com/cprussin/google-ads-transparency?fpr=to54nm): Ads from the Google Ads Transparency Center by advertiser or domain.
+- [aliexpress-scraper](https://apify.com/cprussin/aliexpress-scraper?fpr=to54nm): AliExpress product search results, prices and buyer reviews.

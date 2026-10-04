@@ -147,9 +147,9 @@ Turn on `onlyNew` and run the actor on an [Apify schedule](https://docs.apify.co
 
 ## Related actors
 
-- [foundit-jobs](https://apify.com/cprussin/foundit-jobs): Indian job listings from Foundit (Monster India) with salary, experience and skills.
-- [hirist-iimjobs-jobs](https://apify.com/cprussin/hirist-iimjobs-jobs): India tech jobs from Hirist and management jobs from iimjobs, with experience, salary and skills.
-- [product-hunt-launches](https://apify.com/cprussin/product-hunt-launches): Product Hunt launches, leaderboards, upvotes and makers.
-- [new-business-registrations](https://apify.com/cprussin/new-business-registrations): New LLC and corporation filings from state open-data portals.
-- [trustpilot-reviews](https://apify.com/cprussin/trustpilot-reviews): Trustpilot reviews, ratings and TrustScore for any company.
-- [ycombinator-companies](https://apify.com/cprussin/ycombinator-companies): Y Combinator company directory by batch, industry and region, plus YC startup jobs.
+- [foundit-jobs](https://apify.com/cprussin/foundit-jobs?fpr=to54nm): Indian job listings from Foundit (Monster India) with salary, experience and skills.
+- [hirist-iimjobs-jobs](https://apify.com/cprussin/hirist-iimjobs-jobs?fpr=to54nm): India tech jobs from Hirist and management jobs from iimjobs, with experience, salary and skills.
+- [product-hunt-launches](https://apify.com/cprussin/product-hunt-launches?fpr=to54nm): Product Hunt launches, leaderboards, upvotes and makers.
+- [new-business-registrations](https://apify.com/cprussin/new-business-registrations?fpr=to54nm): New LLC and corporation filings from state open-data portals.
+- [trustpilot-reviews](https://apify.com/cprussin/trustpilot-reviews?fpr=to54nm): Trustpilot reviews, ratings and TrustScore for any company.
+- [ycombinator-companies](https://apify.com/cprussin/ycombinator-companies?fpr=to54nm): Y Combinator company directory by batch, industry and region, plus YC startup jobs.

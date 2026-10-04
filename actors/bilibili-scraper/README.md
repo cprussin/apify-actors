@@ -163,6 +163,6 @@ Turn on `onlyNew` and run the actor on an [Apify schedule](https://docs.apify.co
 
 ## Related actors
 
-- [youtube-transcripts](https://apify.com/cprussin/youtube-transcripts): Captions and transcripts from YouTube videos and channels.
-- [telegram-channel-scraper](https://apify.com/cprussin/telegram-channel-scraper): Posts, views and reactions from public Telegram channels.
-- [substack-scraper](https://apify.com/cprussin/substack-scraper): Substack newsletter posts, content and public stats.
+- [youtube-transcripts](https://apify.com/cprussin/youtube-transcripts?fpr=to54nm): Captions and transcripts from YouTube videos and channels.
+- [telegram-channel-scraper](https://apify.com/cprussin/telegram-channel-scraper?fpr=to54nm): Posts, views and reactions from public Telegram channels.
+- [substack-scraper](https://apify.com/cprussin/substack-scraper?fpr=to54nm): Substack newsletter posts, content and public stats.

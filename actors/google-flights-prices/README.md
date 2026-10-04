@@ -179,6 +179,6 @@ Turn on `onlyNew` and run the actor on an [Apify schedule](https://docs.apify.co
 
 ## Related actors
 
-- [aliexpress-scraper](https://apify.com/cprussin/aliexpress-scraper): AliExpress product search results, prices and buyer reviews.
-- [google-trends](https://apify.com/cprussin/google-trends): Google Trends interest over time, regions, related queries and trending searches.
-- [eventbrite-events](https://apify.com/cprussin/eventbrite-events): Eventbrite events by city, category and date, with venues, organizers and prices.
+- [aliexpress-scraper](https://apify.com/cprussin/aliexpress-scraper?fpr=to54nm): AliExpress product search results, prices and buyer reviews.
+- [google-trends](https://apify.com/cprussin/google-trends?fpr=to54nm): Google Trends interest over time, regions, related queries and trending searches.
+- [eventbrite-events](https://apify.com/cprussin/eventbrite-events?fpr=to54nm): Eventbrite events by city, category and date, with venues, organizers and prices.
