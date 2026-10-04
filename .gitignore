@@ -5,3 +5,4 @@ apify_storage
 .env
 *.log
 __pycache__/
+apps/*/build
