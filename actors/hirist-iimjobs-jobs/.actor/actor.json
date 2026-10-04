@@ -1,0 +1,17 @@
+{
+  "actorSpecification": 1,
+  "name": "hirist-iimjobs-jobs",
+  "title": "Hirist & iimjobs Jobs Scraper: India Tech & Management Jobs",
+  "description": "Job listings from Hirist (tech) and iimjobs (management) by keyword, city and experience: title, company, locations, experience range, salary, skills, posted date and job URL. New-job monitoring mode. No login needed.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 1024,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}

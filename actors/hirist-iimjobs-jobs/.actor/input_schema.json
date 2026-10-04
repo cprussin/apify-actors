@@ -1,0 +1,80 @@
+{
+  "title": "Hirist & iimjobs Jobs Scraper input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "site": {
+      "title": "Site",
+      "type": "string",
+      "description": "<code>hirist</code>: tech jobs from hirist.tech. <code>iimjobs</code>: management, finance, sales and marketing jobs from iimjobs.com. <code>both</code>: each query on both sites.",
+      "editor": "select",
+      "enum": ["both", "hirist", "iimjobs"],
+      "enumTitles": ["Both", "Hirist (tech jobs)", "iimjobs (management jobs)"],
+      "default": "both",
+      "prefill": "both",
+      "sectionCaption": "What to search"
+    },
+    "queries": {
+      "title": "Search queries",
+      "type": "array",
+      "description": "Keywords as you would type them on the site, e.g. <code>python developer</code>, <code>product manager</code>, <code>investment banking</code>. Each query is searched on every selected site.",
+      "editor": "stringList",
+      "prefill": ["product manager"]
+    },
+    "locations": {
+      "title": "Locations",
+      "type": "array",
+      "description": "Optional city or state filter, e.g. <code>Bangalore</code>, <code>Mumbai</code>, <code>Delhi NCR</code>, <code>Gurgaon</code>, <code>Pune</code>, <code>Hyderabad</code> or <code>Remote</code>. Jobs in any of them match. Leave empty for all of India and abroad.",
+      "editor": "stringList",
+      "prefill": ["Bangalore"]
+    },
+    "minExperience": {
+      "title": "Min experience (years)",
+      "type": "integer",
+      "description": "Optional: only jobs whose experience range reaches at least this many years.",
+      "editor": "number",
+      "minimum": 0,
+      "maximum": 50
+    },
+    "maxExperience": {
+      "title": "Max experience (years)",
+      "type": "integer",
+      "description": "Optional: only jobs whose experience range starts at or below this many years (e.g. 2 for freshers and juniors).",
+      "editor": "number",
+      "minimum": 0,
+      "maximum": 50
+    },
+    "maxItems": {
+      "title": "Max jobs",
+      "type": "integer",
+      "description": "Stop after this many jobs in total, across all searches; with both sites it is split evenly (a site with fewer jobs leaves the rest to the other). Each job is billed as one event.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 10000,
+      "default": 20,
+      "prefill": 20,
+      "sectionCaption": "Limits"
+    },
+    "includeDescription": {
+      "title": "Include full description",
+      "type": "boolean",
+      "description": "Fetch each job's page data for the full description (plain text) and a <code>descriptionSnippet</code>. One extra request per job: slower, especially on iimjobs (10 s per request).",
+      "editor": "checkbox",
+      "default": false
+    },
+    "onlyNew": {
+      "title": "Only new jobs (monitoring)",
+      "type": "boolean",
+      "description": "Return only jobs not returned by an earlier run with the same searches. Schedule the actor (e.g. daily) for new-job alerts: the first run is a baseline, later runs output (and bill) only new jobs. State is kept in the key-value store \"hirist-iimjobs-jobs-state\" in your account.",
+      "default": false,
+      "sectionCaption": "Monitoring"
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Optional Apify Proxy. Not needed normally: the Hirist and iimjobs APIs answer datacenter IPs directly. If set, the actor switches to a new IP whenever a request is blocked or rate-limited.",
+      "editor": "proxy",
+      "sectionCaption": "Advanced"
+    }
+  }
+}

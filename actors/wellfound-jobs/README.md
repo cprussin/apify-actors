@@ -148,6 +148,7 @@ Turn on `onlyNew` and run the actor on an [Apify schedule](https://docs.apify.co
 ## Related actors
 
 - [foundit-jobs](https://apify.com/cprussin/foundit-jobs): Indian job listings from Foundit (Monster India) with salary, experience and skills.
+- [hirist-iimjobs-jobs](https://apify.com/cprussin/hirist-iimjobs-jobs): India tech jobs from Hirist and management jobs from iimjobs, with experience, salary and skills.
 - [product-hunt-launches](https://apify.com/cprussin/product-hunt-launches): Product Hunt launches, leaderboards, upvotes and makers.
 - [new-business-registrations](https://apify.com/cprussin/new-business-registrations): New LLC and corporation filings from state open-data portals.
 - [trustpilot-reviews](https://apify.com/cprussin/trustpilot-reviews): Trustpilot reviews, ratings and TrustScore for any company.

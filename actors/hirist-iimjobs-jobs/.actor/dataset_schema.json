@@ -1,0 +1,220 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "jobId": {
+        "type": ["string", "null"],
+        "title": "Job ID",
+        "description": "Job ID on its site (IDs are per site).",
+        "example": "1676002"
+      },
+      "site": {
+        "type": ["string", "null"],
+        "title": "Site",
+        "description": "Where the job is listed: hirist (hirist.tech) or iimjobs (iimjobs.com).",
+        "example": "hirist"
+      },
+      "title": {
+        "type": ["string", "null"],
+        "title": "Job title",
+        "description": "Job title as listed (often prefixed with the company).",
+        "example": "Java Developer - Spring Frameworks"
+      },
+      "designation": {
+        "type": ["string", "null"],
+        "title": "Designation",
+        "description": "Role name without company or specialization.",
+        "example": "Java Developer"
+      },
+      "company": {
+        "type": ["string", "null"],
+        "title": "Company",
+        "description": "Company name; null for confidential jobs.",
+        "example": "SOFTPATH TECHNOLOGIES"
+      },
+      "companyLogoUrl": {
+        "type": ["string", "null"],
+        "title": "Logo",
+        "description": "Company logo URL.",
+        "example": "https://recruiter-static-content.s3.ap-south-1.amazonaws.com/CompanyLogos/centralised-25715.webp"
+      },
+      "locations": {
+        "type": ["array", "null"],
+        "title": "Locations",
+        "description": "Job locations as listed: cities, states, Remote or Anywhere in India.",
+        "example": ["Hyderabad"]
+      },
+      "remote": {
+        "type": ["boolean", "null"],
+        "title": "Remote",
+        "description": "Whether the job is listed as remote or work from home.",
+        "example": false
+      },
+      "experienceMin": {
+        "type": ["number", "null"],
+        "title": "Experience min (years)",
+        "description": "Minimum years of experience.",
+        "example": 6
+      },
+      "experienceMax": {
+        "type": ["number", "null"],
+        "title": "Experience max (years)",
+        "description": "Maximum years of experience.",
+        "example": 9
+      },
+      "salaryMin": {
+        "type": ["number", "null"],
+        "title": "Salary min",
+        "description": "Minimum yearly salary in INR; null when not disclosed.",
+        "example": 2000000
+      },
+      "salaryMax": {
+        "type": ["number", "null"],
+        "title": "Salary max",
+        "description": "Maximum yearly salary in INR; null when not disclosed.",
+        "example": 2500000
+      },
+      "salaryCurrency": {
+        "type": ["string", "null"],
+        "title": "Currency",
+        "description": "Salary currency code (INR); null when not disclosed.",
+        "example": "INR"
+      },
+      "skills": {
+        "type": ["array", "null"],
+        "title": "Skills",
+        "description": "Skill tags listed on the job.",
+        "example": ["Java", "Spring MVC", "Spring Boot"]
+      },
+      "postedAt": {
+        "type": ["string", "null"],
+        "title": "Posted",
+        "description": "When the job was posted (ISO 8601 UTC).",
+        "example": "2026-09-30T09:46:43.381Z"
+      },
+      "applicants": {
+        "type": ["number", "null"],
+        "title": "Applicants",
+        "description": "Number of applications on the site.",
+        "example": 158
+      },
+      "recruiterName": {
+        "type": ["string", "null"],
+        "title": "Recruiter",
+        "description": "Name of the recruiter who posted the job; null for confidential jobs.",
+        "example": "Madhavi"
+      },
+      "jobUrl": {
+        "type": ["string", "null"],
+        "title": "Job",
+        "description": "Job page on hirist.tech or iimjobs.com.",
+        "example": "https://www.hirist.tech/j/java-developer-spring-frameworks-1676002"
+      },
+      "applyUrl": {
+        "type": ["string", "null"],
+        "title": "Apply URL",
+        "description": "External application page, when the job is applied for off the site.",
+        "example": "https://careers.example.com/jobs/12345"
+      },
+      "descriptionSnippet": {
+        "type": ["string", "null"],
+        "title": "Description snippet",
+        "description": "First ~300 characters of the job description (plain text), with includeDescription; null otherwise.",
+        "example": "Java Backend - Long Term Contract Experience : 6 - 9 years Location : Hyderabad ..."
+      },
+      "description": {
+        "type": ["string", "null"],
+        "title": "Description",
+        "description": "Full job description (plain text), with includeDescription.",
+        "example": "Java Backend - Long Term Contract\n\nExperience : 6 - 9 years ..."
+      },
+      "searchQuery": {
+        "type": ["string", "null"],
+        "title": "Search query",
+        "description": "Query of the search that found the job.",
+        "example": "java developer"
+      },
+      "scrapedAt": {
+        "type": ["string", "null"],
+        "title": "Scraped at",
+        "description": "When the job was scraped (ISO 8601 UTC).",
+        "example": "2026-10-04T00:00:00.000Z"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Jobs",
+      "transformation": {
+        "fields": [
+          "site",
+          "title",
+          "company",
+          "locations",
+          "experienceMin",
+          "experienceMax",
+          "salaryMin",
+          "salaryMax",
+          "skills",
+          "postedAt",
+          "jobUrl",
+          "scrapedAt"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "site": {
+            "label": "Site",
+            "format": "text"
+          },
+          "title": {
+            "label": "Job title",
+            "format": "text"
+          },
+          "company": {
+            "label": "Company",
+            "format": "text"
+          },
+          "locations": {
+            "label": "Locations",
+            "format": "array"
+          },
+          "experienceMin": {
+            "label": "Exp. min (yrs)",
+            "format": "number"
+          },
+          "experienceMax": {
+            "label": "Exp. max (yrs)",
+            "format": "number"
+          },
+          "salaryMin": {
+            "label": "Salary min (INR)",
+            "format": "number"
+          },
+          "salaryMax": {
+            "label": "Salary max (INR)",
+            "format": "number"
+          },
+          "skills": {
+            "label": "Skills",
+            "format": "array"
+          },
+          "postedAt": {
+            "label": "Posted",
+            "format": "date"
+          },
+          "jobUrl": {
+            "label": "Job",
+            "format": "link"
+          },
+          "scrapedAt": {
+            "label": "Scraped at",
+            "format": "date"
+          }
+        }
+      }
+    }
+  }
+}
