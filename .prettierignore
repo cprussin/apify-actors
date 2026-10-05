@@ -12,3 +12,4 @@ actors/foundit-jobs/test/fixtures
 actors/hirist-iimjobs-jobs/test/fixtures
 actors/ycombinator-companies/test/fixtures
 apps/*/build
+.claude/worktrees

@@ -6,3 +6,4 @@ apify_storage
 *.log
 __pycache__/
 apps/*/build
+.claude/worktrees

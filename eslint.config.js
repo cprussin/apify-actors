@@ -8,6 +8,7 @@ export default tseslint.config(
       "**/node_modules/**",
       "**/storage/**",
       "apps/*/build/**",
+      ".claude/**",
     ],
   },
   js.configs.recommended,
