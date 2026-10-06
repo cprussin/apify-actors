@@ -1,0 +1,13 @@
+{
+  "document-converted": {
+    "eventTitle": "Document converted",
+    "eventDescription": "One document converted to Markdown, text or chunks (any size, any number of chunks). Failed documents are free.",
+    "eventPriceUsd": 0.004,
+    "isPrimaryEvent": true
+  },
+  "ocr-page": {
+    "eventTitle": "OCR page",
+    "eventDescription": "One scanned PDF page read with OCR (only pages without a text layer, only when OCR is on).",
+    "eventPriceUsd": 0.01
+  }
+}

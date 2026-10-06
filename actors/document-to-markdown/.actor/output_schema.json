@@ -1,0 +1,16 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Documents",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "chunks": {
+      "type": "string",
+      "title": "RAG chunks",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=chunks"
+    }
+  }
+}

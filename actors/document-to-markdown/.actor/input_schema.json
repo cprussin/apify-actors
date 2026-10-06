@@ -1,0 +1,126 @@
+{
+  "title": "Document to Markdown input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "urls": {
+      "title": "Document URLs",
+      "type": "array",
+      "description": "Links to PDF, DOCX, PPTX, XLSX, HTML, EPUB, CSV or TXT files, one per line. The type is detected from the file itself, so links without an extension work too. Apify key-value store record URLs (api.apify.com/v2/key-value-stores/.../records/...) are read with your token. Each converted document is billed once; failed ones are free.",
+      "editor": "stringList",
+      "prefill": ["https://arxiv.org/pdf/1706.03762"],
+      "sectionCaption": "Documents"
+    },
+    "startUrls": {
+      "title": "Start URLs",
+      "type": "array",
+      "description": "Optional alternative to Document URLs, in Apify's request-list format (e.g. a file with one URL per line, or the output of another actor). Combined with Document URLs.",
+      "editor": "requestListSources"
+    },
+    "keyValueStoreRecords": {
+      "title": "Key-value store records",
+      "type": "array",
+      "description": "Files uploaded to an Apify key-value store, as <code>storeId/recordKey</code> or <code>username~store-name/recordKey</code>, one per line. Use this to convert your own files without hosting them anywhere.",
+      "editor": "stringList"
+    },
+    "outputFormat": {
+      "title": "Output format",
+      "type": "string",
+      "description": "Markdown: one item per document, with headings, lists and Markdown tables. Plain text: the same without Markdown syntax (table cells tab-separated). RAG chunks: one item per chunk, with page numbers and the nearest heading, ready for a vector database.",
+      "editor": "select",
+      "enum": ["markdown", "text", "chunks"],
+      "enumTitles": ["Markdown", "Plain text", "RAG chunks"],
+      "default": "markdown",
+      "sectionCaption": "Output"
+    },
+    "chunkSize": {
+      "title": "Chunk size (characters)",
+      "type": "integer",
+      "description": "RAG chunks only. Maximum characters per chunk, overlap included. Chunks break between paragraphs; long tables are split by rows and repeat their header. About 4 characters make one token.",
+      "editor": "number",
+      "minimum": 200,
+      "maximum": 20000,
+      "default": 2000
+    },
+    "chunkOverlap": {
+      "title": "Chunk overlap (characters)",
+      "type": "integer",
+      "description": "RAG chunks only. Characters repeated from the end of the previous chunk, at most half the chunk size. 0 for none.",
+      "editor": "number",
+      "minimum": 0,
+      "maximum": 10000,
+      "default": 200
+    },
+    "ocr": {
+      "title": "OCR scanned pages",
+      "type": "boolean",
+      "description": "Read PDF pages that have no text layer (scans, photos) with Tesseract OCR. Pages with text are never OCR'd. Each OCR'd page is billed as an extra event.",
+      "editor": "checkbox",
+      "default": true,
+      "sectionCaption": "OCR"
+    },
+    "ocrLanguage": {
+      "title": "OCR language",
+      "type": "string",
+      "description": "Language of the scanned text.",
+      "editor": "select",
+      "enum": ["eng", "deu", "fra", "spa", "ita", "por", "nld"],
+      "enumTitles": [
+        "English",
+        "German",
+        "French",
+        "Spanish",
+        "Italian",
+        "Portuguese",
+        "Dutch"
+      ],
+      "default": "eng"
+    },
+    "maxOcrPagesPerDocument": {
+      "title": "Max OCR pages per document",
+      "type": "integer",
+      "description": "Caps OCR cost and time per document. Scanned pages beyond the cap are skipped (and reported in the item's warning).",
+      "editor": "number",
+      "minimum": 0,
+      "maximum": 2000,
+      "default": 50
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "description": "Larger files are skipped with an error (free). Raise the run's memory for files over 50 MB.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 200,
+      "default": 50,
+      "sectionCaption": "Limits"
+    },
+    "maxPagesPerDocument": {
+      "title": "Max PDF pages per document",
+      "type": "integer",
+      "description": "Only the first pages of longer PDFs are converted (noted in the item's warning).",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 5000,
+      "default": 1000
+    },
+    "timeoutSecs": {
+      "title": "Download timeout (seconds)",
+      "type": "integer",
+      "description": "Max time to download one file.",
+      "editor": "number",
+      "minimum": 5,
+      "maximum": 600,
+      "default": 60
+    },
+    "maxConcurrency": {
+      "title": "Parallel downloads",
+      "type": "integer",
+      "description": "Files downloaded at the same time. Conversion runs one document at a time to keep memory low.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 10,
+      "default": 3
+    }
+  }
+}

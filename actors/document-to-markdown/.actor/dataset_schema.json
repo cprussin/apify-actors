@@ -1,0 +1,239 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "url": {
+        "type": "string",
+        "title": "URL",
+        "description": "Document URL, or storeId/key for a key-value store record.",
+        "example": "https://arxiv.org/pdf/1706.03762"
+      },
+      "fileName": {
+        "type": ["string", "null"],
+        "title": "File name",
+        "description": "From the Content-Disposition header, the URL path or the record key.",
+        "example": "1706.03762v7.pdf"
+      },
+      "fileType": {
+        "type": ["string", "null"],
+        "title": "File type",
+        "description": "Detected type: pdf, docx, pptx, xlsx, html, epub, csv or txt.",
+        "example": "pdf"
+      },
+      "title": {
+        "type": ["string", "null"],
+        "title": "Title",
+        "description": "Document title from its metadata, or its first heading.",
+        "example": "Attention Is All You Need"
+      },
+      "outputFormat": {
+        "type": "string",
+        "title": "Output format",
+        "description": "markdown, text or chunks.",
+        "example": "markdown"
+      },
+      "content": {
+        "type": ["string", "null"],
+        "title": "Content",
+        "description": "The document as Markdown or plain text, or one chunk's Markdown. Null on failure.",
+        "example": "# Attention Is All You Need\n\n| Model | BLEU |\n| --- | --- |\n| Transformer | 28.4 |"
+      },
+      "chunkIndex": {
+        "type": ["number", "null"],
+        "title": "Chunk index",
+        "description": "0-based chunk number within the document (chunks format).",
+        "example": null
+      },
+      "chunkCount": {
+        "type": ["number", "null"],
+        "title": "Chunks",
+        "description": "Number of chunks in the document (chunks format).",
+        "example": null
+      },
+      "pageStart": {
+        "type": ["number", "null"],
+        "title": "First page",
+        "description": "First PDF page, slide or sheet number the chunk covers (chunks format).",
+        "example": null
+      },
+      "pageEnd": {
+        "type": ["number", "null"],
+        "title": "Last page",
+        "description": "Last PDF page, slide or sheet number the chunk covers (chunks format).",
+        "example": null
+      },
+      "heading": {
+        "type": ["string", "null"],
+        "title": "Section heading",
+        "description": "Nearest Markdown heading above the chunk's start (chunks format).",
+        "example": null
+      },
+      "pageCount": {
+        "type": ["number", "null"],
+        "title": "Pages",
+        "description": "PDF pages, PPTX slides or XLSX sheets in the document.",
+        "example": 15
+      },
+      "ocrPages": {
+        "type": "number",
+        "title": "OCR pages",
+        "description": "Pages read with OCR (each billed as an ocr-page event).",
+        "example": 0
+      },
+      "bytes": {
+        "type": ["number", "null"],
+        "title": "Size (bytes)",
+        "description": "Downloaded file size in bytes.",
+        "example": 2215244
+      },
+      "charCount": {
+        "type": ["number", "null"],
+        "title": "Characters",
+        "description": "Characters in the content (the full content when truncated).",
+        "example": 39854
+      },
+      "wordCount": {
+        "type": ["number", "null"],
+        "title": "Words",
+        "description": "Words in the content.",
+        "example": 6045
+      },
+      "contentUrl": {
+        "type": ["string", "null"],
+        "title": "Full content",
+        "description": "Link to the full content when it was too large for a dataset item (over 5 MB), otherwise null.",
+        "example": null
+      },
+      "warning": {
+        "type": ["string", "null"],
+        "title": "Warning",
+        "description": "Notes such as pages skipped by limits or scanned pages left without OCR.",
+        "example": null
+      },
+      "error": {
+        "type": ["string", "null"],
+        "title": "Error",
+        "description": "Why the document failed (not billed), or null on success.",
+        "example": null
+      },
+      "convertedAt": {
+        "type": "string",
+        "title": "Converted at",
+        "description": "When the document was converted (ISO 8601 UTC).",
+        "example": "2026-10-06T00:00:00.000Z"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Documents",
+      "transformation": {
+        "fields": [
+          "url",
+          "title",
+          "fileType",
+          "pageCount",
+          "ocrPages",
+          "wordCount",
+          "content",
+          "warning",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "url": {
+            "label": "URL",
+            "format": "link"
+          },
+          "title": {
+            "label": "Title",
+            "format": "text"
+          },
+          "fileType": {
+            "label": "File type",
+            "format": "text"
+          },
+          "pageCount": {
+            "label": "Pages",
+            "format": "number"
+          },
+          "ocrPages": {
+            "label": "OCR pages",
+            "format": "number"
+          },
+          "wordCount": {
+            "label": "Words",
+            "format": "number"
+          },
+          "content": {
+            "label": "Content",
+            "format": "text"
+          },
+          "warning": {
+            "label": "Warning",
+            "format": "text"
+          },
+          "error": {
+            "label": "Error",
+            "format": "text"
+          }
+        }
+      }
+    },
+    "chunks": {
+      "title": "RAG chunks",
+      "transformation": {
+        "fields": [
+          "url",
+          "chunkIndex",
+          "pageStart",
+          "pageEnd",
+          "heading",
+          "content",
+          "charCount",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "url": {
+            "label": "URL",
+            "format": "link"
+          },
+          "chunkIndex": {
+            "label": "Chunk index",
+            "format": "number"
+          },
+          "pageStart": {
+            "label": "First page",
+            "format": "number"
+          },
+          "pageEnd": {
+            "label": "Last page",
+            "format": "number"
+          },
+          "heading": {
+            "label": "Section heading",
+            "format": "text"
+          },
+          "content": {
+            "label": "Content",
+            "format": "text"
+          },
+          "charCount": {
+            "label": "Characters",
+            "format": "number"
+          },
+          "error": {
+            "label": "Error",
+            "format": "text"
+          }
+        }
+      }
+    }
+  }
+}
