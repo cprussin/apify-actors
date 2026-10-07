@@ -1,0 +1,164 @@
+{
+  "title": "App Store & Google Play app data input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "mode": {
+      "title": "What to scrape",
+      "type": "string",
+      "description": "Keyword ranks: where apps rank in App Store search for your keywords. Top charts: top free / paid / grossing apps on the App Store and Google Play. App details: full metadata for the apps you list.",
+      "editor": "select",
+      "enum": ["keywordRanks", "topCharts", "appDetails"],
+      "enumTitles": [
+        "Keyword ranks (App Store search)",
+        "Top charts (App Store + Google Play)",
+        "App details (App Store + Google Play)"
+      ],
+      "default": "keywordRanks",
+      "prefill": "keywordRanks"
+    },
+    "keywords": {
+      "title": "Keywords",
+      "type": "array",
+      "description": "Keyword ranks mode: App Store search terms. Each result is one row with its rank (1 = top) and the app's metadata. App Store only: Google Play search isn't supported.",
+      "editor": "stringList",
+      "prefill": ["photo editor"],
+      "sectionCaption": "Keyword ranks"
+    },
+    "trackedApps": {
+      "title": "Only these apps",
+      "type": "array",
+      "description": "Optional. Keyword ranks mode: output only these App Store apps (URL, id123... or apple:bundle.id) for each keyword, plus a \"notRanked\" row when an app isn't in the top results. Pays for your apps only, not the whole result list.",
+      "editor": "stringList"
+    },
+    "charts": {
+      "title": "Charts",
+      "type": "array",
+      "description": "Top charts mode: which charts to fetch for each store.",
+      "editor": "select",
+      "items": {
+        "type": "string",
+        "enum": ["topFree", "topPaid", "topGrossing"],
+        "enumTitles": ["Top free", "Top paid", "Top grossing"]
+      },
+      "default": ["topFree"],
+      "sectionCaption": "Top charts"
+    },
+    "stores": {
+      "title": "Stores",
+      "type": "array",
+      "description": "Top charts mode: App Store, Google Play or both.",
+      "editor": "select",
+      "items": {
+        "type": "string",
+        "enum": ["apple", "google"],
+        "enumTitles": ["App Store", "Google Play"]
+      },
+      "default": ["apple", "google"]
+    },
+    "category": {
+      "title": "Category",
+      "type": "string",
+      "description": "Top charts mode: chart category. \"All\" is the overall App Store chart, and the all-apps (non-game) chart on Google Play.",
+      "editor": "select",
+      "enum": [
+        "all",
+        "games",
+        "books",
+        "business",
+        "education",
+        "entertainment",
+        "finance",
+        "foodAndDrink",
+        "healthAndFitness",
+        "lifestyle",
+        "medical",
+        "music",
+        "navigation",
+        "news",
+        "photoAndVideo",
+        "productivity",
+        "shopping",
+        "socialNetworking",
+        "sports",
+        "travel",
+        "utilities",
+        "weather"
+      ],
+      "enumTitles": [
+        "All",
+        "Games",
+        "Books",
+        "Business",
+        "Education",
+        "Entertainment",
+        "Finance",
+        "Food & Drink",
+        "Health & Fitness",
+        "Lifestyle",
+        "Medical",
+        "Music",
+        "Navigation",
+        "News",
+        "Photo & Video",
+        "Productivity",
+        "Shopping",
+        "Social networking",
+        "Sports",
+        "Travel",
+        "Utilities",
+        "Weather"
+      ],
+      "default": "all"
+    },
+    "apps": {
+      "title": "Apps",
+      "type": "array",
+      "description": "App details mode: App Store or Google Play URLs or IDs, store detected automatically: https://apps.apple.com/us/app/id324684580, id324684580 = App Store; https://play.google.com/store/apps/details?id=com.spotify.music or com.spotify.music = Google Play. Prefix apple: for an iOS bundle ID (apple:com.spotify.client).",
+      "editor": "stringList",
+      "sectionCaption": "App details"
+    },
+    "country": {
+      "title": "Country",
+      "type": "string",
+      "description": "Two-letter store country (us, gb, de, fr, jp, br, in, ...). Ranks, charts, prices and availability are per country.",
+      "editor": "textfield",
+      "default": "us",
+      "prefill": "us",
+      "sectionCaption": "Options"
+    },
+    "language": {
+      "title": "Language (Google Play)",
+      "type": "string",
+      "description": "Two-letter language code (en, de, es, ...) for Google Play names and descriptions. App Store text comes in the country's default language.",
+      "editor": "textfield",
+      "default": "en",
+      "prefill": "en"
+    },
+    "maxResults": {
+      "title": "Max ranks per keyword / chart",
+      "type": "integer",
+      "description": "How deep to go: top N results per keyword or chart. App Store search returns up to 200, App Store charts up to 100, Google Play charts up to 200. Each row is billed as one rank row.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 200,
+      "default": 50,
+      "prefill": 10
+    },
+    "rankChangesOnly": {
+      "title": "Rank changes only (monitoring)",
+      "type": "boolean",
+      "description": "Keyword ranks and top charts: output only apps whose rank changed since the last run with the same input (up, down, new, dropped), with the previous rank. The first run outputs everything as a baseline. Schedule it daily for rank alerts. State is kept in the key-value store \"app-store-apps-ranks\" in your account.",
+      "default": false
+    },
+    "minRankChange": {
+      "title": "Min rank change",
+      "type": "integer",
+      "description": "Rank changes only: ignore moves smaller than this many places, including slides just across the top-N cut-off. Apple's search order jitters by a place or two between calls, so 3 is a good value for keyword alerts.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 200,
+      "default": 1
+    }
+  }
+}

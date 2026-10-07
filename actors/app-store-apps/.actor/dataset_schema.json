@@ -1,0 +1,607 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": ["string", "null"],
+        "title": "Type",
+        "description": "Row type: keywordRank (App Store search position), chartRank (top chart position), app (app details) or error (failed query, free).",
+        "example": "keywordRank"
+      },
+      "store": {
+        "type": ["string", "null"],
+        "title": "Store",
+        "description": "apple (App Store) or google (Google Play).",
+        "example": "apple"
+      },
+      "keyword": {
+        "type": ["string", "null"],
+        "title": "Keyword",
+        "description": "Search keyword (keyword ranks).",
+        "example": "photo editor"
+      },
+      "chart": {
+        "type": ["string", "null"],
+        "title": "Chart",
+        "description": "topFree, topPaid or topGrossing (top charts).",
+        "example": "topFree"
+      },
+      "chartCategory": {
+        "type": ["string", "null"],
+        "title": "Chart category",
+        "description": "Chart category (top charts), e.g. all, games, productivity.",
+        "example": "all"
+      },
+      "rank": {
+        "type": ["number", "null"],
+        "title": "Rank",
+        "description": "Position in the search results or chart (1 = top). Null for dropped and not-ranked rows.",
+        "example": 1
+      },
+      "previousRank": {
+        "type": ["number", "null"],
+        "title": "Previous rank",
+        "description": "Rank in the previous run (rank changes only mode).",
+        "example": 3
+      },
+      "rankChange": {
+        "type": ["number", "null"],
+        "title": "Rank change",
+        "description": "previousRank minus rank: positive = moved up (rank changes only mode).",
+        "example": 2
+      },
+      "changeType": {
+        "type": ["string", "null"],
+        "title": "Change",
+        "description": "Rank changes only: baseline (first run), new, up, down, dropped (left the top N). notRanked: a tracked app is not in the top N.",
+        "example": "up"
+      },
+      "appId": {
+        "type": ["string", "null"],
+        "title": "App ID",
+        "description": "Apple numeric app ID or Google Play package name.",
+        "example": "587366035"
+      },
+      "bundleId": {
+        "type": ["string", "null"],
+        "title": "Bundle ID",
+        "description": "iOS bundle ID, or the Google Play package name.",
+        "example": "com.picsart.studio"
+      },
+      "name": {
+        "type": ["string", "null"],
+        "title": "App",
+        "description": "App name as shown in the store.",
+        "example": "Picsart AI Photo Editor, Video"
+      },
+      "developer": {
+        "type": ["string", "null"],
+        "title": "Developer",
+        "description": "Developer / seller name.",
+        "example": "PicsArt, Inc."
+      },
+      "developerId": {
+        "type": ["string", "null"],
+        "title": "Developer ID",
+        "description": "Apple artist ID or Google Play developer ID.",
+        "example": "587366038"
+      },
+      "developerUrl": {
+        "type": ["string", "null"],
+        "title": "Developer URL",
+        "description": "Developer page in the store.",
+        "example": "https://apps.apple.com/us/developer/picsart-inc/id587366038"
+      },
+      "url": {
+        "type": ["string", "null"],
+        "title": "URL",
+        "description": "App page in the store.",
+        "example": "https://apps.apple.com/us/app/picsart-ai-photo-editor-video/id587366035"
+      },
+      "iconUrl": {
+        "type": ["string", "null"],
+        "title": "Icon",
+        "description": "App icon image URL.",
+        "example": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/29/70/0f/29700f73-1932-2d9a-d03d-971142f9ea57/AppIcon-0-0-1x_U007emarketing-0-8-0-sRGB-85-220.png/512x512bb.jpg"
+      },
+      "summary": {
+        "type": ["string", "null"],
+        "title": "Short description",
+        "description": "Google Play short description.",
+        "example": "Listen to songs, play podcasts, create playlists and discover music you'll love"
+      },
+      "description": {
+        "type": ["string", "null"],
+        "title": "Description",
+        "description": "Full store description (plain text).",
+        "example": "Ignite your creative potential with Picsart — the all-in-one AI photo editor, AI video editor, and design studio…"
+      },
+      "category": {
+        "type": ["string", "null"],
+        "title": "Category",
+        "description": "Primary category / genre.",
+        "example": "Photo & Video"
+      },
+      "categoryId": {
+        "type": ["string", "null"],
+        "title": "Category ID",
+        "description": "Apple genre ID or Google Play category ID.",
+        "example": "6008"
+      },
+      "genres": {
+        "type": ["array", "null"],
+        "title": "Genres",
+        "description": "All categories / genres / tags.",
+        "example": ["Photo & Video", "Graphics & Design"]
+      },
+      "price": {
+        "type": ["number", "null"],
+        "title": "Price",
+        "description": "Price in currency units (0 = free).",
+        "example": 0
+      },
+      "currency": {
+        "type": ["string", "null"],
+        "title": "Currency",
+        "description": "ISO currency code of the price.",
+        "example": "USD"
+      },
+      "free": {
+        "type": ["boolean", "null"],
+        "title": "Free",
+        "description": "True if the app is free to download.",
+        "example": true
+      },
+      "inAppPurchases": {
+        "type": ["string", "null"],
+        "title": "In-app purchases",
+        "description": "Google Play in-app purchase price range.",
+        "example": "$4.99 - $203.88 per item"
+      },
+      "containsAds": {
+        "type": ["boolean", "null"],
+        "title": "Contains ads",
+        "description": "Google Play \"Contains ads\" label (app details).",
+        "example": true
+      },
+      "rating": {
+        "type": ["number", "null"],
+        "title": "Rating",
+        "description": "Average star rating (1-5).",
+        "example": 4.66528
+      },
+      "ratingCount": {
+        "type": ["number", "null"],
+        "title": "Ratings",
+        "description": "Number of ratings.",
+        "example": 1195732
+      },
+      "reviewCount": {
+        "type": ["number", "null"],
+        "title": "Reviews",
+        "description": "Google Play: ratings with a written review (app details).",
+        "example": 1855393
+      },
+      "ratingHistogram": {
+        "type": ["array", "null"],
+        "title": "Rating histogram",
+        "description": "Google Play: number of 1, 2, 3, 4 and 5 star ratings (app details).",
+        "example": [3715976, 1064431, 1312740, 3101335, 27248207]
+      },
+      "installs": {
+        "type": ["string", "null"],
+        "title": "Installs",
+        "description": "Google Play install bucket.",
+        "example": "1,000,000,000+"
+      },
+      "minInstalls": {
+        "type": ["number", "null"],
+        "title": "Min installs",
+        "description": "Google Play install bucket as a number (app details).",
+        "example": 1000000000
+      },
+      "version": {
+        "type": ["string", "null"],
+        "title": "Version",
+        "description": "Current version (Google Play: null for \"varies with device\").",
+        "example": "30.9.2"
+      },
+      "releaseDate": {
+        "type": ["string", "null"],
+        "title": "Released",
+        "description": "First release date (ISO 8601).",
+        "example": "2013-01-02T22:14:40.000Z"
+      },
+      "updatedDate": {
+        "type": ["string", "null"],
+        "title": "Updated",
+        "description": "Date of the current version (ISO 8601).",
+        "example": "2026-10-06T04:02:28.000Z"
+      },
+      "releaseNotes": {
+        "type": ["string", "null"],
+        "title": "What's new",
+        "description": "Release notes of the current version.",
+        "example": "Bug fixes and performance improvements."
+      },
+      "contentRating": {
+        "type": ["string", "null"],
+        "title": "Content rating",
+        "description": "Age rating, e.g. 12+ (Apple) or Teen (Google Play).",
+        "example": "12+"
+      },
+      "sizeBytes": {
+        "type": ["number", "null"],
+        "title": "Size (bytes)",
+        "description": "App Store download size in bytes.",
+        "example": 270485504
+      },
+      "minOsVersion": {
+        "type": ["string", "null"],
+        "title": "Min OS version",
+        "description": "Minimum iOS / Android version.",
+        "example": "15.0"
+      },
+      "languages": {
+        "type": ["array", "null"],
+        "title": "Languages",
+        "description": "App Store: supported languages (ISO 639-1, upper case).",
+        "example": ["EN", "DE", "FR"]
+      },
+      "screenshots": {
+        "type": ["array", "null"],
+        "title": "Screenshots",
+        "description": "Screenshot image URLs.",
+        "example": [
+          "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/18/66/70/1866705a-8f24-0fe8-78e5-99cf0a4490cd/1.AI_Try-on.jpg/392x696bb.jpg"
+        ]
+      },
+      "website": {
+        "type": ["string", "null"],
+        "title": "Website",
+        "description": "Developer / seller website.",
+        "example": "https://picsart.com"
+      },
+      "developerEmail": {
+        "type": ["string", "null"],
+        "title": "Developer email",
+        "description": "Google Play support email (app details).",
+        "example": "support@spotify.com"
+      },
+      "privacyPolicyUrl": {
+        "type": ["string", "null"],
+        "title": "Privacy policy",
+        "description": "Google Play privacy policy URL (app details).",
+        "example": "https://www.spotify.com/legal/privacy-policy/"
+      },
+      "country": {
+        "type": ["string", "null"],
+        "title": "Country",
+        "description": "Store country code.",
+        "example": "us"
+      },
+      "language": {
+        "type": ["string", "null"],
+        "title": "Language",
+        "description": "Google Play display language; null for the App Store.",
+        "example": null
+      },
+      "scrapedAt": {
+        "type": ["string", "null"],
+        "title": "Scraped at",
+        "description": "When the run fetched the data (ISO 8601).",
+        "example": "2026-10-07T13:20:00.000Z"
+      },
+      "error": {
+        "type": ["string", "null"],
+        "title": "Error",
+        "description": "Why the query failed (error rows only).",
+        "example": null
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Overview",
+      "transformation": {
+        "fields": [
+          "iconUrl",
+          "type",
+          "store",
+          "keyword",
+          "chart",
+          "rank",
+          "changeType",
+          "previousRank",
+          "name",
+          "developer",
+          "category",
+          "price",
+          "rating",
+          "ratingCount",
+          "installs",
+          "version",
+          "updatedDate",
+          "url",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "iconUrl": {
+            "label": "Icon",
+            "format": "image"
+          },
+          "type": {
+            "label": "Type",
+            "format": "text"
+          },
+          "store": {
+            "label": "Store",
+            "format": "text"
+          },
+          "keyword": {
+            "label": "Keyword",
+            "format": "text"
+          },
+          "chart": {
+            "label": "Chart",
+            "format": "text"
+          },
+          "rank": {
+            "label": "Rank",
+            "format": "number"
+          },
+          "changeType": {
+            "label": "Change",
+            "format": "text"
+          },
+          "previousRank": {
+            "label": "Previous rank",
+            "format": "number"
+          },
+          "name": {
+            "label": "App",
+            "format": "text"
+          },
+          "developer": {
+            "label": "Developer",
+            "format": "text"
+          },
+          "category": {
+            "label": "Category",
+            "format": "text"
+          },
+          "price": {
+            "label": "Price",
+            "format": "number"
+          },
+          "rating": {
+            "label": "Rating",
+            "format": "number"
+          },
+          "ratingCount": {
+            "label": "Ratings",
+            "format": "number"
+          },
+          "installs": {
+            "label": "Installs",
+            "format": "text"
+          },
+          "version": {
+            "label": "Version",
+            "format": "text"
+          },
+          "updatedDate": {
+            "label": "Updated",
+            "format": "date"
+          },
+          "url": {
+            "label": "URL",
+            "format": "link"
+          },
+          "error": {
+            "label": "Error",
+            "format": "text"
+          }
+        }
+      }
+    },
+    "ranks": {
+      "title": "Rank changes",
+      "transformation": {
+        "fields": [
+          "keyword",
+          "chart",
+          "chartCategory",
+          "store",
+          "rank",
+          "previousRank",
+          "rankChange",
+          "changeType",
+          "name",
+          "appId",
+          "country",
+          "scrapedAt"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "keyword": {
+            "label": "Keyword",
+            "format": "text"
+          },
+          "chart": {
+            "label": "Chart",
+            "format": "text"
+          },
+          "chartCategory": {
+            "label": "Chart category",
+            "format": "text"
+          },
+          "store": {
+            "label": "Store",
+            "format": "text"
+          },
+          "rank": {
+            "label": "Rank",
+            "format": "number"
+          },
+          "previousRank": {
+            "label": "Previous rank",
+            "format": "number"
+          },
+          "rankChange": {
+            "label": "Rank change",
+            "format": "number"
+          },
+          "changeType": {
+            "label": "Change",
+            "format": "text"
+          },
+          "name": {
+            "label": "App",
+            "format": "text"
+          },
+          "appId": {
+            "label": "App ID",
+            "format": "text"
+          },
+          "country": {
+            "label": "Country",
+            "format": "text"
+          },
+          "scrapedAt": {
+            "label": "Scraped at",
+            "format": "date"
+          }
+        }
+      }
+    },
+    "details": {
+      "title": "App details",
+      "transformation": {
+        "fields": [
+          "iconUrl",
+          "store",
+          "name",
+          "developer",
+          "category",
+          "price",
+          "currency",
+          "inAppPurchases",
+          "containsAds",
+          "rating",
+          "ratingCount",
+          "reviewCount",
+          "installs",
+          "version",
+          "releaseDate",
+          "updatedDate",
+          "contentRating",
+          "minOsVersion",
+          "sizeBytes",
+          "website",
+          "developerEmail",
+          "url"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "iconUrl": {
+            "label": "Icon",
+            "format": "image"
+          },
+          "store": {
+            "label": "Store",
+            "format": "text"
+          },
+          "name": {
+            "label": "App",
+            "format": "text"
+          },
+          "developer": {
+            "label": "Developer",
+            "format": "text"
+          },
+          "category": {
+            "label": "Category",
+            "format": "text"
+          },
+          "price": {
+            "label": "Price",
+            "format": "number"
+          },
+          "currency": {
+            "label": "Currency",
+            "format": "text"
+          },
+          "inAppPurchases": {
+            "label": "In-app purchases",
+            "format": "text"
+          },
+          "containsAds": {
+            "label": "Contains ads",
+            "format": "boolean"
+          },
+          "rating": {
+            "label": "Rating",
+            "format": "number"
+          },
+          "ratingCount": {
+            "label": "Ratings",
+            "format": "number"
+          },
+          "reviewCount": {
+            "label": "Reviews",
+            "format": "number"
+          },
+          "installs": {
+            "label": "Installs",
+            "format": "text"
+          },
+          "version": {
+            "label": "Version",
+            "format": "text"
+          },
+          "releaseDate": {
+            "label": "Released",
+            "format": "date"
+          },
+          "updatedDate": {
+            "label": "Updated",
+            "format": "date"
+          },
+          "contentRating": {
+            "label": "Content rating",
+            "format": "text"
+          },
+          "minOsVersion": {
+            "label": "Min OS version",
+            "format": "text"
+          },
+          "sizeBytes": {
+            "label": "Size (bytes)",
+            "format": "number"
+          },
+          "website": {
+            "label": "Website",
+            "format": "link"
+          },
+          "developerEmail": {
+            "label": "Developer email",
+            "format": "text"
+          },
+          "url": {
+            "label": "URL",
+            "format": "link"
+          }
+        }
+      }
+    }
+  }
+}

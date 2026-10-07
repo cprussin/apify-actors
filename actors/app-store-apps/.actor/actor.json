@@ -1,0 +1,17 @@
+{
+  "actorSpecification": 1,
+  "name": "app-store-apps",
+  "title": "App Store & Google Play Scraper: Keyword Ranks, Charts, Details",
+  "description": "Apple App Store and Google Play app data in one schema: App Store keyword search ranks (ASO), top free/paid/grossing charts for both stores by country and category, and full app details by ID or URL. Rank-change tracking.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 1024,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}

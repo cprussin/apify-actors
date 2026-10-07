@@ -1,0 +1,266 @@
+{
+  "feed": {
+    "author": {
+      "name": {
+        "label": "iTunes Store"
+      },
+      "uri": {
+        "label": "http://www.apple.com/itunes/"
+      }
+    },
+    "entry": [
+      {
+        "im:name": {
+          "label": "MONOPOLY GO!"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/65/5a/ed/655aed4a-2a6d-2729-855e-aee89e6d5477/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/65/5a/ed/655aed4a-2a6d-2729-855e-aee89e6d5477/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/65/5a/ed/655aed4a-2a6d-2729-855e-aee89e6d5477/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Hit GO! Roll the dice! Earn MONOPOLY money, interact with your friends, family members and fellow Tycoons from around the world as you explore the expanding uni…"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© 2026 Scopely, Inc"
+        },
+        "title": {
+          "label": "MONOPOLY GO! - Scopely, Inc."
+        },
+        "id": {
+          "label": "https://apps.apple.com/us/app/monopoly-go/id1621328561?uo=2",
+          "attributes": {
+            "im:id": "1621328561",
+            "im:bundleId": "com.scopely.monopolygo"
+          }
+        },
+        "im:artist": {
+          "label": "Scopely, Inc.",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/scopely-inc/id305003647?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6014",
+            "term": "Games",
+            "scheme": "https://apps.apple.com/us/genre/ios-games/id6014?uo=2",
+            "label": "Games"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2023-04-11T00:00:00-07:00",
+          "attributes": {
+            "label": "April 11, 2023"
+          }
+        }
+      },
+      {
+        "im:name": {
+          "label": "Roblox"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/35/3e/ff/353eff73-c6d3-9aff-4ba5-a0a6e3afa563/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/35/3e/ff/353eff73-c6d3-9aff-4ba5-a0a6e3afa563/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/35/3e/ff/353eff73-c6d3-9aff-4ba5-a0a6e3afa563/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "ROBLOX – MILLIONS OF GAMES ACROSS EVERY GENRE. PLAY FREE.\n\nRoblox is home to every kind of game, for every kind of player. Compete in high-octane racing games, …"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© Roblox Corporation"
+        },
+        "title": {
+          "label": "Roblox - Roblox Corporation"
+        },
+        "id": {
+          "label": "https://apps.apple.com/us/app/roblox/id431946152?uo=2",
+          "attributes": {
+            "im:id": "431946152",
+            "im:bundleId": "com.roblox.robloxmobile"
+          }
+        },
+        "im:artist": {
+          "label": "Roblox Corporation",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/roblox-corporation/id431946155?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6014",
+            "term": "Games",
+            "scheme": "https://apps.apple.com/us/genre/ios-games/id6014?uo=2",
+            "label": "Games"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2011-05-26T13:51:47-07:00",
+          "attributes": {
+            "label": "May 26, 2011"
+          }
+        }
+      },
+      {
+        "im:name": {
+          "label": "Royal Match"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/24/de/aa/24deaa83-7e15-c811-cc29-5f8dca26bbf9/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/24/de/aa/24deaa83-7e15-c811-cc29-5f8dca26bbf9/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/24/de/aa/24deaa83-7e15-c811-cc29-5f8dca26bbf9/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "King Robert needs your help to restore Royal Castle’s former glory. Break the obstacles and combine amazing power-ups to beat joyful and challenging levels! Kee…"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© 2026 Dream Games"
+        },
+        "title": {
+          "label": "Royal Match - Dream Games"
+        },
+        "id": {
+          "label": "https://apps.apple.com/us/app/royal-match/id1482155847?uo=2",
+          "attributes": {
+            "im:id": "1482155847",
+            "im:bundleId": "com.dreamgames.royalmatch"
+          }
+        },
+        "im:artist": {
+          "label": "Dream Games",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/dream-games/id1482155846?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6014",
+            "term": "Games",
+            "scheme": "https://apps.apple.com/us/genre/ios-games/id6014?uo=2",
+            "label": "Games"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2021-02-25T00:00:00-07:00",
+          "attributes": {
+            "label": "February 25, 2021"
+          }
+        }
+      }
+    ],
+    "updated": {
+      "label": "2026-10-07T06:16:04-07:00"
+    },
+    "rights": {
+      "label": "Copyright 2008 Apple Inc."
+    },
+    "title": {
+      "label": "iTunes Store: Top Grossing"
+    },
+    "icon": {
+      "label": "http://itunes.apple.com/favicon.ico"
+    },
+    "link": [
+      {
+        "attributes": {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://apps.apple.com/WebObjects/MZStore.woa/wa/viewTop?cc=us&id=25180&popId=38"
+        }
+      },
+      {
+        "attributes": {
+          "rel": "self",
+          "href": "https://itunes.apple.com/us/rss/topgrossingapplications/limit=3/genre=6014/json"
+        }
+      }
+    ],
+    "id": {
+      "label": "https://itunes.apple.com/us/rss/topgrossingapplications/limit=3/genre=6014/json"
+    }
+  }
+}

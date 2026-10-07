@@ -7,6 +7,7 @@ New to Apify? Sign up via https://apify.com/?fpr=to54nm (affiliate link).
 This repo is a read-only mirror, synced automatically. Please report issues on the actor's Apify page.
 
 - [![Run on Apify](https://img.shields.io/badge/Run_on-Apify-97D700?logo=apify)](https://apify.com/cprussin/aliexpress-scraper?fpr=to54nm) [aliexpress-scraper](actors/aliexpress-scraper): AliExpress Scraper: Products, Prices & Reviews
+- [![Run on Apify](https://img.shields.io/badge/Run_on-Apify-97D700?logo=apify)](https://apify.com/cprussin/app-store-apps?fpr=to54nm) [app-store-apps](actors/app-store-apps): App Store & Google Play Scraper: Keyword Ranks, Charts, Details
 - [![Run on Apify](https://img.shields.io/badge/Run_on-Apify-97D700?logo=apify)](https://apify.com/cprussin/app-store-reviews?fpr=to54nm) [app-store-reviews](actors/app-store-reviews): App Store & Google Play Reviews Scraper
 - [![Run on Apify](https://img.shields.io/badge/Run_on-Apify-97D700?logo=apify)](https://apify.com/cprussin/bilibili-scraper?fpr=to54nm) [bilibili-scraper](actors/bilibili-scraper): Bilibili Scraper: Videos, Comments, Trending & Search
 - [![Run on Apify](https://img.shields.io/badge/Run_on-Apify-97D700?logo=apify)](https://apify.com/cprussin/document-to-markdown?fpr=to54nm) [document-to-markdown](actors/document-to-markdown): Document to Markdown: PDF, Word, PPTX, Excel, EPUB for RAG

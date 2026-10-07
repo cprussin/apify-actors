@@ -11,5 +11,6 @@ actors/eventbrite-events/test/fixtures
 actors/foundit-jobs/test/fixtures
 actors/hirist-iimjobs-jobs/test/fixtures
 actors/ycombinator-companies/test/fixtures
+actors/app-store-apps/test/fixtures
 apps/*/build
 .claude/worktrees

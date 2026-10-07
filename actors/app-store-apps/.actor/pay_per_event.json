@@ -1,0 +1,13 @@
+{
+  "app": {
+    "eventTitle": "App",
+    "eventDescription": "One app details record (App Store or Google Play) written to the dataset. Apps that aren't found are free.",
+    "eventPriceUsd": 0.0015,
+    "isPrimaryEvent": true
+  },
+  "rank-row": {
+    "eventTitle": "Rank row",
+    "eventDescription": "One ranked app from an App Store keyword search or a top chart (App Store or Google Play) written to the dataset, with the app's metadata. Failed queries are free.",
+    "eventPriceUsd": 0.001
+  }
+}
