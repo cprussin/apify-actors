@@ -1,0 +1,13 @@
+{
+  "audio-minute-base": {
+    "eventTitle": "Audio minute (base model)",
+    "eventDescription": "One started minute of audio or video transcribed with the base Whisper model (a 30 min 20 s file is 31 minutes). Failed files are free.",
+    "eventPriceUsd": 0.008,
+    "isPrimaryEvent": true
+  },
+  "audio-minute-small": {
+    "eventTitle": "Audio minute (small model)",
+    "eventDescription": "One started minute of audio or video transcribed with the more accurate small Whisper model. Failed files are free.",
+    "eventPriceUsd": 0.016
+  }
+}

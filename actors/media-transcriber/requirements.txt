@@ -1,0 +1,10 @@
+# Python side of the actor (python/transcribe.py). faster-whisper itself is
+# installed by the Dockerfile with --no-deps, to leave out its PyAV
+# dependency (PyAV wheels bundle GPL codecs; FFmpeg decodes instead). These
+# are its other dependencies, pinned to the tested versions.
+ctranslate2==4.8.2
+huggingface_hub==1.33.0
+numpy==2.4.6
+onnxruntime==1.30.0
+tokenizers==0.23.2
+tqdm

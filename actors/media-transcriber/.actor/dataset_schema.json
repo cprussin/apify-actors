@@ -1,0 +1,298 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "url": {
+        "type": "string",
+        "title": "URL",
+        "description": "Media file URL (the episode's enclosure for podcasts), storeId/key for a key-value store record, or the feed URL when a feed failed.",
+        "example": "https://www.nasa.gov/wp-content/uploads/2015/01/590325main_ringtone_kennedy_WeChoose.mp3"
+      },
+      "sourceType": {
+        "type": "string",
+        "title": "Source type",
+        "description": "url, kv (key-value store record) or rss (podcast feed episode).",
+        "example": "url"
+      },
+      "feedUrl": {
+        "type": ["string", "null"],
+        "title": "Feed URL",
+        "description": "Podcast RSS feed the episode came from.",
+        "example": null
+      },
+      "podcastTitle": {
+        "type": ["string", "null"],
+        "title": "Podcast",
+        "description": "Podcast (feed) title.",
+        "example": null
+      },
+      "title": {
+        "type": ["string", "null"],
+        "title": "Title",
+        "description": "Episode title, or the file name.",
+        "example": "590325main_ringtone_kennedy_WeChoose.mp3"
+      },
+      "episodeGuid": {
+        "type": ["string", "null"],
+        "title": "Episode GUID",
+        "description": "The episode's guid in the feed.",
+        "example": null
+      },
+      "publishedAt": {
+        "type": ["string", "null"],
+        "title": "Published at",
+        "description": "Episode publication date (ISO 8601).",
+        "example": null
+      },
+      "fileName": {
+        "type": ["string", "null"],
+        "title": "File name",
+        "description": "From the Content-Disposition header, the URL path or the record key.",
+        "example": "590325main_ringtone_kennedy_WeChoose.mp3"
+      },
+      "bytes": {
+        "type": ["number", "null"],
+        "title": "Size (bytes)",
+        "description": "Downloaded file size in bytes.",
+        "example": 324921
+      },
+      "model": {
+        "type": "string",
+        "title": "Model",
+        "description": "Whisper model used: base or small.",
+        "example": "base"
+      },
+      "language": {
+        "type": ["string", "null"],
+        "title": "Language",
+        "description": "Detected (or given) language code, e.g. en, de, es.",
+        "example": "en"
+      },
+      "languageProbability": {
+        "type": ["number", "null"],
+        "title": "Language confidence",
+        "description": "Confidence of the language detection (0-1); 1 when the language was given.",
+        "example": 0.9672
+      },
+      "durationSeconds": {
+        "type": ["number", "null"],
+        "title": "Duration (s)",
+        "description": "Length of the audio in seconds.",
+        "example": 20.088
+      },
+      "billedMinutes": {
+        "type": "number",
+        "title": "Billed minutes",
+        "description": "Started minutes of audio billed for this file (on the first chunk only in chunks format; 0 on failure).",
+        "example": 1
+      },
+      "outputFormat": {
+        "type": "string",
+        "title": "Output format",
+        "description": "transcript or chunks.",
+        "example": "transcript"
+      },
+      "text": {
+        "type": ["string", "null"],
+        "title": "Text",
+        "description": "The full transcript, or one chunk's text. Null on failure.",
+        "example": "We choose to go to the moon and disdicate and do the other things, not because they are easy, but because they are hot. Three, two, one, zero, all engine running. Lift off, we have a lift off, 32 minutes past the hour, lift off on Apollo 11."
+      },
+      "segments": {
+        "type": ["array", "null"],
+        "title": "Segments",
+        "description": "Timestamped segments [{start, end, text}] in seconds (transcript format).",
+        "example": [
+          {
+            "start": 0.0,
+            "end": 7.8,
+            "text": "We choose to go to the moon and disdicate and do the other things, not because they are easy, but because they are hot."
+          }
+        ]
+      },
+      "segmentCount": {
+        "type": ["number", "null"],
+        "title": "Segments",
+        "description": "Number of transcript segments (subtitle cues).",
+        "example": 3
+      },
+      "wordCount": {
+        "type": ["number", "null"],
+        "title": "Words",
+        "description": "Words in the text.",
+        "example": 48
+      },
+      "chunkIndex": {
+        "type": ["number", "null"],
+        "title": "Chunk index",
+        "description": "0-based chunk number within the file (chunks format).",
+        "example": null
+      },
+      "chunkCount": {
+        "type": ["number", "null"],
+        "title": "Chunks",
+        "description": "Number of chunks for the file (chunks format).",
+        "example": null
+      },
+      "startTime": {
+        "type": ["number", "null"],
+        "title": "Start (s)",
+        "description": "Chunk start, in seconds from the start of the media (chunks format).",
+        "example": null
+      },
+      "endTime": {
+        "type": ["number", "null"],
+        "title": "End (s)",
+        "description": "Chunk end, in seconds from the start of the media (chunks format).",
+        "example": null
+      },
+      "srtUrl": {
+        "type": ["string", "null"],
+        "title": "SRT subtitles",
+        "description": "Link to the SRT subtitle file in the run's key-value store.",
+        "example": "https://api.apify.com/v2/key-value-stores/abc/records/transcript-0001.srt"
+      },
+      "vttUrl": {
+        "type": ["string", "null"],
+        "title": "VTT subtitles",
+        "description": "Link to the WebVTT subtitle file in the run's key-value store.",
+        "example": "https://api.apify.com/v2/key-value-stores/abc/records/transcript-0001.vtt"
+      },
+      "warning": {
+        "type": ["string", "null"],
+        "title": "Warning",
+        "description": "Notes such as a damaged file whose end could not be decoded.",
+        "example": null
+      },
+      "error": {
+        "type": ["string", "null"],
+        "title": "Error",
+        "description": "Why the file failed (not billed), or null on success.",
+        "example": null
+      },
+      "transcribedAt": {
+        "type": "string",
+        "title": "Transcribed at",
+        "description": "When the file was transcribed (ISO 8601 UTC).",
+        "example": "2026-10-07T00:00:00.000Z"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Transcripts",
+      "transformation": {
+        "fields": [
+          "url",
+          "title",
+          "language",
+          "durationSeconds",
+          "billedMinutes",
+          "wordCount",
+          "text",
+          "srtUrl",
+          "vttUrl",
+          "warning",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "url": {
+            "label": "URL",
+            "format": "link"
+          },
+          "title": {
+            "label": "Title",
+            "format": "text"
+          },
+          "language": {
+            "label": "Language",
+            "format": "text"
+          },
+          "durationSeconds": {
+            "label": "Duration (s)",
+            "format": "number"
+          },
+          "billedMinutes": {
+            "label": "Billed minutes",
+            "format": "number"
+          },
+          "wordCount": {
+            "label": "Words",
+            "format": "number"
+          },
+          "text": {
+            "label": "Text",
+            "format": "text"
+          },
+          "srtUrl": {
+            "label": "SRT subtitles",
+            "format": "link"
+          },
+          "vttUrl": {
+            "label": "VTT subtitles",
+            "format": "link"
+          },
+          "warning": {
+            "label": "Warning",
+            "format": "text"
+          },
+          "error": {
+            "label": "Error",
+            "format": "text"
+          }
+        }
+      }
+    },
+    "chunks": {
+      "title": "RAG chunks",
+      "transformation": {
+        "fields": [
+          "url",
+          "title",
+          "chunkIndex",
+          "startTime",
+          "endTime",
+          "text",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "url": {
+            "label": "URL",
+            "format": "link"
+          },
+          "title": {
+            "label": "Title",
+            "format": "text"
+          },
+          "chunkIndex": {
+            "label": "Chunk index",
+            "format": "number"
+          },
+          "startTime": {
+            "label": "Start (s)",
+            "format": "number"
+          },
+          "endTime": {
+            "label": "End (s)",
+            "format": "number"
+          },
+          "text": {
+            "label": "Text",
+            "format": "text"
+          },
+          "error": {
+            "label": "Error",
+            "format": "text"
+          }
+        }
+      }
+    }
+  }
+}
