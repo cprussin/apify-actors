@@ -1,0 +1,16 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Videos",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "files": {
+      "type": "string",
+      "title": "Frames and files",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/keys"
+    }
+  }
+}

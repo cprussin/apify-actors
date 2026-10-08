@@ -1,0 +1,23 @@
+{
+  "video-processed": {
+    "eventTitle": "Video processed",
+    "eventDescription": "One video downloaded, analyzed and delivered with its metadata (any length up to the limit). Failed videos are free.",
+    "eventPriceUsd": 0.005,
+    "isPrimaryEvent": true
+  },
+  "frame": {
+    "eventTitle": "Frame image",
+    "eventDescription": "One frame image saved (JPEG, PNG or WebP). A contact sheet counts as one frame.",
+    "eventPriceUsd": 0.003
+  },
+  "scene-minute": {
+    "eventTitle": "Scene detection minute",
+    "eventDescription": "One started minute of video analyzed for scene changes (scene mode only; a 10 min 20 s video is 11 minutes).",
+    "eventPriceUsd": 0.01
+  },
+  "audio-or-gif": {
+    "eventTitle": "Audio track or GIF clip",
+    "eventDescription": "One extra output file: the extracted audio track (M4A, MP3 or Opus) or the animated GIF clip.",
+    "eventPriceUsd": 0.005
+  }
+}

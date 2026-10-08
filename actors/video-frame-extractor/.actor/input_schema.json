@@ -1,0 +1,213 @@
+{
+  "title": "Video Frame Extractor input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "urls": {
+      "title": "Video URLs",
+      "type": "array",
+      "description": "Direct links to video files (MP4, MOV, MKV, WEBM, AVI, MPEG-TS and anything else FFmpeg reads), one per line. Apify key-value store record URLs are read with your token. YouTube, TikTok, Instagram and other social or video-platform links, web pages and streaming playlists (.m3u8) are refused with a free error.",
+      "editor": "stringList",
+      "prefill": [
+        "https://images-assets.nasa.gov/video/KSC_69-71212-sRGB/KSC_69-71212-sRGB~small.mp4"
+      ],
+      "sectionCaption": "Videos"
+    },
+    "startUrls": {
+      "title": "Start URLs",
+      "type": "array",
+      "description": "Optional alternative to Video URLs, in Apify's request-list format (e.g. a file with one URL per line, or the output of another actor). Combined with Video URLs.",
+      "editor": "requestListSources"
+    },
+    "keyValueStoreRecords": {
+      "title": "Key-value store records",
+      "type": "array",
+      "description": "Videos uploaded to an Apify key-value store, as <code>storeId/recordKey</code> or <code>username~store-name/recordKey</code>, one per line. Use this for your own videos without hosting them anywhere.",
+      "editor": "stringList"
+    },
+    "mode": {
+      "title": "Frames",
+      "type": "string",
+      "description": "Interval: frames every N seconds, or N evenly spaced frames. Scene changes: one frame at the start of each detected scene (costs $0.01 per started video minute for the analysis). Metadata only: no frames, just video info and the optional GIF and audio.",
+      "editor": "select",
+      "enum": ["interval", "scene", "none"],
+      "enumTitles": [
+        "Interval (every N seconds / N frames)",
+        "Scene changes (keyframes)",
+        "Metadata only (no frames)"
+      ],
+      "default": "interval",
+      "prefill": "interval",
+      "sectionCaption": "Frames"
+    },
+    "intervalSeconds": {
+      "title": "Every N seconds",
+      "type": "integer",
+      "description": "Interval mode: one frame every this many seconds, starting at 0:00. Ignored when Number of frames is set.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 3600,
+      "default": 10
+    },
+    "frameCount": {
+      "title": "Number of frames",
+      "type": "integer",
+      "description": "Interval mode: this many frames, evenly spaced over the whole video (e.g. 12 thumbnails). 0 to use Every N seconds instead.",
+      "editor": "number",
+      "minimum": 0,
+      "maximum": 1000,
+      "default": 0,
+      "prefill": 12
+    },
+    "sceneThreshold": {
+      "title": "Scene sensitivity threshold (%)",
+      "type": "integer",
+      "description": "Scene mode: how different a frame must be from the previous one to start a new scene, 1-99. Lower finds more (subtle) cuts; 30 suits most edited videos, 40-50 only hard cuts.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 99,
+      "default": 30
+    },
+    "minSceneSeconds": {
+      "title": "Minimum scene length (seconds)",
+      "type": "integer",
+      "description": "Scene mode: cuts closer than this to the previous one are ignored (flashes, fast montages). 0 keeps every cut.",
+      "editor": "number",
+      "minimum": 0,
+      "maximum": 600,
+      "default": 1
+    },
+    "maxFrames": {
+      "title": "Max frames per video",
+      "type": "integer",
+      "description": "Caps cost per video ($0.003 per frame). Interval mode spreads this many frames over the video when more would be needed; scene mode keeps the strongest cuts.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 1000,
+      "default": 50
+    },
+    "frameFormat": {
+      "title": "Image format",
+      "type": "string",
+      "description": "JPEG: small, universal. PNG: lossless, large. WebP: smallest at the same quality.",
+      "editor": "select",
+      "enum": ["jpg", "png", "webp"],
+      "enumTitles": ["JPEG", "PNG", "WebP"],
+      "default": "jpg",
+      "sectionCaption": "Images"
+    },
+    "frameQuality": {
+      "title": "Quality",
+      "type": "integer",
+      "description": "JPEG and WebP quality, 1-100 (ignored for PNG).",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 85
+    },
+    "maxWidth": {
+      "title": "Max width (px)",
+      "type": "integer",
+      "description": "Frames wider than this are scaled down (aspect ratio kept, never upscaled). 0 keeps the original size.",
+      "editor": "number",
+      "minimum": 0,
+      "maximum": 7680,
+      "default": 1280
+    },
+    "contactSheet": {
+      "title": "Contact sheet",
+      "type": "boolean",
+      "description": "Also save one grid image of all frames (320 px tiles, up to 20 rows), billed as one frame.",
+      "default": false
+    },
+    "contactSheetColumns": {
+      "title": "Contact sheet columns",
+      "type": "integer",
+      "description": "Tiles per row of the contact sheet.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 10,
+      "default": 4
+    },
+    "gifClip": {
+      "title": "GIF clip",
+      "type": "boolean",
+      "description": "Also save a short animated GIF from the video ($0.005).",
+      "default": false,
+      "sectionCaption": "GIF and audio"
+    },
+    "gifStartSeconds": {
+      "title": "GIF start (seconds)",
+      "type": "integer",
+      "description": "Where the GIF clip starts.",
+      "editor": "number",
+      "minimum": 0,
+      "maximum": 10800,
+      "default": 0
+    },
+    "gifDurationSeconds": {
+      "title": "GIF length (seconds)",
+      "type": "integer",
+      "description": "Length of the GIF clip, at most 15 s.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 15,
+      "default": 5
+    },
+    "gifWidth": {
+      "title": "GIF width (px)",
+      "type": "integer",
+      "description": "GIF width (never upscaled). GIFs get large fast: 320-480 is typical.",
+      "editor": "number",
+      "minimum": 64,
+      "maximum": 1080,
+      "default": 480
+    },
+    "gifFps": {
+      "title": "GIF frames per second",
+      "type": "integer",
+      "description": "Frames per second of the GIF clip.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 25,
+      "default": 10
+    },
+    "audioFormat": {
+      "title": "Extract audio track",
+      "type": "string",
+      "description": "Also save the video's audio track ($0.005): M4A (AAC 128 kbps), MP3 (VBR ~190 kbps) or Opus (96 kbps). A track already in that codec (e.g. AAC in an MP4, for M4A) is copied without re-encoding. Videos without audio get a warning and no charge.",
+      "editor": "select",
+      "enum": ["none", "m4a", "mp3", "opus"],
+      "enumTitles": ["No audio", "M4A (AAC)", "MP3", "Opus"],
+      "default": "none"
+    },
+    "maxDurationMinutes": {
+      "title": "Max video length (minutes)",
+      "type": "integer",
+      "description": "Longer videos are skipped with an error (free). At most 180.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 180,
+      "default": 60,
+      "sectionCaption": "Limits"
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "description": "Larger downloads are skipped with an error (free).",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 4000,
+      "default": 1000
+    },
+    "timeoutSecs": {
+      "title": "Download timeout (seconds)",
+      "type": "integer",
+      "description": "Max time to download one video.",
+      "editor": "number",
+      "minimum": 10,
+      "maximum": 3600,
+      "default": 600
+    }
+  }
+}

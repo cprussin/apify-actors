@@ -1,0 +1,385 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "url": {
+        "type": "string",
+        "title": "URL",
+        "description": "Video URL, or storeId/key for a key-value store record.",
+        "example": "https://images-assets.nasa.gov/video/KSC_69-71212-sRGB/KSC_69-71212-sRGB~small.mp4"
+      },
+      "sourceType": {
+        "type": "string",
+        "title": "Source type",
+        "description": "url or kv (key-value store record).",
+        "example": "url"
+      },
+      "fileName": {
+        "type": ["string", "null"],
+        "title": "File name",
+        "description": "From the Content-Disposition header, the URL path or the record key.",
+        "example": "KSC_69-71212-sRGB~small.mp4"
+      },
+      "bytes": {
+        "type": ["number", "null"],
+        "title": "Size (bytes)",
+        "description": "Downloaded file size in bytes.",
+        "example": 15526635
+      },
+      "mode": {
+        "type": "string",
+        "title": "Mode",
+        "description": "interval, scene or none (metadata only).",
+        "example": "interval"
+      },
+      "durationSeconds": {
+        "type": ["number", "null"],
+        "title": "Duration (s)",
+        "description": "Length of the video in seconds.",
+        "example": 84.2
+      },
+      "width": {
+        "type": ["number", "null"],
+        "title": "Width",
+        "description": "Display width in pixels (rotation and non-square pixels applied).",
+        "example": 480
+      },
+      "height": {
+        "type": ["number", "null"],
+        "title": "Height",
+        "description": "Display height in pixels.",
+        "example": 480
+      },
+      "fps": {
+        "type": ["number", "null"],
+        "title": "FPS",
+        "description": "Average frames per second.",
+        "example": 30
+      },
+      "videoCodec": {
+        "type": ["string", "null"],
+        "title": "Video codec",
+        "description": "FFmpeg codec name, e.g. h264, hevc, vp9, av1, prores.",
+        "example": "h264"
+      },
+      "audioCodec": {
+        "type": ["string", "null"],
+        "title": "Audio codec",
+        "description": "FFmpeg codec name of the first audio track (e.g. aac, opus), or null without audio.",
+        "example": null
+      },
+      "container": {
+        "type": ["string", "null"],
+        "title": "Container",
+        "description": "FFmpeg format name, e.g. mov,mp4,m4a,3gp,3g2,mj2 or matroska,webm.",
+        "example": "mov,mp4,m4a,3gp,3g2,mj2"
+      },
+      "bitRate": {
+        "type": ["number", "null"],
+        "title": "Bit rate (bit/s)",
+        "description": "Overall bit rate in bits per second.",
+        "example": 1475214
+      },
+      "rotation": {
+        "type": ["number", "null"],
+        "title": "Rotation",
+        "description": "Display rotation in degrees (phone videos); frames are saved upright.",
+        "example": 0
+      },
+      "hasAudio": {
+        "type": ["boolean", "null"],
+        "title": "Has audio",
+        "description": "Whether the video has an audio track.",
+        "example": false
+      },
+      "audioSampleRate": {
+        "type": ["number", "null"],
+        "title": "Audio sample rate",
+        "description": "Sample rate of the audio track in Hz.",
+        "example": null
+      },
+      "audioChannels": {
+        "type": ["number", "null"],
+        "title": "Audio channels",
+        "description": "Channels of the audio track.",
+        "example": null
+      },
+      "sceneCount": {
+        "type": ["number", "null"],
+        "title": "Scenes",
+        "description": "Scene mode: scenes found (before the Max frames cap).",
+        "example": null
+      },
+      "frameFormat": {
+        "type": "string",
+        "title": "Image format",
+        "description": "jpg, png or webp.",
+        "example": "jpg"
+      },
+      "frameCount": {
+        "type": "number",
+        "title": "Frames",
+        "description": "Frame images saved for this video (the contact sheet not included).",
+        "example": 12
+      },
+      "frames": {
+        "type": "array",
+        "title": "Frame list",
+        "description": "One entry per frame: index, timeSeconds, timecode, sceneScore (scene mode), key and url in the key-value store, width, height, bytes.",
+        "example": [
+          {
+            "index": 1,
+            "timeSeconds": 3.508,
+            "timecode": "00:00:03.508",
+            "sceneScore": null,
+            "key": "video-0001-frame-0001.jpg",
+            "url": "https://api.apify.com/v2/key-value-stores/abc123/records/video-0001-frame-0001.jpg",
+            "width": 480,
+            "height": 480,
+            "bytes": 18446
+          }
+        ]
+      },
+      "frameUrls": {
+        "type": "array",
+        "title": "Frame URLs",
+        "description": "Links to the frame images, in time order.",
+        "example": [
+          "https://api.apify.com/v2/key-value-stores/abc123/records/video-0001-frame-0001.jpg",
+          "https://api.apify.com/v2/key-value-stores/abc123/records/video-0001-frame-0002.jpg"
+        ]
+      },
+      "contactSheetUrl": {
+        "type": ["string", "null"],
+        "title": "Contact sheet",
+        "description": "Link to the grid image of the frames, when Contact sheet is on.",
+        "example": "https://api.apify.com/v2/key-value-stores/abc123/records/video-0001-contact-sheet.jpg"
+      },
+      "gifUrl": {
+        "type": ["string", "null"],
+        "title": "GIF clip",
+        "description": "Link to the animated GIF clip, when GIF clip is on.",
+        "example": "https://api.apify.com/v2/key-value-stores/abc123/records/video-0001-clip.gif"
+      },
+      "audioUrl": {
+        "type": ["string", "null"],
+        "title": "Audio track",
+        "description": "Link to the extracted audio file, when Extract audio track is set and the video has audio.",
+        "example": null
+      },
+      "audioFormat": {
+        "type": ["string", "null"],
+        "title": "Audio format",
+        "description": "m4a, mp3, opus, or null when no audio was requested.",
+        "example": null
+      },
+      "charges": {
+        "type": "object",
+        "title": "Charged events",
+        "description": "Pay-per-event events charged for this video, by event name (empty on failure).",
+        "example": {
+          "video-processed": 1,
+          "frame": 13,
+          "audio-or-gif": 1
+        }
+      },
+      "costUsd": {
+        "type": "number",
+        "title": "Cost (USD)",
+        "description": "Price of the charged events (0 on failure).",
+        "example": 0.049
+      },
+      "processingSeconds": {
+        "type": ["number", "null"],
+        "title": "Processing (s)",
+        "description": "Time spent processing the video, download excluded.",
+        "example": 3.06
+      },
+      "warning": {
+        "type": ["string", "null"],
+        "title": "Warning",
+        "description": "Notes such as frames capped by Max frames, a frame that could not be decoded or a video without audio.",
+        "example": null
+      },
+      "error": {
+        "type": ["string", "null"],
+        "title": "Error",
+        "description": "Why the video failed (not billed), or null on success.",
+        "example": null
+      },
+      "processedAt": {
+        "type": "string",
+        "title": "Processed at",
+        "description": "When the video was processed (ISO 8601 UTC).",
+        "example": "2026-10-08T12:00:00.000Z"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Videos",
+      "transformation": {
+        "fields": [
+          "url",
+          "durationSeconds",
+          "width",
+          "height",
+          "fps",
+          "videoCodec",
+          "frameCount",
+          "contactSheetUrl",
+          "gifUrl",
+          "audioUrl",
+          "costUsd",
+          "warning",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "url": {
+            "label": "URL",
+            "format": "link"
+          },
+          "durationSeconds": {
+            "label": "Duration (s)",
+            "format": "number"
+          },
+          "width": {
+            "label": "Width",
+            "format": "number"
+          },
+          "height": {
+            "label": "Height",
+            "format": "number"
+          },
+          "fps": {
+            "label": "FPS",
+            "format": "number"
+          },
+          "videoCodec": {
+            "label": "Codec",
+            "format": "text"
+          },
+          "frameCount": {
+            "label": "Frames",
+            "format": "number"
+          },
+          "contactSheetUrl": {
+            "label": "Contact sheet",
+            "format": "image"
+          },
+          "gifUrl": {
+            "label": "GIF",
+            "format": "link"
+          },
+          "audioUrl": {
+            "label": "Audio",
+            "format": "link"
+          },
+          "costUsd": {
+            "label": "Cost (USD)",
+            "format": "number"
+          },
+          "warning": {
+            "label": "Warning",
+            "format": "text"
+          },
+          "error": {
+            "label": "Error",
+            "format": "text"
+          }
+        }
+      }
+    },
+    "metadata": {
+      "title": "Video metadata",
+      "transformation": {
+        "fields": [
+          "url",
+          "fileName",
+          "bytes",
+          "container",
+          "durationSeconds",
+          "width",
+          "height",
+          "fps",
+          "videoCodec",
+          "bitRate",
+          "rotation",
+          "audioCodec",
+          "audioSampleRate",
+          "audioChannels",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "url": {
+            "label": "URL",
+            "format": "link"
+          },
+          "fileName": {
+            "label": "File name",
+            "format": "text"
+          },
+          "bytes": {
+            "label": "Size (bytes)",
+            "format": "number"
+          },
+          "container": {
+            "label": "Container",
+            "format": "text"
+          },
+          "durationSeconds": {
+            "label": "Duration (s)",
+            "format": "number"
+          },
+          "width": {
+            "label": "Width",
+            "format": "number"
+          },
+          "height": {
+            "label": "Height",
+            "format": "number"
+          },
+          "fps": {
+            "label": "FPS",
+            "format": "number"
+          },
+          "videoCodec": {
+            "label": "Video codec",
+            "format": "text"
+          },
+          "bitRate": {
+            "label": "Bit rate",
+            "format": "number"
+          },
+          "rotation": {
+            "label": "Rotation",
+            "format": "number"
+          },
+          "audioCodec": {
+            "label": "Audio codec",
+            "format": "text"
+          },
+          "audioSampleRate": {
+            "label": "Sample rate",
+            "format": "number"
+          },
+          "audioChannels": {
+            "label": "Channels",
+            "format": "number"
+          },
+          "error": {
+            "label": "Error",
+            "format": "text"
+          }
+        }
+      }
+    }
+  }
+}

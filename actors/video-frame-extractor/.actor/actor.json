@@ -1,0 +1,18 @@
+{
+  "actorSpecification": 1,
+  "name": "video-frame-extractor",
+  "title": "Video Frame Extractor: Thumbnails, Scene Keyframes & GIF",
+  "description": "Extract frames from video files every N seconds or at scene changes, plus a contact sheet, video metadata, the audio track (M4A, MP3, Opus) and a GIF clip. JPEG, PNG or WebP. Direct URLs or uploads, no API key.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 1024,
+  "defaultMemoryMbytes": 4096,
+  "maxMemoryMbytes": 4096,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}
