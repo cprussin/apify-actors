@@ -1,8 +1,8 @@
 {
   "actorSpecification": 1,
   "name": "telegram-channel-scraper",
-  "title": "Telegram Channel Scraper - Posts, Views & Reactions",
-  "description": "Scrape public Telegram channel posts without login: text, date, views, emoji reactions, photos, videos, links, forwards, replies and channel subscriber counts. Date filter for incremental runs.",
+  "title": "Telegram Channel Scraper: Posts, Messages, Views & Reactions",
+  "description": "Scrape public Telegram channel posts by username or t.me link, without login or API key: text, date, views, emoji reactions, photos, videos, links, forwards and replies, plus channel subscriber counts. Date filter and new-post monitoring. $2 per 1,000 posts.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 256,

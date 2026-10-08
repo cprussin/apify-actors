@@ -2,7 +2,7 @@
   "actorSpecification": 1,
   "name": "image-upscaler",
   "title": "AI Image Upscaler: Real-ESRGAN 2x, 4x Photo Enhancer",
-  "description": "Upscale and enhance images 2x, 3x or 4x with Real-ESRGAN AI: sharper photos, product shots, old scans and AI art from URLs or your uploads, saved as PNG, JPEG or WebP. No API key, pay per image.",
+  "description": "Upscale images 2x, 3x or 4x with Real-ESRGAN AI: sharper photos, product shots, scans and AI art. Input: image URLs or Apify key-value store uploads. Output: PNG, JPEG or WebP file links. Runs locally, no API key. $0.01 per started 0.5 MP of input, max $0.04 per image.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 2048,

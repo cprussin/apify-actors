@@ -2,7 +2,7 @@
   "actorSpecification": 1,
   "name": "aliexpress-scraper",
   "title": "AliExpress Scraper: Products, Prices & Reviews",
-  "description": "Scrape AliExpress search results (price, sale price, orders sold, rating, images, shipping) and buyer reviews (stars, text, photos, country, SKU). Keywords, search URLs or product IDs. No login.",
+  "description": "Scrape AliExpress product search results and buyer reviews by keyword, search URL or product ID: price, sale price, orders sold, rating, store, shipping, images, plus review stars, text, photos, country and SKU. No login. $4 per 1,000 products, $2 per 1,000 reviews.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 256,

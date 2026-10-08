@@ -1,8 +1,8 @@
 {
   "actorSpecification": 1,
   "name": "youtube-transcripts",
-  "title": "YouTube Transcript Scraper - Captions & Subtitles for AI/RAG",
-  "description": "Get YouTube transcripts and captions as plain text, timestamped segments, SRT or VTT, with video metadata. Videos, channels and playlists; language preference, auto-generated fallback and translation. Pay only per transcript.",
+  "title": "YouTube Transcript Scraper: Captions & Subtitles for AI/RAG",
+  "description": "Get YouTube transcripts (captions/subtitles) as plain text, timestamped segments, SRT or VTT, with video metadata, for videos, Shorts, channels and playlists. Language preference, auto-caption fallback and translation. No speech-to-text. $2.25 per 1,000 transcripts.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 256,

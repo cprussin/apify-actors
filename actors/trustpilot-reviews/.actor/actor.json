@@ -1,8 +1,8 @@
 {
   "actorSpecification": 1,
   "name": "trustpilot-reviews",
-  "title": "Trustpilot Reviews Scraper - Reviews, Ratings & TrustScore",
-  "description": "Scrape Trustpilot reviews for any company: rating, title, text, author, country, date, verified label and company reply, plus TrustScore and company profile. Filter by stars and language; delta mode returns only new reviews.",
+  "title": "Trustpilot Reviews Scraper: Ratings, TrustScore & Replies",
+  "description": "Scrape Trustpilot reviews for any company by domain or URL: stars, title, text, author, country, date, verified label and company reply, plus TrustScore and company profile. Up to 1,000 reviews per company; filter by stars, language or date; new-review alerts. $0.50 per 1,000 reviews.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 1024,

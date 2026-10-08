@@ -2,7 +2,7 @@
   "trend-result": {
     "eventTitle": "Trend result",
     "eventDescription": "One Google Trends result with data written to the dataset: one search term x dataset (interest over time, by region, related queries or related topics), or one trending-now search.",
-    "eventPriceUsd": 0.002,
+    "eventPriceUsd": 0.001,
     "isPrimaryEvent": true
   },
   "apify-actor-start": {

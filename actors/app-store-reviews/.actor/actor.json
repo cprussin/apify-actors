@@ -1,8 +1,8 @@
 {
   "actorSpecification": 1,
   "name": "app-store-reviews",
-  "title": "App Store & Google Play Reviews Scraper",
-  "description": "Apple App Store and Google Play reviews in one schema: rating, text, author, date, app version, developer reply, helpful votes. Any country; newest-first delta mode.",
+  "title": "App Store & Google Play Reviews Scraper: iOS & Android",
+  "description": "Scrape Apple App Store and Google Play reviews by app URL or ID in one schema: rating, title, text, author, date, app version, developer reply and helpful votes. Any country; filter by stars or date; new-review monitoring. $0.50 per 1,000 reviews.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 256,

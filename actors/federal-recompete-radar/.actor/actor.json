@@ -1,8 +1,8 @@
 {
   "actorSpecification": 1,
   "name": "federal-recompete-radar",
-  "title": "Federal Recompete Radar - Expiring US Government Contracts",
-  "description": "Find US federal contracts whose period of performance ends soon (upcoming recompetes). Filter by NAICS, PSC, agency, state, set-aside and value. Data from USAspending.gov.",
+  "title": "Federal Recompete Radar: Expiring Federal Government Contracts",
+  "description": "Find US federal contracts expiring soon (upcoming recompetes) in USAspending.gov data. Filter by NAICS, PSC, agency, state, set-aside and value. Returns incumbent and UEI, agency, office, value, current and potential end dates and award link. $10 per 1,000 contracts.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 256,

@@ -132,9 +132,9 @@ Pay-per-event, only for results with data:
 
 | Event                                                         | Price      |
 | ------------------------------------------------------------- | ---------- |
-| Trend result (one term × dataset, or one trending-now search) | **$0.002** |
+| Trend result (one term × dataset, or one trending-now search) | **$0.001** |
 
-That's **$2 per 1,000 results**. One result holds a whole time series, region table or related list (up to 50 rows), not one row. The default input (2 terms × 3 datasets) costs $0.012. Results without data are free. If you set a **maximum cost per run**, the actor stops cleanly when it reaches it.
+That's **$1 per 1,000 results**. One result holds a whole time series, region table or related list (up to 50 rows), not one row. The default input (2 terms × 3 datasets) costs $0.006. Results without data are free. If you set a **maximum cost per run**, the actor stops cleanly when it reaches it.
 
 ## Tips for scraping Google Trends
 

@@ -2,7 +2,7 @@
   "actorSpecification": 1,
   "name": "bilibili-scraper",
   "title": "Bilibili Scraper: Videos, Comments, Trending & Search",
-  "description": "Scrape Bilibili (哔哩哔哩), China's biggest video platform: trending videos, keyword search, channel uploads or video URLs. Views, likes, coins, favorites, danmaku, tags, plus top comments. No login.",
+  "description": "Scrape Bilibili (哔哩哔哩) videos from trending, keyword search, channels (UP主) or video URLs: title, views, likes, coins, favorites, danmaku, tags and uploader, plus top comments. No login. $5 per 1,000 videos, $2 per 1,000 comments.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 256,

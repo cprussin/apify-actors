@@ -1,8 +1,8 @@
 {
   "actorSpecification": 1,
   "name": "media-transcriber",
-  "title": "Whisper Transcriber: Audio, Video & Podcast to Text, SRT",
-  "description": "Transcribe audio and video files and podcast RSS feeds with Whisper: full text, timestamped segments, SRT and VTT subtitles, language detection and RAG chunks. New-episodes mode for podcasts. No API key, pay per audio minute.",
+  "title": "Whisper Transcriber: Audio, Video & Podcast Speech to Text",
+  "description": "Transcribe audio and video files or podcast RSS feeds with Whisper: full text, timestamped segments, SRT and VTT subtitles, language detection and RAG chunks. Direct file URLs or uploads (not YouTube links). New-episodes mode. No API key. From $0.008 per audio minute.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 2048,

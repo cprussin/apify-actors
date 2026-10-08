@@ -2,7 +2,7 @@
   "actorSpecification": 1,
   "name": "google-flights-prices",
   "title": "Google Flights Scraper: Prices, Itineraries & Date Ranges",
-  "description": "Google Flights prices and itineraries for any route: airlines, flight numbers, times, duration, stops, layovers and CO2 emissions. One-way or round trip, any cabin, or scan a date range for the cheapest day.",
+  "description": "Scrape Google Flights prices for any route, date or date range: airlines, flight numbers, times, duration, stops, layovers, CO2 emissions and price. One-way or round trip, any cabin, currency and country; cheapest-day scans and price-change alerts. $2.50 per 1,000 itineraries.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 256,

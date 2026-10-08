@@ -2,7 +2,7 @@
   "actorSpecification": 1,
   "name": "foundit-jobs",
   "title": "Foundit Jobs Scraper: India Jobs, Salary & Skills",
-  "description": "Job listings from Foundit (formerly Monster India) by keyword and city: title, company, locations, experience range, salary, skills, posted date and job URL. Newest-first monitoring mode for new-job alerts. No login needed.",
+  "description": "Scrape Foundit (formerly Monster India) jobs by keyword and city: title, company, locations, experience range, salary, skills, posted date and job URL; full description optional. India plus Gulf and Southeast Asia jobs. New-job monitoring. No login. $2 per 1,000 jobs.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 256,

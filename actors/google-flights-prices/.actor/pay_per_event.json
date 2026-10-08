@@ -2,7 +2,7 @@
   "itinerary": {
     "eventTitle": "Flight itinerary",
     "eventDescription": "One priced Google Flights itinerary written to the dataset.",
-    "eventPriceUsd": 0.005,
+    "eventPriceUsd": 0.0025,
     "isPrimaryEvent": true
   },
   "apify-actor-start": {

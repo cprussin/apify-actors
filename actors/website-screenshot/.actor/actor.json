@@ -2,7 +2,7 @@
   "actorSpecification": 1,
   "name": "website-screenshot",
   "title": "Website Screenshot API: Full-Page PNG, JPEG, WebP & PDF",
-  "description": "Screenshot any website as PNG, JPEG, WebP or PDF: full page or viewport, desktop, tablet or mobile, or one element by CSS selector. Hides cookie banners, loads lazy images, retries slow pages. Pay only for successful screenshots.",
+  "description": "Screenshot any URL as PNG, JPEG, WebP or PDF: full page or viewport, desktop, tablet or mobile, or one element by CSS selector. Hides cookie banners, loads lazy images, retries slow pages. Returns a public file link per URL. $3 per 1,000 screenshots; failed URLs are free.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 1024,

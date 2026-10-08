@@ -2,7 +2,7 @@
   "actorSpecification": 1,
   "name": "substack-scraper",
   "title": "Substack Scraper: Newsletter Posts, Content & Stats",
-  "description": "Scrape posts from any Substack newsletter (subdomain or custom domain): title, date, free/paid, likes, comments, word count, authors, and full public text/HTML. No login.",
+  "description": "Scrape posts from any Substack newsletter by subdomain, custom domain or post URL: title, date, free/paid, likes, comments, restacks, word count, authors and optional full public text and HTML. Date filter and new-post monitoring. No login. $1.50 per 1,000 posts, $3 with content.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 256,

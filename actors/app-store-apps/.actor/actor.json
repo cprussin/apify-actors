@@ -2,7 +2,7 @@
   "actorSpecification": 1,
   "name": "app-store-apps",
   "title": "App Store & Google Play Scraper: Keyword Ranks, Charts, Details",
-  "description": "Apple App Store and Google Play app data in one schema: App Store keyword search ranks (ASO), top free/paid/grossing charts for both stores by country and category, and full app details by ID or URL. Rank-change tracking.",
+  "description": "Apple App Store and Google Play app data in one schema: App Store keyword search ranks (ASO), top free/paid/grossing charts by country and category, and app details by URL or ID (rating, installs, price, version). Rank-change alerts. $1 per 1,000 rank rows, $1.50 per 1,000 apps.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 256,

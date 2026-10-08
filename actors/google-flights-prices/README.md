@@ -138,11 +138,11 @@ Example: the cheapest week-long round trip from LA to Tokyo departing any day in
 
 Pay-per-event, only for itineraries written to your dataset:
 
-| Event            | Price      |
-| ---------------- | ---------- |
-| Flight itinerary | **$0.005** |
+| Event            | Price       |
+| ---------------- | ----------- |
+| Flight itinerary | **$0.0025** |
 
-That's **$5 per 1,000 itineraries**. The default input (one route, 10 itineraries) costs $0.05. A 30-day price calendar with the 3 best itineraries per day is 90 itineraries, $0.45. Searches that return no flights are free. If you set a **maximum cost per run**, the actor stops cleanly when it reaches it.
+That's **$2.50 per 1,000 itineraries**. The default input (one route, 10 itineraries) costs $0.025. A 30-day price calendar with the 3 best itineraries per day is 90 itineraries, $0.225. Searches that return no flights are free. If you set a **maximum cost per run**, the actor stops cleanly when it reaches it.
 
 ## Tips for tracking Google Flights prices
 

@@ -1,8 +1,8 @@
 {
   "actorSpecification": 1,
   "name": "document-to-markdown",
-  "title": "Document to Markdown: PDF, Word, PPTX, Excel, EPUB for RAG",
-  "description": "Convert PDF, DOCX, PPTX, XLSX, HTML and EPUB files to clean Markdown, plain text or RAG-ready chunks with page numbers. Tables become Markdown tables, scanned pages are OCR'd. Batch URLs, no API keys, pay per document.",
+  "title": "PDF & Document to Markdown: Word, PPTX, Excel, EPUB for RAG",
+  "description": "Convert PDF, Word (DOCX), PowerPoint (PPTX), Excel (XLSX), HTML and EPUB files from URLs or uploads to Markdown, plain text or RAG chunks with page numbers. Tables become Markdown tables; scanned PDFs are OCR'd. No API key or LLM. $4 per 1,000 documents.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 1024,

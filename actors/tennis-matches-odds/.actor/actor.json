@@ -2,7 +2,7 @@
   "actorSpecification": 1,
   "name": "tennis-matches-odds",
   "title": "Tennis Results & Betting Odds Scraper (ATP, WTA, ITF)",
-  "description": "Historical and daily tennis match results with closing betting odds from TennisExplorer: ATP, WTA, Challenger and ITF. Set scores, tiebreaks, surface, round, seeds and optional per-bookmaker odds. By date range or player.",
+  "description": "Historical and daily tennis results with closing betting odds from TennisExplorer: ATP, WTA, Challenger and ITF singles by date range or player. Set scores, tiebreaks, tournament, surface, round and seeds; optional per-bookmaker opening and closing odds. $4 per 1,000 matches.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 256,

@@ -2,7 +2,7 @@
   "actorSpecification": 1,
   "name": "eventbrite-events",
   "title": "Eventbrite Events Scraper: Venues, Organizers & Prices",
-  "description": "Events from Eventbrite by city, category, date and keyword: name, start/end time and time zone, venue with address and coordinates, online flag, organizer, ticket price range, category, tags, image and full description. No login needed.",
+  "description": "Scrape Eventbrite events by city, category, date and keyword, or from search and event URLs: name, start/end time and time zone, venue address and coordinates, online flag, organizer, ticket price range, tags and full description. No login. $5 per 1,000 events.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 256,

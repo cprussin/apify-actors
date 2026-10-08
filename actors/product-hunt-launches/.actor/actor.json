@@ -2,7 +2,7 @@
   "actorSpecification": 1,
   "name": "product-hunt-launches",
   "title": "Product Hunt Scraper: Launches, Leaderboards & Makers",
-  "description": "Product Hunt launches as JSON: name, tagline, live upvotes, daily rank, topics, website, hunter and makers. Current launches and topic feeds need no API key; add a free token for historical leaderboards and comments.",
+  "description": "Scrape Product Hunt launches: current featured launches, topic feeds, daily/weekly/monthly leaderboards or launch URLs. Name, tagline, upvotes, daily rank, topics, website, hunter and makers; comments optional. No token for current launches; free token for history. $1 per 1,000 launches.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 256,

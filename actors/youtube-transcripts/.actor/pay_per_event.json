@@ -2,7 +2,7 @@
   "transcript": {
     "eventTitle": "Transcript",
     "eventDescription": "One video transcript written to the dataset. Videos without captions or that fail are free.",
-    "eventPriceUsd": 0.0045,
+    "eventPriceUsd": 0.00225,
     "isPrimaryEvent": true
   },
   "apify-actor-start": {

@@ -2,7 +2,7 @@
   "actorSpecification": 1,
   "name": "ycombinator-companies",
   "title": "Y Combinator Companies & Jobs Scraper: YC Startup Directory",
-  "description": "Every Y Combinator startup as JSON: one-liner, description, batch, status, industries, regions, team size, website, launch date and hiring flag, filtered by batch, industry, region or tags. Plus YC startup jobs with salary and equity.",
+  "description": "Scrape the Y Combinator company directory (~6,000 YC startups) by batch, industry, region, status, tags or team size: one-liner, description, website, team size, launch date and hiring flag. Jobs mode: YC startup jobs with salary and equity. $3 per 1,000 companies or jobs.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 256,

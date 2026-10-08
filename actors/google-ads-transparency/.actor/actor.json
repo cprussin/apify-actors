@@ -2,7 +2,7 @@
   "actorSpecification": 1,
   "name": "google-ads-transparency",
   "title": "Google Ads Transparency Scraper: Ads, Copy, Images & Video",
-  "description": "Scrape Google Ads Transparency Center: the ads any advertiser runs on Search, YouTube, Maps, Play & Shopping. Look up by name, AR ID or domain. Headline, text, images, video, dates.",
+  "description": "Scrape the Google Ads Transparency Center by advertiser name, AR ID or domain: each ad's format, headline, text, display URL, images, video and first/last shown dates on Search, YouTube, Maps, Play and Shopping. Filter by region, format and date. $1.80 per 1,000 ads.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 256,

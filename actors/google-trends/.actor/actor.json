@@ -2,7 +2,7 @@
   "actorSpecification": 1,
   "name": "google-trends",
   "title": "Google Trends Scraper: Interest, Regions, Related & Trending",
-  "description": "Google Trends interest over time, by region/metro/city, related queries & topics (top + rising) and trending-now searches. Compare 5+ terms on one scale. Web, News, YouTube, Shopping.",
+  "description": "Scrape Google Trends: interest over time, interest by country, region, metro or city, related queries and topics (top and rising) and trending-now searches. Compare more than 5 terms on one scale. Web, News, Images, YouTube or Shopping. $1 per 1,000 results.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 256,

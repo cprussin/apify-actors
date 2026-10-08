@@ -2,7 +2,7 @@
   "actorSpecification": 1,
   "name": "video-frame-extractor",
   "title": "Video Frame Extractor: Thumbnails, Scene Keyframes & GIF",
-  "description": "Extract frames from video files every N seconds or at scene changes, plus a contact sheet, video metadata, the audio track (M4A, MP3, Opus) and a GIF clip. JPEG, PNG or WebP. Direct URLs or uploads, no API key.",
+  "description": "Extract frames from video files every N seconds, N evenly spaced or at scene changes, as JPEG, PNG or WebP, plus contact sheet, video metadata, audio track (M4A, MP3, Opus) and GIF clip. Direct video URLs or uploads, not YouTube links. $0.005 per video + $0.003 per frame.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 1024,

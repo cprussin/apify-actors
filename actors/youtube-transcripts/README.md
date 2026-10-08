@@ -39,7 +39,7 @@ The actor does not download audio or run speech-to-text. If a video has no capti
 | `translateTo`           | Language code to machine-translate into (YouTube's translation), e.g. `en`                                   | none                   |
 | `formats`               | Any of `text`, `segments`, `srt`, `vtt`                                                                      | `["text", "segments"]` |
 | `includeMetadata`       | Add channel, publish date, duration, views, description and more                                             | `true`                 |
-| `onlyNew`               | Monitoring: only videos whose transcript wasn't returned by an earlier run with the same input               | `true`                 |
+| `onlyNew`               | Monitoring: only videos whose transcript wasn't returned by an earlier run with the same input               | `false`                |
 | `proxyConfiguration`    | Proxy settings                                                                                               | Apify residential      |
 
 Example: the 50 newest long-form videos of a channel, English (or translated to English), text and SRT:
@@ -122,10 +122,10 @@ Videos without a transcript are still returned, **free of charge**, with `transc
 
 Pay per event, no subscription:
 
-| Event                                    | Price                         |
-| ---------------------------------------- | ----------------------------- |
-| Transcript (one video with a transcript) | **$0.0045** ($4.50 per 1,000) |
-| Actor start                              | $0.00005                      |
+| Event                                    | Price                          |
+| ---------------------------------------- | ------------------------------ |
+| Transcript (one video with a transcript) | **$0.00225** ($2.25 per 1,000) |
+| Actor start                              | $0.00005                       |
 
 Proxy and compute costs are included. Videos that return an error are not charged. If you set a **maximum cost per run**, the actor stops cleanly when it is reached.
 
