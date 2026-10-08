@@ -1,0 +1,4 @@
+# Python side of the actor (python/upscale.py), pinned to the tested versions.
+numpy==2.4.6
+onnxruntime==1.30.0
+pillow==12.3.0

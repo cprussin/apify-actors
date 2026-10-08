@@ -1,0 +1,91 @@
+{
+  "title": "Image Upscaler input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "urls": {
+      "title": "Image URLs",
+      "type": "array",
+      "description": "Direct links to JPEG, PNG, WebP, GIF, BMP, TIFF or AVIF images, one per line. Apify key-value store record URLs (api.apify.com/v2/key-value-stores/.../records/...) are read with your token. Social-network links (Instagram, Facebook, TikTok, X, Pinterest, LinkedIn) are refused. Failed images are free.",
+      "editor": "stringList",
+      "prefill": [
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Aldrin_Apollo_11_original.jpg/500px-Aldrin_Apollo_11_original.jpg"
+      ],
+      "sectionCaption": "Images"
+    },
+    "startUrls": {
+      "title": "Start URLs",
+      "type": "array",
+      "description": "Optional alternative to Image URLs, in Apify's request-list format (e.g. a file with one URL per line, or the output of another actor). Combined with Image URLs.",
+      "editor": "requestListSources"
+    },
+    "keyValueStoreRecords": {
+      "title": "Key-value store records",
+      "type": "array",
+      "description": "Images uploaded to an Apify key-value store, as <code>storeId/recordKey</code> or <code>username~store-name/recordKey</code>, one per line. Use this to upscale your own files without hosting them anywhere.",
+      "editor": "stringList"
+    },
+    "scale": {
+      "title": "Scale",
+      "type": "integer",
+      "description": "2, 3 or 4: the output is this many times wider and taller. The price is the same for every scale (it depends on the input size only).",
+      "editor": "number",
+      "minimum": 2,
+      "maximum": 4,
+      "default": 4,
+      "prefill": 4,
+      "sectionCaption": "Output"
+    },
+    "outputFormat": {
+      "title": "Output format",
+      "type": "string",
+      "description": "PNG: lossless, keeps transparency, large files. JPEG: small files, no transparency (flattened onto white). WebP: smallest files, keeps transparency, at most 16383 px per side.",
+      "editor": "select",
+      "enum": ["png", "jpg", "webp"],
+      "enumTitles": ["PNG", "JPEG", "WebP"],
+      "default": "png"
+    },
+    "quality": {
+      "title": "JPEG/WebP quality",
+      "type": "integer",
+      "description": "1-100, for JPEG and WebP output. 90 is visually lossless for most images.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 90
+    },
+    "maxInputMegapixels": {
+      "title": "Max input size (megapixels)",
+      "type": "string",
+      "description": "Larger images are skipped with a free error item. 1 MP is about 1155x866 px, 2 MP about 1633x1224 px. The price is per started 0.5 MP of input, so this also caps the cost per image (2 MP = $0.04).",
+      "editor": "select",
+      "enum": ["0.25", "0.5", "1", "2"],
+      "enumTitles": [
+        "0.25 MP ($0.01 per image)",
+        "0.5 MP ($0.01 per image)",
+        "1 MP (at most $0.02 per image)",
+        "2 MP (at most $0.04 per image)"
+      ],
+      "default": "2",
+      "sectionCaption": "Limits"
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "description": "Larger downloads are skipped with a free error item.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 25
+    },
+    "timeoutSecs": {
+      "title": "Download timeout (seconds)",
+      "type": "integer",
+      "description": "Max time to download one image.",
+      "editor": "number",
+      "minimum": 5,
+      "maximum": 600,
+      "default": 60
+    }
+  }
+}

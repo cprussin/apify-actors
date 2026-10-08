@@ -1,0 +1,9 @@
+# Docker build stage only (python/export_model.py): converts the Real-ESRGAN
+# weights to ONNX and checks the export. The +cpu local version only exists
+# on the PyTorch CPU index, so pip can't pick the much larger CUDA build.
+# None of this is in the final image.
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.14.1+cpu
+numpy==2.4.6
+onnx==1.23.2
+onnxruntime==1.30.0

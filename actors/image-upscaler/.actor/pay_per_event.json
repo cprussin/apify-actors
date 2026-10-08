@@ -1,0 +1,8 @@
+{
+  "image-upscaled": {
+    "eventTitle": "Image upscaled (per 0.5 MP)",
+    "eventDescription": "One image upscaled, charged once per started 0.5 megapixel of input: $0.01 up to 0.5 MP (e.g. 800x600), $0.02 up to 1 MP, $0.04 up to 2 MP. Same price at 2x, 3x and 4x. Failed images are free.",
+    "eventPriceUsd": 0.01,
+    "isPrimaryEvent": true
+  }
+}

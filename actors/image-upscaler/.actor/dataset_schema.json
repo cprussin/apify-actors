@@ -1,0 +1,198 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "url": {
+        "type": "string",
+        "title": "URL",
+        "description": "Image URL, or storeId/key for a key-value store record.",
+        "example": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Aldrin_Apollo_11_original.jpg/500px-Aldrin_Apollo_11_original.jpg"
+      },
+      "sourceType": {
+        "type": "string",
+        "title": "Source type",
+        "description": "url or kv (key-value store record).",
+        "example": "url"
+      },
+      "fileName": {
+        "type": ["string", "null"],
+        "title": "File name",
+        "description": "From the Content-Disposition header, the URL path or the record key.",
+        "example": "Aldrin_Apollo_11_original.jpg"
+      },
+      "inputFormat": {
+        "type": ["string", "null"],
+        "title": "Input format",
+        "description": "Detected input format: jpg, png, webp, gif, bmp, tiff or avif.",
+        "example": "jpg"
+      },
+      "inputBytes": {
+        "type": ["number", "null"],
+        "title": "Input size (bytes)",
+        "description": "Downloaded file size in bytes.",
+        "example": 95832
+      },
+      "inputWidth": {
+        "type": ["number", "null"],
+        "title": "Input width",
+        "description": "Input width in pixels (after EXIF rotation).",
+        "example": 500
+      },
+      "inputHeight": {
+        "type": ["number", "null"],
+        "title": "Input height",
+        "description": "Input height in pixels (after EXIF rotation).",
+        "example": 503
+      },
+      "inputMegapixels": {
+        "type": ["number", "null"],
+        "title": "Input megapixels",
+        "description": "Input width x height in millions of pixels.",
+        "example": 0.25
+      },
+      "scale": {
+        "type": "number",
+        "title": "Scale",
+        "description": "Requested scale: 2, 3 or 4.",
+        "example": 4
+      },
+      "outputWidth": {
+        "type": ["number", "null"],
+        "title": "Output width",
+        "description": "Upscaled width in pixels.",
+        "example": 2000
+      },
+      "outputHeight": {
+        "type": ["number", "null"],
+        "title": "Output height",
+        "description": "Upscaled height in pixels.",
+        "example": 2012
+      },
+      "outputFormat": {
+        "type": "string",
+        "title": "Output format",
+        "description": "png, jpg or webp.",
+        "example": "png"
+      },
+      "outputBytes": {
+        "type": ["number", "null"],
+        "title": "Output size (bytes)",
+        "description": "Upscaled file size in bytes.",
+        "example": 5189662
+      },
+      "outputKey": {
+        "type": ["string", "null"],
+        "title": "Output key",
+        "description": "Record key of the upscaled image in the run's key-value store.",
+        "example": "upscaled-0001-Aldrin_Apollo_11_original.png"
+      },
+      "outputUrl": {
+        "type": ["string", "null"],
+        "title": "Upscaled image",
+        "description": "Link to the upscaled image in the run's key-value store.",
+        "example": "https://api.apify.com/v2/key-value-stores/abc/records/upscaled-0001-Aldrin_Apollo_11_original.png"
+      },
+      "model": {
+        "type": "string",
+        "title": "Model",
+        "description": "Upscaling model: Real-ESRGAN realesr-general-x4v3.",
+        "example": "realesr-general-x4v3"
+      },
+      "billedUnits": {
+        "type": "number",
+        "title": "Billed events",
+        "description": "image-upscaled events charged: one per started 0.5 MP of input (0 on failure).",
+        "example": 1
+      },
+      "processingSeconds": {
+        "type": ["number", "null"],
+        "title": "Processing time (s)",
+        "description": "Time to decode, upscale and encode the image, in seconds.",
+        "example": 8.72
+      },
+      "warning": {
+        "type": ["string", "null"],
+        "title": "Warning",
+        "description": "Notes such as an animated image of which only the first frame was upscaled.",
+        "example": null
+      },
+      "error": {
+        "type": ["string", "null"],
+        "title": "Error",
+        "description": "Why the image failed (not billed), or null on success.",
+        "example": null
+      },
+      "upscaledAt": {
+        "type": "string",
+        "title": "Upscaled at",
+        "description": "When the image was processed (ISO 8601 UTC).",
+        "example": "2026-10-08T00:00:00.000Z"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Upscaled images",
+      "transformation": {
+        "fields": [
+          "url",
+          "inputWidth",
+          "inputHeight",
+          "outputWidth",
+          "outputHeight",
+          "outputUrl",
+          "billedUnits",
+          "processingSeconds",
+          "warning",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "url": {
+            "label": "URL",
+            "format": "link"
+          },
+          "inputWidth": {
+            "label": "Input width",
+            "format": "number"
+          },
+          "inputHeight": {
+            "label": "Input height",
+            "format": "number"
+          },
+          "outputWidth": {
+            "label": "Output width",
+            "format": "number"
+          },
+          "outputHeight": {
+            "label": "Output height",
+            "format": "number"
+          },
+          "outputUrl": {
+            "label": "Upscaled image",
+            "format": "link"
+          },
+          "billedUnits": {
+            "label": "Billed events",
+            "format": "number"
+          },
+          "processingSeconds": {
+            "label": "Processing time (s)",
+            "format": "number"
+          },
+          "warning": {
+            "label": "Warning",
+            "format": "text"
+          },
+          "error": {
+            "label": "Error",
+            "format": "text"
+          }
+        }
+      }
+    }
+  }
+}

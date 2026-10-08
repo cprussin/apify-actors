@@ -1,0 +1,18 @@
+{
+  "actorSpecification": 1,
+  "name": "image-upscaler",
+  "title": "AI Image Upscaler: Real-ESRGAN 2x, 4x Photo Enhancer",
+  "description": "Upscale and enhance images 2x, 3x or 4x with Real-ESRGAN AI: sharper photos, product shots, old scans and AI art from URLs or your uploads, saved as PNG, JPEG or WebP. No API key, pay per image.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 2048,
+  "defaultMemoryMbytes": 4096,
+  "maxMemoryMbytes": 16384,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}
