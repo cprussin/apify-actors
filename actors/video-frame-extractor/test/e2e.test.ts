@@ -20,6 +20,7 @@ const PRICES = {
   [EVENTS.frame]: 0.003,
   [EVENTS.sceneMinute]: 0.01,
   [EVENTS.extra]: 0.005,
+  [EVENTS.audioMinute]: 0.002,
 };
 
 describe.skipIf(!process.env.VIDEO_FRAMES_E2E)("end to end", () => {

@@ -78,7 +78,7 @@ describe("downloadToFile", () => {
 describe("downloadToFile over HTTP", () => {
   let server: Server;
   let base: string;
-  const body = Buffer.alloc(3 * 1024 * 1024, 7);
+  const body = Buffer.alloc(8 * 1024 * 1024, 7);
 
   beforeAll(async () => {
     server = createServer((req, res) => {
@@ -101,8 +101,9 @@ describe("downloadToFile over HTTP", () => {
   afterAll(() => server?.close());
 
   it("follows redirects and streams the body to disk", async () => {
-    for (let i = 0; i < 3; i++) {
-      const path = join(dir, `h${i}`);
+    // The crash is timing-dependent; several downloads make it near-certain.
+    const path = join(dir, "h");
+    for (let i = 0; i < 10; i++) {
       const res = await downloadToFile(
         `${base}/old`,
         path,

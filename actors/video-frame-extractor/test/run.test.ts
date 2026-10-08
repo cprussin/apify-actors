@@ -11,11 +11,14 @@ const PRICES = {
   [EVENTS.frame]: 0.003,
   [EVENTS.sceneMinute]: 0.01,
   [EVENTS.extra]: 0.005,
+  [EVENTS.audioMinute]: 0.002,
 };
 
-/** Fake videos: "VIDEO <seconds> <width>x<height> [audio]". */
+/** Fake videos: "VIDEO <seconds> <width>x<height> [audio codec]". */
 const files: Record<string, string | Error> = {
-  "https://x.org/a.mp4": "VIDEO 95 1920x1080 audio",
+  "https://x.org/a.mp4": "VIDEO 95 1920x1080 aac",
+  "https://x.org/4k.mp4": "VIDEO 61 3840x2160 opus",
+  "https://x.org/hour.mp4": "VIDEO 3600 1280x720 aac",
   "https://x.org/b.mov": "VIDEO 30 640x360",
   "https://x.org/long.mp4": "VIDEO 7200 1280x720",
   "https://x.org/song.mp3": "AUDIO 120",
@@ -42,7 +45,7 @@ const info = (body: string): VideoInfo | null => {
     container: "mov,mp4,m4a,3gp,3g2,mj2",
     bitRate: 1_000_000,
     rotation: 0,
-    audioCodec: audio ? "aac" : null,
+    audioCodec: audio ?? null,
     audioSampleRate: audio ? 48000 : null,
     audioChannels: audio ? 2 : null,
   };
@@ -219,6 +222,7 @@ describe("runExtraction", () => {
   });
 
   it("makes a contact sheet, GIF clip and audio track, billed as extras", async () => {
+    // AAC to Opus is re-encoded: billed per started minute.
     const h = harness({
       urls: ["https://x.org/a.mp4"],
       frameCount: 6,
@@ -235,7 +239,12 @@ describe("runExtraction", () => {
       "audio opus",
     ]);
     expect(h.charges).toEqual([
-      { [EVENTS.video]: 1, [EVENTS.frame]: 7, [EVENTS.extra]: 2 },
+      {
+        [EVENTS.video]: 1,
+        [EVENTS.frame]: 7,
+        [EVENTS.extra]: 1,
+        [EVENTS.audioMinute]: 2,
+      },
     ]);
     expect(h.items[0]).toMatchObject({
       frameCount: 6,
@@ -243,9 +252,65 @@ describe("runExtraction", () => {
       gifUrl: "https://store/video-0001-clip.gif",
       audioUrl: "https://store/video-0001-audio.opus",
       audioFormat: "opus",
-      costUsd: 0.036,
+      costUsd: 0.035,
     });
     expect(h.saved.get("video-0001-audio.opus")).toBe("audio/ogg");
+  });
+
+  it("bills a copied audio track as one extra", async () => {
+    const h = harness({
+      urls: ["https://x.org/hour.mp4", "https://x.org/4k.mp4"],
+      mode: "none",
+      audioFormat: "m4a",
+    });
+    await h.run();
+    // AAC to M4A is copied; Opus to M4A is re-encoded.
+    expect(by(h.items, "hour").charges).toEqual({
+      [EVENTS.video]: 1,
+      [EVENTS.extra]: 1,
+    });
+    expect(by(h.items, "4k").charges).toEqual({
+      [EVENTS.video]: 1,
+      [EVENTS.audioMinute]: 2,
+    });
+  });
+
+  it("refuses re-encoded audio the budget can't pay for", async () => {
+    const h = harness(
+      { urls: ["https://x.org/hour.mp4"], mode: "none", audioFormat: "mp3" },
+      { budget: 0.1 },
+    );
+    const stats = await h.run();
+    expect(stats.skippedBudget).toBe(1);
+    // 0.005 + 60 audio minutes at 0.002.
+    expect(h.items[0]!.error).toMatch(/costs \$0.125, more than/);
+    expect(h.calls).toEqual([]);
+  });
+
+  it("scales scene minutes and GIF events with the video size", async () => {
+    const h = harness(
+      {
+        urls: ["https://x.org/4k.mp4"],
+        mode: "scene",
+        gifClip: true,
+        gifDurationSeconds: 15,
+        gifWidth: 1080,
+        gifFps: 25,
+      },
+      { cuts: [30] },
+    );
+    await h.run();
+    expect(h.calls).toContain("gif 0 1080x608");
+    // 4K is 4x 1080p: 2 started minutes -> 8 scene minutes. The GIF is
+    // 15 s x 25 fps x 1080x608 = 22 units of 5 s x 10 fps x 480x480, x4.
+    expect(h.charges).toEqual([
+      {
+        [EVENTS.video]: 1,
+        [EVENTS.frame]: 2,
+        [EVENTS.sceneMinute]: 8,
+        [EVENTS.extra]: 88,
+      },
+    ]);
   });
 
   it("finds scenes and bills started video minutes", async () => {

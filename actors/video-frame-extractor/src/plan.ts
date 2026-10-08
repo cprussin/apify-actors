@@ -164,11 +164,42 @@ export function timecode(seconds: number): string {
 export const startedMinutes = (seconds: number) =>
   Math.max(1, Math.ceil(seconds / 60 - 1e-9));
 
+const FULL_HD = 1920 * 1080;
+
+/**
+ * Decoding cost relative to 1080p: 1 up to 1080p (10% slack), then one per
+ * started 1080p-sized area (1440p 2, 4K 4). Scene minutes and GIF events
+ * are multiplied by it.
+ */
+export const sizeFactor = (width: number, height: number) =>
+  Math.max(1, Math.ceil((width * height) / FULL_HD - 0.1));
+
+/** Output pixels of one GIF event: 5 s at 10 fps and 480x480. */
+const GIF_UNIT = 5 * 10 * 480 * 480;
+
+/**
+ * GIF events: one per started 5 s of a 480x480, 10 fps clip (the default
+ * clip of a landscape video is 1), times the video's size factor.
+ */
+export const gifEvents = (
+  clipSecs: number,
+  fps: number,
+  size: { width: number; height: number },
+  factor: number,
+) =>
+  Math.max(
+    1,
+    Math.ceil((clipSecs * fps * size.width * size.height) / GIF_UNIT - 1e-9),
+  ) * factor;
+
 export const EVENTS = {
   video: "video-processed",
   frame: "frame",
   sceneMinute: "scene-minute",
+  /** A GIF event or a copied (not re-encoded) audio track. */
   extra: "audio-or-gif",
+  /** Re-encoded audio, per started minute of video. */
+  audioMinute: "audio-minute",
 } as const;
 export type EventName = (typeof EVENTS)[keyof typeof EVENTS];
 export type Charges = Partial<Record<EventName, number>>;

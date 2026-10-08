@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { notVideoError } from "./detect.js";
 import { VideoError, type Downloaded } from "./download.js";
-import type { MediaTools, VideoInfo } from "./ffmpeg.js";
+import { copiesAudio, type MediaTools, type VideoInfo } from "./ffmpeg.js";
 import type {
   AudioFormat,
   FrameFormat,
@@ -17,9 +17,11 @@ import {
   EVENTS,
   fitWidth,
   formatUsd,
+  gifEvents,
   intervalTimes,
   pickScenes,
   sheetLayout,
+  sizeFactor,
   startedMinutes,
   timecode,
   type Charges,
@@ -118,6 +120,7 @@ export interface RunStats {
   frames: number;
   sceneMinutes: number;
   extras: number;
+  audioMinutes: number;
   videoSeconds: number;
   chargedUsd: number;
   stopReason: "done" | "budget";
@@ -188,6 +191,7 @@ export async function runExtraction(
     frames: 0,
     sceneMinutes: 0,
     extras: 0,
+    audioMinutes: 0,
     videoSeconds: 0,
     chargedUsd: 0,
     stopReason: "done",
@@ -295,14 +299,36 @@ export async function runExtraction(
         );
       const doGif = gif !== null && gif.startSecs < info.durationSecs;
       const doAudio = wantAudio && info.audioCodec !== null;
-      const sceneMinutes =
-        input.mode === "scene" ? startedMinutes(info.durationSecs) : 0;
+      // Larger videos cost more to decode, so scene minutes and GIF events
+      // scale with the frame area; re-encoded audio scales with length.
+      const factor = sizeFactor(info.width, info.height);
+      const minutes = startedMinutes(info.durationSecs);
+      const sceneMinutes = input.mode === "scene" ? minutes * factor : 0;
+      const gifSize = gif ? fitWidth(info.width, info.height, gif.width) : null;
+      const gifCharge =
+        doGif && gifSize
+          ? gifEvents(
+              Math.min(gif.durationSecs, info.durationSecs - gif.startSecs),
+              gif.fps,
+              gifSize,
+              factor,
+            )
+          : 0;
+      const audioCopied =
+        doAudio && copiesAudio(input.audioFormat!, info.audioCodec);
+      /** Charges for the GIF clip and audio track, when made. */
+      const extrasCharges = (gif: boolean, audio: boolean): Charges => {
+        const extra = (gif ? gifCharge : 0) + Number(audio && audioCopied);
+        const audioMinutes = audio && !audioCopied ? minutes : 0;
+        return {
+          ...(extra ? { [EVENTS.extra]: extra } : {}),
+          ...(audioMinutes ? { [EVENTS.audioMinute]: audioMinutes } : {}),
+        };
+      };
       const fixed: Charges = {
         [EVENTS.video]: 1,
         ...(sceneMinutes ? { [EVENTS.sceneMinute]: sceneMinutes } : {}),
-        ...(doGif || doAudio
-          ? { [EVENTS.extra]: Number(doGif) + Number(doAudio) }
-          : {}),
+        ...extrasCharges(doGif, doAudio),
       };
       const framePrice = price({ [EVENTS.frame]: 1 });
 
@@ -443,12 +469,11 @@ export async function runExtraction(
         } else warnings.push(res.error);
       }
 
-      // GIF clip and audio track (one extra event each).
+      // GIF clip and audio track.
       let gifUrl: string | null = null;
-      if (doGif) {
-        const size = fitWidth(info.width, info.height, gif.width);
+      if (doGif && gifSize) {
         const out = join(work, "clip.gif");
-        const res = await deps.media.gif(file.path, info, gif, size, out);
+        const res = await deps.media.gif(file.path, info, gif, gifSize, out);
         if (res.ok) {
           const key = `${prefix}-clip.gif`;
           gifUrl = await deps.saveFile(key, out, CONTENT_TYPES.gif!);
@@ -467,13 +492,13 @@ export async function runExtraction(
         } else warnings.push(res.error);
       }
 
-      const extras = Number(gifUrl !== null) + Number(audioUrl !== null);
+      const extras = extrasCharges(gifUrl !== null, audioUrl !== null);
       const frameEvents = frames.length + Number(contactSheetUrl !== null);
       const charges: Charges = {
         [EVENTS.video]: 1,
         ...(frameEvents ? { [EVENTS.frame]: frameEvents } : {}),
         ...(sceneMinutes ? { [EVENTS.sceneMinute]: sceneMinutes } : {}),
-        ...(extras ? { [EVENTS.extra]: extras } : {}),
+        ...extras,
       };
       const cost = price(charges);
       const done: OutputItem = {
@@ -505,7 +530,8 @@ export async function runExtraction(
         stats.processed += 1;
         stats.frames += frameEvents;
         stats.sceneMinutes += sceneMinutes;
-        stats.extras += extras;
+        stats.extras += extras[EVENTS.extra] ?? 0;
+        stats.audioMinutes += extras[EVENTS.audioMinute] ?? 0;
         stats.videoSeconds += info.durationSecs;
         stats.chargedUsd = Math.round((stats.chargedUsd + cost) * 1e6) / 1e6;
       }

@@ -12,6 +12,7 @@ import { join } from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
   audioArgs,
+  copiesAudio,
   Ffmpeg,
   parseProbe,
   SceneParser,
@@ -34,6 +35,9 @@ describe("audioArgs", () => {
       "opus",
     ]);
     expect(audioArgs("m4a", "mp3", 2).slice(0, 2)).toEqual(["-c:a", "aac"]);
+    expect(copiesAudio("m4a", "aac")).toBe(true);
+    expect(copiesAudio("opus", "aac")).toBe(false);
+    expect(copiesAudio("none", "aac")).toBe(false);
   });
 });
 

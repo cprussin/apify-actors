@@ -6,9 +6,11 @@ import {
   EVENTS,
   fitWidth,
   formatUsd,
+  gifEvents,
   intervalTimes,
   pickScenes,
   sheetLayout,
+  sizeFactor,
   startedMinutes,
   timecode,
 } from "../src/plan.js";
@@ -108,6 +110,23 @@ describe("helpers", () => {
     expect(formatUsd(0.056)).toBe("$0.056");
     expect(formatUsd(0.05)).toBe("$0.05");
     expect(formatUsd(1.5)).toBe("$1.5");
+  });
+
+  it("scales with the video size and the GIF's pixels", () => {
+    expect(sizeFactor(640, 360)).toBe(1);
+    expect(sizeFactor(1920, 1080)).toBe(1);
+    expect(sizeFactor(1080, 1920)).toBe(1);
+    expect(sizeFactor(2048, 1080)).toBe(1);
+    expect(sizeFactor(2560, 1440)).toBe(2);
+    expect(sizeFactor(3840, 2160)).toBe(4);
+    expect(sizeFactor(7680, 4320)).toBe(16);
+    const landscape = { width: 480, height: 270 };
+    expect(gifEvents(5, 10, landscape, 1)).toBe(1);
+    expect(gifEvents(1, 1, landscape, 1)).toBe(1);
+    expect(gifEvents(5, 10, { width: 480, height: 854 }, 1)).toBe(2);
+    expect(gifEvents(15, 10, landscape, 1)).toBe(2);
+    expect(gifEvents(15, 25, { width: 1080, height: 608 }, 1)).toBe(22);
+    expect(gifEvents(5, 10, landscape, 4)).toBe(4);
   });
 });
 

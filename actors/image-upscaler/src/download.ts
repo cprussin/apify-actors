@@ -1,4 +1,7 @@
 import { open } from "node:fs/promises";
+import { request as httpRequest, type IncomingMessage } from "node:http";
+import { request as httpsRequest } from "node:https";
+import { Readable } from "node:stream";
 
 /** An image file saved to disk. */
 export interface Downloaded {
@@ -30,6 +33,49 @@ const USER_AGENT =
   "Mozilla/5.0 (compatible; image-upscaler/0.1; +https://apify.com/cprussin/image-upscaler)";
 
 export const HEAD_BYTES = 4096;
+const MAX_REDIRECTS = 10;
+
+/**
+ * A minimal fetch() on node:http(s), following redirects. Node 22.23's
+ * built-in fetch (undici 6.28) crashes the whole process with
+ * "assert(!this.paused)" when a server closes the connection while a slow
+ * reader (e.g. writing to disk) holds the body back.
+ */
+export const nodeFetch: typeof fetch = async (input, init = {}) => {
+  let url = new URL(String(input));
+  const headers = (init.headers ?? {}) as Record<string, string>;
+  for (let hop = 0; ; hop++) {
+    const res = await new Promise<IncomingMessage>((resolve, reject) => {
+      const send = url.protocol === "https:" ? httpsRequest : httpRequest;
+      const req = send(
+        url,
+        { headers, signal: init.signal ?? undefined },
+        resolve,
+      );
+      req.on("error", reject);
+      req.end();
+    });
+    const status = res.statusCode ?? 0;
+    const location = res.headers.location;
+    if (status >= 300 && status < 400 && location) {
+      res.resume();
+      if (hop >= MAX_REDIRECTS) throw new Error("too many redirects");
+      url = new URL(location, url);
+      continue;
+    }
+    const h = new Headers();
+    for (const [k, v] of Object.entries(res.headers))
+      for (const x of [v ?? []].flat()) h.append(k, x);
+    const empty = status === 204 || status === 205 || status === 304;
+    if (empty) res.resume();
+    const response = new Response(
+      empty ? null : (Readable.toWeb(res) as ReadableStream<Uint8Array>),
+      { status, statusText: res.statusMessage ?? "", headers: h },
+    );
+    Object.defineProperty(response, "url", { value: url.href });
+    return response;
+  }
+};
 
 export const formatMb = (bytes: number) =>
   `${Math.round((bytes / 1024 / 1024) * 10) / 10} MB`;
@@ -119,7 +165,7 @@ async function request(
   what: string,
   use: (res: Response, signal: AbortSignal) => Promise<unknown>,
 ): Promise<unknown> {
-  const doFetch = opts.fetchImpl ?? fetch;
+  const doFetch = opts.fetchImpl ?? nodeFetch;
   const sleep =
     opts.sleep ?? ((ms: number) => new Promise((r) => setTimeout(r, ms)));
   const attempts = opts.attempts ?? 2;

@@ -105,6 +105,41 @@ describe("download", () => {
   });
 });
 
+// A server that closes the connection after each response, like Python's
+// http.server: Node 22.23's built-in fetch crashes the process on these.
+describe("download from a server that closes the connection", () => {
+  let closing: Server;
+  let url: string;
+  const body = Buffer.alloc(8 * 1024 * 1024, 7);
+
+  beforeAll(async () => {
+    closing = createServer((req, res) => {
+      res.shouldKeepAlive = false;
+      if (req.url === "/old")
+        return res.writeHead(302, { location: "/files/deck%201.pptx" }).end();
+      res.writeHead(200, {
+        "content-type": "application/octet-stream",
+        "content-length": body.length,
+        connection: "close",
+      });
+      res.end(body);
+    });
+    await new Promise<void>((r) => closing.listen(0, "127.0.0.1", r));
+    url = `http://127.0.0.1:${(closing.address() as AddressInfo).port}/old`;
+  });
+
+  afterAll(() => closing?.close());
+
+  it("follows redirects and reads the whole body", async () => {
+    // The crash is timing-dependent; several downloads make it near-certain.
+    for (let i = 0; i < 10; i++) {
+      const f = await download(url, { ...opts, maxBytes: 1e8 });
+      expect(f.fileName).toBe("deck 1.pptx");
+      expect(f.body.equals(body)).toBe(true);
+    }
+  });
+});
+
 describe("helpers", () => {
   it("parses file names", () => {
     expect(dispositionName('inline; filename="a b.docx"')).toBe("a b.docx");

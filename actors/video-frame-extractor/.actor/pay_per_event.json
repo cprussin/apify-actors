@@ -12,12 +12,17 @@
   },
   "scene-minute": {
     "eventTitle": "Scene detection minute",
-    "eventDescription": "One started minute of video analyzed for scene changes (scene mode only; a 10 min 20 s video is 11 minutes).",
+    "eventDescription": "One started minute of video analyzed for scene changes (scene mode only; a 10 min 20 s video is 11 minutes). Videos above 1080p count once per 1080p-sized area: 1440p 2x, 4K 4x.",
     "eventPriceUsd": 0.01
   },
   "audio-or-gif": {
-    "eventTitle": "Audio track or GIF clip",
-    "eventDescription": "One extra output file: the extracted audio track (M4A, MP3 or Opus) or the animated GIF clip.",
+    "eventTitle": "Copied audio track or GIF clip",
+    "eventDescription": "The audio track when copied without re-encoding (e.g. AAC to M4A), or each 5 s of GIF at 480x480 px and 10 fps (the default GIF of a landscape video is 1). GIFs from videos above 1080p count 2x (1440p) or 4x (4K).",
     "eventPriceUsd": 0.005
+  },
+  "audio-minute": {
+    "eventTitle": "Re-encoded audio minute",
+    "eventDescription": "One started minute of video whose audio track is re-encoded to the chosen format (e.g. AAC to MP3 or Opus). Copied tracks are billed as one audio-or-gif event instead.",
+    "eventPriceUsd": 0.002
   }
 }

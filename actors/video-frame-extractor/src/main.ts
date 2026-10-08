@@ -140,7 +140,10 @@ try {
   await Actor.setStatusMessage(
     `Processed ${stats.processed} video(s), ${stats.frames} frame(s)` +
       (stats.sceneMinutes ? `, ${stats.sceneMinutes} scene minute(s)` : "") +
-      (stats.extras ? `, ${stats.extras} GIF/audio file(s)` : "") +
+      (stats.extras ? `, ${stats.extras} GIF/audio event(s)` : "") +
+      (stats.audioMinutes
+        ? `, ${stats.audioMinutes} re-encoded audio minute(s)`
+        : "") +
       (ppe ? `, ${formatUsd(stats.chargedUsd)}` : "") +
       (stats.failed ? `, ${stats.failed} failed` : "") +
       (stats.stopReason === "budget" ? " (max charge reached)" : ""),

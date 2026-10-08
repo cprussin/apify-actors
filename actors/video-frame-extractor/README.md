@@ -145,7 +145,12 @@ Pay per event, compute included, no start fee:
 | `video-processed` | **$0.005** | Each video delivered (metadata included). Failed videos are free. |
 | `frame`           | **$0.003** | Each frame image. A contact sheet counts as one frame.            |
 | `scene-minute`    | **$0.01**  | Scene mode only: each started minute of video analyzed.           |
-| `audio-or-gif`    | **$0.005** | Each extra file: the audio track or the GIF clip.                 |
+| `audio-or-gif`    | **$0.005** | The audio track copied as is, or each GIF unit (see below).       |
+| `audio-minute`    | **$0.002** | Each started minute of video when the audio track is re-encoded.  |
+
+- **Larger videos** take longer to decode: above 1080p, scene minutes and GIF events count once per 1080p-sized area (1440p 2x, 4K 4x).
+- **GIF clip**: one event per 5 s of a 480x480 px, 10 fps clip, so the default clip (5 s, 480 px wide, 10 fps) of a landscape video is 1 event; a 15 s, 1080 px, 25 fps clip is 22.
+- **Audio track**: copied for a flat $0.005 when it is already in the chosen codec (AAC for M4A, MP3 for MP3, Opus for Opus); otherwise re-encoded for $0.002 per started minute.
 
 Examples:
 
@@ -154,13 +159,15 @@ Examples:
 | 1 video, 12 thumbnails                       | **$0.041** |
 | 1 video, 12 thumbnails + contact sheet + GIF | **$0.049** |
 | 10 min video, scene mode, 25 keyframes       | **$0.18**  |
-| 1 video, metadata + audio track only         | **$0.01**  |
+| Same 10 min video in 4K                      | **$0.48**  |
+| 1 video, metadata + audio track copied (M4A) | **$0.01**  |
+| 60 min video, audio re-encoded to MP3        | **$0.125** |
 
-If you set a **maximum cost per run**, the actor never starts work it can't pay for: a video whose frames don't fit the remaining budget is skipped with a free error item, and scene mode keeps only the strongest cuts the budget pays for.
+If you set a **maximum cost per run**, the actor never starts work it can't pay for: a video whose frames, scene minutes or extras don't fit the remaining budget is skipped with a free error item, and scene mode keeps only the strongest cuts the budget pays for.
 
 ## Tips
 
-- **Speed**: on the default 4 GB memory (1 CPU core), 24 frames from a 2-minute 720p video take about 12 s; scene detection takes about 5 s per minute of 720p video and 9 s per minute of 1080p, plus the download. The audio track is copied in seconds when it is already in the chosen codec (e.g. AAC in an MP4, for M4A).
+- **Speed**: on the default 4 GB memory (1 CPU core), 24 frames from a 2-minute 720p video take about 12 s; scene detection takes about 5 s per minute of 720p video and 9 s per minute of 1080p, plus the download. The audio track is copied in seconds when it is already in the chosen codec (e.g. AAC in an MP4, for M4A); re-encoding takes about 1 s per minute.
 - **Choose a mode**: interval mode is fastest and cheapest for thumbnails. Scene mode suits edited videos (ads, talks, trailers); for one-shot footage (a webcam, a launch) it finds few scenes.
 - **Sensitivity**: if scene mode finds too many frames (flicker, fast motion), raise `sceneThreshold` or `minSceneSeconds`; if it misses soft cuts or fades, lower the threshold to 15-20.
 - **File size**: JPEG at quality 85 is a good default; WebP is about 30% smaller; PNG is lossless and several times larger.

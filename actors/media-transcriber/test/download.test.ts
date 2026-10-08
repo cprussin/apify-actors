@@ -1,7 +1,9 @@
 import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { createServer, type Server } from "node:http";
+import type { AddressInfo } from "node:net";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { afterAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
   authHeaders,
   dispositionName,
@@ -21,7 +23,7 @@ const respond =
     if (r instanceof Error) throw r;
     return r;
   };
-const opts = (fetchImpl: typeof fetch, maxBytes = 1000) => ({
+const opts = (fetchImpl?: typeof fetch, maxBytes = 1000) => ({
   maxBytes,
   timeoutMs: 5000,
   fetchImpl,
@@ -103,6 +105,73 @@ describe("downloadToFile", () => {
         opts(respond(new TypeError("fetch failed"), new TypeError("x"))),
       ),
     ).rejects.toThrow(/Fetching the feed failed/);
+  });
+});
+
+// A server that closes the connection after each response, like Python's
+// http.server: Node 22.23's built-in fetch crashes the process on these.
+describe("downloadToFile over HTTP", () => {
+  let server: Server;
+  let base: string;
+  const body = Buffer.alloc(8 * 1024 * 1024, 7);
+
+  beforeAll(async () => {
+    server = createServer((req, res) => {
+      res.shouldKeepAlive = false;
+      if (req.url === "/old")
+        return res.writeHead(302, { location: "/files/ep%201.mp3" }).end();
+      if (req.url === "/missing") return res.writeHead(404).end();
+      if (req.url === "/slow") return void setTimeout(() => res.end(), 2000);
+      if (req.url === "/feed")
+        return res
+          .writeHead(200, { "content-type": "application/rss+xml" })
+          .end("<rss></rss>");
+      res.writeHead(200, {
+        "content-type": "audio/mpeg",
+        "content-length": body.length,
+        connection: "close",
+      });
+      res.end(body);
+    });
+    await new Promise<void>((r) => server.listen(0, "127.0.0.1", r));
+    base = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
+  });
+
+  afterAll(() => server?.close());
+
+  it("follows redirects and streams the body to disk", async () => {
+    // The crash is timing-dependent; several downloads make it near-certain.
+    const path = join(dir, "h");
+    for (let i = 0; i < 10; i++) {
+      const res = await downloadToFile(
+        `${base}/old`,
+        path,
+        opts(undefined, 1e8),
+      );
+      expect(res).toMatchObject({
+        bytes: body.length,
+        contentType: "audio/mpeg",
+        fileName: "ep 1.mp3",
+      });
+      expect(res.head).toHaveLength(4096);
+      expect(readFileSync(path).equals(body)).toBe(true);
+    }
+    expect(await fetchText(`${base}/feed`, opts(undefined, 1e8))).toBe(
+      "<rss></rss>",
+    );
+  });
+
+  it("reports HTTP errors and timeouts", async () => {
+    await expect(
+      downloadToFile(`${base}/missing`, join(dir, "m"), opts(undefined, 1e8)),
+    ).rejects.toThrow("Download failed: HTTP 404 Not Found.");
+    await expect(
+      downloadToFile(`${base}/slow`, join(dir, "s"), {
+        maxBytes: 1e8,
+        timeoutMs: 200,
+        attempts: 1,
+      }),
+    ).rejects.toThrow("Download timed out after 0.2 s.");
   });
 });
 

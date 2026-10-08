@@ -38,8 +38,8 @@ const MAX_REDIRECTS = 10;
 /**
  * A minimal fetch() on node:http(s), following redirects. Node 22.23's
  * built-in fetch (undici 6.28) crashes the whole process with
- * "assert(!this.paused)" when a server closes the connection after a
- * response it streamed (e.g. HTTP/1.0 servers).
+ * "assert(!this.paused)" when a server closes the connection while a slow
+ * reader (e.g. writing to disk) holds the body back.
  */
 export const nodeFetch: typeof fetch = async (input, init = {}) => {
   let url = new URL(String(input));

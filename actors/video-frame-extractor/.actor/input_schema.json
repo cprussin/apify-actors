@@ -28,7 +28,7 @@
     "mode": {
       "title": "Frames",
       "type": "string",
-      "description": "Interval: frames every N seconds, or N evenly spaced frames. Scene changes: one frame at the start of each detected scene (costs $0.01 per started video minute for the analysis). Metadata only: no frames, just video info and the optional GIF and audio.",
+      "description": "Interval: frames every N seconds, or N evenly spaced frames. Scene changes: one frame at the start of each detected scene (costs $0.01 per started video minute for the analysis; 2x for 1440p, 4x for 4K). Metadata only: no frames, just video info and the optional GIF and audio.",
       "editor": "select",
       "enum": ["interval", "scene", "none"],
       "enumTitles": [
@@ -132,7 +132,7 @@
     "gifClip": {
       "title": "GIF clip",
       "type": "boolean",
-      "description": "Also save a short animated GIF from the video ($0.005).",
+      "description": "Also save a short animated GIF from the video ($0.005 for the default 5 s, 480 px, 10 fps clip; longer, wider or smoother clips and videos above 1080p cost proportionally more).",
       "default": false,
       "sectionCaption": "GIF and audio"
     },
@@ -175,7 +175,7 @@
     "audioFormat": {
       "title": "Extract audio track",
       "type": "string",
-      "description": "Also save the video's audio track ($0.005): M4A (AAC 128 kbps), MP3 (VBR ~190 kbps) or Opus (96 kbps). A track already in that codec (e.g. AAC in an MP4, for M4A) is copied without re-encoding. Videos without audio get a warning and no charge.",
+      "description": "Also save the video's audio track: M4A (AAC 128 kbps), MP3 (VBR ~190 kbps) or Opus (96 kbps). A track already in that codec (e.g. AAC in an MP4, for M4A) is copied without re-encoding for $0.005; others are re-encoded for $0.002 per started video minute. Videos without audio get a warning and no charge.",
       "editor": "select",
       "enum": ["none", "m4a", "mp3", "opus"],
       "enumTitles": ["No audio", "M4A (AAC)", "MP3", "Opus"],
