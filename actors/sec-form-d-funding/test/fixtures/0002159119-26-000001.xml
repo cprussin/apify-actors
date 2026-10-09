@@ -1,0 +1,725 @@
+<?xml version="1.0"?>
+<edgarSubmission>
+
+    <schemaVersion>X0708</schemaVersion>
+
+    <submissionType>D</submissionType>
+
+    <testOrLive>LIVE</testOrLive>
+
+    <primaryIssuer>
+        <cik>0002159119</cik>
+        <entityName>Brookfield Real Estate Value Add Logistics Venture L.P.</entityName>
+        <issuerAddress>
+            <street1>BROOKFIELD ASSET MANAGEMENT LTD</street1>
+            <street2>225 LIBERTY STREET, 8TH FLOOR</street2>
+            <city>NEW YORK</city>
+            <stateOrCountry>NY</stateOrCountry>
+            <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+            <zipCode>10281</zipCode>
+        </issuerAddress>
+        <issuerPhoneNumber>(212) 417-7000</issuerPhoneNumber>
+        <jurisdictionOfInc>DELAWARE</jurisdictionOfInc>
+        <issuerPreviousNameList>
+            <value>None</value>
+        </issuerPreviousNameList>
+        <edgarPreviousNameList>
+            <value>None</value>
+        </edgarPreviousNameList>
+        <entityType>Limited Partnership</entityType>
+        <yearOfInc>
+            <withinFiveYears>true</withinFiveYears>
+            <value>2026</value>
+        </yearOfInc>
+    </primaryIssuer>
+
+    <issuerList>
+        <issuer>
+            <cik>0002159118</cik>
+            <entityName>Brookfield Real Estate Value Add Logistics Venture B L.P.</entityName>
+            <issuerAddress>
+                <street1>BROOKFIELD ASSET MANAGEMENT LTD</street1>
+                <street2>225 LIBERTY STREET, 8TH FLOOR</street2>
+                <city>NEW YORK</city>
+                <stateOrCountry>NY</stateOrCountry>
+                <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                <zipCode>10281</zipCode>
+            </issuerAddress>
+            <issuerPhoneNumber>(212) 417-7000</issuerPhoneNumber>
+            <jurisdictionOfInc>DELAWARE</jurisdictionOfInc>
+            <issuerPreviousNameList>
+                <value>None</value>
+            </issuerPreviousNameList>
+            <edgarPreviousNameList>
+                <value>None</value>
+            </edgarPreviousNameList>
+            <entityType>Limited Partnership</entityType>
+            <yearOfInc>
+                <withinFiveYears>true</withinFiveYears>
+                <value>2026</value>
+            </yearOfInc>
+        </issuer>
+    </issuerList>
+
+    <relatedPersonsList>
+        <relatedPersonInfo>
+            <relatedPersonName>
+                <firstName>Chinyere</firstName>
+                <lastName>Ajanwachuku</lastName>
+            </relatedPersonName>
+            <relatedPersonAddress>
+                <street1>Brookfield Place</street1>
+                <street2>225 Liberty Street, 8th Floor</street2>
+                <city>New York</city>
+                <stateOrCountry>NY</stateOrCountry>
+                <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                <zipCode>10281-1048</zipCode>
+            </relatedPersonAddress>
+            <relatedPersonRelationshipList>
+                <relationship>Executive Officer</relationship>
+            </relatedPersonRelationshipList>
+            <relationshipClarification></relationshipClarification>
+        </relatedPersonInfo>
+        <relatedPersonInfo>
+            <relatedPersonName>
+                <firstName>Hideki</firstName>
+                <lastName>Aoki</lastName>
+            </relatedPersonName>
+            <relatedPersonAddress>
+                <street1>Brookfield Place</street1>
+                <street2>225 Liberty Street, 8th Floor</street2>
+                <city>New York</city>
+                <stateOrCountry>NY</stateOrCountry>
+                <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                <zipCode>10281-1048</zipCode>
+            </relatedPersonAddress>
+            <relatedPersonRelationshipList>
+                <relationship>Executive Officer</relationship>
+            </relatedPersonRelationshipList>
+            <relationshipClarification></relationshipClarification>
+        </relatedPersonInfo>
+        <relatedPersonInfo>
+            <relatedPersonName>
+                <firstName>Leila</firstName>
+                <lastName>Araiche</lastName>
+            </relatedPersonName>
+            <relatedPersonAddress>
+                <street1>Brookfield Place</street1>
+                <street2>225 Liberty Street, 8th Floor</street2>
+                <city>New York</city>
+                <stateOrCountry>NY</stateOrCountry>
+                <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                <zipCode>10281-1048</zipCode>
+            </relatedPersonAddress>
+            <relatedPersonRelationshipList>
+                <relationship>Executive Officer</relationship>
+            </relatedPersonRelationshipList>
+            <relationshipClarification></relationshipClarification>
+        </relatedPersonInfo>
+        <relatedPersonInfo>
+            <relatedPersonName>
+                <firstName>Patrick</firstName>
+                <lastName>Driscoll</lastName>
+            </relatedPersonName>
+            <relatedPersonAddress>
+                <street1>Brookfield Place</street1>
+                <street2>225 Liberty Street, 8th Floor</street2>
+                <city>New York</city>
+                <stateOrCountry>NY</stateOrCountry>
+                <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                <zipCode>10281-1048</zipCode>
+            </relatedPersonAddress>
+            <relatedPersonRelationshipList>
+                <relationship>Executive Officer</relationship>
+            </relatedPersonRelationshipList>
+            <relationshipClarification></relationshipClarification>
+        </relatedPersonInfo>
+        <relatedPersonInfo>
+            <relatedPersonName>
+                <firstName>Michael</firstName>
+                <lastName>Eltcin</lastName>
+            </relatedPersonName>
+            <relatedPersonAddress>
+                <street1>Brookfield Place</street1>
+                <street2>225 Liberty Street, 8th Floor</street2>
+                <city>New York</city>
+                <stateOrCountry>NY</stateOrCountry>
+                <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                <zipCode>10281-1048</zipCode>
+            </relatedPersonAddress>
+            <relatedPersonRelationshipList>
+                <relationship>Executive Officer</relationship>
+            </relatedPersonRelationshipList>
+            <relationshipClarification></relationshipClarification>
+        </relatedPersonInfo>
+        <relatedPersonInfo>
+            <relatedPersonName>
+                <firstName>Brett</firstName>
+                <lastName>Fox</lastName>
+            </relatedPersonName>
+            <relatedPersonAddress>
+                <street1>Brookfield Place</street1>
+                <street2>225 Liberty Street, 8th Floor</street2>
+                <city>New York</city>
+                <stateOrCountry>NY</stateOrCountry>
+                <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                <zipCode>10281-1048</zipCode>
+            </relatedPersonAddress>
+            <relatedPersonRelationshipList>
+                <relationship>Executive Officer</relationship>
+            </relatedPersonRelationshipList>
+            <relationshipClarification></relationshipClarification>
+        </relatedPersonInfo>
+        <relatedPersonInfo>
+            <relatedPersonName>
+                <firstName>Dao</firstName>
+                <lastName>Fu</lastName>
+            </relatedPersonName>
+            <relatedPersonAddress>
+                <street1>Brookfield Place</street1>
+                <street2>225 Liberty Street, 8th Floor</street2>
+                <city>New York</city>
+                <stateOrCountry>NY</stateOrCountry>
+                <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                <zipCode>10281-1048</zipCode>
+            </relatedPersonAddress>
+            <relatedPersonRelationshipList>
+                <relationship>Executive Officer</relationship>
+            </relatedPersonRelationshipList>
+            <relationshipClarification></relationshipClarification>
+        </relatedPersonInfo>
+        <relatedPersonInfo>
+            <relatedPersonName>
+                <firstName>Murray</firstName>
+                <lastName>Goldfarb</lastName>
+            </relatedPersonName>
+            <relatedPersonAddress>
+                <street1>Brookfield Place</street1>
+                <street2>225 Liberty Street, 8th Floor</street2>
+                <city>New York</city>
+                <stateOrCountry>NY</stateOrCountry>
+                <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                <zipCode>10281-1048</zipCode>
+            </relatedPersonAddress>
+            <relatedPersonRelationshipList>
+                <relationship>Executive Officer</relationship>
+            </relatedPersonRelationshipList>
+            <relationshipClarification></relationshipClarification>
+        </relatedPersonInfo>
+        <relatedPersonInfo>
+            <relatedPersonName>
+                <firstName>Ethan</firstName>
+                <lastName>Han</lastName>
+            </relatedPersonName>
+            <relatedPersonAddress>
+                <street1>Brookfield Place</street1>
+                <street2>225 Liberty Street, 8th Floor</street2>
+                <city>New York</city>
+                <stateOrCountry>NY</stateOrCountry>
+                <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                <zipCode>10281-1048</zipCode>
+            </relatedPersonAddress>
+            <relatedPersonRelationshipList>
+                <relationship>Executive Officer</relationship>
+            </relatedPersonRelationshipList>
+            <relationshipClarification></relationshipClarification>
+        </relatedPersonInfo>
+        <relatedPersonInfo>
+            <relatedPersonName>
+                <firstName>Polina</firstName>
+                <lastName>Kushelev</lastName>
+            </relatedPersonName>
+            <relatedPersonAddress>
+                <street1>Brookfield Place</street1>
+                <street2>225 Liberty Street, 8th Floor</street2>
+                <city>New York</city>
+                <stateOrCountry>NY</stateOrCountry>
+                <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                <zipCode>10281-1048</zipCode>
+            </relatedPersonAddress>
+            <relatedPersonRelationshipList>
+                <relationship>Executive Officer</relationship>
+            </relatedPersonRelationshipList>
+            <relationshipClarification></relationshipClarification>
+        </relatedPersonInfo>
+        <relatedPersonInfo>
+            <relatedPersonName>
+                <firstName>Melissa</firstName>
+                <lastName>Lang</lastName>
+            </relatedPersonName>
+            <relatedPersonAddress>
+                <street1>Brookfield Place</street1>
+                <street2>225 Liberty Street, 8th Floor</street2>
+                <city>New York</city>
+                <stateOrCountry>NY</stateOrCountry>
+                <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                <zipCode>10281-1048</zipCode>
+            </relatedPersonAddress>
+            <relatedPersonRelationshipList>
+                <relationship>Executive Officer</relationship>
+            </relatedPersonRelationshipList>
+            <relationshipClarification></relationshipClarification>
+        </relatedPersonInfo>
+        <relatedPersonInfo>
+            <relatedPersonName>
+                <firstName>Daniel</firstName>
+                <lastName>Lonergan</lastName>
+            </relatedPersonName>
+            <relatedPersonAddress>
+                <street1>Brookfield Place</street1>
+                <street2>225 Liberty Street, 8th Floor</street2>
+                <city>New York</city>
+                <stateOrCountry>NY</stateOrCountry>
+                <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                <zipCode>10281-1048</zipCode>
+            </relatedPersonAddress>
+            <relatedPersonRelationshipList>
+                <relationship>Executive Officer</relationship>
+            </relatedPersonRelationshipList>
+            <relationshipClarification></relationshipClarification>
+        </relatedPersonInfo>
+        <relatedPersonInfo>
+            <relatedPersonName>
+                <firstName>Baron</firstName>
+                <lastName>Lowell</lastName>
+            </relatedPersonName>
+            <relatedPersonAddress>
+                <street1>Brookfield Place</street1>
+                <street2>225 Liberty Street, 8th Floor</street2>
+                <city>New York</city>
+                <stateOrCountry>NY</stateOrCountry>
+                <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                <zipCode>10281-1048</zipCode>
+            </relatedPersonAddress>
+            <relatedPersonRelationshipList>
+                <relationship>Executive Officer</relationship>
+            </relatedPersonRelationshipList>
+            <relationshipClarification></relationshipClarification>
+        </relatedPersonInfo>
+        <relatedPersonInfo>
+            <relatedPersonName>
+                <firstName>Matthew</firstName>
+                <lastName>Lustberg</lastName>
+            </relatedPersonName>
+            <relatedPersonAddress>
+                <street1>Brookfield Place</street1>
+                <street2>225 Liberty Street, 8th Floor</street2>
+                <city>New York</city>
+                <stateOrCountry>NY</stateOrCountry>
+                <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                <zipCode>10281-1048</zipCode>
+            </relatedPersonAddress>
+            <relatedPersonRelationshipList>
+                <relationship>Executive Officer</relationship>
+            </relatedPersonRelationshipList>
+            <relationshipClarification></relationshipClarification>
+        </relatedPersonInfo>
+        <relatedPersonInfo>
+            <relatedPersonName>
+                <firstName>Isaac</firstName>
+                <lastName>MacDonald</lastName>
+            </relatedPersonName>
+            <relatedPersonAddress>
+                <street1>Brookfield Place</street1>
+                <street2>225 Liberty Street, 8th Floor</street2>
+                <city>New York</city>
+                <stateOrCountry>NY</stateOrCountry>
+                <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                <zipCode>10281-1048</zipCode>
+            </relatedPersonAddress>
+            <relatedPersonRelationshipList>
+                <relationship>Executive Officer</relationship>
+            </relatedPersonRelationshipList>
+            <relationshipClarification></relationshipClarification>
+        </relatedPersonInfo>
+        <relatedPersonInfo>
+            <relatedPersonName>
+                <firstName>Cristiano</firstName>
+                <lastName>Machado</lastName>
+            </relatedPersonName>
+            <relatedPersonAddress>
+                <street1>Brookfield Place</street1>
+                <street2>225 Liberty Street, 8th Floor</street2>
+                <city>New York</city>
+                <stateOrCountry>NY</stateOrCountry>
+                <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                <zipCode>10281-1048</zipCode>
+            </relatedPersonAddress>
+            <relatedPersonRelationshipList>
+                <relationship>Executive Officer</relationship>
+            </relatedPersonRelationshipList>
+            <relationshipClarification></relationshipClarification>
+        </relatedPersonInfo>
+        <relatedPersonInfo>
+            <relatedPersonName>
+                <firstName>Kyung</firstName>
+                <lastName>Paik</lastName>
+            </relatedPersonName>
+            <relatedPersonAddress>
+                <street1>Brookfield Place</street1>
+                <street2>225 Liberty Street, 8th Floor</street2>
+                <city>New York</city>
+                <stateOrCountry>NY</stateOrCountry>
+                <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                <zipCode>10281-1048</zipCode>
+            </relatedPersonAddress>
+            <relatedPersonRelationshipList>
+                <relationship>Executive Officer</relationship>
+            </relatedPersonRelationshipList>
+            <relationshipClarification></relationshipClarification>
+        </relatedPersonInfo>
+        <relatedPersonInfo>
+            <relatedPersonName>
+                <firstName>Bryan</firstName>
+                <lastName>Smith</lastName>
+            </relatedPersonName>
+            <relatedPersonAddress>
+                <street1>Brookfield Place</street1>
+                <street2>225 Liberty Street, 8th Floor</street2>
+                <city>New York</city>
+                <stateOrCountry>NY</stateOrCountry>
+                <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                <zipCode>10281-1048</zipCode>
+            </relatedPersonAddress>
+            <relatedPersonRelationshipList>
+                <relationship>Executive Officer</relationship>
+            </relatedPersonRelationshipList>
+            <relationshipClarification></relationshipClarification>
+        </relatedPersonInfo>
+        <relatedPersonInfo>
+            <relatedPersonName>
+                <firstName>Mark</firstName>
+                <lastName>Srulowitz</lastName>
+            </relatedPersonName>
+            <relatedPersonAddress>
+                <street1>Brookfield Place</street1>
+                <street2>225 Liberty Street, 8th Floor</street2>
+                <city>New York</city>
+                <stateOrCountry>NY</stateOrCountry>
+                <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                <zipCode>10281-1048</zipCode>
+            </relatedPersonAddress>
+            <relatedPersonRelationshipList>
+                <relationship>Executive Officer</relationship>
+            </relatedPersonRelationshipList>
+            <relationshipClarification></relationshipClarification>
+        </relatedPersonInfo>
+        <relatedPersonInfo>
+            <relatedPersonName>
+                <firstName>David</firstName>
+                <middleName>J.</middleName>
+                <lastName>Stalter</lastName>
+            </relatedPersonName>
+            <relatedPersonAddress>
+                <street1>Brookfield Place</street1>
+                <street2>225 Liberty Street, 8th Floor</street2>
+                <city>New York</city>
+                <stateOrCountry>NY</stateOrCountry>
+                <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                <zipCode>10281-1048</zipCode>
+            </relatedPersonAddress>
+            <relatedPersonRelationshipList>
+                <relationship>Executive Officer</relationship>
+            </relatedPersonRelationshipList>
+            <relationshipClarification></relationshipClarification>
+        </relatedPersonInfo>
+    </relatedPersonsList>
+
+    <offeringData>
+        <industryGroup>
+            <industryGroupType>Pooled Investment Fund</industryGroupType>
+            <investmentFundInfo>
+                <investmentFundType>Private Equity Fund</investmentFundType>
+                <is40Act>false</is40Act>
+            </investmentFundInfo>
+        </industryGroup>
+        <issuerSize>
+            <revenueRange>Decline to Disclose</revenueRange>
+        </issuerSize>
+        <federalExemptionsExclusions>
+            <item>06b</item>
+            <item>3C</item>
+            <item>3C.1</item>
+            <item>3C.7</item>
+        </federalExemptionsExclusions>
+        <typeOfFiling>
+            <newOrAmendment>
+                <isAmendment>false</isAmendment>
+            </newOrAmendment>
+            <dateOfFirstSale>
+                <yetToOccur>true</yetToOccur>
+            </dateOfFirstSale>
+        </typeOfFiling>
+        <durationOfOffering>
+            <moreThanOneYear>false</moreThanOneYear>
+        </durationOfOffering>
+        <typesOfSecuritiesOffered>
+            <isPooledInvestmentFundType>true</isPooledInvestmentFundType>
+        </typesOfSecuritiesOffered>
+        <businessCombinationTransaction>
+            <isBusinessCombinationTransaction>false</isBusinessCombinationTransaction>
+            <clarificationOfResponse></clarificationOfResponse>
+        </businessCombinationTransaction>
+        <minimumInvestmentAccepted>0</minimumInvestmentAccepted>
+        <salesCompensationList>
+            <recipient>
+                <recipientName>Brookfield Private Advisors LLC</recipientName>
+                <recipientCRDNumber>151423</recipientCRDNumber>
+                <associatedBDName>None</associatedBDName>
+                <associatedBDCRDNumber>None</associatedBDCRDNumber>
+                <recipientAddress>
+                    <street1>c/o Brookfield Asset Management Ltd.</street1>
+                    <street2>225 Liberty Street, 8th Floor</street2>
+                    <city>New York</city>
+                    <stateOrCountry>NY</stateOrCountry>
+                    <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                    <zipCode>10281-1048</zipCode>
+                </recipientAddress>
+                <statesOfSolicitationList>
+                    <state>DE</state>
+                    <description>DELAWARE</description>
+                    <state>HI</state>
+                    <description>HAWAII</description>
+                    <state>TX</state>
+                    <description>TEXAS</description>
+                    <state>MA</state>
+                    <description>MASSACHUSETTS</description>
+                    <state>MD</state>
+                    <description>MARYLAND</description>
+                    <state>IA</state>
+                    <description>IOWA</description>
+                    <state>ME</state>
+                    <description>MAINE</description>
+                    <state>ID</state>
+                    <description>IDAHO</description>
+                    <state>MI</state>
+                    <description>MICHIGAN</description>
+                    <state>UT</state>
+                    <description>UTAH</description>
+                    <state>MN</state>
+                    <description>MINNESOTA</description>
+                    <state>MO</state>
+                    <description>MISSOURI</description>
+                    <state>IL</state>
+                    <description>ILLINOIS</description>
+                    <state>IN</state>
+                    <description>INDIANA</description>
+                    <state>MS</state>
+                    <description>MISSISSIPPI</description>
+                    <state>MT</state>
+                    <description>MONTANA</description>
+                    <state>AK</state>
+                    <description>ALASKA</description>
+                    <state>AL</state>
+                    <description>ALABAMA</description>
+                    <state>VA</state>
+                    <description>VIRGINIA</description>
+                    <state>AR</state>
+                    <description>ARKANSAS</description>
+                    <state>NC</state>
+                    <description>NORTH CAROLINA</description>
+                    <state>ND</state>
+                    <description>NORTH DAKOTA</description>
+                    <state>NE</state>
+                    <description>NEBRASKA</description>
+                    <state>RI</state>
+                    <description>RHODE ISLAND</description>
+                    <state>AZ</state>
+                    <description>ARIZONA</description>
+                    <state>NH</state>
+                    <description>NEW HAMPSHIRE</description>
+                    <state>NJ</state>
+                    <description>NEW JERSEY</description>
+                    <state>VT</state>
+                    <description>VERMONT</description>
+                    <state>NM</state>
+                    <description>NEW MEXICO</description>
+                    <state>FL</state>
+                    <description>FLORIDA</description>
+                    <state>NV</state>
+                    <description>NEVADA</description>
+                    <state>WA</state>
+                    <description>WASHINGTON</description>
+                    <state>NY</state>
+                    <description>NEW YORK</description>
+                    <state>SC</state>
+                    <description>SOUTH CAROLINA</description>
+                    <state>SD</state>
+                    <description>SOUTH DAKOTA</description>
+                    <state>WI</state>
+                    <description>WISCONSIN</description>
+                    <state>OH</state>
+                    <description>OHIO</description>
+                    <state>GA</state>
+                    <description>GEORGIA</description>
+                    <state>OK</state>
+                    <description>OKLAHOMA</description>
+                    <state>CA</state>
+                    <description>CALIFORNIA</description>
+                    <state>WV</state>
+                    <description>WEST VIRGINIA</description>
+                    <state>WY</state>
+                    <description>WYOMING</description>
+                    <state>OR</state>
+                    <description>OREGON</description>
+                    <state>KS</state>
+                    <description>KANSAS</description>
+                    <state>CO</state>
+                    <description>COLORADO</description>
+                    <state>KY</state>
+                    <description>KENTUCKY</description>
+                    <state>CT</state>
+                    <description>CONNECTICUT</description>
+                    <state>PA</state>
+                    <description>PENNSYLVANIA</description>
+                    <state>LA</state>
+                    <description>LOUISIANA</description>
+                    <state>TN</state>
+                    <description>TENNESSEE</description>
+                    <state>DC</state>
+                    <description>DISTRICT OF COLUMBIA</description>
+                </statesOfSolicitationList>
+                <foreignSolicitation>false</foreignSolicitation>
+            </recipient>
+            <recipient>
+                <recipientName>Brookfield Private Wealth LLC</recipientName>
+                <recipientCRDNumber>313390</recipientCRDNumber>
+                <associatedBDName>None</associatedBDName>
+                <associatedBDCRDNumber>None</associatedBDCRDNumber>
+                <recipientAddress>
+                    <street1>c/o Brookfield Asset Management Ltd.</street1>
+                    <street2>225 Liberty Street, 8th Floor</street2>
+                    <city>New York</city>
+                    <stateOrCountry>NY</stateOrCountry>
+                    <stateOrCountryDescription>NEW YORK</stateOrCountryDescription>
+                    <zipCode>10281-1048</zipCode>
+                </recipientAddress>
+                <statesOfSolicitationList>
+                    <value>All States</value>
+                </statesOfSolicitationList>
+                <foreignSolicitation>false</foreignSolicitation>
+            </recipient>
+            <recipient>
+                <recipientName>Brookfield Investment Management (Canada) ULC</recipientName>
+                <recipientCRDNumber>None</recipientCRDNumber>
+                <associatedBDName>None</associatedBDName>
+                <associatedBDCRDNumber>None</associatedBDCRDNumber>
+                <recipientAddress>
+                    <street1>181 Bay Street</street1>
+                    <street2>Suite 100, Bay Wellington Tower</street2>
+                    <city>Toronto</city>
+                    <stateOrCountry>A6</stateOrCountry>
+                    <stateOrCountryDescription>ONTARIO, CANADA</stateOrCountryDescription>
+                    <zipCode>M5J 2T3</zipCode>
+                </recipientAddress>
+                <statesOfSolicitationList></statesOfSolicitationList>
+                <foreignSolicitation>true</foreignSolicitation>
+            </recipient>
+            <recipient>
+                <recipientName>Brookfield Singapore Pte. Ltd.</recipientName>
+                <recipientCRDNumber>None</recipientCRDNumber>
+                <associatedBDName>None</associatedBDName>
+                <associatedBDCRDNumber>None</associatedBDCRDNumber>
+                <recipientAddress>
+                    <street1>Income at Raffles</street1>
+                    <street2>16 Collyer Quay #24-01</street2>
+                    <city>Singapore</city>
+                    <stateOrCountry>U0</stateOrCountry>
+                    <stateOrCountryDescription>SINGAPORE</stateOrCountryDescription>
+                    <zipCode>049318</zipCode>
+                </recipientAddress>
+                <statesOfSolicitationList></statesOfSolicitationList>
+                <foreignSolicitation>true</foreignSolicitation>
+            </recipient>
+            <recipient>
+                <recipientName>Brookfield Advisors (Hong Kong) Ltd.</recipientName>
+                <recipientCRDNumber>None</recipientCRDNumber>
+                <associatedBDName>None</associatedBDName>
+                <associatedBDCRDNumber>None</associatedBDCRDNumber>
+                <recipientAddress>
+                    <street1>2302 Prosperity Tower</street1>
+                    <city>Central</city>
+                    <stateOrCountry>K3</stateOrCountry>
+                    <stateOrCountryDescription>HONG KONG</stateOrCountryDescription>
+                    <zipCode>999077</zipCode>
+                </recipientAddress>
+                <statesOfSolicitationList></statesOfSolicitationList>
+                <foreignSolicitation>true</foreignSolicitation>
+            </recipient>
+            <recipient>
+                <recipientName>Brookfield Private Capital (UK) Limited</recipientName>
+                <recipientCRDNumber>None</recipientCRDNumber>
+                <associatedBDName>None</associatedBDName>
+                <associatedBDCRDNumber>None</associatedBDCRDNumber>
+                <recipientAddress>
+                    <street1>One Canada Square, Level 25</street1>
+                    <street2>Canary Wharf</street2>
+                    <city>London</city>
+                    <stateOrCountry>X0</stateOrCountry>
+                    <stateOrCountryDescription>UNITED KINGDOM</stateOrCountryDescription>
+                    <zipCode>E14 5AA</zipCode>
+                </recipientAddress>
+                <statesOfSolicitationList></statesOfSolicitationList>
+                <foreignSolicitation>true</foreignSolicitation>
+            </recipient>
+            <recipient>
+                <recipientName>Brookfield Capital Securities Ltd.</recipientName>
+                <recipientCRDNumber>None</recipientCRDNumber>
+                <associatedBDName>None</associatedBDName>
+                <associatedBDCRDNumber>None</associatedBDCRDNumber>
+                <recipientAddress>
+                    <street1>10 Carrington Street, Level 19</street1>
+                    <city>Sydney</city>
+                    <stateOrCountry>C3</stateOrCountry>
+                    <stateOrCountryDescription>AUSTRALIA</stateOrCountryDescription>
+                    <zipCode>NSW 2000</zipCode>
+                </recipientAddress>
+                <statesOfSolicitationList></statesOfSolicitationList>
+                <foreignSolicitation>true</foreignSolicitation>
+            </recipient>
+        </salesCompensationList>
+        <offeringSalesAmounts>
+            <totalOfferingAmount>Indefinite</totalOfferingAmount>
+            <totalAmountSold>0</totalAmountSold>
+            <totalRemaining>Indefinite</totalRemaining>
+            <clarificationOfResponse></clarificationOfResponse>
+        </offeringSalesAmounts>
+        <investors>
+            <hasNonAccreditedInvestors>false</hasNonAccreditedInvestors>
+            <totalNumberAlreadyInvested>0</totalNumberAlreadyInvested>
+        </investors>
+        <salesCommissionsFindersFees>
+            <salesCommissions>
+                <dollarAmount>2493750</dollarAmount>
+                <isEstimate>true</isEstimate>
+            </salesCommissions>
+            <findersFees>
+                <dollarAmount>0</dollarAmount>
+            </findersFees>
+            <clarificationOfResponse></clarificationOfResponse>
+        </salesCommissionsFindersFees>
+        <useOfProceeds>
+            <grossProceedsUsed>
+                <dollarAmount>0</dollarAmount>
+            </grossProceedsUsed>
+            <clarificationOfResponse></clarificationOfResponse>
+        </useOfProceeds>
+        <signatureBlock>
+            <authorizedRepresentative>false</authorizedRepresentative>
+            <signature>
+                <issuerName>Brookfield Real Estate Value Add Logistics Venture L.P.</issuerName>
+                <signatureName>/s/ Polina Kushelev</signatureName>
+                <nameOfSigner>Polina Kushelev</nameOfSigner>
+                <signatureTitle>Senior Vice President of the Issuer's GP</signatureTitle>
+                <signatureDate>2026-10-08</signatureDate>
+            </signature>
+            <signature>
+                <issuerName>Brookfield Real Estate Value Add Logistics Venture B L.P.</issuerName>
+                <signatureName>/s/ Polina Kushelev</signatureName>
+                <nameOfSigner>Polina Kushelev</nameOfSigner>
+                <signatureTitle>Senior Vice President of the Issuer's GP</signatureTitle>
+                <signatureDate>2026-10-08</signatureDate>
+            </signature>
+        </signatureBlock>
+    </offeringData>
+</edgarSubmission>

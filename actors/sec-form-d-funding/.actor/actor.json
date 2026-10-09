@@ -1,0 +1,17 @@
+{
+  "actorSpecification": 1,
+  "name": "sec-form-d-funding",
+  "title": "SEC Form D Scraper: Startup Funding Rounds & Private Placements",
+  "description": "New SEC Form D filings (startup funding rounds, fundraising, Reg D private placements) from EDGAR. Filter by date, state, industry, offering size, new or amended. Returns issuer, CIK, address, phone, amount offered and sold, investors, 506(b)/(c) exemptions, executives. $10 per 1,000 filings.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 1024,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}

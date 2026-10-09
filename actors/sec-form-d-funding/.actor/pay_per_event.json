@@ -1,0 +1,13 @@
+{
+  "filing": {
+    "eventTitle": "Form D filing",
+    "eventDescription": "One SEC Form D filing written to the dataset.",
+    "eventPriceUsd": 0.01,
+    "isPrimaryEvent": true
+  },
+  "apify-actor-start": {
+    "eventTitle": "Actor start",
+    "eventDescription": "Synthetic start event (covers the first 5 s of compute).",
+    "eventPriceUsd": 5e-5
+  }
+}

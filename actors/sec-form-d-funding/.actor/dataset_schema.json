@@ -1,0 +1,311 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "issuerName": {
+        "type": ["string", "null"],
+        "title": "Issuer",
+        "description": "Name of the company or fund raising money.",
+        "example": "Acme Robotics, Inc."
+      },
+      "cik": {
+        "type": ["string", "null"],
+        "title": "CIK",
+        "description": "SEC Central Index Key of the issuer (no leading zeros).",
+        "example": "2012345"
+      },
+      "accessionNumber": {
+        "type": "string",
+        "title": "Accession number",
+        "description": "Unique EDGAR filing ID.",
+        "example": "0002012345-26-000001"
+      },
+      "formType": {
+        "type": "string",
+        "title": "Form",
+        "description": "D (new notice) or D/A (amendment).",
+        "example": "D"
+      },
+      "filingDate": {
+        "type": ["string", "null"],
+        "title": "Filed",
+        "description": "Date the filing was accepted by EDGAR (YYYY-MM-DD).",
+        "example": "2026-10-08"
+      },
+      "isAmendment": {
+        "type": "boolean",
+        "title": "Amendment",
+        "description": "True for a Form D/A amending an earlier notice.",
+        "example": false
+      },
+      "previousAccessionNumber": {
+        "type": ["string", "null"],
+        "title": "Amends",
+        "description": "Accession number of the filing this amendment replaces.",
+        "example": null
+      },
+      "entityType": {
+        "type": ["string", "null"],
+        "title": "Entity type",
+        "description": "Corporation, Limited Liability Company, Limited Partnership, etc.",
+        "example": "Corporation"
+      },
+      "yearOfIncorporation": {
+        "type": ["number", "null"],
+        "title": "Year inc.",
+        "description": "Year of incorporation (reported for issuers formed within five years).",
+        "example": 2024
+      },
+      "incorporatedWithinFiveYears": {
+        "type": ["boolean", "null"],
+        "title": "< 5 years old",
+        "description": "True if the issuer was formed within the last five years.",
+        "example": true
+      },
+      "stateOfIncorporation": {
+        "type": ["string", "null"],
+        "title": "Incorporated in",
+        "description": "Jurisdiction of incorporation, e.g. DELAWARE.",
+        "example": "DELAWARE"
+      },
+      "address": {
+        "type": ["object", "null"],
+        "title": "Address",
+        "description": "Principal place of business: street, street2, city, state (code), stateName, zip.",
+        "example": {
+          "street": "100 Market Street",
+          "street2": "Suite 300",
+          "city": "SAN FRANCISCO",
+          "state": "CA",
+          "stateName": "CALIFORNIA",
+          "zip": "94105"
+        }
+      },
+      "phone": {
+        "type": ["string", "null"],
+        "title": "Phone",
+        "description": "Issuer phone number.",
+        "example": "415-555-0100"
+      },
+      "industryGroup": {
+        "type": ["string", "null"],
+        "title": "Industry",
+        "description": "Form D industry group, e.g. Other Technology, Biotechnology, Pooled Investment Fund.",
+        "example": "Other Technology"
+      },
+      "industryCategory": {
+        "type": ["string", "null"],
+        "title": "Category",
+        "description": "Parent category of the industry group, e.g. Technology, Health Care.",
+        "example": "Technology"
+      },
+      "investmentFundType": {
+        "type": ["string", "null"],
+        "title": "Fund type",
+        "description": "For pooled investment funds: Hedge Fund, Private Equity Fund, Venture Capital Fund or Other Investment Fund.",
+        "example": null
+      },
+      "revenueRange": {
+        "type": ["string", "null"],
+        "title": "Revenue / NAV",
+        "description": "Revenue range (or net asset value range for funds), often Decline to Disclose.",
+        "example": "$1 - $1,000,000"
+      },
+      "securityTypes": {
+        "type": "array",
+        "title": "Securities",
+        "description": "Types of securities offered, e.g. Equity, Debt, Other: SAFE.",
+        "example": ["Equity"]
+      },
+      "dateOfFirstSale": {
+        "type": ["string", "null"],
+        "title": "First sale",
+        "description": "Date of first sale (YYYY-MM-DD); null if it has yet to occur.",
+        "example": "2026-09-30"
+      },
+      "totalOfferingAmount": {
+        "type": ["number", "null"],
+        "title": "Offering ($)",
+        "description": "Total offering amount in USD; null when Indefinite.",
+        "example": 5000000
+      },
+      "offeringAmountIndefinite": {
+        "type": "boolean",
+        "title": "Indefinite",
+        "description": "True if the offering amount is reported as Indefinite (common for funds).",
+        "example": false
+      },
+      "totalAmountSold": {
+        "type": ["number", "null"],
+        "title": "Sold ($)",
+        "description": "Amount already sold (raised) in USD.",
+        "example": 3250000
+      },
+      "totalRemaining": {
+        "type": ["number", "null"],
+        "title": "Remaining ($)",
+        "description": "Amount remaining to be sold in USD; null when Indefinite.",
+        "example": 1750000
+      },
+      "minimumInvestment": {
+        "type": ["number", "null"],
+        "title": "Min investment ($)",
+        "description": "Minimum investment accepted from an outside investor, in USD.",
+        "example": 25000
+      },
+      "totalInvestors": {
+        "type": ["number", "null"],
+        "title": "Investors",
+        "description": "Number of investors who have already invested.",
+        "example": 12
+      },
+      "nonAccreditedInvestors": {
+        "type": ["number", "null"],
+        "title": "Non-accredited",
+        "description": "Number of non-accredited investors (0 if none).",
+        "example": 0
+      },
+      "salesCommissions": {
+        "type": ["number", "null"],
+        "title": "Commissions ($)",
+        "description": "Sales commissions paid, in USD.",
+        "example": 0
+      },
+      "findersFees": {
+        "type": ["number", "null"],
+        "title": "Finders' fees ($)",
+        "description": "Finders' fees paid, in USD.",
+        "example": 0
+      },
+      "exemptions": {
+        "type": "array",
+        "title": "Exemptions",
+        "description": "Federal exemptions claimed: 06b = Rule 506(b), 06c = 506(c), 04 = Rule 504, 3C/3C.1/3C.7 = Investment Company Act 3(c) exclusions, 4a5 = Section 4(a)(5).",
+        "example": ["06b"]
+      },
+      "relatedPersons": {
+        "type": "array",
+        "title": "Related persons",
+        "description": "Executive officers, directors and promoters: name, roles, title, city, state.",
+        "example": [
+          {
+            "name": "Jane Q Founder",
+            "roles": ["Executive Officer", "Director"],
+            "title": "CEO",
+            "city": "San Francisco",
+            "state": "CA"
+          }
+        ]
+      },
+      "salesRecipients": {
+        "type": "array",
+        "title": "Placement agents",
+        "description": "Brokers or finders paid sales compensation: name, crdNumber, brokerDealer, brokerDealerCrd.",
+        "example": []
+      },
+      "otherIssuers": {
+        "type": "array",
+        "title": "Co-issuers",
+        "description": "Names of additional issuers on the same filing.",
+        "example": []
+      },
+      "filingUrl": {
+        "type": "string",
+        "title": "Filing",
+        "description": "EDGAR filing index page.",
+        "example": "https://www.sec.gov/Archives/edgar/data/2012345/000201234526000001/0002012345-26-000001-index.htm"
+      },
+      "xmlUrl": {
+        "type": "string",
+        "title": "XML",
+        "description": "Form D primary_doc.xml with every reported field.",
+        "example": "https://www.sec.gov/Archives/edgar/data/2012345/000201234526000001/primary_doc.xml"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Form D filings",
+      "transformation": {
+        "fields": [
+          "filingDate",
+          "issuerName",
+          "formType",
+          "industryGroup",
+          "totalOfferingAmount",
+          "totalAmountSold",
+          "totalInvestors",
+          "exemptions",
+          "address",
+          "phone",
+          "relatedPersons",
+          "yearOfIncorporation",
+          "cik",
+          "filingUrl"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "filingDate": {
+            "label": "Filed",
+            "format": "date"
+          },
+          "issuerName": {
+            "label": "Issuer",
+            "format": "text"
+          },
+          "formType": {
+            "label": "Form",
+            "format": "text"
+          },
+          "industryGroup": {
+            "label": "Industry",
+            "format": "text"
+          },
+          "totalOfferingAmount": {
+            "label": "Offering ($)",
+            "format": "number"
+          },
+          "totalAmountSold": {
+            "label": "Sold ($)",
+            "format": "number"
+          },
+          "totalInvestors": {
+            "label": "Investors",
+            "format": "number"
+          },
+          "exemptions": {
+            "label": "Exemptions",
+            "format": "array"
+          },
+          "address": {
+            "label": "Address",
+            "format": "object"
+          },
+          "phone": {
+            "label": "Phone",
+            "format": "text"
+          },
+          "relatedPersons": {
+            "label": "Related persons",
+            "format": "array"
+          },
+          "yearOfIncorporation": {
+            "label": "Year inc.",
+            "format": "number"
+          },
+          "cik": {
+            "label": "CIK",
+            "format": "text"
+          },
+          "filingUrl": {
+            "label": "Filing",
+            "format": "link"
+          }
+        }
+      }
+    }
+  }
+}

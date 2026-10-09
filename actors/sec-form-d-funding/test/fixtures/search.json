@@ -1,0 +1,123 @@
+{
+  "hits": {
+    "total": {
+      "value": 4,
+      "relation": "eq"
+    },
+    "hits": [
+      {
+        "_index": "edgar_file",
+        "_id": "0002159635-26-000001:primary_doc.xml",
+        "_score": null,
+        "_source": {
+          "ciks": ["0002159635"],
+          "period_ending": null,
+          "file_num": ["021-600556"],
+          "display_names": ["BCP Wildcat LP  (CIK 0002159635)"],
+          "xsl": "xslFormDX01",
+          "schema_version": "X0708",
+          "sequence": 1,
+          "root_forms": ["D"],
+          "file_date": "2026-10-08",
+          "biz_states": ["TX"],
+          "sics": [],
+          "form": "D",
+          "adsh": "0002159635-26-000001",
+          "biz_locations": ["Austin, TX"],
+          "file_type": "D",
+          "ma_i_individual": null,
+          "file_description": null,
+          "inc_states": ["TX"],
+          "items": ["06B"]
+        },
+        "sort": [1791417600000, "0002159635-26-000001:primary_doc.xml"]
+      },
+      {
+        "_index": "edgar_file",
+        "_id": "0002159321-26-000001:primary_doc.xml",
+        "_score": null,
+        "_source": {
+          "ciks": ["0002159321"],
+          "period_ending": null,
+          "file_num": ["021-600591"],
+          "display_names": ["WT Venture Fund LLC Series 1  (CIK 0002159321)"],
+          "xsl": "xslFormDX01",
+          "schema_version": "X0708",
+          "sequence": 1,
+          "root_forms": ["D"],
+          "file_date": "2026-10-08",
+          "biz_states": ["NY"],
+          "sics": [],
+          "form": "D",
+          "adsh": "0002159321-26-000001",
+          "biz_locations": ["Hauppauge, NY"],
+          "file_type": "D",
+          "ma_i_individual": null,
+          "file_description": null,
+          "inc_states": ["DE"],
+          "items": ["06C", "3C", "3C.1"]
+        },
+        "sort": [1791417600000, "0002159321-26-000001:primary_doc.xml"]
+      },
+      {
+        "_index": "edgar_file",
+        "_id": "0002159119-26-000001:primary_doc.xml",
+        "_score": null,
+        "_source": {
+          "ciks": ["0002159119", "0002159118"],
+          "period_ending": null,
+          "file_num": ["021-600587", "021-600587-01"],
+          "display_names": [
+            "Brookfield Real Estate Value Add Logistics Venture L.P.  (CIK 0002159119)",
+            "Brookfield Real Estate Value Add Logistics Venture B L.P.  (CIK 0002159118)"
+          ],
+          "xsl": "xslFormDX01",
+          "schema_version": "X0708",
+          "sequence": 1,
+          "root_forms": ["D"],
+          "file_date": "2026-10-08",
+          "biz_states": ["NY"],
+          "sics": [],
+          "form": "D",
+          "adsh": "0002159119-26-000001",
+          "biz_locations": ["New York, NY", "New York, NY"],
+          "file_type": "D",
+          "ma_i_individual": null,
+          "file_description": null,
+          "inc_states": ["DE", "DE"],
+          "items": ["06B", "3C", "3C.1", "3C.7"]
+        },
+        "sort": [1791417600000, "0002159119-26-000001:primary_doc.xml"]
+      },
+      {
+        "_index": "edgar_file",
+        "_id": "0002158132-26-000002:primary_doc.xml",
+        "_score": null,
+        "_source": {
+          "ciks": ["0002158132"],
+          "period_ending": null,
+          "file_num": ["021-600355"],
+          "display_names": [
+            "EB5AN Houston Multifamily Fund 51, LP  (CIK 0002158132)"
+          ],
+          "xsl": "xslFormDX01",
+          "schema_version": "X0708",
+          "sequence": 1,
+          "root_forms": ["D"],
+          "file_date": "2026-10-08",
+          "biz_states": ["PR"],
+          "sics": [],
+          "form": "D/A",
+          "adsh": "0002158132-26-000002",
+          "biz_locations": ["San Juan, PR"],
+          "file_type": "D/A",
+          "ma_i_individual": null,
+          "file_description": null,
+          "inc_states": ["DE"],
+          "items": ["06C", "3C", "3C.1"]
+        },
+        "sort": [1791417600000, "0002158132-26-000002:primary_doc.xml"]
+      }
+    ]
+  }
+}

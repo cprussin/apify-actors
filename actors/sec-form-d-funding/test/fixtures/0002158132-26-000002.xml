@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<edgarSubmission>
+
+    <schemaVersion>X0708</schemaVersion>
+
+    <submissionType>D/A</submissionType>
+
+    <testOrLive>LIVE</testOrLive>
+
+    <primaryIssuer>
+        <cik>0002158132</cik>
+        <entityName>EB5AN Houston Multifamily Fund 51, LP</entityName>
+        <issuerAddress>
+            <street1>945 AVENIDA JUAN PONCE DE LEON</street1>
+            <street2>MIRAMAR PLAZA, SUITE 205</street2>
+            <city>SAN JUAN</city>
+            <stateOrCountry>PR</stateOrCountry>
+            <stateOrCountryDescription>PUERTO RICO</stateOrCountryDescription>
+            <zipCode>00907</zipCode>
+        </issuerAddress>
+        <issuerPhoneNumber>561-386-5356</issuerPhoneNumber>
+        <jurisdictionOfInc>DELAWARE</jurisdictionOfInc>
+        <issuerPreviousNameList>
+            <value>None</value>
+        </issuerPreviousNameList>
+        <edgarPreviousNameList>
+            <value>None</value>
+        </edgarPreviousNameList>
+        <entityType>Limited Partnership</entityType>
+        <yearOfInc>
+            <withinFiveYears>true</withinFiveYears>
+            <value>2026</value>
+        </yearOfInc>
+    </primaryIssuer>
+
+    <relatedPersonsList>
+        <relatedPersonInfo>
+            <relatedPersonName>
+                <firstName>Michael</firstName>
+                <middleName>B.</middleName>
+                <lastName>Schoenfeld</lastName>
+            </relatedPersonName>
+            <relatedPersonAddress>
+                <street1>c/o EB5AN Houston Multifamily Fund 51 LP</street1>
+                <street2>954 Avenida Juan Ponce de Leon, Ste 205</street2>
+                <city>San Juan</city>
+                <stateOrCountry>PR</stateOrCountry>
+                <stateOrCountryDescription>PUERTO RICO</stateOrCountryDescription>
+                <zipCode>00907</zipCode>
+            </relatedPersonAddress>
+            <relatedPersonRelationshipList>
+                <relationship>Director</relationship>
+            </relatedPersonRelationshipList>
+            <relationshipClarification>Managing Member of Manager of General Partner</relationshipClarification>
+        </relatedPersonInfo>
+        <relatedPersonInfo>
+            <relatedPersonName>
+                <firstName>Samuel</firstName>
+                <middleName>B.</middleName>
+                <lastName>Silverman</lastName>
+            </relatedPersonName>
+            <relatedPersonAddress>
+                <street1>c/o EB5AN Houston Multifamily Fund 52 LP</street1>
+                <street2>954 Avenida Juan Ponce de Leon, Ste 205</street2>
+                <city>San Juan</city>
+                <stateOrCountry>PR</stateOrCountry>
+                <stateOrCountryDescription>PUERTO RICO</stateOrCountryDescription>
+                <zipCode>00907</zipCode>
+            </relatedPersonAddress>
+            <relatedPersonRelationshipList>
+                <relationship>Director</relationship>
+            </relatedPersonRelationshipList>
+            <relationshipClarification>Managing Member of Manager of General Partner</relationshipClarification>
+        </relatedPersonInfo>
+    </relatedPersonsList>
+
+    <offeringData>
+        <industryGroup>
+            <industryGroupType>Pooled Investment Fund</industryGroupType>
+            <investmentFundInfo>
+                <investmentFundType>Other Investment Fund</investmentFundType>
+                <is40Act>false</is40Act>
+            </investmentFundInfo>
+        </industryGroup>
+        <issuerSize>
+            <aggregateNetAssetValueRange>Decline to Disclose</aggregateNetAssetValueRange>
+        </issuerSize>
+        <federalExemptionsExclusions>
+            <item>06c</item>
+            <item>3C</item>
+            <item>3C.1</item>
+        </federalExemptionsExclusions>
+        <typeOfFiling>
+            <newOrAmendment>
+                <isAmendment>true</isAmendment>
+                <previousAccessionNumber>0002158132-26-000001</previousAccessionNumber>
+            </newOrAmendment>
+            <dateOfFirstSale>
+                <yetToOccur>true</yetToOccur>
+            </dateOfFirstSale>
+        </typeOfFiling>
+        <durationOfOffering>
+            <moreThanOneYear>false</moreThanOneYear>
+        </durationOfOffering>
+        <typesOfSecuritiesOffered>
+            <isPooledInvestmentFundType>true</isPooledInvestmentFundType>
+        </typesOfSecuritiesOffered>
+        <businessCombinationTransaction>
+            <isBusinessCombinationTransaction>false</isBusinessCombinationTransaction>
+            <clarificationOfResponse></clarificationOfResponse>
+        </businessCombinationTransaction>
+        <minimumInvestmentAccepted>800000</minimumInvestmentAccepted>
+        <salesCompensationList></salesCompensationList>
+        <offeringSalesAmounts>
+            <totalOfferingAmount>24000000</totalOfferingAmount>
+            <totalAmountSold>0</totalAmountSold>
+            <totalRemaining>24000000</totalRemaining>
+            <clarificationOfResponse></clarificationOfResponse>
+        </offeringSalesAmounts>
+        <investors>
+            <hasNonAccreditedInvestors>false</hasNonAccreditedInvestors>
+            <totalNumberAlreadyInvested>0</totalNumberAlreadyInvested>
+        </investors>
+        <salesCommissionsFindersFees>
+            <salesCommissions>
+                <dollarAmount>0</dollarAmount>
+                <isEstimate>true</isEstimate>
+            </salesCommissions>
+            <findersFees>
+                <dollarAmount>0</dollarAmount>
+                <isEstimate>true</isEstimate>
+            </findersFees>
+            <clarificationOfResponse></clarificationOfResponse>
+        </salesCommissionsFindersFees>
+        <useOfProceeds>
+            <grossProceedsUsed>
+                <dollarAmount>0</dollarAmount>
+                <isEstimate>true</isEstimate>
+            </grossProceedsUsed>
+            <clarificationOfResponse></clarificationOfResponse>
+        </useOfProceeds>
+        <signatureBlock>
+            <authorizedRepresentative>false</authorizedRepresentative>
+            <signature>
+                <issuerName>EB5AN Houston Multifamily Fund 51, LP</issuerName>
+                <signatureName>/s/ Michael B. Schoenfeld</signatureName>
+                <nameOfSigner>Michael B. Schoenfeld</nameOfSigner>
+                <signatureTitle>Managing Member of Manager of General Partner</signatureTitle>
+                <signatureDate>2026-10-08</signatureDate>
+            </signature>
+        </signatureBlock>
+    </offeringData>
+</edgarSubmission>
