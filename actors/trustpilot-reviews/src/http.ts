@@ -24,6 +24,23 @@ export interface Http {
   raw: RawFetch;
 }
 
+/**
+ * Proxy URL from `make`, or undefined (direct) when it fails, e.g. the user's
+ * plan has no access to the selected proxy group. Direct requests work: the
+ * WAF token solver handles Trustpilot's bot check.
+ */
+export async function proxyUrlOrDirect(
+  make: () => Promise<string | undefined>,
+  log: (msg: string) => void,
+): Promise<string | undefined> {
+  try {
+    return await make();
+  } catch (e) {
+    log(`Proxy unavailable, continuing without: ${(e as Error).message}`);
+    return undefined;
+  }
+}
+
 /** undici fetch, optionally through an HTTP(S) proxy (one exit IP for all traffic). */
 export function makeHttp(proxyUrl?: string): Http {
   const dispatcher: Dispatcher | undefined = proxyUrl

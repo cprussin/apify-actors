@@ -83,9 +83,13 @@ export function searchPath(f: SearchFilters): string {
   return `/d/${f.location}/${[seg, kw].filter(Boolean).join("/")}/`;
 }
 
-/** Page N of a search (page 1 has no parameter). */
+/**
+ * Page N of a search. Always sets `page`: without it, Eventbrite redirects
+ * category-only searches (/d/<loc>/<cat>--events/) to a /b/ browse page
+ * that has no search data.
+ */
 export function pageUrl(searchUrl: string, page: number): string {
-  return page > 1 ? `${searchUrl}?page=${page}` : searchUrl;
+  return `${searchUrl}?page=${page}`;
 }
 
 export type StartUrl =
@@ -117,9 +121,15 @@ export function parseStartUrl(raw: string): StartUrl | null {
   if (!/(^|\.)eventbrite\.[a-z.]+$/i.test(u.hostname)) return null;
   const host = u.hostname.toLowerCase();
   const origin = `https://${host.startsWith("www.") ? host : `www.${host}`}`;
-  const path = u.pathname.replace(/\/+$/, "");
+  let path = u.pathname.replace(/\/+$/, "");
   const ev = EVENT_PATH.exec(path);
   if (ev) return { kind: "event", url: `${origin}${path}`, id: ev[1]! };
+  // Location only (/d/ny--new-york): all events there.
+  if (/^\/d\/[^/]+$/i.test(path)) path += "/all-events";
+  // Category browse page (/b/ny--new-york/music): same events as the search.
+  const browse = /^\/b\/([^/]+)\/([^/]+)$/i.exec(path);
+  if (browse && (CATEGORIES as readonly string[]).includes(browse[2]!))
+    path = `/d/${browse[1]}/${browse[2]}--events`;
   if (/^\/d\/[^/]+(\/[^/]+){1,2}$/i.test(path)) {
     const page = Number(u.searchParams.get("page") ?? 1);
     return {

@@ -112,7 +112,7 @@ export function normalizeInput(
     const parsed = parseStartUrl(u);
     if (!parsed)
       throw new InputError(
-        `Start URL "${u}" is not an Eventbrite search or event page. Use URLs like https://www.eventbrite.com/d/ny--new-york/music--events/ or https://www.eventbrite.com/e/some-event-tickets-123456789.`,
+        `Start URL "${u}" is not ${/eventbrite\.[a-z.]+\/o\//i.test(u) ? "supported: organizer pages can't be scraped yet. Use" : "an Eventbrite search or event page. Use"} URLs like https://www.eventbrite.com/d/ny--new-york/music--events/ or https://www.eventbrite.com/e/some-event-tickets-123456789.`,
       );
     if (parsed.kind === "event") {
       if (!eventUrls.includes(parsed.url)) eventUrls.push(parsed.url);

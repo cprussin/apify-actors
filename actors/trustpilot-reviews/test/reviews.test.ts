@@ -7,6 +7,7 @@ import {
   TrustpilotClient,
   type FetchLike,
 } from "../src/client.js";
+import { proxyUrlOrDirect } from "../src/http.js";
 import {
   InputError,
   MAX_REVIEWS_PER_COMPANY,
@@ -552,5 +553,25 @@ describe("run", () => {
     expect(out.slice(0, 4).map((r) => r.rating)).toEqual([1, 2, 1, 2]);
     const dates = out.map((r) => r.date!);
     expect([...dates].sort().reverse()).toEqual(dates);
+  });
+});
+
+describe("proxy", () => {
+  it("continues without a proxy when it can't be set up", async () => {
+    const logs: string[] = [];
+    const url = await proxyUrlOrDirect(
+      async () => {
+        throw new Error("You don't have access to proxy group RESIDENTIAL");
+      },
+      (m) => logs.push(m),
+    );
+    expect(url).toBeUndefined();
+    expect(logs[0]).toMatch(/continuing without: .*RESIDENTIAL/);
+    expect(
+      await proxyUrlOrDirect(
+        async () => "http://p:1",
+        () => {},
+      ),
+    ).toBe("http://p:1");
   });
 });

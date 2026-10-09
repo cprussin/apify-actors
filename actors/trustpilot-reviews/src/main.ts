@@ -1,6 +1,6 @@
 import { Actor, log } from "apify";
 import { TrustpilotClient } from "./client.js";
-import { makeHttp, USER_AGENT } from "./http.js";
+import { makeHttp, proxyUrlOrDirect, USER_AGENT } from "./http.js";
 import { InputError, normalizeInput, type RawInput } from "./input.js";
 import { runScrape } from "./run.js";
 import { Monitor, stateKey } from "./state.js";
@@ -66,11 +66,12 @@ try {
 
   // One sticky proxy session so the browser-issued token and the HTTP
   // requests share an exit IP.
-  const proxyConfig = raw?.proxyConfiguration
-    ? await Actor.createProxyConfiguration(raw.proxyConfiguration)
-    : undefined;
   const session = `tp${Math.random().toString(36).slice(2, 10)}`;
-  const proxyUrl = await proxyConfig?.newUrl(session);
+  const proxyUrl = await proxyUrlOrDirect(async () => {
+    if (!raw?.proxyConfiguration) return undefined;
+    const config = await Actor.createProxyConfiguration(raw.proxyConfiguration);
+    return config?.newUrl(session);
+  }, log.warning.bind(log));
   if (proxyUrl) log.info("Using proxy.");
   const http = makeHttp(proxyUrl);
 

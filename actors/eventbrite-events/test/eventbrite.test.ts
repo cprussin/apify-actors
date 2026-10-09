@@ -65,7 +65,7 @@ describe("URLs", () => {
     expect(
       searchPath({ ...f, category: "food-and-drink", keyword: "wine" }),
     ).toBe("/d/ny--new-york/food-and-drink--events/wine/");
-    expect(pageUrl(NY_URL, 1)).toBe(NY_URL);
+    expect(pageUrl(NY_URL, 1)).toBe(`${NY_URL}?page=1`);
     expect(pageUrl(NY_URL, 3)).toBe(`${NY_URL}?page=3`);
   });
 
@@ -100,6 +100,24 @@ describe("URLs", () => {
       url: EVENT_URL,
       id: "1990839672051",
     });
+    // Location-only and category browse URLs map to search pages.
+    expect(parseStartUrl("https://www.eventbrite.com/d/ny--new-york/")).toEqual(
+      {
+        kind: "search",
+        url: "https://www.eventbrite.com/d/ny--new-york/all-events/",
+        page: 1,
+      },
+    );
+    expect(
+      parseStartUrl("https://www.eventbrite.com/b/ny--new-york/music/"),
+    ).toEqual({
+      kind: "search",
+      url: "https://www.eventbrite.com/d/ny--new-york/music--events/",
+      page: 1,
+    });
+    expect(
+      parseStartUrl("https://www.eventbrite.com/b/ny--new-york/bogus/"),
+    ).toBeNull();
     expect(
       parseStartUrl("https://www.eventbrite.com/o/someone-123"),
     ).toBeNull();
@@ -416,7 +434,7 @@ describe("input", () => {
     );
     expect(() =>
       normalizeInput({ startUrls: ["https://www.eventbrite.com/o/x-1"] }),
-    ).toThrow(InputError);
+    ).toThrow(/organizer pages can't be scraped yet/);
     expect(() => normalizeInput({ locations: [NY_URL] })).toThrow(InputError);
     expect(() => normalizeInput({ maxEvents: 0 })).toThrow(InputError);
     expect(() => normalizeInput({ maxEvents: 10001 })).toThrow(InputError);
@@ -425,9 +443,9 @@ describe("input", () => {
 
 describe("run", () => {
   const pages: Record<string, string> = {
-    [NY_URL]: fixture(NY),
+    [`${NY_URL}?page=1`]: fixture(NY),
     [`${NY_URL}?page=2`]: fixture(NY2),
-    "https://www.eventbrite.com/d/ny--new-york/music--events--this-weekend/":
+    "https://www.eventbrite.com/d/ny--new-york/music--events--this-weekend/?page=1":
       fixture(MUSIC),
     [EVENT_URL]: fixture(IN_PERSON),
   };
@@ -553,6 +571,24 @@ describe("run", () => {
     const none = await go(1000, all.state);
     expect(none.out).toEqual([]);
     expect(none.stats.skippedSeen).toBeGreaterThan(0);
+  });
+
+  it("requests page 1 explicitly (category-only searches redirect without it)", async () => {
+    const urls: string[] = [];
+    await runEvents(
+      normalizeInput({
+        category: "music",
+        maxEvents: 1,
+        includeDetails: false,
+      }),
+      {
+        get: async (url) => (urls.push(url), { url, html: fixture(NY) }),
+        emit: async () => true,
+      },
+    );
+    expect(urls).toEqual([
+      "https://www.eventbrite.com/d/ny--new-york/music--events/?page=1",
+    ]);
   });
 
   it("reports pages without search data", async () => {

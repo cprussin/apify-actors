@@ -95,7 +95,17 @@ if (sf.out.some((e) => e.category !== "Music"))
 if (sf.out.some((e) => "description" in e))
   problems.push("sf-music: description not omitted");
 
-// 3. London keyword search with details.
+// 3. Category without a date (Eventbrite redirects it to /b/ without ?page=1).
+const ny = await run("ny-business", {
+  locations: ["ny--new-york"],
+  category: "business",
+  maxEvents: 5,
+  includeDetails: false,
+});
+if (ny.out.some((e) => e.category !== "Business & Professional"))
+  problems.push("ny-business: non-business event");
+
+// 4. London keyword search with details.
 const london = await run("london-tech", {
   locations: ["united-kingdom--london"],
   keyword: "tech",
