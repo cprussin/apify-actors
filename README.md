@@ -33,6 +33,15 @@ This repo is a read-only mirror, synced automatically. Please report issues on t
 - [![Run on Apify](https://img.shields.io/badge/Run_on-Apify-97D700?logo=apify)](https://apify.com/cprussin/ycombinator-companies?fpr=to54nm) [ycombinator-companies](actors/ycombinator-companies): Y Combinator Companies & Jobs Scraper: YC Startup Directory
 - [![Run on Apify](https://img.shields.io/badge/Run_on-Apify-97D700?logo=apify)](https://apify.com/cprussin/youtube-transcripts?fpr=to54nm) [youtube-transcripts](actors/youtube-transcripts): YouTube Transcript Scraper: Captions & Subtitles for AI/RAG
 
+## Agent skills
+
+Skills that tell AI agents when and how to run these actors (paid per result, billed to your Apify account):
+
+- [review-monitoring](skills/review-monitoring/SKILL.md)
+- [startup-company-intelligence](skills/startup-company-intelligence/SKILL.md)
+
+Install with `npx skills add cprussin/apify-actors`, or in Claude Code: `/plugin marketplace add cprussin/apify-actors`, then `/plugin install apify-actors@cprussin-apify-actors`.
+
 ## Run locally
 
 ```sh
