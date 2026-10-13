@@ -140,13 +140,16 @@ export async function forEachLimit<T>(
   return items.length - next;
 }
 
-/** Runs `fn` calls one at a time, in call order. */
-function serializer() {
-  let tail: Promise<unknown> = Promise.resolve();
-  return <T>(fn: () => Promise<T>): Promise<T> => {
-    const run = tail.then(fn, fn);
-    tail = run.catch(() => {});
-    return run;
+/** Turns 0..n-1 in order: `wait(i)` resolves once `done(i - 1)` is called. */
+function turnstile(n: number) {
+  const done: (() => void)[] = [];
+  const turns = Array.from(
+    { length: n },
+    () => new Promise<void>((r) => done.push(r)),
+  );
+  return {
+    wait: (i: number) => (i === 0 ? Promise.resolve() : turns[i - 1]!),
+    done: (i: number) => done[i]!(),
   };
 }
 
@@ -156,7 +159,6 @@ export async function runTranscriptions(
 ): Promise<RunStats> {
   const log = deps.log ?? (() => {});
   const now = deps.now ?? (() => new Date());
-  const serial = serializer();
   const stats: RunStats = {
     transcribed: 0,
     failed: 0,
@@ -280,6 +282,7 @@ export async function runTranscriptions(
       });
   }
   jobs.forEach((j, i) => (j.index = i));
+  const turns = turnstile(jobs.length);
   stats.episodes = jobs.filter((j) => j.kind === "episode").length;
 
   const tmp = await mkdtemp(join(tmpdir(), "media-"));
@@ -411,7 +414,7 @@ export async function runTranscriptions(
     return emitted.more;
   };
 
-  const one = async (job: Job): Promise<boolean> => {
+  const oneJob = async (job: Job): Promise<boolean> => {
     const declared = job.episode?.durationSecs;
     if (declared && declared > input.maxDurationSecs * 1.1)
       return fail(
@@ -441,8 +444,17 @@ export async function runTranscriptions(
         notMedia,
       );
     }
-    // Downloads run in parallel; transcription and charging one at a time.
-    return serial(() => transcribeOne(job, file));
+    // Downloads run in parallel; transcription and charging one at a time,
+    // in input order (not download-finish order).
+    await turns.wait(job.index);
+    return transcribeOne(job, file);
+  };
+  const one = async (job: Job): Promise<boolean> => {
+    try {
+      return await oneJob(job);
+    } finally {
+      turns.done(job.index);
+    }
   };
 
   try {

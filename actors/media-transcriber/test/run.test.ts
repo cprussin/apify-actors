@@ -32,7 +32,10 @@ const media: Record<string, string | Error> = {
   "abc/rec.wav": "RIFF 5|From a record.",
 };
 
-function harness(raw: RawInput, opts: { budget?: number; seen?: Seen } = {}) {
+function harness(
+  raw: RawInput,
+  opts: { budget?: number; seen?: Seen; slow?: string } = {},
+) {
   const items: OutputItem[] = [];
   const charges: number[] = [];
   const requests: TranscribeRequest[] = [];
@@ -50,6 +53,8 @@ function harness(raw: RawInput, opts: { budget?: number; seen?: Seen } = {}) {
       const m = media[job.kind === "kv" ? job.input : job.url];
       if (m === undefined) throw new Error("no such file");
       if (m instanceof Error) throw m;
+      if (job.kind !== "kv" && job.url === opts.slow)
+        await new Promise((r) => setTimeout(r, 50));
       await writeFile(path, m);
       return {
         path,
@@ -273,6 +278,26 @@ describe("runTranscriptions", () => {
       billedMinutes: 0,
       error: "Not transcribed: budget",
     });
+  });
+
+  it("transcribes in input order when a later download finishes first", async () => {
+    const h = harness(
+      {
+        urls: [
+          "https://x.org/huge.mp3",
+          "https://x.org/a.mp3",
+          "https://x.org/b.mp4",
+        ],
+      },
+      { budget: 3, slow: "https://x.org/huge.mp3" },
+    );
+    await runTranscriptions(h.input, h.deps);
+    expect(h.requests.map((r) => r.budgetMinutes)).toEqual([3, 3, 1]);
+    expect(h.items.map((i) => i.url)).toEqual([
+      "https://x.org/huge.mp3",
+      "https://x.org/a.mp3",
+      "https://x.org/b.mp4",
+    ]);
   });
 
   it("stops before downloading when the budget is gone", async () => {
