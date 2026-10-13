@@ -11,6 +11,85 @@
 - ✅ **Batch-safe**: a 404, a web page, a corrupt or over-long file never fails the run. You get an item with the reason, for free.
 - ✅ **Pay per audio minute**: $0.008/min (base model) or $0.016/min (small model). No start fee.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "urls": [
+    "https://www.nasa.gov/wp-content/uploads/2015/01/590325main_ringtone_kennedy_WeChoose.mp3"
+  ]
+}
+```
+
+You get: A transcript of a 20-second NASA clip of JFK's "We choose to go to the Moon" speech: `text`, timestamped `segments`, detected `language`, `durationSeconds`, and `srtUrl`/`vttUrl` subtitle links.
+
+**Cost:** $0.008: 1 minute × $0.008 (base model, billed per started minute). No start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/media-transcriber` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/media-transcriber to transcribe https://www.nasa.gov/wp-content/uploads/2015/01/590325main_ringtone_kennedy_WeChoose.mp3, and give me the text and the SRT subtitle link.
+```
+
+## Recipes
+
+### New podcast episodes, daily
+
+The 3 newest episodes of a feed; schedule the same input daily to transcribe only new ones.
+
+```json
+{
+  "rssFeeds": ["https://feeds.example.com/my-podcast.xml"],
+  "maxEpisodes": 3,
+  "onlyNewEpisodes": true,
+  "model": "base"
+}
+```
+
+### Interviews with the more accurate model
+
+Your own uploaded recording, English, with the `small` model.
+
+```json
+{
+  "keyValueStoreRecords": ["my-user~interviews/call-2026-10-01.m4a"],
+  "model": "small",
+  "language": "en"
+}
+```
+
+### RAG chunks with timestamps
+
+One item per chunk, each with its start and end time.
+
+```json
+{
+  "urls": [
+    "https://www.nasa.gov/wp-content/uploads/2015/01/590325main_ringtone_kennedy_WeChoose.mp3"
+  ],
+  "outputFormat": "chunks",
+  "chunkSize": 1000,
+  "chunkOverlap": 100
+}
+```
+
+### Skip long files
+
+Files over 30 minutes are skipped with a free error item.
+
+```json
+{
+  "urls": [
+    "https://www.nasa.gov/wp-content/uploads/2015/01/590325main_ringtone_kennedy_WeChoose.mp3"
+  ],
+  "maxDurationMinutes": 30
+}
+```
+
 ## What can I use audio and video transcription for?
 
 - **Podcast monitoring and research**: transcribe every new episode of the shows you follow, then search, summarize or quote them.
@@ -45,17 +124,6 @@
 | `maxDurationMinutes`   | Longer files are skipped with a free error (at most 300)                  | `180`            |
 | `maxFileSizeMb`        | Larger downloads are skipped with a free error                            | `1000`           |
 | `timeoutSecs`          | Max download time per file                                                | `600`            |
-
-Example: transcribe the 3 newest episodes of a podcast, then schedule the same input daily to get only new ones:
-
-```json
-{
-  "rssFeeds": ["https://feeds.example.com/my-podcast.xml"],
-  "maxEpisodes": 3,
-  "onlyNewEpisodes": true,
-  "model": "base"
-}
-```
 
 **Transcribing your own recordings:** upload them to a key-value store in your Apify account (Storage → Key-value stores → your store → upload a record) and list them in `keyValueStoreRecords`, e.g. `my-user~interviews/call-2026-10-01.m4a`. Private record URLs (`https://api.apify.com/v2/key-value-stores/.../records/...`) also work in `urls`; the actor reads them with your run's token.
 

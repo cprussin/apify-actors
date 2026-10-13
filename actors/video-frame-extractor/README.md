@@ -11,6 +11,95 @@
 - ✅ **Batch-safe**: a 404, a web page, a corrupt or too-long file never fails the run. You get an item with the reason, for free.
 - ✅ **Pay per result**: $0.005 per video + $0.003 per frame. No start fee, compute included.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "urls": [
+    "https://images-assets.nasa.gov/video/KSC_69-71212-sRGB/KSC_69-71212-sRGB~small.mp4"
+  ],
+  "mode": "interval",
+  "frameCount": 12
+}
+```
+
+You get: 12 evenly spaced JPEG frames from an 84-second 1969 NASA launch film, with `frameUrls`, `durationSeconds`, `width`, `height`, `fps` and `costUsd`.
+
+**Cost:** $0.041: 1 video × $0.005 + 12 frames × $0.003. No start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/video-frame-extractor` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/video-frame-extractor to extract one frame per scene from https://images-assets.nasa.gov/video/KSC_69-71212-sRGB/KSC_69-71212-sRGB~small.mp4, and describe what happens in each scene.
+```
+
+## Recipes
+
+### Thumbnails and a contact sheet
+
+12 WebP thumbnails plus one grid image of them all.
+
+```json
+{
+  "urls": [
+    "https://images-assets.nasa.gov/video/KSC_69-71212-sRGB/KSC_69-71212-sRGB~small.mp4"
+  ],
+  "frameCount": 12,
+  "frameFormat": "webp",
+  "maxWidth": 960,
+  "contactSheet": true
+}
+```
+
+### One keyframe per scene
+
+A frame at each scene change, up to 30.
+
+```json
+{
+  "urls": [
+    "https://images-assets.nasa.gov/video/KSC_69-71212-sRGB/KSC_69-71212-sRGB~small.mp4"
+  ],
+  "mode": "scene",
+  "sceneThreshold": 35,
+  "maxFrames": 30
+}
+```
+
+### A GIF preview
+
+A 5-second animated GIF from 0:10, no frames.
+
+```json
+{
+  "urls": [
+    "https://images-assets.nasa.gov/video/KSC_69-71212-sRGB/KSC_69-71212-sRGB~small.mp4"
+  ],
+  "mode": "none",
+  "gifClip": true,
+  "gifStartSeconds": 10,
+  "gifDurationSeconds": 5
+}
+```
+
+### The audio track as MP3
+
+Video metadata and the audio track, no frames.
+
+```json
+{
+  "urls": [
+    "https://images-assets.nasa.gov/video/KSC_69-71212-sRGB/KSC_69-71212-sRGB~small.mp4"
+  ],
+  "mode": "none",
+  "audioFormat": "mp3"
+}
+```
+
 ## What can I use a video frame extractor for?
 
 - **Thumbnails and previews**: pick cover images for a video library, CMS or e-commerce product videos.
@@ -50,33 +139,6 @@
 | `maxDurationMinutes`                                                     | Longer videos are skipped with a free error (at most 180)                    | `60`               |
 | `maxFileSizeMb`                                                          | Larger downloads are skipped with a free error (at most 4000)                | `1000`             |
 | `timeoutSecs`                                                            | Max download time per video                                                  | `600`              |
-
-Example: 12 thumbnails and a contact sheet from two product videos, as WebP:
-
-```json
-{
-  "urls": [
-    "https://example.com/videos/product-demo.mp4",
-    "https://example.com/videos/unboxing.mov"
-  ],
-  "frameCount": 12,
-  "frameFormat": "webp",
-  "maxWidth": 960,
-  "contactSheet": true
-}
-```
-
-Example: one keyframe per scene plus the audio track as MP3:
-
-```json
-{
-  "urls": ["https://example.com/talks/keynote.mp4"],
-  "mode": "scene",
-  "sceneThreshold": 35,
-  "maxFrames": 100,
-  "audioFormat": "mp3"
-}
-```
 
 **Processing your own files:** upload them to a key-value store in your Apify account (Storage → Key-value stores → your store → upload a record) and list them in `keyValueStoreRecords`, e.g. `my-user~videos/demo.mp4`. Private record URLs (`https://api.apify.com/v2/key-value-stores/.../records/...`) also work in `urls`; the actor reads them with your run's token.
 

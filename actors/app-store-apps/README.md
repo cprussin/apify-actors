@@ -13,6 +13,92 @@ Plus:
 - ✅ Public store data: Apple's official iTunes Search and Lookup APIs and RSS chart feeds, and public Google Play pages. No login, API key or proxy.
 - ✅ Pay per result. Failed queries and apps that don't exist are free.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "mode": "keywordRanks",
+  "keywords": ["photo editor"],
+  "country": "us",
+  "language": "en",
+  "maxResults": 10
+}
+```
+
+You get: The top 10 App Store search results for "photo editor" in the US, one row per app with `rank`, `name`, `developer`, `rating`, `ratingCount` and `url`.
+
+**Cost:** $0.01: 10 rank rows × $0.001. No start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/app-store-apps` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/app-store-apps to get the top 20 App Store search results for "habit tracker" in the US, and tell me which apps have the most ratings and which were updated most recently.
+```
+
+## Recipes
+
+### Top free games on both stores
+
+The top 25 free games on the App Store and Google Play.
+
+```json
+{
+  "mode": "topCharts",
+  "charts": ["topFree"],
+  "stores": ["apple", "google"],
+  "category": "games",
+  "country": "us",
+  "maxResults": 25
+}
+```
+
+### Where your app ranks for its keywords
+
+Search the top 200 for each keyword but return (and pay for) only your app's row.
+
+```json
+{
+  "mode": "keywordRanks",
+  "keywords": ["photo editor", "collage maker"],
+  "trackedApps": [
+    "https://apps.apple.com/us/app/picsart-ai-photo-editor-video/id587366035"
+  ],
+  "maxResults": 200
+}
+```
+
+### Daily top-grossing movers
+
+Schedule it daily: each run returns only apps that moved 3+ places, entered or dropped out.
+
+```json
+{
+  "mode": "topCharts",
+  "charts": ["topGrossing"],
+  "stores": ["apple"],
+  "category": "all",
+  "country": "gb",
+  "maxResults": 50,
+  "rankChangesOnly": true,
+  "minRankChange": 3
+}
+```
+
+### Competitor app details
+
+Full metadata for one app on each store: ratings, installs, version, update date and contact.
+
+```json
+{
+  "mode": "appDetails",
+  "apps": ["id324684580", "com.spotify.music"]
+}
+```
+
 ## Who uses App Store and Google Play app data?
 
 - **ASO (App Store Optimization) specialists** track keyword rankings for their apps and competitors, every day, in every country.
@@ -46,34 +132,6 @@ Plus:
 | `maxResults`      | Ranks per keyword or chart (App Store search 200, App Store charts 100, Play 200) | `50`                                   |
 | `rankChangesOnly` | Only rows whose rank changed since the last run with the same input (see Tips)    | `true`                                 |
 | `minRankChange`   | With `rankChangesOnly`: ignore moves smaller than this many places                | `3`                                    |
-
-Example: daily top-grossing games on both stores in Germany, changes only.
-
-```json
-{
-  "mode": "topCharts",
-  "charts": ["topGrossing"],
-  "stores": ["apple", "google"],
-  "category": "games",
-  "country": "de",
-  "language": "de",
-  "maxResults": 100,
-  "rankChangesOnly": true
-}
-```
-
-Example: where do my apps rank for three keywords?
-
-```json
-{
-  "mode": "keywordRanks",
-  "keywords": ["photo editor", "collage maker", "ai photo"],
-  "trackedApps": [
-    "https://apps.apple.com/us/app/picsart-ai-photo-editor-video/id587366035"
-  ],
-  "maxResults": 200
-}
-```
 
 ## What data do you get?
 

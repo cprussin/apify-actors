@@ -10,6 +10,101 @@
 - ✅ **Polite and robust:** one request at a time with random pauses, bot-check detection, automatic session rotation and back-off, and fallback to Apify datacenter proxy. No residential proxy needed.
 - ✅ **Pay per result.** No monthly rent. Failed requests, duplicates and blocked pages are never charged.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "keywords": ["wireless earbuds"],
+  "maxPagesPerKeyword": 1,
+  "reviewsForTopProducts": 3,
+  "maxReviewsPerProduct": 10,
+  "proxyConfiguration": {
+    "useApifyProxy": false
+  }
+}
+```
+
+You get: About 60 "wireless earbuds" products (`title`, `price`, `originalPrice`, `soldCount`, `rating`, `url`), plus up to 10 reviews (`rating`, `text`, `date`, `buyerCountry`) for each of the top 3.
+
+**Cost:** about $0.30: 60 products × $0.004 + 30 reviews × $0.002, plus the $0.00005 actor-start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/aliexpress-scraper` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/aliexpress-scraper to get one page of "phone stand" products on AliExpress sorted by orders, shipping to the US. Show a table of title, price, sold count and rating, and summarize the complaints in the reviews of the top 3.
+```
+
+## Recipes
+
+### Best sellers in a niche
+
+Top products for a keyword by order count, without reviews.
+
+```json
+{
+  "keywords": ["phone stand"],
+  "maxPagesPerKeyword": 1,
+  "sort": "orders",
+  "includeReviews": false
+}
+```
+
+### Cheapest offers in your market
+
+Lowest prices first, with prices and delivery for the UK in GBP.
+
+```json
+{
+  "keywords": ["usb c cable"],
+  "sort": "priceAsc",
+  "includeReviews": false,
+  "shipTo": "GB",
+  "currency": "GBP"
+}
+```
+
+### Reviews for a product you already know
+
+Reviews only, by item ID or URL, with no search.
+
+```json
+{
+  "keywords": [],
+  "productIds": ["https://www.aliexpress.com/item/1005007502032342.html"],
+  "maxReviewsPerProduct": 50
+}
+```
+
+### Review research on the top sellers
+
+50 reviews for each of the 5 best-selling products, to see what buyers like and dislike.
+
+```json
+{
+  "keywords": ["smart watch"],
+  "sort": "orders",
+  "reviewsForTopProducts": 5,
+  "maxReviewsPerProduct": 50
+}
+```
+
+### Daily new-product watch
+
+Schedule it daily: after the first run you get (and pay for) only products not returned before.
+
+```json
+{
+  "keywords": ["wireless earbuds"],
+  "maxPagesPerKeyword": 1,
+  "includeReviews": false,
+  "onlyNew": true
+}
+```
+
 ## Who uses AliExpress product and review data?
 
 - **Dropshippers and e-commerce sellers:** find winning products by orders sold and rating, track supplier prices and discounts.
@@ -46,31 +141,6 @@ The actor only reads public search result pages and the public review feed. It n
 | `language`              | Site / translation language                                                             | `"en"`                                                                         |
 | `onlyNew`               | Monitoring: only products/reviews not returned by an earlier run with the same input    | `true`                                                                         |
 | `proxyConfiguration`    | Optional. Default: direct, with automatic fallback to Apify datacenter proxy if blocked | `{ "useApifyProxy": true }`                                                    |
-
-Example: top 3 pages of best sellers for two keywords, with 50 reviews for each of the top 5 products:
-
-```json
-{
-  "keywords": ["wireless earbuds", "smart watch"],
-  "maxPagesPerKeyword": 3,
-  "sort": "orders",
-  "includeReviews": true,
-  "reviewsForTopProducts": 5,
-  "maxReviewsPerProduct": 50,
-  "shipTo": "US",
-  "currency": "USD"
-}
-```
-
-Reviews only:
-
-```json
-{
-  "keywords": [],
-  "productIds": ["https://www.aliexpress.com/item/1005007502032342.html"],
-  "maxReviewsPerProduct": 500
-}
-```
 
 ## What data do you get from AliExpress?
 

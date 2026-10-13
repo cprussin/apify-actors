@@ -11,6 +11,82 @@
 - ✅ **Fast**: one shared browser, a fresh context per page, pages captured in parallel.
 - ✅ **Pay only for screenshots that work.** Failed URLs are recorded with the reason, for free.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "urls": ["https://apify.com"]
+}
+```
+
+You get: A desktop (1920x1080) PNG of apify.com's visible viewport, with `screenshotUrl`, `title`, `width`, `height` and `loadTimeMs`.
+
+**Cost:** $0.003: 1 screenshot × $0.003, plus the $0.00005 actor-start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/website-screenshot` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/website-screenshot to take full-page mobile screenshots of https://apify.com and https://apify.com/pricing, and give me the image links.
+```
+
+## Recipes
+
+### Full-page mobile PDFs
+
+Whole pages as PDFs on a phone viewport, after lazy content loads.
+
+```json
+{
+  "urls": ["https://apify.com", "https://apify.com/pricing"],
+  "format": "pdf",
+  "fullPage": true,
+  "device": "mobile",
+  "scrollToBottom": true
+}
+```
+
+### Social preview images
+
+1200x630 JPEGs, the usual link-preview size.
+
+```json
+{
+  "urls": ["https://apify.com"],
+  "width": 1200,
+  "height": 630,
+  "format": "jpeg",
+  "quality": 85
+}
+```
+
+### Just one element
+
+Capture only the element that matches a CSS selector.
+
+```json
+{
+  "urls": ["https://example.com"],
+  "selector": "h1"
+}
+```
+
+### Pages that load late
+
+Wait for the network to go quiet, then 1 second more.
+
+```json
+{
+  "urls": ["https://apify.com"],
+  "waitUntil": "networkidle",
+  "delayMs": 1000,
+  "fullPage": true
+}
+```
+
 ## Who uses a website screenshot API?
 
 - **Developers**: thumbnails, link previews and OG images for apps and dashboards.
@@ -48,18 +124,6 @@ Only the URLs you give are loaded. The actor doesn't crawl or follow links.
 | `timeoutSecs`        | Max load time per URL (default 30)                        | `60`                               |
 | `maxConcurrency`     | Pages captured in parallel (default 3)                    | `5`                                |
 | `proxyConfiguration` | Optional Apify Proxy, e.g. for geo-specific pages         | `{ "useApifyProxy": true }`        |
-
-Example: full-page mobile PDFs of two pages, after lazy content loads.
-
-```json
-{
-  "urls": ["https://apify.com", "https://apify.com/pricing"],
-  "format": "pdf",
-  "fullPage": true,
-  "device": "mobile",
-  "scrollToBottom": true
-}
-```
 
 ## What data do you get for each screenshot?
 

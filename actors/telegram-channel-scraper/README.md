@@ -10,6 +10,83 @@
 - ✅ **Incremental runs.** Set `sinceDate` (e.g. `"24 hours"`) and the run stops at older posts, so scheduled runs only pay for new posts.
 - ✅ **Pay per result, no start fee.** Missing, private or disabled channels cost nothing.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "channels": ["durov", "https://t.me/telegram"],
+  "maxPostsPerChannel": 20,
+  "proxyConfiguration": {
+    "useApifyProxy": false
+  }
+}
+```
+
+You get: The 20 newest posts of @durov and @telegram (40 in total) with `text`, `date`, `views`, `reactions`, `media` and `permalink`, plus one channel-info item per channel (`title`, `subscribers`).
+
+**Cost:** $0.082: 40 posts × $0.002 + 2 channel profiles × $0.001. No start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/telegram-channel-scraper` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/telegram-channel-scraper to get the last 7 days of posts from t.me/durov, and summarize them with the view count of each.
+```
+
+## Recipes
+
+### Last week from several channels
+
+Every post from the last 7 days, up to 100 per channel.
+
+```json
+{
+  "channels": ["durov", "https://t.me/telegram"],
+  "sinceDate": "7 days",
+  "maxPostsPerChannel": 100
+}
+```
+
+### Channel stats on a budget
+
+Subscriber counts and profiles, with only the latest post per channel.
+
+```json
+{
+  "channels": ["durov", "telegram"],
+  "maxPostsPerChannel": 1,
+  "includeChannelInfo": true
+}
+```
+
+### Posts since a date, without profiles
+
+Everything since 1 September, posts only.
+
+```json
+{
+  "channels": ["telegram"],
+  "sinceDate": "2026-09-01",
+  "maxPostsPerChannel": 200,
+  "includeChannelInfo": false
+}
+```
+
+### New-post monitor
+
+Schedule it hourly: after the first run you get (and pay for) only posts not returned before.
+
+```json
+{
+  "channels": ["durov"],
+  "onlyNew": true,
+  "maxPostsPerChannel": 50
+}
+```
+
 ## Who uses Telegram channel data?
 
 - **Brand and media monitoring**: track what news, crypto, finance or industry channels post, and how many people see it.
@@ -35,17 +112,6 @@
 | `includeChannelInfo` | Add one channel-profile item per channel (default `true`)                                             | `true`                           |
 | `onlyNew`            | Monitoring: only posts not returned by an earlier run with the same channels                          | `true`                           |
 | `proxyConfiguration` | Optional Apify Proxy for very large runs                                                              | `{ "useApifyProxy": true }`      |
-
-Example: every post from the last week from three channels, with channel stats.
-
-```json
-{
-  "channels": ["durov", "https://t.me/telegram", "@nytimes"],
-  "sinceDate": "7 days",
-  "maxPostsPerChannel": 1000,
-  "includeChannelInfo": true
-}
-```
 
 ## What data do you get for each Telegram post?
 

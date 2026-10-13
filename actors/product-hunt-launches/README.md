@@ -10,6 +10,87 @@
 - ✅ **Pay per launch:** $1 per 1,000 launches. No monthly rental.
 - ✅ **Fast and light:** plain HTTP, no browser, no proxy. The default run finishes in a few seconds.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "mode": "latest",
+  "topics": ["artificial-intelligence"],
+  "maxItems": 20,
+  "proxyConfiguration": {
+    "useApifyProxy": false
+  }
+}
+```
+
+You get: Product Hunt's 20 current featured launches (the prefilled topic is for Topics mode), with `name`, `tagline`, `votesCount`, `dailyRank`, `topics` and `website`.
+
+**Cost:** $0.02: 20 launches × $0.001.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/product-hunt-launches` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/product-hunt-launches in topics mode to get today's developer-tools launches that mention "agent", and rank them by upvotes.
+```
+
+## Recipes
+
+### AI launches that mention a keyword
+
+Current AI and developer-tool launches mentioning "agent", no token needed.
+
+```json
+{
+  "mode": "topics",
+  "topics": ["artificial-intelligence", "developer-tools"],
+  "searchKeywords": "agent",
+  "maxItems": 30
+}
+```
+
+### Today's leaderboard
+
+Current launches sorted by live upvotes, no token needed.
+
+```json
+{
+  "mode": "leaderboard",
+  "period": "daily",
+  "maxItems": 20
+}
+```
+
+### Top 10 of each day last week
+
+Past daily leaderboards, fully ranked. Needs a free Product Hunt developer token.
+
+```json
+{
+  "mode": "leaderboard",
+  "period": "daily",
+  "startDate": "7 days",
+  "maxPerGroup": 10,
+  "maxItems": 70,
+  "apiToken": "YOUR_TOKEN"
+}
+```
+
+### New-launch alerts
+
+Schedule it hourly or daily: after the first run you get (and pay for) only launches not returned before.
+
+```json
+{
+  "mode": "latest",
+  "maxItems": 50,
+  "onlyNew": true
+}
+```
+
 ## What can you do with Product Hunt launch data?
 
 - **Market research and trend spotting:** see what launches every day in your category and which products win Product of the Day.
@@ -60,31 +141,6 @@ Product Hunt protects www.producthunt.com with a Cloudflare browser challenge, w
 | `includeComments`      | Add the most upvoted comments (token)                                             | `false`                                           |
 | `maxCommentsPerLaunch` | Comments per launch                                                               | `20`                                              |
 | `resolveWebsites`      | Resolve Product Hunt redirect links to real websites                              | `true`                                            |
-
-Example: the top 10 launches of each day in September 2026.
-
-```json
-{
-  "mode": "leaderboard",
-  "period": "daily",
-  "startDate": "2026-09-01",
-  "endDate": "2026-09-30",
-  "maxPerGroup": 10,
-  "maxItems": 300,
-  "apiToken": "YOUR_TOKEN"
-}
-```
-
-Example, no token: today's AI and developer-tool launches mentioning "agent".
-
-```json
-{
-  "mode": "topics",
-  "topics": ["artificial-intelligence", "developer-tools"],
-  "searchKeywords": "agent",
-  "maxItems": 50
-}
-```
 
 ## What data do you get for each Product Hunt launch?
 

@@ -9,6 +9,92 @@
 - ✅ No login, no cookies, no API key. No proxy needed at normal volumes.
 - ✅ Pay only per video and per comment returned. Failed or missing videos are never charged.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "mode": "trending",
+  "keywords": ["原神"],
+  "videos": ["https://www.bilibili.com/video/BV1xx411c7mD"],
+  "userIds": ["https://space.bilibili.com/546195"],
+  "maxItems": 10,
+  "includeComments": true,
+  "maxCommentsPerVideo": 10,
+  "proxyConfiguration": {
+    "useApifyProxy": false
+  }
+}
+```
+
+You get: Up to 10 videos from Bilibili's trending page (the prefilled keywords, videos and channels are for the other modes), each with `title`, `views`, `likes`, `coins`, `danmaku`, `tags` and up to 10 top `comments`.
+
+**Cost:** up to $0.25: 10 videos × $0.005 + 100 comments × $0.002. No start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/bilibili-scraper` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/bilibili-scraper in search mode to get the 20 newest Bilibili videos for "黑神话 悟空" without comments, and list title, author, views and publish date.
+```
+
+## Recipes
+
+### Newest videos for a keyword
+
+Search results sorted by upload date, without comments.
+
+```json
+{
+  "mode": "search",
+  "keywords": ["原神"],
+  "searchOrder": "newest",
+  "maxItems": 20,
+  "includeComments": false
+}
+```
+
+### A channel's latest uploads
+
+The 10 newest videos of one channel (UP主), by UID.
+
+```json
+{
+  "mode": "user",
+  "userIds": ["546195"],
+  "maxItems": 10,
+  "includeComments": false
+}
+```
+
+### Stats and comments for specific videos
+
+Engagement counters and top comments for videos you already know.
+
+```json
+{
+  "mode": "videos",
+  "videos": ["BV1xx411c7mD"],
+  "includeComments": true,
+  "maxCommentsPerVideo": 20
+}
+```
+
+### New on trending
+
+Schedule it hourly or daily: after the first run you get (and pay for) only videos new to the trending page.
+
+```json
+{
+  "mode": "trending",
+  "maxItems": 50,
+  "includeComments": false,
+  "onlyNew": true
+}
+```
+
 ## Who uses Bilibili video data?
 
 - **Brand, marketing and agency teams** entering China track how a product, game or brand is discussed on Bilibili, and which creators (UP主) drive views.
@@ -43,18 +129,6 @@
 | `maxCommentsPerVideo` | Max comments per video                                                     | `20`                                    |
 | `onlyNew`             | Monitoring: only videos not returned by an earlier run with the same input | `true`                                  |
 | `proxyConfiguration`  | Optional Apify Proxy, only if Bilibili blocks requests from your account   | `{ "useApifyProxy": true }`             |
-
-Example: the 100 newest videos for two keywords, without comments.
-
-```json
-{
-  "mode": "search",
-  "keywords": ["原神", "崩坏：星穹铁道"],
-  "searchOrder": "newest",
-  "maxItems": 100,
-  "includeComments": false
-}
-```
 
 ## What data do you get for each Bilibili video?
 

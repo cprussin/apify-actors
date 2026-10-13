@@ -10,6 +10,91 @@
 - ✅ Public store endpoints. No login, no API key and normally no proxy needed.
 - ✅ Pay only per review returned.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "apps": [
+    "https://apps.apple.com/us/app/spotify-music-and-podcasts/id324684580",
+    "https://play.google.com/store/apps/details?id=com.spotify.music"
+  ],
+  "country": "us",
+  "language": "en",
+  "maxReviewsPerApp": 20,
+  "proxyConfiguration": {
+    "useApifyProxy": false
+  }
+}
+```
+
+You get: The 20 newest Spotify reviews on each store (40 in total), with `rating`, `title`, `text`, `appVersion`, `date` and `developerReply`.
+
+**Cost:** $0.02: 40 reviews × $0.0005, plus the $0.00005 actor-start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/app-store-reviews` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/app-store-reviews to get the 50 newest 1- and 2-star Google Play reviews of com.spotify.music, and summarize the top complaints by app version.
+```
+
+## Recipes
+
+### Complaints from the last week
+
+Only 1–2 star reviews from the last 7 days, on both stores.
+
+```json
+{
+  "apps": ["id324684580", "com.spotify.music"],
+  "sort": "newest",
+  "sinceDate": "7 days",
+  "maxRating": 2,
+  "maxReviewsPerApp": 100
+}
+```
+
+### Compare with a competitor
+
+The latest reviews of two competing apps, side by side in one schema.
+
+```json
+{
+  "apps": ["com.spotify.music", "com.pandora.android"],
+  "country": "us",
+  "language": "en",
+  "maxReviewsPerApp": 50
+}
+```
+
+### Reviews from another country
+
+German Google Play reviews in German.
+
+```json
+{
+  "apps": ["com.spotify.music"],
+  "country": "de",
+  "language": "de",
+  "maxReviewsPerApp": 50
+}
+```
+
+### Daily new-review alerts
+
+Schedule it daily: after the first run you get (and pay for) only reviews not returned before.
+
+```json
+{
+  "apps": ["id324684580"],
+  "onlyNew": true,
+  "maxReviewsPerApp": 100
+}
+```
+
 ## Who uses App Store and Google Play reviews?
 
 - **Product managers and mobile teams** track bugs and feature requests after every release, per app version.
@@ -43,25 +128,6 @@
 | `minRating`          | Minimum stars (1–5)                                                                                                 | `4`                               |
 | `maxRating`          | Maximum stars (1–5)                                                                                                 | `2`                               |
 | `proxyConfiguration` | Optional Apify Proxy for very large runs                                                                            | `{ "useApifyProxy": true }`       |
-
-Example: every 1–2 star review from the last week for two competing apps, on both stores.
-
-```json
-{
-  "apps": [
-    "https://apps.apple.com/us/app/spotify-music-and-podcasts/id324684580",
-    "com.spotify.music",
-    "https://apps.apple.com/us/app/pandora-music-podcasts/id284035177",
-    "com.pandora.android"
-  ],
-  "country": "us",
-  "language": "en",
-  "sort": "newest",
-  "sinceDate": "7 days",
-  "maxRating": 2,
-  "maxReviewsPerApp": 1000
-}
-```
 
 ## What data does each app review include?
 

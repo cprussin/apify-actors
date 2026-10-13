@@ -10,6 +10,99 @@
 - ✅ **Monitoring**: `onlyNew` returns only companies or jobs not seen in earlier runs. Schedule it for new-batch or new-job alerts.
 - ✅ Pay only for items written to your dataset.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "mode": "companies",
+  "batches": ["Summer 2025"],
+  "jobRoles": ["software-engineer"],
+  "maxItems": 20
+}
+```
+
+You get: 20 Summer 2025 companies (the prefilled job role is for jobs mode) with `name`, `oneLiner`, `industries`, `teamSize`, `website`, `isHiring` and `ycUrl`.
+
+**Cost:** $0.06: 20 companies × $0.003. No start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/ycombinator-companies` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/ycombinator-companies to list active YC fintech companies from the W25 and S25 batches that are hiring, with one-liner, team size and website.
+```
+
+## Recipes
+
+### Fintech companies from recent batches
+
+Active fintech startups from Summer and Winter 2025.
+
+```json
+{
+  "mode": "companies",
+  "batches": ["S25", "W25"],
+  "industries": ["Fintech"],
+  "statuses": ["Active"],
+  "maxItems": 50
+}
+```
+
+### Small hiring startups for outreach
+
+Summer 2025 companies with open jobs and at most 20 people.
+
+```json
+{
+  "mode": "companies",
+  "batches": ["Summer 2025"],
+  "hiringOnly": true,
+  "maxTeamSize": 20,
+  "maxItems": 50
+}
+```
+
+### Remote engineering jobs
+
+Software engineer jobs at YC startups, remote.
+
+```json
+{
+  "mode": "jobs",
+  "jobRoles": ["software-engineer"],
+  "jobLocation": "remote",
+  "maxItems": 30
+}
+```
+
+### Jobs at specific companies
+
+Open jobs at companies you name by slug.
+
+```json
+{
+  "mode": "jobs",
+  "companySlugs": ["stripe", "airbnb"],
+  "maxItems": 30
+}
+```
+
+### Newly launched companies
+
+Schedule it weekly: newest first, and after the first run you get (and pay for) only companies not returned before.
+
+```json
+{
+  "mode": "companies",
+  "sortBy": "launchDate",
+  "maxItems": 50,
+  "onlyNew": true
+}
+```
+
 ## Who uses Y Combinator company data?
 
 - **Sales and lead generation**: every new YC batch is a list of funded startups buying tools. Filter by batch, industry and team size.
@@ -51,29 +144,6 @@ It respects ycombinator.com's robots.txt: it never requests the disallowed `/com
 - Filter values are matched case-insensitively against YC's directory. A value that matches nothing stops the run with suggestions, so a typo never returns the wrong companies.
 - Different filters combine with AND, values within one filter with OR.
 - Job roles: `software-engineer`, `designer`, `product-manager`, `recruiting-hr`, `sales-manager`, `marketing`, `support`, `operations`, `science`, `finance`, `legal`.
-
-Example: active fintech companies from the Summer and Winter 2025 batches.
-
-```json
-{
-  "mode": "companies",
-  "batches": ["S25", "W25"],
-  "industries": ["Fintech"],
-  "statuses": ["Active"],
-  "maxItems": 500
-}
-```
-
-Example: all open jobs at Summer 2025 startups.
-
-```json
-{
-  "mode": "jobs",
-  "batches": ["Summer 2025"],
-  "jobsFromFilteredCompanies": true,
-  "maxItems": 1000
-}
-```
 
 ## What data do you get for each YC company?
 

@@ -11,6 +11,85 @@
 - ✅ Handles rate limits: new proxy IP on every blocked or failed request, direct fallback when the proxy is down.
 - ✅ Fast and light: plain HTTP requests, no browser. Pay only for jobs written to your dataset.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "roles": ["software-engineer"],
+  "locations": ["san-francisco"],
+  "maxJobs": 20,
+  "proxyConfiguration": {
+    "useApifyProxy": true
+  }
+}
+```
+
+You get: 20 software engineer jobs in San Francisco with `title`, `companyName`, `salaryMin`/`salaryMax`, `equityMin`/`equityMax`, `companyStage`, `companySize` and `jobUrl`.
+
+**Cost:** $0.04: 20 jobs × $0.002, plus the $0.00005 actor-start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/wellfound-jobs` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/wellfound-jobs to get 20 remote product manager jobs from Wellfound, and list company, stage, salary and equity range.
+```
+
+## Recipes
+
+### Remote and New York PM jobs
+
+Product manager jobs, remote or in New York.
+
+```json
+{
+  "roles": ["product-manager"],
+  "locations": ["remote", "new-york"],
+  "maxJobs": 40,
+  "maxPages": 2
+}
+```
+
+### Startups hiring in a city
+
+Jobs in every role in New York; group by `companyName` for hiring leads.
+
+```json
+{
+  "locations": ["new-york"],
+  "maxJobs": 50,
+  "maxPages": 2,
+  "includeDescription": false
+}
+```
+
+### From a Wellfound listing URL
+
+Paste any role or location page.
+
+```json
+{
+  "startUrls": ["https://wellfound.com/role/r/data-analyst"],
+  "maxJobs": 20
+}
+```
+
+### Daily new-job alert
+
+Schedule it daily: after the first run you get (and pay for) only jobs not returned before.
+
+```json
+{
+  "roles": ["software-engineer"],
+  "locations": ["remote"],
+  "maxJobs": 50,
+  "onlyNew": true
+}
+```
+
 ## Who uses Wellfound job data?
 
 - **Recruiters and staffing agencies**: find startups that are hiring for a role right now, with company size and stage.
@@ -42,17 +121,6 @@
 - **Roles only**: all locations (`/role/software-engineer`). **Locations only**: all roles (`/location/new-york`). Remote needs a role.
 - Slugs are what you see in Wellfound URLs. Plain names work too: `"Data Analyst"` becomes `data-analyst`, `"New York"` becomes `new-york`.
 - Supported start URLs: `/role/l/{role}/{location}`, `/role/r/{role}` (remote), `/role/{role}` and `/location/{location}`. `?page=N` sets the first page.
-
-Example: remote and New York product manager jobs, up to 200.
-
-```json
-{
-  "roles": ["product-manager"],
-  "locations": ["remote", "new-york"],
-  "maxJobs": 200,
-  "maxPages": 5
-}
-```
 
 ## What data do you get for each Wellfound job?
 

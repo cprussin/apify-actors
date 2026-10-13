@@ -10,6 +10,79 @@
 - ✅ **No API keys, no LLM.** Built on Microsoft's open-source [MarkItDown](https://github.com/microsoft/markitdown): deterministic output, no per-token cost, your documents aren't sent to an AI provider.
 - ✅ **Pay per document.** $4 per 1,000 documents, any size. No start fee.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "urls": ["https://arxiv.org/pdf/1706.03762"]
+}
+```
+
+You get: The "Attention Is All You Need" paper (a 15-page arXiv PDF) as one Markdown item, with `content`, `pageCount`, `wordCount` and `fileType`.
+
+**Cost:** $0.004: 1 document × $0.004 (the PDF has a text layer, so no OCR pages). No start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/document-to-markdown` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/document-to-markdown to convert https://arxiv.org/pdf/1706.03762 to Markdown, then summarize the paper's main contribution in 5 bullets.
+```
+
+## Recipes
+
+### RAG chunks for a vector database
+
+1,000-character chunks with 150 characters of overlap, each with its page numbers.
+
+```json
+{
+  "urls": ["https://arxiv.org/pdf/1706.03762"],
+  "outputFormat": "chunks",
+  "chunkSize": 1000,
+  "chunkOverlap": 150
+}
+```
+
+### Plain text for a search index
+
+Text without Markdown formatting.
+
+```json
+{
+  "urls": ["https://arxiv.org/pdf/1706.03762"],
+  "outputFormat": "text"
+}
+```
+
+### Your own scanned contracts, in German
+
+Files uploaded to your key-value store, with OCR capped at 10 pages per document.
+
+```json
+{
+  "keyValueStoreRecords": ["my-user~contracts/lease.pdf"],
+  "ocr": true,
+  "ocrLanguage": "deu",
+  "maxOcrPagesPerDocument": 10
+}
+```
+
+### Only the first pages, never OCR
+
+The first 3 pages of each PDF, with no OCR charges.
+
+```json
+{
+  "urls": ["https://arxiv.org/pdf/1706.03762"],
+  "maxPagesPerDocument": 3,
+  "ocr": false
+}
+```
+
 ## What can I use document-to-Markdown conversion for?
 
 - **RAG and AI assistants**: turn PDFs, slide decks, manuals and reports into chunks with page numbers, embed them, and cite "page 7" in answers.
@@ -43,21 +116,6 @@
 | `maxPagesPerDocument`    | Only the first pages of longer PDFs are converted                              | `1000`             |
 | `timeoutSecs`            | Max download time per file                                                     | `60`               |
 | `maxConcurrency`         | Parallel downloads (conversion runs one document at a time to keep memory low) | `3`                |
-
-Example: chunk three documents for a vector database, 1,000-character chunks with 150 characters of overlap:
-
-```json
-{
-  "urls": [
-    "https://arxiv.org/pdf/1706.03762",
-    "https://example.com/handbook.docx",
-    "https://example.com/q3-results.pptx"
-  ],
-  "outputFormat": "chunks",
-  "chunkSize": 1000,
-  "chunkOverlap": 150
-}
-```
 
 **Converting your own files:** upload them to a key-value store in your Apify account (Storage → Key-value stores → your store → upload a record) and list them in `keyValueStoreRecords`, e.g. `my-user~contracts/lease.pdf`. Private record URLs (`https://api.apify.com/v2/key-value-stores/.../records/...`) also work in `urls`; the actor reads them with your run's token.
 

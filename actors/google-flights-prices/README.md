@@ -11,6 +11,115 @@
 - ✅ Handles Google's rate limits: new proxy IP on every blocked or failed request, direct fallback when the proxy is down, capped retry time.
 - ✅ Fast and light: plain HTTP requests, no browser. Pay only for itineraries written to your dataset.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "routes": [
+    {
+      "origin": "JFK",
+      "destination": "LHR",
+      "date": "+30"
+    }
+  ],
+  "proxyConfiguration": {
+    "useApifyProxy": true
+  }
+}
+```
+
+You get: Up to 10 one-way JFK → LHR itineraries departing 30 days from today, with `price`, `airlines`, `flightNumbers`, `departureTime`, `durationMinutes`, `stops` and `isCheapest`.
+
+**Cost:** up to $0.025: 10 itineraries × $0.0025, plus the $0.00005 actor-start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/google-flights-prices` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/google-flights-prices to find the 3 cheapest nonstop flights from SFO to JFK for each departure day 30 to 36 days from today, and tell me the cheapest day to fly.
+```
+
+## Recipes
+
+### Cheapest day to fly
+
+A week of departure days, 7-day round trips, nonstop only, best 3 per day.
+
+```json
+{
+  "routes": [
+    {
+      "origin": "LAX",
+      "destination": "NRT",
+      "dateFrom": "+30",
+      "dateTo": "+36",
+      "stayDays": 7
+    }
+  ],
+  "maxStops": "0",
+  "maxItineraries": 3
+}
+```
+
+### Round trip on fixed dates
+
+One round trip, 45 days out with a 7-day stay.
+
+```json
+{
+  "routes": [
+    {
+      "origin": "JFK",
+      "destination": "CDG",
+      "date": "+45",
+      "returnDate": "+52"
+    }
+  ],
+  "maxItineraries": 5
+}
+```
+
+### Business class in euros
+
+Business-class prices sold in Germany, in EUR.
+
+```json
+{
+  "routes": [
+    {
+      "origin": "FRA",
+      "destination": "SIN",
+      "date": "+60"
+    }
+  ],
+  "cabinClass": "business",
+  "currency": "EUR",
+  "country": "DE",
+  "maxItineraries": 5
+}
+```
+
+### Daily fare watch
+
+Schedule it daily: after the first run you get (and pay for) only itineraries that are new or changed price.
+
+```json
+{
+  "routes": [
+    {
+      "origin": "BOS",
+      "destination": "LIS",
+      "date": "+60"
+    }
+  ],
+  "maxItineraries": 5,
+  "onlyNew": true
+}
+```
+
 ## Who uses Google Flights price data?
 
 - **Travel startups and OTAs**: price benchmarks and route coverage without a GDS contract.
@@ -51,24 +160,6 @@ Each route has:
 - `stayDays`: round trip returning N days after each departure date; works with ranges.
 
 A route can also be a string: `"JFK-LHR 2026-11-15"` or `"JFK-LHR 2026-11-15 2026-11-22"` (round trip).
-
-Example: the cheapest week-long round trip from LA to Tokyo departing any day in the first week of December, nonstop only.
-
-```json
-{
-  "routes": [
-    {
-      "origin": "LAX",
-      "destination": "NRT",
-      "dateFrom": "2026-12-01",
-      "dateTo": "2026-12-07",
-      "stayDays": 7
-    }
-  ],
-  "maxStops": "0",
-  "maxItineraries": 3
-}
-```
 
 ## What data do you get for each flight?
 

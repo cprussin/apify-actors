@@ -10,6 +10,80 @@
 - ✅ **Daily monitoring**: `onlyNew` returns each match once across scheduled runs.
 - ✅ No login, no API key, no proxy. Polite, low-rate scraping (about 1 request per second).
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "tours": ["ATP", "WTA"],
+  "maxMatches": 500
+}
+```
+
+You get: Yesterday's ATP and WTA singles matches, each with `tournament`, `round`, `surface`, `player1`/`player2`, `winnerName`, `score` and closing odds (`oddsHome`, `oddsAway`).
+
+**Cost:** up to $2.00: 500 matches × $0.004 (you pay only for the matches played yesterday). No start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/tennis-matches-odds` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/tennis-matches-odds to get Hubert Hurkacz's matches this year (player slug hurkacz), and tell me his win rate by surface.
+```
+
+## Recipes
+
+### One player's season
+
+All matches of one player since 1 January (slug from the TennisExplorer URL).
+
+```json
+{
+  "playerSlugs": ["hurkacz"],
+  "maxMatches": 100
+}
+```
+
+### Last week's Challenger results
+
+Every Challenger match of the last 7 days.
+
+```json
+{
+  "startDate": "7 days",
+  "tours": ["CHALLENGER"],
+  "maxMatches": 200
+}
+```
+
+### Per-bookmaker odds for one day
+
+Yesterday's ATP matches with each bookmaker's opening and closing odds.
+
+```json
+{
+  "startDate": "yesterday",
+  "endDate": "yesterday",
+  "tours": ["ATP"],
+  "maxMatches": 50,
+  "includeBookmakerOdds": true
+}
+```
+
+### Daily results feed
+
+Schedule it daily: matches already returned by an earlier run are skipped and free.
+
+```json
+{
+  "tours": ["ATP", "WTA"],
+  "maxMatches": 500,
+  "onlyNew": true
+}
+```
+
 ## Who uses tennis results and odds data?
 
 - **Sports bettors and tipsters** backtest strategies against closing odds (closing line value, favourite/underdog ROI, surface edges).
@@ -41,18 +115,7 @@ If a day genuinely has no matches (TennisExplorer says so), the run succeeds wit
 | `includeBookmakerOdds`   | Add per-bookmaker odds, rankings and full names from each match page (default `false`; one extra request and event/match) | `true`                  |
 | `onlyNew`                | Skip matches returned by earlier runs with the same tours and players                                                     | `true`                  |
 
-Example: every ATP and Challenger match of the 2025 season.
-
-```json
-{
-  "startDate": "2025-01-01",
-  "endDate": "2025-12-31",
-  "tours": ["ATP", "CHALLENGER"],
-  "maxMatches": 30000
-}
-```
-
-A full season is about 730 results pages (two per day when you mix men's and women's tours) plus one per tournament, so it takes roughly 20–30 minutes at the polite request rate.
+A full season (`"startDate": "2025-01-01"`, `"endDate": "2025-12-31"`) is about 730 results pages (two per day when you mix men's and women's tours) plus one per tournament, so it takes roughly 20–30 minutes at the polite request rate.
 
 ## What data do you get for each tennis match?
 

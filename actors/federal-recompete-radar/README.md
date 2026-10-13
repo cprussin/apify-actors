@@ -9,6 +9,86 @@ Each result names the incumbent contractor (with UEI), the contracting agency an
 - ✅ **Delta mode** returns only contracts you haven't seen yet, which suits weekly scheduled alerts.
 - ✅ You pay per contract returned. Empty runs cost next to nothing.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "endsInMonthsMin": 6,
+  "endsInMonthsMax": 18,
+  "naicsCodes": ["541512"],
+  "minAwardValue": 1000000,
+  "maxResults": 25
+}
+```
+
+You get: Up to 25 contracts worth $1M+ in NAICS 541512 (computer systems design) that end in 6–18 months, soonest first, with the incumbent (`recipientName`), `awardingAgency`, `obligatedAmount`, `currentEndDate` and `usaspendingUrl`.
+
+**Cost:** up to $0.25: 25 contracts × $0.01, plus the $0.00005 actor-start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/federal-recompete-radar` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/federal-recompete-radar to find up to 20 Department of Veterans Affairs IT contracts (NAICS 5415) worth over $1M that end in the next 6 to 12 months, and list incumbent, value and end date.
+```
+
+## Recipes
+
+### VA IT contracts set aside for SDVOSBs
+
+Service-disabled veteran-owned set-asides at Veterans Affairs.
+
+```json
+{
+  "naicsCodes": ["5415"],
+  "awardingAgencies": ["Department of Veterans Affairs"],
+  "setAsideTypes": ["SDVOSBC"],
+  "maxResults": 20
+}
+```
+
+### Cloud work ending soon
+
+Contracts matching "cloud migration" that end in 3–12 months.
+
+```json
+{
+  "keywords": ["cloud migration"],
+  "endsInMonthsMin": 3,
+  "endsInMonthsMax": 12,
+  "maxResults": 20
+}
+```
+
+### Engineering contracts in your region
+
+$5M+ engineering services contracts performed in Virginia, Maryland or DC.
+
+```json
+{
+  "naicsCodes": ["541330"],
+  "placeOfPerformanceStates": ["VA", "MD", "DC"],
+  "minAwardValue": 5000000,
+  "maxResults": 25
+}
+```
+
+### Weekly new-recompete alert
+
+Schedule it weekly: after the first run you get (and pay for) only contracts not returned before.
+
+```json
+{
+  "naicsCodes": ["541512", "541519"],
+  "minAwardValue": 1000000,
+  "maxResults": 50,
+  "onlyNew": true
+}
+```
+
 ## Who tracks expiring federal contracts?
 
 - **Business development and capture teams** at government contractors fill their pipeline 12 to 18 months ahead of RFPs.
@@ -42,21 +122,6 @@ Each result names the incumbent contractor (with UEI), the contracting agency an
 | `maxResults`                          | Maximum number of contracts to return                                     | `100`                                |
 | `includeDetails`                      | Load award detail records (recommended)                                   | `true`                               |
 | `onlyNew`                             | Delta mode: skip contracts returned by earlier runs with the same filters | `true`                               |
-
-Example input:
-
-```json
-{
-  "endsInMonthsMin": 6,
-  "endsInMonthsMax": 18,
-  "naicsCodes": ["541512", "541519"],
-  "awardingAgencies": ["Department of Veterans Affairs"],
-  "setAsideTypes": ["SDVOSBC"],
-  "minAwardValue": 1000000,
-  "maxResults": 100,
-  "onlyNew": true
-}
-```
 
 ## What data do you get for each expiring contract?
 

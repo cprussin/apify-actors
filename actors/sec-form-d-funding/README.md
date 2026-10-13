@@ -8,6 +8,86 @@
 - ✅ **Delta mode** returns only filings you haven't received yet, which suits a daily "recently funded" feed.
 - ✅ You pay per filing returned. Empty runs cost next to nothing.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "lastNDays": 5,
+  "excludeInvestmentFunds": true,
+  "maxResults": 20
+}
+```
+
+You get: Up to 20 Form D filings from the last 5 days by operating companies (investment funds excluded), with `issuerName`, `industryGroup`, `totalOfferingAmount`, `totalAmountSold`, `relatedPersons` and `filingUrl`.
+
+**Cost:** up to $0.20: 20 filings × $0.01, plus the $0.00005 actor-start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/sec-form-d-funding` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/sec-form-d-funding to list new Form D filings from the last 7 days by California companies raising at least $2M, excluding investment funds, with amount sold, number of investors and executives.
+```
+
+## Recipes
+
+### Startup rounds of $1M+ in CA and NY
+
+New (not amended) filings from the last 3 days.
+
+```json
+{
+  "lastNDays": 3,
+  "states": ["CA", "NY"],
+  "excludeInvestmentFunds": true,
+  "minOfferingAmount": 1000000,
+  "filingType": "new",
+  "maxResults": 30
+}
+```
+
+### Biotech raises this month
+
+New biotechnology filings from the last 30 days.
+
+```json
+{
+  "lastNDays": 30,
+  "industryGroups": ["Biotechnology"],
+  "filingType": "new",
+  "maxResults": 30
+}
+```
+
+### Real estate syndications
+
+Real estate offerings filed in the last week.
+
+```json
+{
+  "lastNDays": 7,
+  "industryGroups": ["Real Estate"],
+  "maxResults": 20
+}
+```
+
+### Daily recently-funded feed
+
+Schedule it daily: after the first run you get (and pay for) only filings not returned before.
+
+```json
+{
+  "lastNDays": 2,
+  "excludeInvestmentFunds": true,
+  "filingType": "new",
+  "maxResults": 100,
+  "onlyNew": true
+}
+```
+
 ## Who uses SEC Form D data?
 
 - **B2B sales teams** (SaaS, banking, payroll, HR, recruiting, office space) contact startups right after they raise money and have budget to spend.
@@ -41,20 +121,6 @@ The actor follows the [SEC's fair-access policy](https://www.sec.gov/os/accessin
 | `onlyNew`                                 | Delta mode: skip filings returned by earlier runs with the same filters                  | `true`                            |
 
 Industry categories: Agriculture, Banking & Financial Services, Business Services, Energy, Health Care, Manufacturing, Real Estate, Retailing, Restaurants, Technology, Travel, Other. Each has groups such as Computers, Telecommunications, Other Technology, Biotechnology, Pharmaceuticals, Oil and Gas, Residential or Pooled Investment Fund.
-
-Example input, a daily feed of new startup rounds of $1M or more in California and New York:
-
-```json
-{
-  "lastNDays": 3,
-  "states": ["CA", "NY"],
-  "excludeInvestmentFunds": true,
-  "minOfferingAmount": 1000000,
-  "filingType": "new",
-  "maxResults": 500,
-  "onlyNew": true
-}
-```
 
 ## What data do you get for each Form D filing?
 

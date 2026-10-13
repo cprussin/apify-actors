@@ -13,6 +13,86 @@
 - ✅ Handles rate limits: new proxy IP on every blocked or failed request, direct fallback when the proxy is down.
 - ✅ Fast and light: plain HTTP requests, no browser. Pay only for events written to your dataset.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "locations": ["ny--new-york"],
+  "maxEvents": 20,
+  "proxyConfiguration": {
+    "useApifyProxy": true
+  }
+}
+```
+
+You get: 20 events in New York with `name`, `startDate`, `venueName`, `venueAddress`, `organizerName`, `priceMin`/`priceMax` and `url`.
+
+**Cost:** $0.10: 20 events × $0.005, plus the $0.00005 actor-start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/eventbrite-events` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/eventbrite-events to find 20 music events in San Francisco this weekend, and list name, date, venue and price range.
+```
+
+## Recipes
+
+### This weekend's music events
+
+Music events in two cities this weekend.
+
+```json
+{
+  "locations": ["ny--new-york", "ca--san-francisco"],
+  "category": "music",
+  "dateFilter": "this-weekend",
+  "maxEvents": 20
+}
+```
+
+### Business events for lead lists
+
+Next month's business events in London, with organizer names and pages.
+
+```json
+{
+  "locations": ["united-kingdom--london"],
+  "category": "business",
+  "dateFilter": "next-month",
+  "maxEvents": 30
+}
+```
+
+### Online events by keyword
+
+Online events this week that match "ai".
+
+```json
+{
+  "locations": ["online"],
+  "keyword": "ai",
+  "dateFilter": "this-week",
+  "maxEvents": 20
+}
+```
+
+### New-event alerts
+
+Schedule it daily: after the first run you get (and pay for) only events not returned before.
+
+```json
+{
+  "locations": ["tx--austin"],
+  "category": "food-and-drink",
+  "maxEvents": 20,
+  "onlyNew": true
+}
+```
+
 ## Who uses Eventbrite event data?
 
 - **Event marketers and promoters**: track competing events, prices and venues in your city.
@@ -44,17 +124,6 @@
 
 - **Location slugs** are what you see in Eventbrite URLs: `eventbrite.com/d/`**`ny--new-york`**`/events/`. US cities use `<state>--<city>`, other countries `<country>--<city>`.
 - Start URLs keep their own filters; `category`, `dateFilter` and `keyword` apply only to `locations`. `?page=N` sets the first page.
-
-Example: music events in New York and San Francisco this weekend, up to 200.
-
-```json
-{
-  "locations": ["ny--new-york", "ca--san-francisco"],
-  "category": "music",
-  "dateFilter": "this-weekend",
-  "maxEvents": 200
-}
-```
 
 ## What data do you get for each Eventbrite event?
 

@@ -9,6 +9,84 @@
 - ✅ Deduplicated across searches, so a job that matches two searches is returned (and billed) once.
 - ✅ Fast, light and polite: plain JSON requests, one at a time, no browser. Pay only for jobs written to your dataset.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "queries": ["python developer"],
+  "locations": ["Bangalore"],
+  "maxItems": 20
+}
+```
+
+You get: 20 python developer jobs in Bangalore, newest first, with `title`, `companyName`, `experienceMin`/`experienceMax`, `salaryMin`/`salaryMax`, `skills` and `jobUrl`.
+
+**Cost:** $0.04: 20 jobs × $0.002, plus the $0.00005 actor-start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/foundit-jobs` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/foundit-jobs to get the 20 newest data engineer jobs in Pune on Foundit, and summarize the salary range and the most requested skills.
+```
+
+## Recipes
+
+### Data jobs in two cities
+
+Newest data analyst and data engineer jobs in Pune and Hyderabad.
+
+```json
+{
+  "queries": ["data analyst", "data engineer"],
+  "locations": ["Pune", "Hyderabad"],
+  "sortBy": "date",
+  "maxItems": 40
+}
+```
+
+### Companies hiring sales staff
+
+Sales jobs in Mumbai; group by `companyName` to see who is hiring most.
+
+```json
+{
+  "queries": ["sales manager"],
+  "locations": ["Mumbai"],
+  "maxItems": 50
+}
+```
+
+### Remote jobs with full descriptions
+
+Remote DevOps jobs with the full description, for screening.
+
+```json
+{
+  "queries": ["devops engineer"],
+  "locations": ["Remote"],
+  "maxItems": 20,
+  "includeDescription": true
+}
+```
+
+### Daily new-job alert
+
+Schedule it daily: after the first run you get (and pay for) only jobs not returned before.
+
+```json
+{
+  "queries": ["python developer"],
+  "locations": ["Bangalore"],
+  "sortBy": "date",
+  "maxItems": 50,
+  "onlyNew": true
+}
+```
+
 ## Who uses Foundit job data?
 
 - **Recruiters and staffing agencies**: see which companies are hiring for a skill in a city right now, with experience and pay.
@@ -38,17 +116,6 @@
 
 - **Queries only**: all locations (India, plus the Gulf and Southeast Asia jobs Foundit lists). **Locations only**: all jobs in the city.
 - Locations work like the foundit.in location box: `Bangalore` and `Bengaluru` both match "Bengaluru / Bangalore". Use one city per entry.
-
-Example: newest data analyst and data engineer jobs in Pune and Hyderabad, up to 200.
-
-```json
-{
-  "queries": ["data analyst", "data engineer"],
-  "locations": ["Pune", "Hyderabad"],
-  "sortBy": "date",
-  "maxItems": 200
-}
-```
 
 ## What data do you get for each Foundit job?
 

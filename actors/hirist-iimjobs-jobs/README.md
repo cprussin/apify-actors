@@ -9,6 +9,89 @@
 - ✅ **Monitoring mode**: get only jobs you haven't seen before, for daily new-job alerts.
 - ✅ Polite and light: plain JSON requests, one at a time, no browser, and iimjobs' requested 10-second crawl delay respected. Pay only for jobs written to your dataset.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "site": "both",
+  "queries": ["product manager"],
+  "locations": ["Bangalore"],
+  "maxItems": 20
+}
+```
+
+You get: 20 product manager jobs in Bangalore (10 from Hirist, 10 from iimjobs) with `title`, `company`, `experienceMin`/`experienceMax`, `salaryMin`/`salaryMax`, `skills` and `jobUrl`.
+
+**Cost:** $0.04: 20 jobs × $0.002, plus the $0.00005 actor-start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/hirist-iimjobs-jobs` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/hirist-iimjobs-jobs to find 20 data scientist jobs on Hirist in Bangalore for 3–6 years of experience, and summarize salaries and top skills.
+```
+
+## Recipes
+
+### Mid-level tech roles on Hirist
+
+Data scientist jobs for 3–6 years of experience.
+
+```json
+{
+  "site": "hirist",
+  "queries": ["data scientist"],
+  "locations": ["Bangalore"],
+  "minExperience": 3,
+  "maxExperience": 6,
+  "maxItems": 30
+}
+```
+
+### Finance roles on iimjobs
+
+Investment banking jobs in Mumbai.
+
+```json
+{
+  "site": "iimjobs",
+  "queries": ["investment banking"],
+  "locations": ["Mumbai"],
+  "maxItems": 20
+}
+```
+
+### Remote roles with full descriptions
+
+Remote growth marketing jobs on both boards, with the full description.
+
+```json
+{
+  "site": "both",
+  "queries": ["growth marketing"],
+  "locations": ["Remote"],
+  "maxItems": 20,
+  "includeDescription": true
+}
+```
+
+### Daily new-job alert
+
+Schedule it daily: after the first run you get (and pay for) only jobs not returned before.
+
+```json
+{
+  "site": "both",
+  "queries": ["product manager"],
+  "locations": ["Bangalore", "Gurgaon"],
+  "maxItems": 50,
+  "onlyNew": true
+}
+```
+
 ## Who uses Hirist and iimjobs job data?
 
 - **Recruiters and staffing agencies**: see which companies are hiring engineers or managers in a city right now, with experience and pay.
@@ -40,19 +123,6 @@
 
 - Locations accept common spellings: `Bangalore`/`Bengaluru`, `Gurgaon`/`Gurugram`, `Delhi NCR`, `Navi Mumbai`, `Kochi`, `Remote`, `Anywhere in India`, states such as `Karnataka`, and abroad (`Singapore`, `Dubai`, `US`, ...).
 - With `site: "both"`, `maxItems` is split evenly; if Hirist runs out of jobs, iimjobs gets the rest.
-
-Example: product and growth roles for 3–8 years of experience in Bangalore or Gurgaon, up to 200, on both sites.
-
-```json
-{
-  "site": "both",
-  "queries": ["product manager", "growth marketing"],
-  "locations": ["Bangalore", "Gurgaon"],
-  "minExperience": 3,
-  "maxExperience": 8,
-  "maxItems": 200
-}
-```
 
 ## What data do you get for each job?
 

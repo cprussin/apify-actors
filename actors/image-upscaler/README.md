@@ -9,6 +9,88 @@
 - ✅ **Batch-safe**: a 404, a web page, a corrupt file or an over-size image never fails the run. You get an item with the reason, for free.
 - ✅ **Pay per image**: $0.01 per image up to 0.5 MP (e.g. 800x600), $0.02 up to 1 MP, $0.04 up to 2 MP. Same price at 2x, 3x and 4x. No start fee.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "urls": [
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Aldrin_Apollo_11_original.jpg/500px-Aldrin_Apollo_11_original.jpg"
+  ],
+  "scale": 4
+}
+```
+
+You get: One Apollo 11 photo upscaled 4x (500x503 → 2000x2012 PNG), with `outputUrl`, `outputWidth`, `outputHeight` and `billedUnits`.
+
+**Cost:** $0.01: 1 image × $0.01 (the input is 0.25 MP). No start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/image-upscaler` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/image-upscaler to upscale https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Aldrin_Apollo_11_original.jpg/500px-Aldrin_Apollo_11_original.jpg 2x to JPEG, and give me the download link.
+```
+
+## Recipes
+
+### Product photos 2x as JPEG
+
+Small product shots made sharper, as compact JPEGs.
+
+```json
+{
+  "urls": [
+    "https://example.com/products/shoe-small.jpg",
+    "https://example.com/products/bag-small.png"
+  ],
+  "scale": 2,
+  "outputFormat": "jpg",
+  "quality": 92
+}
+```
+
+### Web-ready WebP
+
+The smallest output files, for a website.
+
+```json
+{
+  "urls": [
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Aldrin_Apollo_11_original.jpg/500px-Aldrin_Apollo_11_original.jpg"
+  ],
+  "scale": 2,
+  "outputFormat": "webp",
+  "quality": 85
+}
+```
+
+### Your own uploads
+
+Images uploaded to a key-value store in your Apify account.
+
+```json
+{
+  "keyValueStoreRecords": ["my-user~photos/scan-001.jpg"],
+  "scale": 4
+}
+```
+
+### Cap the price per image
+
+Skip inputs over 0.5 MP (free error item), so no image costs more than $0.01.
+
+```json
+{
+  "urls": [
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Aldrin_Apollo_11_original.jpg/500px-Aldrin_Apollo_11_original.jpg"
+  ],
+  "maxInputMegapixels": "0.5"
+}
+```
+
 ## What can I use an AI image upscaler for?
 
 - **E-commerce**: enlarge small supplier or marketplace product photos for zoom views and print.
@@ -37,20 +119,6 @@
 | `maxInputMegapixels`   | `0.25`, `0.5`, `1` or `2`: larger images are skipped with a free error     | `2`          |
 | `maxFileSizeMb`        | Larger downloads are skipped with a free error (at most 100)               | `25`         |
 | `timeoutSecs`          | Max download time per image                                                | `60`         |
-
-Example: upscale two product photos 2x to JPEG:
-
-```json
-{
-  "urls": [
-    "https://example.com/products/shoe-small.jpg",
-    "https://example.com/products/bag-small.png"
-  ],
-  "scale": 2,
-  "outputFormat": "jpg",
-  "quality": 92
-}
-```
 
 **Upscaling your own files:** upload them to a key-value store in your Apify account (Storage → Key-value stores → your store → upload a record) and list them in `keyValueStoreRecords`, e.g. `my-user~photos/scan-001.jpg`. Private record URLs (`https://api.apify.com/v2/key-value-stores/.../records/...`) also work in `urls`; the actor reads them with your run's token.
 

@@ -11,6 +11,89 @@
 - ✅ Fast and light: uses Substack's public JSON endpoints. No browser, no proxy needed.
 - ✅ Pay only per post returned. Two simple prices: metadata only, or metadata plus content.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "publications": [
+    "https://www.lennysnewsletter.com",
+    "astralcodexten.substack.com"
+  ],
+  "maxPostsPerPublication": 10,
+  "proxyConfiguration": {
+    "useApifyProxy": false
+  }
+}
+```
+
+You get: The 10 newest posts of Lenny's Newsletter and Astral Codex Ten (20 in total), with `title`, `subtitle`, `postDate`, `audience` (free or paid), `likes`, `commentCount` and `url`.
+
+**Cost:** $0.03: 20 posts × $0.0015. No start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/substack-scraper` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/substack-scraper to get the last 30 days of posts from lennysnewsletter.com with full text, and summarize the main topics.
+```
+
+## Recipes
+
+### Last month's posts with full text
+
+Body text and HTML for one newsletter's last 30 days.
+
+```json
+{
+  "publications": ["https://www.lennysnewsletter.com"],
+  "includeContent": true,
+  "sinceDate": "30 days",
+  "maxPostsPerPublication": 20
+}
+```
+
+### Search a newsletter's archive
+
+Posts matching "pricing", using the publication's own search.
+
+```json
+{
+  "publications": ["https://www.lennysnewsletter.com"],
+  "search": "pricing",
+  "maxPostsPerPublication": 20
+}
+```
+
+### Compare engagement across newsletters
+
+Likes, restacks and comments on each newsletter's 10 latest posts.
+
+```json
+{
+  "publications": [
+    "https://www.lennysnewsletter.com",
+    "astralcodexten.substack.com",
+    "https://www.noahpinion.blog"
+  ],
+  "maxPostsPerPublication": 10
+}
+```
+
+### New-post alerts
+
+Schedule it daily: after the first run you get (and pay for) only posts not returned before.
+
+```json
+{
+  "publications": ["astralcodexten.substack.com"],
+  "onlyNew": true,
+  "maxPostsPerPublication": 20
+}
+```
+
 ## Who uses Substack post data?
 
 - **Marketers and growth teams** find the best-performing topics and headlines in their niche by likes and comments.
@@ -41,21 +124,6 @@
 | `search`                 | Only posts matching a keyword, using the publication's own archive search                   | `"pricing"`                           |
 | `onlyNew`                | Monitoring: only posts not returned by an earlier run with the same publications and search | `true`                                |
 | `proxyConfiguration`     | Optional Apify Proxy. Not needed normally                                                   | `{ "useApifyProxy": false }`          |
-
-Example: every post from the last 30 days of three newsletters, with full text.
-
-```json
-{
-  "publications": [
-    "https://www.lennysnewsletter.com",
-    "astralcodexten.substack.com",
-    "https://www.noahpinion.blog"
-  ],
-  "includeContent": true,
-  "sinceDate": "30 days",
-  "maxPostsPerPublication": 200
-}
-```
 
 ## What data do you get for each Substack post?
 

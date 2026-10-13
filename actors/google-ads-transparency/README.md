@@ -12,6 +12,89 @@
 - ✅ **No residential proxy needed.** Runs direct by default and falls back to Apify's datacenter proxy only if Google rate-limits.
 - ✅ Pay only per ad returned. No start fee beyond Apify's minimum.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "advertisers": ["Nike"],
+  "maxAdsPerAdvertiser": 20,
+  "region": "US",
+  "proxyConfiguration": {
+    "useApifyProxy": false
+  }
+}
+```
+
+You get: Nike's 20 most recently shown ads in the US, with `format`, `headline`, `description`, `imageUrl`, `firstShown`, `lastShown` and `adUrl`.
+
+**Cost:** $0.036: 20 ads × $0.0018, plus the $0.00005 actor-start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/google-ads-transparency` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/google-ads-transparency to get adidas's 20 most recent YouTube ads in the UK, and summarize their messaging and calls to action.
+```
+
+## Recipes
+
+### Competitors' YouTube video ads
+
+The latest 10 video ads of two competitors in the US, from the last 90 days.
+
+```json
+{
+  "advertisers": ["Nike", "adidas.com"],
+  "region": "US",
+  "formats": ["video"],
+  "platform": "YOUTUBE",
+  "dateFrom": "90 days",
+  "maxAdsPerAdvertiser": 10
+}
+```
+
+### Search ad copy for a domain
+
+Text ads on Google Search that point to a domain, from any advertiser.
+
+```json
+{
+  "advertisers": ["hubspot.com"],
+  "region": "US",
+  "formats": ["text"],
+  "platform": "SEARCH",
+  "maxAdsPerAdvertiser": 20
+}
+```
+
+### Find advertiser IDs
+
+Turn brand names into Google advertiser IDs (AR…) with ad counts, without fetching ads.
+
+```json
+{
+  "advertisers": ["Nike", "Puma"],
+  "mode": "advertisers",
+  "maxAdvertisersPerQuery": 5
+}
+```
+
+### New-ad alerts
+
+Schedule it daily: after the first run you get (and pay for) only ads not returned before.
+
+```json
+{
+  "advertisers": ["Nike"],
+  "region": "US",
+  "maxAdsPerAdvertiser": 20,
+  "onlyNew": true
+}
+```
+
 ## Who uses Google Ads Transparency Center data?
 
 - **Performance marketers and PPC agencies**: see which ads competitors run, how long they keep them running (long-running ads usually work), and which formats and platforms they use.
@@ -43,19 +126,6 @@
 | `maxAdvertisersPerQuery` | Advertiser search mode: results per name                                                     | `10`                         |
 | `onlyNew`                | Monitoring: only ads (or advertisers) not returned by an earlier run with the same input     | `true`                       |
 | `proxyConfiguration`     | Optional. Off by default; datacenter proxy is enough                                         | `{ "useApifyProxy": false }` |
-
-Example: the latest 50 YouTube video ads of two competitors in the US, from the last 90 days.
-
-```json
-{
-  "advertisers": ["Nike", "adidas.com"],
-  "region": "US",
-  "formats": ["video"],
-  "platform": "YOUTUBE",
-  "dateFrom": "90 days",
-  "maxAdsPerAdvertiser": 50
-}
-```
 
 ## What data do you get for each Google ad?
 

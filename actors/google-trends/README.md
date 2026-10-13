@@ -11,6 +11,90 @@
 - ✅ Handles Google's rate limits and flaky proxies: switches to a new proxy IP on every failed request (429, captcha, timeout, 5xx), falls back to direct requests when the proxy is down, and caps retry time.
 - ✅ Pay only for results that contain data. Empty results are free.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "searchTerms": ["coffee", "tea"],
+  "datasets": ["interestOverTime", "interestByRegion", "relatedQueries"],
+  "geo": "US",
+  "timeframe": "today 12-m",
+  "proxyConfiguration": {
+    "useApifyProxy": true
+  }
+}
+```
+
+You get: 6 results (2 terms × 3 datasets) for "coffee" vs "tea" in the US over 12 months: interest over time, interest by state and related queries, each with its `rows`.
+
+**Cost:** $0.006: 6 results × $0.001, plus the $0.00005 actor-start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/google-trends` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/google-trends to compare US search interest in "matcha" and "cold brew" over the past 5 years, and tell me which is growing faster and in which states each is most popular.
+```
+
+## Recipes
+
+### Brand comparison on YouTube
+
+Five years of YouTube search interest for three brands.
+
+```json
+{
+  "searchTerms": ["nike", "adidas", "puma"],
+  "geo": "US",
+  "timeframe": "today 5-y",
+  "property": "youtube",
+  "datasets": ["interestOverTime"]
+}
+```
+
+### Rising queries for content ideas
+
+Top and rising related queries and topics in the UK over 3 months.
+
+```json
+{
+  "searchTerms": ["air fryer"],
+  "geo": "GB",
+  "timeframe": "today 3-m",
+  "datasets": ["relatedQueries", "relatedTopics"]
+}
+```
+
+### Where a term is popular, by metro area
+
+Interest by US metro area (DMA).
+
+```json
+{
+  "searchTerms": ["pickleball"],
+  "geo": "US",
+  "datasets": ["interestByRegion"],
+  "regionResolution": "DMA"
+}
+```
+
+### New trending searches
+
+Schedule it hourly: after the first run you get (and pay for) only trending searches not returned before.
+
+```json
+{
+  "mode": "trendingNow",
+  "geo": "US",
+  "trendingHours": "24",
+  "maxTrendingSearches": 25,
+  "onlyNew": true
+}
+```
+
 ## Who uses Google Trends data?
 
 - **SEO and content teams**: find rising queries and topics to write about, and check a keyword's seasonality before investing in it.
@@ -46,19 +130,6 @@
 | `maxTrendingSearches`     | Max trending searches to return                                                                                  | `50`                          |
 | `onlyNew`                 | Trending now monitoring: only searches not returned by an earlier run for the same country                       | `true`                        |
 | `proxyConfiguration`      | Apify Proxy (on by default; Google rate-limits single IPs quickly)                                               | `{ "useApifyProxy": true }`   |
-
-Example: five years of YouTube search interest for three brands in the US, by metro area.
-
-```json
-{
-  "searchTerms": ["nike", "adidas", "puma"],
-  "geo": "US",
-  "timeframe": "today 5-y",
-  "property": "youtube",
-  "datasets": ["interestOverTime", "interestByRegion"],
-  "regionResolution": "DMA"
-}
-```
 
 ## What Google Trends data do you get?
 

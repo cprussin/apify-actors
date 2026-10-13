@@ -9,6 +9,89 @@
 - ✅ **Pay per review.** $0.50 per 1,000 reviews. No monthly rental.
 - ✅ Fast: plain HTTP with retries and rate limiting. A headless browser opens only for a few seconds to pass Trustpilot's bot check. No proxy is needed for typical runs.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "companies": ["apify.com"],
+  "maxReviewsPerCompany": 20,
+  "language": "all",
+  "proxyConfiguration": {
+    "useApifyProxy": false
+  }
+}
+```
+
+You get: The 20 most recent Trustpilot reviews of apify.com, with `rating`, `title`, `text`, `date`, `authorCountry` and `companyReply`, plus the company's `trustScore` and `company` profile.
+
+**Cost:** $0.01: 20 reviews × $0.0005, plus the $0.00005 actor-start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/trustpilot-reviews` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/trustpilot-reviews to get the 50 most recent 1- and 2-star Trustpilot reviews of gymshark.com, and summarize the main complaints.
+```
+
+## Recipes
+
+### Negative reviews since a date
+
+1–2 star reviews for two companies since 1 September.
+
+```json
+{
+  "companies": [
+    "amazon.com",
+    "https://www.trustpilot.com/review/www.gymshark.com"
+  ],
+  "maxReviewsPerCompany": 50,
+  "stars": ["1", "2"],
+  "sinceDate": "2026-09-01",
+  "includeCompanyInfo": false
+}
+```
+
+### Compare competitors
+
+TrustScore, star distribution and the latest reviews of two competitors.
+
+```json
+{
+  "companies": ["wise.com", "revolut.com"],
+  "maxReviewsPerCompany": 20,
+  "includeCompanyInfo": true
+}
+```
+
+### Most relevant English reviews
+
+Trustpilot's relevance order, English only.
+
+```json
+{
+  "companies": ["apify.com"],
+  "language": "en",
+  "sort": "relevance",
+  "maxReviewsPerCompany": 50
+}
+```
+
+### New-review alerts
+
+Schedule it daily: after the first run you get (and pay for) only reviews not returned before.
+
+```json
+{
+  "companies": ["apify.com"],
+  "onlyNew": true,
+  "maxReviewsPerCompany": 100
+}
+```
+
 ## What can you do with Trustpilot reviews?
 
 - **Brand and reputation monitoring:** schedule a daily run with `onlyNew` and route new 1–2 star reviews to Slack, email or your helpdesk.
@@ -38,22 +121,6 @@
 | `onlyNew`              | Monitoring: only reviews not returned by an earlier run with the same input (see FAQ)        | `true`                                                                 |
 | `includeCompanyInfo`   | Add a `company` object (website, categories, contact details, reply rate, star distribution) | `true`                                                                 |
 | `proxyConfiguration`   | Optional Apify Proxy settings                                                                | `{ "useApifyProxy": false }`                                           |
-
-Example input: new negative reviews for two companies since September 1.
-
-```json
-{
-  "companies": [
-    "amazon.com",
-    "https://www.trustpilot.com/review/www.gymshark.com"
-  ],
-  "maxReviewsPerCompany": 200,
-  "stars": ["1", "2"],
-  "language": "all",
-  "sinceDate": "2026-09-01",
-  "includeCompanyInfo": false
-}
-```
 
 ## What data do you get for each Trustpilot review?
 

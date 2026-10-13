@@ -8,6 +8,85 @@
 - ✅ Filter by state, formation date, entity type, city, ZIP, county or keyword in the name.
 - ✅ You pay per business returned. Empty runs cost next to nothing.
 
+## Start in one minute
+
+Click **Start** with the prefilled input:
+
+```json
+{
+  "states": ["CO", "CT", "NY", "OR", "PA", "TX"],
+  "formedWithinDays": 30,
+  "entityTypes": ["llc", "corporation"],
+  "maxResults": 100
+}
+```
+
+You get: Up to 100 LLCs and corporations formed in the last 30 days in CO, CT, NY, OR, PA and TX, with `name`, `entityType`, `formationDate`, `principalAddress`, `registeredAgentName` and `sourceUrl`.
+
+**Cost:** up to $0.20: 100 businesses × $0.002, plus the $0.00005 actor-start fee.
+
+## Use with an AI assistant
+
+Connect the [Apify MCP server](https://mcp.apify.com) to Claude, ChatGPT, Cursor or any MCP client (`https://mcp.apify.com?tools=cprussin/new-business-registrations` loads only this actor), then paste:
+
+```text
+Use the Apify actor cprussin/new-business-registrations to list up to 50 LLCs formed in Texas in the last 30 days whose names contain "roofing" or "construction", with address and formation date.
+```
+
+## Recipes
+
+### Contractor leads in three states
+
+New construction and roofing companies from the last 14 days.
+
+```json
+{
+  "states": ["CO", "NY", "TX"],
+  "formedWithinDays": 14,
+  "entityTypes": ["llc", "corporation"],
+  "nameKeywords": ["construction", "roofing"],
+  "maxResults": 50
+}
+```
+
+### New businesses in one city
+
+Everything formed in Denver in the last 7 days.
+
+```json
+{
+  "states": ["CO"],
+  "cities": ["Denver"],
+  "formedWithinDays": 7,
+  "maxResults": 50
+}
+```
+
+### New businesses by ZIP prefix
+
+Brooklyn (ZIP 112xx) filings from the last 30 days.
+
+```json
+{
+  "states": ["NY"],
+  "zipCodes": ["112"],
+  "formedWithinDays": 30,
+  "maxResults": 50
+}
+```
+
+### Daily new-filing feed
+
+Schedule it daily: after the first run you get (and pay for) only businesses not returned before.
+
+```json
+{
+  "formedWithinDays": 30,
+  "maxResults": 100,
+  "onlyNew": true
+}
+```
+
 ## Who uses new business registration data?
 
 - **Insurance agents** (general liability, workers' comp, BOP) contact new LLCs before their first policy renewal.
@@ -51,19 +130,6 @@ Because states publish on different schedules, a 30-day window returns results f
 | `nameKeywords`                 | Business name contains any of these                                              | `["roofing", "dental"]`  |
 | `maxResults`                   | Maximum businesses to return across all states                                   | `100`                    |
 | `onlyNew`                      | Delta mode: skip businesses returned by earlier runs with the same settings      | `true`                   |
-
-Example input:
-
-```json
-{
-  "states": ["CO", "NY", "TX"],
-  "formedWithinDays": 14,
-  "entityTypes": ["llc", "corporation"],
-  "nameKeywords": ["construction", "roofing"],
-  "maxResults": 500,
-  "onlyNew": true
-}
-```
 
 ## What data do you get for each new business?
 
