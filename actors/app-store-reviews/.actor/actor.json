@@ -6,6 +6,7 @@
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 256,
+  "defaultMemoryMbytes": 512,
   "maxMemoryMbytes": 1024,
   "input": "./input_schema.json",
   "storages": {
