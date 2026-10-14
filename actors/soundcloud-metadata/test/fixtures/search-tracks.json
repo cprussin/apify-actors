@@ -1,0 +1,30 @@
+{
+  "collection": [
+    {
+      "kind": "track",
+      "id": 1,
+      "title": "Lofi One",
+      "permalink_url": "https://soundcloud.com/a/lofi-one",
+      "playback_count": 100,
+      "user": {
+        "id": 11,
+        "username": "A",
+        "permalink_url": "https://soundcloud.com/a"
+      }
+    },
+    {
+      "kind": "track",
+      "id": 2,
+      "title": "Lofi Two",
+      "permalink_url": "https://soundcloud.com/b/lofi-two",
+      "playback_count": 200,
+      "user": {
+        "id": 12,
+        "username": "B",
+        "permalink_url": "https://soundcloud.com/b"
+      }
+    }
+  ],
+  "total_results": 2,
+  "next_href": null
+}

@@ -1,0 +1,298 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": ["string"],
+        "title": "Type",
+        "description": "Object type: track, user or playlist.",
+        "example": "track"
+      },
+      "id": {
+        "type": ["number", "null"],
+        "title": "ID",
+        "description": "SoundCloud numeric ID.",
+        "example": 406715293
+      },
+      "urn": {
+        "type": ["string", "null"],
+        "title": "URN",
+        "description": "SoundCloud resource URN.",
+        "example": "soundcloud:tracks:406715293"
+      },
+      "url": {
+        "type": ["string", "null"],
+        "title": "URL",
+        "description": "Permalink URL of the object.",
+        "example": "https://soundcloud.com/edsheeran/shape-of-you"
+      },
+      "permalink": {
+        "type": ["string", "null"],
+        "title": "Permalink",
+        "description": "URL slug of the object.",
+        "example": "shape-of-you"
+      },
+      "title": {
+        "type": ["string", "null"],
+        "title": "Title",
+        "description": "Track or playlist title (null for users).",
+        "example": "Shape of You"
+      },
+      "username": {
+        "type": ["string", "null"],
+        "title": "User",
+        "description": "Owner's display name (for a user item, their own name).",
+        "example": "Ed Sheeran"
+      },
+      "userUrl": {
+        "type": ["string", "null"],
+        "title": "User URL",
+        "description": "Owner's profile URL.",
+        "example": "https://soundcloud.com/edsheeran"
+      },
+      "userId": {
+        "type": ["number", "null"],
+        "title": "User ID",
+        "description": "Owner's SoundCloud ID.",
+        "example": 8678091
+      },
+      "fullName": {
+        "type": ["string", "null"],
+        "title": "Full name",
+        "description": "User's full name (user items only).",
+        "example": "Ed Sheeran"
+      },
+      "description": {
+        "type": ["string", "null"],
+        "title": "Description",
+        "description": "Track/playlist description or user bio.",
+        "example": "Official audio for Shape of You."
+      },
+      "genre": {
+        "type": ["string", "null"],
+        "title": "Genre",
+        "description": "Genre of the track or playlist.",
+        "example": "Pop"
+      },
+      "tags": {
+        "type": ["array", "null"],
+        "title": "Tags",
+        "description": "Tags parsed from SoundCloud's tag list.",
+        "example": ["Pop", "acoustic"]
+      },
+      "createdAt": {
+        "type": ["string", "null"],
+        "title": "Created",
+        "description": "Creation time (ISO 8601 UTC).",
+        "example": "2017-01-06T00:00:00Z"
+      },
+      "artworkUrl": {
+        "type": ["string", "null"],
+        "title": "Artwork",
+        "description": "Artwork image URL (track/playlist).",
+        "example": "https://i1.sndcdn.com/artworks-Ar69BodfFm7L-0-large.jpg"
+      },
+      "avatarUrl": {
+        "type": ["string", "null"],
+        "title": "Avatar",
+        "description": "Avatar image URL (user items only).",
+        "example": "https://i1.sndcdn.com/avatars-000-large.jpg"
+      },
+      "durationMs": {
+        "type": ["number", "null"],
+        "title": "Duration (ms)",
+        "description": "Length in milliseconds (track/playlist).",
+        "example": 233840
+      },
+      "playbackCount": {
+        "type": ["number", "null"],
+        "title": "Plays",
+        "description": "Play count (tracks only).",
+        "example": 84266602
+      },
+      "likesCount": {
+        "type": ["number", "null"],
+        "title": "Likes",
+        "description": "Like count.",
+        "example": 1049387
+      },
+      "repostsCount": {
+        "type": ["number", "null"],
+        "title": "Reposts",
+        "description": "Repost count.",
+        "example": 48213
+      },
+      "commentCount": {
+        "type": ["number", "null"],
+        "title": "Comments",
+        "description": "Comment count (tracks only).",
+        "example": 3120
+      },
+      "trackCount": {
+        "type": ["number", "null"],
+        "title": "Tracks",
+        "description": "Number of tracks (user/playlist).",
+        "example": 468
+      },
+      "playlistCount": {
+        "type": ["number", "null"],
+        "title": "Playlists",
+        "description": "Number of public playlists (user items only).",
+        "example": 12
+      },
+      "followersCount": {
+        "type": ["number", "null"],
+        "title": "Followers",
+        "description": "Follower count (user items only).",
+        "example": 2986991
+      },
+      "followingsCount": {
+        "type": ["number", "null"],
+        "title": "Following",
+        "description": "Following count (user items only).",
+        "example": 512
+      },
+      "city": {
+        "type": ["string", "null"],
+        "title": "City",
+        "description": "User's city (user items only).",
+        "example": "Halifax"
+      },
+      "countryCode": {
+        "type": ["string", "null"],
+        "title": "Country",
+        "description": "User's country code (user items only).",
+        "example": "GB"
+      },
+      "verified": {
+        "type": ["boolean", "null"],
+        "title": "Verified",
+        "description": "Whether the user is verified (user items only).",
+        "example": true
+      },
+      "labelName": {
+        "type": ["string", "null"],
+        "title": "Label",
+        "description": "Record label (track/playlist).",
+        "example": "Atlantic Records UK"
+      },
+      "license": {
+        "type": ["string", "null"],
+        "title": "License",
+        "description": "Content license (track/playlist).",
+        "example": "all-rights-reserved"
+      },
+      "isAlbum": {
+        "type": ["boolean", "null"],
+        "title": "Is album",
+        "description": "Whether a playlist is an album (playlist items only).",
+        "example": false
+      },
+      "setType": {
+        "type": ["string", "null"],
+        "title": "Set type",
+        "description": "Playlist set type, e.g. album, ep, playlist (playlist items only).",
+        "example": "album"
+      },
+      "purchaseUrl": {
+        "type": ["string", "null"],
+        "title": "Purchase URL",
+        "description": "External buy/stream link set by the uploader (track/playlist).",
+        "example": "https://smarturl.it/divide"
+      },
+      "downloadable": {
+        "type": ["boolean", "null"],
+        "title": "Downloadable",
+        "description": "Whether the uploader enabled downloads (tracks only). No audio is downloaded by this actor.",
+        "example": false
+      },
+      "streamable": {
+        "type": ["boolean", "null"],
+        "title": "Streamable",
+        "description": "Whether the track is streamable on SoundCloud (tracks only).",
+        "example": true
+      },
+      "source": {
+        "type": ["string", "null"],
+        "title": "Source",
+        "description": "The input URL, or search:<keyword>, this item came from.",
+        "example": "https://soundcloud.com/edsheeran/shape-of-you"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Items",
+      "transformation": {
+        "fields": [
+          "type",
+          "url",
+          "title",
+          "username",
+          "playbackCount",
+          "likesCount",
+          "repostsCount",
+          "commentCount",
+          "followersCount",
+          "trackCount",
+          "genre",
+          "createdAt"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "type": {
+            "label": "Type",
+            "format": "text"
+          },
+          "url": {
+            "label": "URL",
+            "format": "link"
+          },
+          "title": {
+            "label": "Title",
+            "format": "text"
+          },
+          "username": {
+            "label": "User",
+            "format": "text"
+          },
+          "playbackCount": {
+            "label": "Plays",
+            "format": "number"
+          },
+          "likesCount": {
+            "label": "Likes",
+            "format": "number"
+          },
+          "repostsCount": {
+            "label": "Reposts",
+            "format": "number"
+          },
+          "commentCount": {
+            "label": "Comments",
+            "format": "number"
+          },
+          "followersCount": {
+            "label": "Followers",
+            "format": "number"
+          },
+          "trackCount": {
+            "label": "Tracks",
+            "format": "number"
+          },
+          "genre": {
+            "label": "Genre",
+            "format": "text"
+          },
+          "createdAt": {
+            "label": "Created",
+            "format": "date"
+          }
+        }
+      }
+    }
+  }
+}

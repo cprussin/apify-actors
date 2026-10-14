@@ -1,0 +1,27 @@
+{
+  "kind": "playlist",
+  "id": 123456,
+  "urn": "soundcloud:playlists:123456",
+  "title": "Divide (Deluxe)",
+  "permalink": "divide-deluxe",
+  "permalink_url": "https://soundcloud.com/edsheeran/sets/divide-deluxe",
+  "description": "Album.",
+  "genre": "Pop",
+  "tag_list": "Pop",
+  "created_at": "2017-03-03T00:00:00Z",
+  "artwork_url": "https://i1.sndcdn.com/artworks-divide-large.jpg",
+  "duration": 2994000,
+  "likes_count": 5000,
+  "reposts_count": 200,
+  "track_count": 16,
+  "label_name": "Atlantic Records UK",
+  "license": "all-rights-reserved",
+  "is_album": true,
+  "set_type": "album",
+  "user_id": 8678091,
+  "user": {
+    "id": 8678091,
+    "username": "Ed Sheeran",
+    "permalink_url": "https://soundcloud.com/edsheeran"
+  }
+}

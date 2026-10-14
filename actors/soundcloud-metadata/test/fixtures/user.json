@@ -1,0 +1,21 @@
+{
+  "kind": "user",
+  "id": 8678091,
+  "urn": "soundcloud:users:8678091",
+  "username": "Ed Sheeran",
+  "full_name": "Ed Sheeran",
+  "permalink": "edsheeran",
+  "permalink_url": "https://soundcloud.com/edsheeran",
+  "description": "Multiply.",
+  "created_at": "2010-01-01T00:00:00Z",
+  "avatar_url": "https://i1.sndcdn.com/avatars-000-large.jpg",
+  "followers_count": 2986991,
+  "followings_count": 512,
+  "track_count": 468,
+  "playlist_count": 12,
+  "likes_count": 20,
+  "reposts_count": 3,
+  "city": "Halifax",
+  "country_code": "GB",
+  "verified": true
+}

@@ -1,0 +1,5 @@
+window.webpackJsonp = [];
+var o = { api_gateway: "x" };
+function t() {
+  return { client_id: "AbCdEf0123456789AbCdEf0123456789", app_version: "1" };
+}

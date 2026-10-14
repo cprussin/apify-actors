@@ -1,0 +1,29 @@
+{
+  "kind": "track",
+  "id": 406715293,
+  "urn": "soundcloud:tracks:406715293",
+  "title": "Shape of You",
+  "permalink": "shape-of-you",
+  "permalink_url": "https://soundcloud.com/edsheeran/shape-of-you",
+  "description": "Official audio.",
+  "genre": "Pop",
+  "tag_list": "Pop \"singer songwriter\" acoustic",
+  "created_at": "2017-01-06T00:00:00Z",
+  "artwork_url": "https://i1.sndcdn.com/artworks-Ar69BodfFm7L-0-large.jpg",
+  "duration": 233840,
+  "playback_count": 84266602,
+  "likes_count": 1049387,
+  "reposts_count": 48213,
+  "comment_count": 3120,
+  "label_name": "Atlantic Records UK",
+  "license": "all-rights-reserved",
+  "purchase_url": "https://smarturl.it/divide",
+  "downloadable": false,
+  "streamable": true,
+  "user_id": 8678091,
+  "user": {
+    "id": 8678091,
+    "username": "Ed Sheeran",
+    "permalink_url": "https://soundcloud.com/edsheeran"
+  }
+}
