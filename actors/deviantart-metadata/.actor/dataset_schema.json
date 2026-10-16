@@ -1,0 +1,286 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": ["string"],
+        "title": "Type",
+        "description": "Item type: deviation or profile.",
+        "example": "deviation"
+      },
+      "id": {
+        "type": ["number", "null"],
+        "title": "ID",
+        "description": "Deviation ID (deviations) or user ID (profiles).",
+        "example": 1385671838
+      },
+      "url": {
+        "type": ["string", "null"],
+        "title": "URL",
+        "description": "Deviation or profile URL.",
+        "example": "https://www.deviantart.com/wlop/art/Nera2-1385671838"
+      },
+      "title": {
+        "type": ["string", "null"],
+        "title": "Title",
+        "description": "Deviation title (deviations only).",
+        "example": "Nera2"
+      },
+      "author": {
+        "type": ["string", "null"],
+        "title": "Author",
+        "description": "Author username (for a profile, the user's own name).",
+        "example": "wlop"
+      },
+      "authorUrl": {
+        "type": ["string", "null"],
+        "title": "Author URL",
+        "description": "Author profile URL.",
+        "example": "https://www.deviantart.com/wlop"
+      },
+      "authorId": {
+        "type": ["number", "null"],
+        "title": "Author ID",
+        "description": "Author's numeric user ID.",
+        "example": 11870562
+      },
+      "authorWatchers": {
+        "type": ["number", "null"],
+        "title": "Author watchers",
+        "description": "Author's watcher (follower) count.",
+        "example": 284253
+      },
+      "publishedAt": {
+        "type": ["string", "null"],
+        "title": "Published",
+        "description": "Publish time (ISO 8601 UTC).",
+        "example": "2026-09-28T09:44:39.000Z"
+      },
+      "views": {
+        "type": ["number", "null"],
+        "title": "Views",
+        "description": "View count.",
+        "example": 31616
+      },
+      "favourites": {
+        "type": ["number", "null"],
+        "title": "Favourites",
+        "description": "Favourite count (profiles: favourites the user made).",
+        "example": 467
+      },
+      "comments": {
+        "type": ["number", "null"],
+        "title": "Comments",
+        "description": "Comment count (profiles: comments received on the profile).",
+        "example": 11
+      },
+      "downloads": {
+        "type": ["number", "null"],
+        "title": "Downloads",
+        "description": "Download count reported by DeviantArt. The actor never downloads files.",
+        "example": 32
+      },
+      "tags": {
+        "type": ["array", "null"],
+        "title": "Tags",
+        "description": "Deviation tags. Always set for deviation URLs; for search/gallery only with includeTags (otherwise null).",
+        "example": ["warrior"]
+      },
+      "category": {
+        "type": ["string", "null"],
+        "title": "Category",
+        "description": "Deviation type (image, literature, film, ...). DeviantArt no longer exposes legacy category paths.",
+        "example": "image"
+      },
+      "isMature": {
+        "type": ["boolean", "null"],
+        "title": "Mature",
+        "description": "Whether DeviantArt marks the deviation as mature.",
+        "example": false
+      },
+      "isDownloadable": {
+        "type": ["boolean", "null"],
+        "title": "Downloadable",
+        "description": "Whether the artist allows downloads. No file is downloaded by this actor.",
+        "example": true
+      },
+      "license": {
+        "type": ["string", "null"],
+        "title": "License",
+        "description": "License set by the artist, e.g. none (all rights reserved) or a Creative Commons code.",
+        "example": "none"
+      },
+      "noai": {
+        "type": ["boolean", "null"],
+        "title": "noai",
+        "description": "DeviantArt's noai flag (isAiUseDisallowed), passed through unchanged. true means the artist disallows AI use; see the README.",
+        "example": true
+      },
+      "isAiGenerated": {
+        "type": ["boolean", "null"],
+        "title": "AI generated",
+        "description": "Whether the deviation is labelled as AI-generated.",
+        "example": false
+      },
+      "isDailyDeviation": {
+        "type": ["boolean", "null"],
+        "title": "Daily Deviation",
+        "description": "Whether the deviation was a Daily Deviation.",
+        "example": false
+      },
+      "thumbnailUrl": {
+        "type": ["string", "null"],
+        "title": "Thumbnail",
+        "description": "Thumbnail image URL (not downloaded by the actor).",
+        "example": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/6f131d22/dmwzr8e.jpg/v1/fit/w_300,h_900,q_70,strp/nera2_by_wlop_dmwzr8e-300w.jpg"
+      },
+      "avatarUrl": {
+        "type": ["string", "null"],
+        "title": "Avatar",
+        "description": "Author or profile avatar URL.",
+        "example": "https://a.deviantart.net/avatars-big/w/l/wlop.jpg?10"
+      },
+      "tagline": {
+        "type": ["string", "null"],
+        "title": "Tagline",
+        "description": "Profile tagline (profiles only).",
+        "example": "Let there be llight!"
+      },
+      "country": {
+        "type": ["string", "null"],
+        "title": "Country",
+        "description": "Profile country (profiles only).",
+        "example": "People's Republic of China"
+      },
+      "countryCode": {
+        "type": ["string", "null"],
+        "title": "Country code",
+        "description": "Profile country code (profiles only).",
+        "example": "CN"
+      },
+      "isArtist": {
+        "type": ["boolean", "null"],
+        "title": "Artist",
+        "description": "Whether the user marks themselves as an artist (profiles only).",
+        "example": true
+      },
+      "joinedAt": {
+        "type": ["string", "null"],
+        "title": "Joined",
+        "description": "Join date, ISO 8601 UTC (profiles only).",
+        "example": "2009-10-15T08:25:46.000Z"
+      },
+      "watchers": {
+        "type": ["number", "null"],
+        "title": "Watchers",
+        "description": "Watcher (follower) count (profiles only).",
+        "example": 284253
+      },
+      "watching": {
+        "type": ["number", "null"],
+        "title": "Watching",
+        "description": "Users this user watches (profiles only).",
+        "example": 164
+      },
+      "deviationCount": {
+        "type": ["number", "null"],
+        "title": "Deviations",
+        "description": "Number of deviations (profiles only).",
+        "example": 522
+      },
+      "pageviews": {
+        "type": ["number", "null"],
+        "title": "Pageviews",
+        "description": "Profile pageviews (profiles only).",
+        "example": 12947257
+      },
+      "dataSource": {
+        "type": ["string"],
+        "title": "Data source",
+        "description": "page (full metadata), or the oembed/rss fallback (partial: no license, noai or watcher data).",
+        "example": "page"
+      },
+      "source": {
+        "type": ["string", "null"],
+        "title": "Source",
+        "description": "The input this item came from: search:<query>, a username or a deviation URL.",
+        "example": "wlop"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Items",
+      "transformation": {
+        "fields": [
+          "type",
+          "url",
+          "title",
+          "author",
+          "authorWatchers",
+          "publishedAt",
+          "views",
+          "favourites",
+          "comments",
+          "isMature",
+          "noai",
+          "license"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "type": {
+            "label": "Type",
+            "format": "text"
+          },
+          "url": {
+            "label": "URL",
+            "format": "link"
+          },
+          "title": {
+            "label": "Title",
+            "format": "text"
+          },
+          "author": {
+            "label": "Author",
+            "format": "text"
+          },
+          "authorWatchers": {
+            "label": "Author watchers",
+            "format": "number"
+          },
+          "publishedAt": {
+            "label": "Published",
+            "format": "date"
+          },
+          "views": {
+            "label": "Views",
+            "format": "number"
+          },
+          "favourites": {
+            "label": "Favourites",
+            "format": "number"
+          },
+          "comments": {
+            "label": "Comments",
+            "format": "number"
+          },
+          "isMature": {
+            "label": "Mature",
+            "format": "boolean"
+          },
+          "noai": {
+            "label": "noai",
+            "format": "boolean"
+          },
+          "license": {
+            "label": "License",
+            "format": "text"
+          }
+        }
+      }
+    }
+  }
+}

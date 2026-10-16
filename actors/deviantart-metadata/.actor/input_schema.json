@@ -1,0 +1,80 @@
+{
+  "title": "DeviantArt Metadata input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "mode": {
+      "title": "Mode",
+      "type": "string",
+      "description": "What to scrape: search (deviations matching `query`), userGallery (deviations in each user's gallery, newest first), userProfile (one profile item per user) or deviationUrls (one item per deviation URL, with tags).",
+      "editor": "select",
+      "enum": ["search", "userGallery", "userProfile", "deviationUrls"],
+      "enumTitles": [
+        "Search deviations",
+        "User galleries",
+        "User profiles",
+        "Deviation URLs"
+      ],
+      "default": "search",
+      "prefill": "search"
+    },
+    "query": {
+      "title": "Search query",
+      "type": "string",
+      "description": "Keyword(s) for mode search, e.g. dragon or cyberpunk city.",
+      "editor": "textfield",
+      "prefill": "dragon"
+    },
+    "usernames": {
+      "title": "Usernames",
+      "type": "array",
+      "description": "DeviantArt usernames or profile URLs for modes userGallery and userProfile, e.g. wlop or https://www.deviantart.com/wlop.",
+      "editor": "stringList"
+    },
+    "deviationUrls": {
+      "title": "Deviation URLs",
+      "type": "array",
+      "description": "Deviation page URLs for mode deviationUrls, e.g. https://www.deviantart.com/wlop/art/Nera2-1385671838.",
+      "editor": "stringList"
+    },
+    "maxItems": {
+      "title": "Max deviations",
+      "type": "integer",
+      "description": "Maximum deviations per search query or per user gallery. Each deviation is billed as one event. Not used for profiles or deviation URLs (each is always fetched).",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 5000,
+      "default": 20,
+      "prefill": 10
+    },
+    "includeMature": {
+      "title": "Include mature content",
+      "type": "boolean",
+      "description": "Include deviations DeviantArt marks as mature. Off by default; mature items are then skipped and not billed. Only content DeviantArt shows to logged-out visitors is ever returned.",
+      "default": false,
+      "sectionCaption": "Filters"
+    },
+    "sinceDate": {
+      "title": "Published since",
+      "type": "string",
+      "description": "Only deviations published on or after this date, for monitoring. A date (2026-10-01) or relative time (7 days, 24 hours, 2 weeks). Galleries are newest first, so paging stops at the first older deviation; search is relevance-ranked, so results are only filtered.",
+      "editor": "textfield"
+    },
+    "includeTags": {
+      "title": "Fetch tags for search/gallery results",
+      "type": "boolean",
+      "description": "Search and gallery pages don't list tags. Turn on to look up each deviation's tags (one extra request, about 1 s, per deviation). Deviation URLs always include tags.",
+      "default": false
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Optional. Not needed normally; use Apify Proxy only if DeviantArt starts blocking very large runs.",
+      "editor": "proxy",
+      "default": { "useApifyProxy": false },
+      "prefill": { "useApifyProxy": false },
+      "sectionCaption": "Advanced"
+    }
+  },
+  "required": ["mode"]
+}

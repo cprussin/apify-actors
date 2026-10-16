@@ -8,6 +8,7 @@ actors/tennis-matches-odds/test/fixtures
 actors/google-flights-prices/test/fixtures
 actors/wellfound-jobs/test/fixtures
 actors/eventbrite-events/test/fixtures
+actors/deviantart-metadata/test/fixtures
 actors/foundit-jobs/test/fixtures
 actors/hirist-iimjobs-jobs/test/fixtures
 actors/ycombinator-companies/test/fixtures
