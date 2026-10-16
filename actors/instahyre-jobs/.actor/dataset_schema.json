@@ -1,0 +1,118 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "jobId": {
+        "type": ["string", "null"],
+        "title": "Job ID",
+        "description": "Instahyre job ID.",
+        "example": "439850"
+      },
+      "title": {
+        "type": ["string", "null"],
+        "title": "Job title",
+        "description": "Job title.",
+        "example": "Python Engineer"
+      },
+      "keywords": {
+        "type": ["array", "null"],
+        "title": "Skills",
+        "description": "Skill keywords listed on the job.",
+        "example": ["API", "FastAPI", "Python", "REST"]
+      },
+      "locations": {
+        "type": ["array", "null"],
+        "title": "Locations",
+        "description": "Job locations (cities, or Work From Home).",
+        "example": ["Bangalore", "Hyderabad"]
+      },
+      "jobUrl": {
+        "type": ["string", "null"],
+        "title": "Job",
+        "description": "Public job page on instahyre.com.",
+        "example": "https://www.instahyre.com/job-439850-python-engineer-at-nineleaps-2-bangalore/"
+      },
+      "employerId": {
+        "type": ["string", "null"],
+        "title": "Employer ID",
+        "description": "Instahyre employer ID.",
+        "example": "5003"
+      },
+      "employerName": {
+        "type": ["string", "null"],
+        "title": "Employer",
+        "description": "Company name.",
+        "example": "Nineleaps"
+      },
+      "employerTagline": {
+        "type": ["string", "null"],
+        "title": "Tagline",
+        "description": "Company tagline.",
+        "example": "We build high performance solutions"
+      },
+      "employerFoundedYear": {
+        "type": ["number", "null"],
+        "title": "Founded",
+        "description": "Year the company was founded.",
+        "example": 2014
+      },
+      "employerHeadcount": {
+        "type": ["number", "null"],
+        "title": "Headcount",
+        "description": "Company size bucket as Instahyre lists it (lower bound of the employee range, e.g. 200 = 200+).",
+        "example": 200
+      },
+      "employerLogoUrl": {
+        "type": ["string", "null"],
+        "title": "Logo",
+        "description": "Company logo URL.",
+        "example": "https://media.instahyre.com/images/profile/base/employer/5003/dcac758458/nineleaps.webp"
+      },
+      "changeType": {
+        "type": ["string", "null"],
+        "title": "Change",
+        "description": "Monitor mode only: new, updated or removed since the previous run; null otherwise.",
+        "example": "new"
+      },
+      "scrapedAt": {
+        "type": ["string", "null"],
+        "title": "Scraped at",
+        "description": "When the job was scraped (ISO 8601 UTC).",
+        "example": "2026-10-16T00:00:00.000Z"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Jobs",
+      "transformation": {
+        "fields": [
+          "title",
+          "employerName",
+          "locations",
+          "keywords",
+          "employerHeadcount",
+          "employerFoundedYear",
+          "jobUrl",
+          "changeType",
+          "scrapedAt"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "title": { "label": "Job title", "format": "text" },
+          "employerName": { "label": "Employer", "format": "text" },
+          "locations": { "label": "Locations", "format": "array" },
+          "keywords": { "label": "Skills", "format": "array" },
+          "employerHeadcount": { "label": "Headcount", "format": "number" },
+          "employerFoundedYear": { "label": "Founded", "format": "number" },
+          "jobUrl": { "label": "Job", "format": "link" },
+          "changeType": { "label": "Change", "format": "text" },
+          "scrapedAt": { "label": "Scraped at", "format": "date" }
+        }
+      }
+    }
+  }
+}

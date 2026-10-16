@@ -1,0 +1,78 @@
+{
+  "title": "Instahyre Jobs Scraper input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "skills": {
+      "title": "Skills",
+      "type": "array",
+      "description": "Skills or technologies, e.g. <code>Python</code>, <code>Java</code>, <code>React</code>, <code>AWS</code>. A job matches if it lists any of them. Leave empty to list all jobs.",
+      "editor": "stringList",
+      "prefill": ["Python"],
+      "sectionCaption": "What to search"
+    },
+    "locations": {
+      "title": "Locations",
+      "type": "array",
+      "description": "Optional cities, e.g. <code>Bangalore</code>, <code>Pune</code>, <code>Hyderabad</code>, <code>Gurgaon</code>, <code>Mumbai</code>, or <code>Work From Home</code> (or <code>Remote</code>). A job matches if it lists any of them. Leave empty for all of India.",
+      "editor": "stringList"
+    },
+    "years": {
+      "title": "Years of experience",
+      "type": "integer",
+      "description": "Optional: only jobs open to candidates with this many years of experience. <code>0</code> = freshers.",
+      "editor": "number",
+      "minimum": 0,
+      "maximum": 40
+    },
+    "jobFunctions": {
+      "title": "Job functions",
+      "type": "array",
+      "description": "Optional Instahyre job functions (names as on instahyre.com), e.g. <code>Backend Development</code>, <code>Full-Stack Development</code>, <code>Data Science / Machine Learning</code>, <code>DevOps / Cloud</code>, <code>Frontend Development</code>, <code>Mobile Development</code>, <code>Product Management</code>. A job matches if it is in any of them.",
+      "editor": "stringList"
+    },
+    "companySize": {
+      "title": "Company size",
+      "type": "string",
+      "description": "Optional employer size filter, as Instahyre defines it.",
+      "editor": "select",
+      "enum": ["any", "small", "medium", "large"],
+      "enumTitles": ["Any", "Small", "Medium", "Large"],
+      "default": "any"
+    },
+    "jobType": {
+      "title": "Job type",
+      "type": "string",
+      "description": "Full-time jobs, internships, or both.",
+      "editor": "select",
+      "enum": ["any", "full-time", "internship"],
+      "enumTitles": ["Any", "Full-time", "Internship"],
+      "default": "any"
+    },
+    "maxItems": {
+      "title": "Max jobs",
+      "type": "integer",
+      "description": "Stop after this many jobs (in monitor mode: new, updated and removed jobs). Each job is billed as one event.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 10000,
+      "default": 20,
+      "prefill": 20,
+      "sectionCaption": "Limits"
+    },
+    "monitorMode": {
+      "title": "Monitor mode (new / updated / removed)",
+      "type": "boolean",
+      "description": "Flag each job with <code>changeType</code> <code>new</code>, <code>updated</code> or <code>removed</code> since the previous run with the same filters; unchanged jobs are skipped (not billed). Schedule the actor (e.g. daily) for change alerts: the first run is a baseline where every job is new. State is kept in the key-value store \"instahyre-jobs-state\" in your account.",
+      "default": false,
+      "sectionCaption": "Monitoring"
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Optional Apify Proxy. Not needed normally: the Instahyre API answers datacenter IPs directly. If set, the actor switches to a new IP whenever a request is blocked or rate-limited.",
+      "editor": "proxy",
+      "sectionCaption": "Advanced"
+    }
+  }
+}

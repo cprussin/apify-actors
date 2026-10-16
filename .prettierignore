@@ -14,5 +14,6 @@ actors/hirist-iimjobs-jobs/test/fixtures
 actors/ycombinator-companies/test/fixtures
 actors/app-store-apps/test/fixtures
 actors/soundcloud-metadata/test/fixtures
+actors/instahyre-jobs/test/fixtures
 apps/*/build
 .claude/worktrees

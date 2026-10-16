@@ -1,0 +1,18 @@
+{
+  "actorSpecification": 1,
+  "name": "instahyre-jobs",
+  "title": "Instahyre Jobs Scraper: India Tech Jobs & Employers",
+  "description": "Scrape Instahyre jobs by skill, city, experience, job function, company size and job type: title, skills, locations and job URL, plus employer name, tagline, founded year and headcount. Monitor mode flags new, updated and removed jobs. No login. $1.50 per 1,000 jobs.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "defaultMemoryMbytes": 512,
+  "maxMemoryMbytes": 1024,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}
