@@ -1,0 +1,7 @@
+{
+  "success": false,
+  "error": {
+    "errorMsg": "zzqxv-jobs page config not found",
+    "errorCode": "jobs_page_config_not_found"
+  }
+}

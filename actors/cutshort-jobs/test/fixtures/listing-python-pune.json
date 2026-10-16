@@ -1,0 +1,481 @@
+{
+  "success": true,
+  "data": {
+    "pageContext": { "optimizeForRole": "candidate" },
+    "pageData": {
+      "jobs": [
+        {
+          "_id": "6ad21e78469e5da3678f1fbc",
+          "publicUrl": "https://cutshort.io/job/Metadata-Engineer-Pune-VY-SYSTEMS-PRIVATE-LIMITED-klKtwgZO",
+          "headline": "Metadata Engineer",
+          "hiringForClient": false,
+          "allSkills": [
+            "Metadata modeling",
+            "Data engineering",
+            "Python",
+            "PySpark"
+          ],
+          "allSkillsObj": {
+            "03703": "Metadata modeling",
+            "01712": "Data engineering",
+            "00360": "Python",
+            "06695": "PySpark"
+          },
+          "salaryRange": {
+            "currency": "INR",
+            "min": 0,
+            "max": 3200000,
+            "userMin": 0,
+            "userMax": 3200000,
+            "userMinVanity": 700000,
+            "userMaxVanity": 3200000,
+            "minVanity": 700000,
+            "maxVanity": 3200000
+          },
+          "locations": ["Pune"],
+          "companyDetails": {
+            "_id": "676cda781975060026864b32",
+            "name": "VY SYSTEMS PRIVATE LIMITED",
+            "logo": "https://cdnv2.cutshort.io/company-static/676cda781975060026864b32/user_uploaded_data/logos/company_logo.png",
+            "ogImage": "https://cdn.cutshort.io/public/socialshare-ogimage/id676cda791975060026864b33time1735187065463-og.jpg",
+            "founded": 2000,
+            "type": "Services",
+            "size": "100-1000",
+            "stage": "Profitable",
+            "coverPictureURL": "https://cdn.cutshort.io/public/images/unauth_bgs/startups.jpg",
+            "alias": "vy-systems-private-limited-16-e43Khktp",
+            "hiringForClient": false,
+            "followersCount": 2899,
+            "sectionsEnabled": {
+              "videoUrl": false,
+              "photos": false,
+              "techStack": true,
+              "productShowcase": false,
+              "companyFAQs": false,
+              "highlightTeamMembers": false
+            },
+            "funding": "3",
+            "newSize": "service_3",
+            "links": {
+              "website": "https://vysystems.com",
+              "instagram": "https://instagram.com/vysystemsinc",
+              "facebook": "https://facebook.com/vysystems",
+              "twitter": "https://twitter.com/vysystems1",
+              "team": "https://vysystems.com/leadership-team",
+              "linkedin": "https://linkedin.com/company/vysystems",
+              "articles": []
+            }
+          },
+          "expRange": {
+            "min": 6,
+            "maxInternal": 17,
+            "max": 17,
+            "minVanity": 6,
+            "maxVanity": 17
+          },
+          "sanitizedComment": "<p>Job Description – Data / Metadata Engineer</p><p>Position</p><p><strong>Data / Metadata Engineer</strong></p><p>Location</p><p><strong>Pune</strong></p><p>Experience</p><ul><li><strong>6–9 Years:</strong> Up to <strong>28 LPA</strong></li><li><strong>10–17 Years:</strong> Up to <strong>32 LPA</strong></li></ul><p>Notice Period</p><p><strong>Immediate to 15 Days Joiners Preferred</strong></p><p>Role Overview</p><p>We are looking for an experienced <strong>Data / Metadata Engineer</strong> with strong expertise in <strong>Data Engineering, Metadata Management, Data Modeling, Cloud technologies, Python/PySpark, and ETL/Data Pipelines</strong>.</p><p>The ideal candidate should have hands-on experience designing and developing data solutions, working with metadata and data models, and building scalable data pipelines on cloud platforms.</p><p>Mandatory Skills</p><ul><li>Strong experience in <strong>Data Engineering</strong></li><li>Hands-on experience in <strong>Metadata Management / Metadata Engineering</strong></li><li>Strong understanding of <strong>Data Modeling</strong></li><li>Experience with <strong>DDL and ER/Data Modeling</strong></li><li>Experience with <strong>Cloud technologies – Any Cloud Platform</strong></li><li>Strong programming experience in <strong>Python or PySpark</strong></li><li>Experience with <strong>ETL processes and Data Pipelines</strong></li><li>Good understanding of data architecture and data integration concepts</li></ul><p>Key Responsibilities</p><ul><li>Design, develop, and maintain scalable <strong>data engineering solutions</strong>.</li><li>Develop and manage <strong>data pipelines and ETL workflows</strong>.</li><li>Work with <strong>metadata and data cataloging concepts</strong>.</li><li>Create and maintain <strong>data models, DDLs, ER diagrams, and database structures</strong>.</li><li>Develop data processing solutions using <strong>Python or PySpark</strong>.</li><li>Work with cloud-based data platforms and services.</li><li>Collaborate with Data Architects, Data Engineers, Developers, and Business teams.</li><li>Ensure data quality, consistency, availability, and reliability across data pipelines.</li><li>Troubleshoot and optimize existing data pipelines and data processes.</li><li>Follow best practices for data engineering, modeling, and cloud-based implementations.</li></ul><p>Candidate Profile</p><ul><li>Strong experience in <strong>Data Engineering + Metadata + Data Modeling</strong>.</li><li>Good hands-on experience with <strong>Python/PySpark and ETL/Data Pipelines</strong>.</li><li>Experience working with <strong>any major cloud platform</strong>.</li><li>Strong understanding of databases, data structures, and data modeling concepts.</li><li>Candidates who can join <strong>immediately or within 15 days</strong> are preferred.</li></ul><p>Job Details</p><p><strong>Role:</strong> Data / Metadata Engineer</p><p><strong>Location:</strong> Pune</p><p><strong>Experience:</strong> 6–17 Years</p><p><strong>Budget:</strong> 28 LPA (6–9 Yrs) / 32 LPA (10–17 Yrs)</p><p><strong>Notice Period:</strong> Immediate to 15 Days</p>",
+          "roleTypes": ["full_time"],
+          "remoteType": "remote_not_okay",
+          "companyId": {
+            "alias": "vy-systems-private-limited-16-e43Khktp",
+            "name": "VY SYSTEMS PRIVATE LIMITED",
+            "_id": "676cda781975060026864b32"
+          },
+          "authApplyUrl": "https://cutshort.io/profile/view/j/6ad21e78469e5da3678f1fbc",
+          "isJobSaved": false,
+          "jobFactSummary": {
+            "roleTitle": "Metadata Engineer",
+            "companyName": "VY SYSTEMS PRIVATE LIMITED",
+            "locations": "Pune",
+            "companyStage": "Profitable",
+            "experience": "6 - 17 years",
+            "salary": "₹7L - ₹32L / yr",
+            "postedDate": "2026-10-16T12:54:16.418Z",
+            "postedDateLabel": "Posted 16 Oct 2026"
+          },
+          "salaryRangeText": "₹7L - ₹32L / yr",
+          "locationsText": "Pune"
+        },
+        {
+          "_id": "6acf581f70f4d0a2a9593dab",
+          "publicUrl": "https://cutshort.io/job/Data-Engineer-Gurugram-Pune-Bangarmau-Bean-HR-Consulting-iU73PArL",
+          "headline": "Data Engineer",
+          "hiringForClient": true,
+          "allSkills": [
+            "Windows Azure",
+            "databricks",
+            "SQL",
+            "ETL",
+            "Python",
+            "Snowflake",
+            "Microsoft Windows Azure"
+          ],
+          "allSkillsObj": {
+            "00486": "Windows Azure",
+            "06740": "databricks",
+            "06684": "SQL",
+            "00158": "ETL",
+            "00360": "Python",
+            "Snowflake": "Snowflake",
+            "03795": "Microsoft Windows Azure"
+          },
+          "salaryRange": {
+            "currency": "INR",
+            "min": 2250000,
+            "max": 5000000,
+            "userMin": 2250000,
+            "userMax": 5000000,
+            "userMinVanity": 4500000,
+            "userMaxVanity": 5000000,
+            "minVanity": 4500000,
+            "maxVanity": 5000000
+          },
+          "locations": ["Gurugram", "Pune", "Bangarmau"],
+          "companyDetails": {
+            "name": "Management and Analytics",
+            "logo": "https://cdn.cutshort.io/public/images/default_company_picture.jpg",
+            "ogImage": "https://cutshort-data.s3.ap-southeast-1.amazonaws.com/cloudfront/public/images/LinkedInShareFallBack.jpg",
+            "alias": null,
+            "hiringForClient": true
+          },
+          "expRange": {
+            "min": 8,
+            "maxInternal": 15,
+            "max": 15,
+            "minVanity": 8,
+            "maxVanity": 15
+          },
+          "sanitizedComment": "<p>8-12 years experience on Data Engineering role working with Databricks &amp; Azure Cloud technologies.</p><p>• Bachelor’s degree in computer science, Information Technology, or related field.</p><p>• Strong proficiency in PySpark, Python, SQL.</p><p>• Strong experience in data modeling, ETL/ELT pipeline development, and automation • Hands-on experience with performance tuning of data pipelines and workflow</p><p>• Proficient in working on Azure cloud components Azure Data Factory, Azure DataBricks, Azure Data Lake etc.</p><p>• Experience with data modeling, ETL processes, Delta Lake and data warehousing.</p><p>• Experience on Delta Live Tables, Autoloader &amp; Unity Catalog.</p><p><br /></p><p>Preferred - Knowledge of the insurance industry and its data requirements.</p><p>• Strong analytical skills with the ability to collect, organize, analyze, and disseminate significant amounts of information with attention to detail and accuracy.</p><p>• Excellent communication and problem-solving skills to work effectively with diverse teams</p><p>• Excellent problem-solving skills and ability to work under tight deadlines. </p>",
+          "roleTypes": ["full_time"],
+          "remoteType": "remote_not_okay",
+          "companyId": {
+            "alias": "bean-hr-consulting-20-TlCt39Td",
+            "name": "Bean HR Consulting",
+            "_id": "677bd5b654f5470027127215"
+          },
+          "authApplyUrl": "https://cutshort.io/profile/view/j/6acf581f70f4d0a2a9593dab",
+          "isJobSaved": false,
+          "jobFactSummary": {
+            "roleTitle": "Data Engineer",
+            "companyName": "Management and Analytics",
+            "locations": "Gurugram, Pune, Bangarmau",
+            "experience": "8 - 15 years",
+            "salary": "₹45L - ₹50L / yr",
+            "postedDate": "2026-10-14T10:23:27.170Z",
+            "postedDateLabel": "Posted 14 Oct 2026"
+          },
+          "salaryRangeText": "₹45L - ₹50L / yr",
+          "locationsText": "Gurugram, Pune, Bangarmau"
+        },
+        {
+          "_id": "6aa11e66b4983ab814dde459",
+          "publicUrl": "https://cutshort.io/job/SDE-3-Infrastructure-Platform-Engineer-Pune-NeoGenCode-Technologies-Pvt-Ltd-Kq5MsoWa",
+          "headline": "SDE 3 – Infrastructure Platform Engineer",
+          "hiringForClient": false,
+          "allSkills": [
+            "Infrastructure Platform Engineer",
+            "Amazon Web Services (AWS)",
+            "Terraform",
+            "AWS CloudFormation",
+            "Kubernetes",
+            "Docker",
+            "CI/CD",
+            "Infrastructure management",
+            "Python",
+            "Java",
+            "Ruby",
+            "Go Programming (Golang)",
+            "Storage & Networking",
+            "Cloud Security",
+            "Distributed Systems",
+            "Scalability",
+            "Reliability engineering",
+            "Automation"
+          ],
+          "allSkillsObj": {
+            "Infrastructure Platform Engineer": "Infrastructure Platform Engineer",
+            "00054": "Amazon Web Services (AWS)",
+            "00628": "Terraform",
+            "00629": "AWS CloudFormation",
+            "00587": "Kubernetes",
+            "00124": "Docker",
+            "06698": "CI/CD",
+            "03043": "Infrastructure management",
+            "00360": "Python",
+            "00236": "Java",
+            "00384": "Ruby",
+            "00186": "Go Programming (Golang)",
+            "00430": "Storage & Networking",
+            "Cloud Security": "Cloud Security",
+            "00135": "Distributed Systems",
+            "05424": "Scalability",
+            "04940": "Reliability engineering",
+            "06509": "Automation"
+          },
+          "salaryRange": {
+            "currency": "INR",
+            "min": 1000000,
+            "max": 3200000,
+            "userMin": 1000000,
+            "userMax": 3200000,
+            "userMinVanity": 2000000,
+            "userMaxVanity": 3200000,
+            "minVanity": 2000000,
+            "maxVanity": 3200000
+          },
+          "locations": ["Pune"],
+          "companyDetails": {
+            "_id": "65c5cfd00443200029313642",
+            "name": "NeoGenCode Technologies Pvt Ltd",
+            "logo": "https://cdnv2.cutshort.io/company-static/65c5cfd00443200029313642/user_uploaded_data/logos/NGC_Logo_uXs62gL8.png",
+            "ogImage": "https://cdn.cutshort.io/public/socialshare-ogimage/id67722faf07a7aa002745098ftime1735536638816-og.jpg",
+            "founded": 2023,
+            "type": "Services",
+            "size": "20-100",
+            "stage": "Raised funding",
+            "coverPictureURL": "https://cdn.cutshort.io/public/images/unauth_bgs/startups.jpg",
+            "alias": "neogencode-technologies-pvt-ltd-98-tttcGry6",
+            "hiringForClient": false,
+            "followersCount": 46539,
+            "sectionsEnabled": {
+              "techStack": false,
+              "highlightTeamMembers": false,
+              "companyFAQs": true,
+              "photos": false,
+              "productShowcase": false,
+              "videoUrl": false
+            },
+            "funding": "2",
+            "newSize": "service_2",
+            "links": {
+              "website": "https://neogencode.com",
+              "blog": "https://neogencode.com/blog",
+              "instagram": "https://instagram.com/neogencode",
+              "facebook": "https://facebook.com/profile.php",
+              "linkedin": "https://linkedin.com/company/neogencode-technologies-pvt-ltd",
+              "articles": []
+            }
+          },
+          "expRange": {
+            "min": 5,
+            "maxInternal": 10,
+            "max": 10,
+            "minVanity": 5,
+            "maxVanity": 10
+          },
+          "sanitizedComment": "<p><strong><em>Job Title :</em></strong><em> SDE 3 – Infrastructure Platform Engineer</em></p><p><strong><em>Experience :</em></strong><em> 5.5 to 8.5 Years</em></p><p><strong><em>Number of Positions :</em></strong><em> 2</em></p><p><strong><em>Employment Type :</em></strong><em> C2H (Contract to Hire)</em></p><p><strong><em>Work Mode :</em></strong><em> Remote during contractual period → 5 Days WFO after conversion</em></p><p><strong><em>Contract Duration :</em></strong><em> 3 Months</em></p><p><strong><em>Post-Conversion Location :</em></strong><em> Pune</em></p><p><strong><em>Notice Period :</em></strong><em> Immediate Joiners / Serving Notice Period / Up to 15 Days preferred</em></p><p><em>(Candidates officially serving a 30-day notice period may also be considered if they are on the bench and have a negotiable joining date)</em></p><p><br /></p><p><strong><em>Role Overview :</em></strong></p><p><em>We are looking for an experienced </em><strong><em>SDE 3 – Infrastructure Platform Engineer </em></strong><em>to design, build, and operate scalable, secure, and highly reliable cloud infrastructure and internal platform capabilities.</em></p><p><br /></p><p><em>The ideal candidate will have strong hands-on experience in </em><strong><em>Cloud Infrastructure, Infrastructure as Code (IaC), CI/CD, Docker, Kubernetes, automation, observability, networking, and distributed systems</em></strong><em>.</em></p><p><br /></p><p><strong><em>Mandatory Skills :</em></strong><em> AWS / Azure / GCP, Terraform / CloudFormation, Kubernetes, Docker, CI/CD, Platform / Infrastructure Engineering, Python / Go / Java / Ruby, Networking, Cloud Security, Distributed Systems, Scalability &amp; Reliability, Strong Coding &amp; Automation.</em></p><p><br /></p><p><strong><em>Key Responsibilities :</em></strong></p><ul><li><em>Design and maintain scalable, highly available infrastructure on </em><strong><em>AWS / GCP / Azure</em></strong><em>.</em></li><li><em>Build and manage </em><strong><em>Infrastructure as Code (IaC)</em></strong><em> using </em><strong><em>Terraform, CloudFormation</em></strong><em>, or similar tools.</em></li><li><em>Develop automation for infrastructure provisioning, deployments, monitoring, and operations.</em></li><li><em>Manage and optimize </em><strong><em>Docker and Kubernetes</em></strong><em> workloads.</em></li><li><em>Build internal platform tools to improve </em><strong><em>developer productivity and engineering efficiency</em></strong><em>.</em></li><li><em>Implement monitoring, logging, alerting, and observability solutions.</em></li><li><em>Participate in incident response, </em><strong><em>RCA, postmortems</em></strong><em>, and reliability improvements.</em></li><li><em>Design and improve </em><strong><em>CI/CD pipelines</em></strong><em> and deployment automation.</em></li><li><em>Contribute to system design, architecture discussions, scalability, security, and cost optimization.</em></li><li><em>Collaborate with application, data, and product engineering teams.</em></li></ul><p><br /></p><p><strong><em>Required Skills :</em></strong></p><ul><li><strong><em>5.5 to 8.5 years</em></strong><em> of experience in </em><strong><em>Infrastructure / Platform Engineering</em></strong><em> or similar roles.</em></li><li><em>Strong hands-on experience with </em><strong><em>AWS, GCP, or Azure</em></strong><em>.</em></li><li><em>Strong expertise in </em><strong><em>Terraform / CloudFormation</em></strong><em>.</em></li><li><em>Experience with </em><strong><em>CI/CD, Docker, and Kubernetes</em></strong><em>.</em></li><li><em>Strong programming skills in at least one of:</em></li><li><strong><em>Python, Go, Java, or Ruby</em></strong><em>.</em></li><li><em>Good understanding of </em><strong><em>networking, cloud security, distributed systems, scalability, and reliability</em></strong><em>.</em></li><li><em>Experience working with production infrastructure and highly available systems.</em></li><li><em>Strong troubleshooting and problem-solving skills.</em></li></ul><p><br /></p><p><strong><em>Nice to Have :</em></strong></p><ul><li><em>Experience with </em><strong><em>SRE practices</em></strong><em> and production on-call ownership.</em></li><li><em>Experience in </em><strong><em>fintech, payments, banking, or transaction-heavy systems</em></strong><em>.</em></li><li><em>Knowledge of </em><strong><em>cloud security, compliance, or FinOps/cost optimization</em></strong><em>.</em></li><li><em>Experience building internal developer platforms or productivity tools.</em></li><li><em>Previous </em><strong><em>product company experience</em></strong><em>.</em></li></ul><p><br /></p><p><strong><em>Interview Process :</em></strong></p><p><strong><em>Round 1 :</em></strong><em> Take-Home Coding Assignment – Submit within 48 hours</em></p><p><strong><em>Round 2 :</em></strong><em> Coding Assignment Discussion – 1 Hour</em></p><p><strong><em>Round 3 :</em></strong><em> Technical Managerial Round – 30 Minutes</em></p><p><br /></p><p><strong><em>Note :</em></strong><em> The take-home coding assignment is mandatory. Candidates should be comfortable completing and submitting the assignment within </em><strong><em>48 hours</em></strong><em> before proceeding.</em></p><p><br /></p><p><strong><em>Ideal Candidate :</em></strong></p><p><em>Strong </em><strong><em>Platform / Infrastructure Engineer</em></strong><em> with hands-on experience in :</em></p><p><strong><em>Cloud + Terraform / CloudFormation + Kubernetes + CI/CD + Programming + SRE / Production Operations</em></strong></p><p><br /></p><p><strong><em>Pure DevOps profiles without strong coding and platform engineering experience are not preferred.</em></strong></p>",
+          "roleTypes": ["full_time"],
+          "remoteType": "remote_okay",
+          "companyId": {
+            "alias": "neogencode-technologies-pvt-ltd-98-tttcGry6",
+            "name": "NeoGenCode Technologies Pvt Ltd",
+            "_id": "65c5cfd00443200029313642"
+          },
+          "authApplyUrl": "https://cutshort.io/profile/view/j/6aa11e66b4983ab814dde459",
+          "isJobSaved": false,
+          "jobFactSummary": {
+            "roleTitle": "SDE 3 – Infrastructure Platform Engineer",
+            "companyName": "NeoGenCode Technologies Pvt Ltd",
+            "locations": "Remote, Pune",
+            "companyStage": "Raised funding",
+            "remotePolicy": "Remote friendly",
+            "experience": "5 - 10 years",
+            "salary": "₹20L - ₹32L / yr",
+            "postedDate": "2026-09-09T08:52:54.016Z",
+            "postedDateLabel": "Posted 9 Sep 2026"
+          },
+          "salaryRangeText": "₹20L - ₹32L / yr",
+          "locationsText": "Remote, Pune"
+        },
+        {
+          "_id": "6ad21e78469e5da3678f1fbc",
+          "publicUrl": "https://cutshort.io/job/Metadata-Engineer-Pune-VY-SYSTEMS-PRIVATE-LIMITED-klKtwgZO",
+          "headline": "Metadata Engineer",
+          "hiringForClient": false,
+          "allSkills": [
+            "Metadata modeling",
+            "Data engineering",
+            "Python",
+            "PySpark"
+          ],
+          "allSkillsObj": {
+            "03703": "Metadata modeling",
+            "01712": "Data engineering",
+            "00360": "Python",
+            "06695": "PySpark"
+          },
+          "salaryRange": {
+            "currency": "INR",
+            "min": 0,
+            "max": 3200000,
+            "userMin": 0,
+            "userMax": 3200000,
+            "userMinVanity": 700000,
+            "userMaxVanity": 3200000,
+            "minVanity": 700000,
+            "maxVanity": 3200000
+          },
+          "locations": ["Pune"],
+          "companyDetails": {
+            "_id": "676cda781975060026864b32",
+            "name": "VY SYSTEMS PRIVATE LIMITED",
+            "logo": "https://cdnv2.cutshort.io/company-static/676cda781975060026864b32/user_uploaded_data/logos/company_logo.png",
+            "ogImage": "https://cdn.cutshort.io/public/socialshare-ogimage/id676cda791975060026864b33time1735187065463-og.jpg",
+            "founded": 2000,
+            "type": "Services",
+            "size": "100-1000",
+            "stage": "Profitable",
+            "coverPictureURL": "https://cdn.cutshort.io/public/images/unauth_bgs/startups.jpg",
+            "alias": "vy-systems-private-limited-16-e43Khktp",
+            "hiringForClient": false,
+            "followersCount": 2899,
+            "sectionsEnabled": {
+              "videoUrl": false,
+              "photos": false,
+              "techStack": true,
+              "productShowcase": false,
+              "companyFAQs": false,
+              "highlightTeamMembers": false
+            },
+            "funding": "3",
+            "newSize": "service_3",
+            "links": {
+              "website": "https://vysystems.com",
+              "instagram": "https://instagram.com/vysystemsinc",
+              "facebook": "https://facebook.com/vysystems",
+              "twitter": "https://twitter.com/vysystems1",
+              "team": "https://vysystems.com/leadership-team",
+              "linkedin": "https://linkedin.com/company/vysystems",
+              "articles": []
+            }
+          },
+          "expRange": {
+            "min": 6,
+            "maxInternal": 17,
+            "max": 17,
+            "minVanity": 6,
+            "maxVanity": 17
+          },
+          "sanitizedComment": "<p>Job Description – Data / Metadata Engineer</p><p>Position</p><p><strong>Data / Metadata Engineer</strong></p><p>Location</p><p><strong>Pune</strong></p><p>Experience</p><ul><li><strong>6–9 Years:</strong> Up to <strong>28 LPA</strong></li><li><strong>10–17 Years:</strong> Up to <strong>32 LPA</strong></li></ul><p>Notice Period</p><p><strong>Immediate to 15 Days Joiners Preferred</strong></p><p>Role Overview</p><p>We are looking for an experienced <strong>Data / Metadata Engineer</strong> with strong expertise in <strong>Data Engineering, Metadata Management, Data Modeling, Cloud technologies, Python/PySpark, and ETL/Data Pipelines</strong>.</p><p>The ideal candidate should have hands-on experience designing and developing data solutions, working with metadata and data models, and building scalable data pipelines on cloud platforms.</p><p>Mandatory Skills</p><ul><li>Strong experience in <strong>Data Engineering</strong></li><li>Hands-on experience in <strong>Metadata Management / Metadata Engineering</strong></li><li>Strong understanding of <strong>Data Modeling</strong></li><li>Experience with <strong>DDL and ER/Data Modeling</strong></li><li>Experience with <strong>Cloud technologies – Any Cloud Platform</strong></li><li>Strong programming experience in <strong>Python or PySpark</strong></li><li>Experience with <strong>ETL processes and Data Pipelines</strong></li><li>Good understanding of data architecture and data integration concepts</li></ul><p>Key Responsibilities</p><ul><li>Design, develop, and maintain scalable <strong>data engineering solutions</strong>.</li><li>Develop and manage <strong>data pipelines and ETL workflows</strong>.</li><li>Work with <strong>metadata and data cataloging concepts</strong>.</li><li>Create and maintain <strong>data models, DDLs, ER diagrams, and database structures</strong>.</li><li>Develop data processing solutions using <strong>Python or PySpark</strong>.</li><li>Work with cloud-based data platforms and services.</li><li>Collaborate with Data Architects, Data Engineers, Developers, and Business teams.</li><li>Ensure data quality, consistency, availability, and reliability across data pipelines.</li><li>Troubleshoot and optimize existing data pipelines and data processes.</li><li>Follow best practices for data engineering, modeling, and cloud-based implementations.</li></ul><p>Candidate Profile</p><ul><li>Strong experience in <strong>Data Engineering + Metadata + Data Modeling</strong>.</li><li>Good hands-on experience with <strong>Python/PySpark and ETL/Data Pipelines</strong>.</li><li>Experience working with <strong>any major cloud platform</strong>.</li><li>Strong understanding of databases, data structures, and data modeling concepts.</li><li>Candidates who can join <strong>immediately or within 15 days</strong> are preferred.</li></ul><p>Job Details</p><p><strong>Role:</strong> Data / Metadata Engineer</p><p><strong>Location:</strong> Pune</p><p><strong>Experience:</strong> 6–17 Years</p><p><strong>Budget:</strong> 28 LPA (6–9 Yrs) / 32 LPA (10–17 Yrs)</p><p><strong>Notice Period:</strong> Immediate to 15 Days</p>",
+          "roleTypes": ["full_time"],
+          "remoteType": "remote_not_okay",
+          "companyId": {
+            "alias": "vy-systems-private-limited-16-e43Khktp",
+            "name": "VY SYSTEMS PRIVATE LIMITED",
+            "_id": "676cda781975060026864b32"
+          },
+          "authApplyUrl": "https://cutshort.io/profile/view/j/6ad21e78469e5da3678f1fbc",
+          "isJobSaved": false,
+          "jobFactSummary": {
+            "roleTitle": "Metadata Engineer",
+            "companyName": "VY SYSTEMS PRIVATE LIMITED",
+            "locations": "Pune",
+            "companyStage": "Profitable",
+            "experience": "6 - 17 years",
+            "salary": "₹7L - ₹32L / yr",
+            "postedDate": "2026-10-16T12:54:16.418Z",
+            "postedDateLabel": "Posted 16 Oct 2026"
+          },
+          "salaryRangeText": "₹7L - ₹32L / yr",
+          "locationsText": "Pune"
+        },
+        {
+          "_id": "6ad21e78469e5da3678f1fbc",
+          "publicUrl": "https://cutshort.io/job/Metadata-Engineer-Pune-VY-SYSTEMS-PRIVATE-LIMITED-klKtwgZO",
+          "headline": "Metadata Engineer",
+          "hiringForClient": false,
+          "allSkills": [
+            "Metadata modeling",
+            "Data engineering",
+            "Python",
+            "PySpark"
+          ],
+          "allSkillsObj": {
+            "03703": "Metadata modeling",
+            "01712": "Data engineering",
+            "00360": "Python",
+            "06695": "PySpark"
+          },
+          "salaryRange": {
+            "currency": "INR",
+            "min": 0,
+            "max": 3200000,
+            "userMin": 0,
+            "userMax": 3200000,
+            "userMinVanity": 700000,
+            "userMaxVanity": 3200000,
+            "minVanity": 700000,
+            "maxVanity": 3200000
+          },
+          "locations": ["Pune"],
+          "companyDetails": {
+            "_id": "676cda781975060026864b32",
+            "name": "VY SYSTEMS PRIVATE LIMITED",
+            "logo": "https://cdnv2.cutshort.io/company-static/676cda781975060026864b32/user_uploaded_data/logos/company_logo.png",
+            "ogImage": "https://cdn.cutshort.io/public/socialshare-ogimage/id676cda791975060026864b33time1735187065463-og.jpg",
+            "founded": 2000,
+            "type": "Services",
+            "size": "100-1000",
+            "stage": "Profitable",
+            "coverPictureURL": "https://cdn.cutshort.io/public/images/unauth_bgs/startups.jpg",
+            "alias": "vy-systems-private-limited-16-e43Khktp",
+            "hiringForClient": false,
+            "followersCount": 2899,
+            "sectionsEnabled": {
+              "videoUrl": false,
+              "photos": false,
+              "techStack": true,
+              "productShowcase": false,
+              "companyFAQs": false,
+              "highlightTeamMembers": false
+            },
+            "funding": "3",
+            "newSize": "service_3",
+            "links": {
+              "website": "https://vysystems.com",
+              "instagram": "https://instagram.com/vysystemsinc",
+              "facebook": "https://facebook.com/vysystems",
+              "twitter": "https://twitter.com/vysystems1",
+              "team": "https://vysystems.com/leadership-team",
+              "linkedin": "https://linkedin.com/company/vysystems",
+              "articles": []
+            }
+          },
+          "expRange": {
+            "min": 6,
+            "maxInternal": 17,
+            "max": 17,
+            "minVanity": 6,
+            "maxVanity": 17
+          },
+          "sanitizedComment": "<p>Job Description – Data / Metadata Engineer</p><p>Position</p><p><strong>Data / Metadata Engineer</strong></p><p>Location</p><p><strong>Pune</strong></p><p>Experience</p><ul><li><strong>6–9 Years:</strong> Up to <strong>28 LPA</strong></li><li><strong>10–17 Years:</strong> Up to <strong>32 LPA</strong></li></ul><p>Notice Period</p><p><strong>Immediate to 15 Days Joiners Preferred</strong></p><p>Role Overview</p><p>We are looking for an experienced <strong>Data / Metadata Engineer</strong> with strong expertise in <strong>Data Engineering, Metadata Management, Data Modeling, Cloud technologies, Python/PySpark, and ETL/Data Pipelines</strong>.</p><p>The ideal candidate should have hands-on experience designing and developing data solutions, working with metadata and data models, and building scalable data pipelines on cloud platforms.</p><p>Mandatory Skills</p><ul><li>Strong experience in <strong>Data Engineering</strong></li><li>Hands-on experience in <strong>Metadata Management / Metadata Engineering</strong></li><li>Strong understanding of <strong>Data Modeling</strong></li><li>Experience with <strong>DDL and ER/Data Modeling</strong></li><li>Experience with <strong>Cloud technologies – Any Cloud Platform</strong></li><li>Strong programming experience in <strong>Python or PySpark</strong></li><li>Experience with <strong>ETL processes and Data Pipelines</strong></li><li>Good understanding of data architecture and data integration concepts</li></ul><p>Key Responsibilities</p><ul><li>Design, develop, and maintain scalable <strong>data engineering solutions</strong>.</li><li>Develop and manage <strong>data pipelines and ETL workflows</strong>.</li><li>Work with <strong>metadata and data cataloging concepts</strong>.</li><li>Create and maintain <strong>data models, DDLs, ER diagrams, and database structures</strong>.</li><li>Develop data processing solutions using <strong>Python or PySpark</strong>.</li><li>Work with cloud-based data platforms and services.</li><li>Collaborate with Data Architects, Data Engineers, Developers, and Business teams.</li><li>Ensure data quality, consistency, availability, and reliability across data pipelines.</li><li>Troubleshoot and optimize existing data pipelines and data processes.</li><li>Follow best practices for data engineering, modeling, and cloud-based implementations.</li></ul><p>Candidate Profile</p><ul><li>Strong experience in <strong>Data Engineering + Metadata + Data Modeling</strong>.</li><li>Good hands-on experience with <strong>Python/PySpark and ETL/Data Pipelines</strong>.</li><li>Experience working with <strong>any major cloud platform</strong>.</li><li>Strong understanding of databases, data structures, and data modeling concepts.</li><li>Candidates who can join <strong>immediately or within 15 days</strong> are preferred.</li></ul><p>Job Details</p><p><strong>Role:</strong> Data / Metadata Engineer</p><p><strong>Location:</strong> Pune</p><p><strong>Experience:</strong> 6–17 Years</p><p><strong>Budget:</strong> 28 LPA (6–9 Yrs) / 32 LPA (10–17 Yrs)</p><p><strong>Notice Period:</strong> Immediate to 15 Days</p>",
+          "roleTypes": ["full_time"],
+          "remoteType": "remote_not_okay",
+          "companyId": {
+            "alias": "vy-systems-private-limited-16-e43Khktp",
+            "name": "VY SYSTEMS PRIVATE LIMITED",
+            "_id": "676cda781975060026864b32"
+          },
+          "authApplyUrl": "https://cutshort.io/profile/view/j/6ad21e78469e5da3678f1fbc",
+          "isJobSaved": false,
+          "jobFactSummary": {
+            "roleTitle": "Metadata Engineer",
+            "companyName": "VY SYSTEMS PRIVATE LIMITED",
+            "locations": "Pune",
+            "companyStage": "Profitable",
+            "experience": "6 - 17 years",
+            "salary": "₹7L - ₹32L / yr",
+            "postedDate": "2026-10-16T12:54:16.418Z",
+            "postedDateLabel": "Posted 16 Oct 2026"
+          },
+          "salaryRangeText": "₹7L - ₹32L / yr",
+          "locationsText": "Pune"
+        }
+      ],
+      "title": "505+ Python Jobs in Pune | Python Job openings in Pune",
+      "subTitle": "Apply to 505+ Python Jobs in Pune on CutShort.io. Explore the latest Python Job opportunities across top companies like Google, Amazon & Adobe.",
+      "liveJobCount": 505
+    },
+    "meta": { "source": "live" }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "title": "Cutshort Jobs Scraper input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "skills": {
+      "title": "Skills or roles",
+      "type": "array",
+      "description": "Skills or roles, e.g. <code>python</code>, <code>reactjs</code>, <code>java</code>, <code>devops</code>, <code>product-manager</code>. Names like <code>React.js</code> or <code>Data Science</code> are converted automatically, or paste a listing URL or slug from cutshort.io/jobs (e.g. <code>machine-learning-ml-jobs</code>). Each skill is searched in every city below. Leave empty to export all jobs (jobs sitemap, with details).",
+      "editor": "stringList",
+      "prefill": ["python"],
+      "sectionCaption": "What to search"
+    },
+    "cities": {
+      "title": "Cities",
+      "type": "array",
+      "description": "Optional city filter, one per entry: <code>Bangalore</code>, <code>Mumbai</code>, <code>Pune</code>, <code>Hyderabad</code>, <code>Chennai</code>, <code>Delhi</code> (Delhi, NCR, Gurgaon and Noida), <code>Kolkata</code>, <code>Ahmedabad</code>, <code>Jaipur</code>, <code>Kochi</code>, <code>Indore</code>, <code>Chandigarh</code>, <code>Coimbatore</code>, <code>Bhubaneswar</code>, or <code>Remote</code>. Leave empty for all of India.",
+      "editor": "stringList",
+      "prefill": ["bangalore"]
+    },
+    "maxItems": {
+      "title": "Max jobs",
+      "type": "integer",
+      "description": "Stop after this many jobs in total, across all searches. In monitor mode it counts only new and updated jobs. Each job is billed as one event.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 10000,
+      "default": 20,
+      "prefill": 20,
+      "sectionCaption": "Limits"
+    },
+    "startPage": {
+      "title": "Start page",
+      "type": "integer",
+      "description": "First listing page to read per search (50 jobs per page, newest first). 1 = the newest jobs.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 200,
+      "default": 1
+    },
+    "maxPages": {
+      "title": "Max pages per search",
+      "type": "integer",
+      "description": "Listing pages to read per search (50 jobs each). 0 = all pages, up to Max jobs.",
+      "editor": "number",
+      "minimum": 0,
+      "maximum": 200,
+      "default": 0
+    },
+    "includeDetails": {
+      "title": "Include job details",
+      "type": "boolean",
+      "description": "Open each job page for the full description, valid-through date, employment type, category tags and postal code. Billed as an extra <code>job-detail</code> event per job. Every job always has a short <code>descriptionSnippet</code>.",
+      "editor": "checkbox",
+      "default": false
+    },
+    "monitorMode": {
+      "title": "Monitor mode (new, updated, removed)",
+      "type": "boolean",
+      "description": "Output only changes since the last run with the same skills and cities: <code>new</code> jobs, <code>updated</code> jobs (title, salary, experience, skills, locations or description changed) and <code>removed</code> jobs (no longer listed), in the <code>changeType</code> field. Unchanged jobs are skipped and not billed. The first run is a baseline that returns every job as <code>new</code>. State is kept in the key-value store \"cutshort-jobs-state\" in your account.",
+      "default": false,
+      "sectionCaption": "Monitoring"
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Optional Apify Proxy. Not needed normally: cutshort.io answers datacenter IPs directly. If set, the actor switches to a new IP whenever a request is blocked or rate-limited.",
+      "editor": "proxy",
+      "sectionCaption": "Advanced"
+    }
+  }
+}

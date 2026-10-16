@@ -1,0 +1,18 @@
+{
+  "job": {
+    "eventTitle": "Job",
+    "eventDescription": "One Cutshort job (or monitor-mode change) written to the dataset.",
+    "eventPriceUsd": 0.0015,
+    "isPrimaryEvent": true
+  },
+  "job-detail": {
+    "eventTitle": "Job details",
+    "eventDescription": "Job page fetched for full details (includeDetails, or all-jobs mode).",
+    "eventPriceUsd": 0.001
+  },
+  "apify-actor-start": {
+    "eventTitle": "Actor start",
+    "eventDescription": "Synthetic start event (covers the first 5 s of compute).",
+    "eventPriceUsd": 5e-5
+  }
+}

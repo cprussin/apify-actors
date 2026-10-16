@@ -1,0 +1,314 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "jobId": {
+        "type": ["string", "null"],
+        "title": "Job ID",
+        "description": "Cutshort short job ID (last part of the job URL).",
+        "example": "uhRqRgf1"
+      },
+      "internalId": {
+        "type": ["string", "null"],
+        "title": "Internal ID",
+        "description": "Cutshort internal job ID.",
+        "example": "6ad2060ef7ba8e021579552f"
+      },
+      "headline": {
+        "type": ["string", "null"],
+        "title": "Job title",
+        "description": "Job title (headline).",
+        "example": "GCP Data engineer"
+      },
+      "companyName": {
+        "type": ["string", "null"],
+        "title": "Company",
+        "description": "Hiring company as shown on the job; for agency jobs, the client as the agency describes it.",
+        "example": "VY SYSTEMS PRIVATE LIMITED"
+      },
+      "hiringForClient": {
+        "type": ["boolean", "null"],
+        "title": "Agency job",
+        "description": "Whether a recruiting agency posted the job for a client.",
+        "example": false
+      },
+      "recruiterName": {
+        "type": ["string", "null"],
+        "title": "Recruiter",
+        "description": "Recruiting agency, for agency jobs.",
+        "example": "Bean HR Consulting"
+      },
+      "companyLogoUrl": {
+        "type": ["string", "null"],
+        "title": "Logo",
+        "description": "Company logo URL.",
+        "example": "https://cdnv2.cutshort.io/company-static/676cda781975060026864b32/user_uploaded_data/logos/company_logo.png"
+      },
+      "companyUrl": {
+        "type": ["string", "null"],
+        "title": "Company page",
+        "description": "Company page on cutshort.io.",
+        "example": "https://cutshort.io/company/vy-systems-private-limited-16-e43Khktp"
+      },
+      "companyWebsite": {
+        "type": ["string", "null"],
+        "title": "Website",
+        "description": "Company website.",
+        "example": "https://vysystems.com"
+      },
+      "companyType": {
+        "type": ["string", "null"],
+        "title": "Company type",
+        "description": "Company type, e.g. Product or Services.",
+        "example": "Services"
+      },
+      "companySize": {
+        "type": ["string", "null"],
+        "title": "Company size",
+        "description": "Employee count range.",
+        "example": "100-1000"
+      },
+      "companyStage": {
+        "type": ["string", "null"],
+        "title": "Company stage",
+        "description": "Company stage, e.g. Profitable or Raised funding.",
+        "example": "Profitable"
+      },
+      "companyFounded": {
+        "type": ["number", "null"],
+        "title": "Founded",
+        "description": "Year the company was founded.",
+        "example": 2000
+      },
+      "locations": {
+        "type": ["array", "null"],
+        "title": "Locations",
+        "description": "Job cities; empty for remote-only jobs.",
+        "example": ["Bengaluru (Bangalore)", "Pune", "Hyderabad", "Chennai"]
+      },
+      "workMode": {
+        "type": ["string", "null"],
+        "title": "Work mode",
+        "description": "onsite, remote or remoteOrOnsite.",
+        "example": "onsite"
+      },
+      "remote": {
+        "type": ["boolean", "null"],
+        "title": "Remote",
+        "description": "Whether the job can be done remotely.",
+        "example": false
+      },
+      "experienceMin": {
+        "type": ["number", "null"],
+        "title": "Experience min (years)",
+        "description": "Minimum years of experience.",
+        "example": 8
+      },
+      "experienceMax": {
+        "type": ["number", "null"],
+        "title": "Experience max (years)",
+        "description": "Maximum years of experience.",
+        "example": 12
+      },
+      "salaryMin": {
+        "type": ["number", "null"],
+        "title": "Salary min (yearly)",
+        "description": "Minimum yearly salary in salaryCurrency; null when not given. Internship stipends shown per month are yearly here too.",
+        "example": 2000000
+      },
+      "salaryMax": {
+        "type": ["number", "null"],
+        "title": "Salary max (yearly)",
+        "description": "Maximum yearly salary in salaryCurrency; null when not given.",
+        "example": 3000000
+      },
+      "salaryCurrency": {
+        "type": ["string", "null"],
+        "title": "Currency",
+        "description": "Salary currency code.",
+        "example": "INR"
+      },
+      "salaryText": {
+        "type": ["string", "null"],
+        "title": "Salary (as shown)",
+        "description": "Salary as shown on Cutshort.",
+        "example": "₹20L - ₹30L / yr"
+      },
+      "skills": {
+        "type": ["array", "null"],
+        "title": "Skills",
+        "description": "Skills listed on the job.",
+        "example": ["Python", "PySpark", "SQL", "Google Cloud Platform (GCP)"]
+      },
+      "roleTypes": {
+        "type": ["array", "null"],
+        "title": "Role types",
+        "description": "full_time and/or internship.",
+        "example": ["full_time"]
+      },
+      "postedAt": {
+        "type": ["string", "null"],
+        "title": "Posted",
+        "description": "When the job was posted (ISO 8601 UTC).",
+        "example": "2026-10-16T11:10:06.864Z"
+      },
+      "url": {
+        "type": ["string", "null"],
+        "title": "Job",
+        "description": "Job page on cutshort.io.",
+        "example": "https://cutshort.io/job/GCP-Data-engineer-Bengaluru-Bangalore-Pune-Hyderabad-Chennai-VY-SYSTEMS-PRIVATE-LIMITED-uhRqRgf1"
+      },
+      "descriptionSnippet": {
+        "type": ["string", "null"],
+        "title": "Description snippet",
+        "description": "First ~300 characters of the job description (plain text).",
+        "example": "GCP Data engineer (L1 virtual, L2 or DM F2F ) GCP + Python + Pyspark + sql + Lead 8+yrs Bangalore/hyderabad location ( relocation profiles also from Chennai pune location) immediate to 15days"
+      },
+      "description": {
+        "type": ["string", "null"],
+        "title": "Description",
+        "description": "Full job description (plain text), with includeDetails or in all-jobs mode.",
+        "example": "GCP Data engineer (L1 virtual, L2 or DM F2F )\nGCP + Python + Pyspark + sql + Lead ..."
+      },
+      "validThrough": {
+        "type": ["string", "null"],
+        "title": "Valid through",
+        "description": "When the listing expires (ISO 8601 UTC), with details.",
+        "example": "2027-01-14T09:16:41.553Z"
+      },
+      "employmentTypes": {
+        "type": ["array", "null"],
+        "title": "Employment type",
+        "description": "Employment types, with details.",
+        "example": ["FULL_TIME"]
+      },
+      "category": {
+        "type": ["string", "null"],
+        "title": "Category",
+        "description": "Cutshort job category, with details.",
+        "example": "tech"
+      },
+      "tags": {
+        "type": ["array", "null"],
+        "title": "Tags",
+        "description": "Cutshort role tags, with details.",
+        "example": ["backend"]
+      },
+      "postalCode": {
+        "type": ["string", "null"],
+        "title": "Postal code",
+        "description": "Postal code of the (first) job location, with details.",
+        "example": "560066"
+      },
+      "jobValid": {
+        "type": ["boolean", "null"],
+        "title": "Open",
+        "description": "Whether the job page says the job is open, with details (false: job page gone).",
+        "example": true
+      },
+      "changeType": {
+        "type": ["string", "null"],
+        "title": "Change",
+        "description": "Monitor mode only: new, updated or removed.",
+        "example": "new"
+      },
+      "searchSlug": {
+        "type": ["string", "null"],
+        "title": "Listing",
+        "description": "Cutshort listing the job was found in (null in all-jobs mode).",
+        "example": "python-jobs-in-bangalore-bengaluru"
+      },
+      "scrapedAt": {
+        "type": ["string", "null"],
+        "title": "Scraped at",
+        "description": "When the job was scraped (ISO 8601 UTC).",
+        "example": "2026-10-16T13:00:00.000Z"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Jobs",
+      "transformation": {
+        "fields": [
+          "headline",
+          "companyName",
+          "locations",
+          "workMode",
+          "experienceMin",
+          "experienceMax",
+          "salaryMin",
+          "salaryMax",
+          "salaryCurrency",
+          "skills",
+          "postedAt",
+          "url",
+          "changeType",
+          "scrapedAt"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "headline": {
+            "label": "Job title",
+            "format": "text"
+          },
+          "companyName": {
+            "label": "Company",
+            "format": "text"
+          },
+          "locations": {
+            "label": "Locations",
+            "format": "array"
+          },
+          "workMode": {
+            "label": "Work mode",
+            "format": "text"
+          },
+          "experienceMin": {
+            "label": "Exp. min (yrs)",
+            "format": "number"
+          },
+          "experienceMax": {
+            "label": "Exp. max (yrs)",
+            "format": "number"
+          },
+          "salaryMin": {
+            "label": "Salary min",
+            "format": "number"
+          },
+          "salaryMax": {
+            "label": "Salary max",
+            "format": "number"
+          },
+          "salaryCurrency": {
+            "label": "Currency",
+            "format": "text"
+          },
+          "skills": {
+            "label": "Skills",
+            "format": "array"
+          },
+          "postedAt": {
+            "label": "Posted",
+            "format": "date"
+          },
+          "url": {
+            "label": "Job",
+            "format": "link"
+          },
+          "changeType": {
+            "label": "Change",
+            "format": "text"
+          },
+          "scrapedAt": {
+            "label": "Scraped at",
+            "format": "date"
+          }
+        }
+      }
+    }
+  }
+}
