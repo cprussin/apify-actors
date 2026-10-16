@@ -172,6 +172,26 @@ describe("runUpscales", () => {
     });
   });
 
+  it("charges and emits in input order when downloads finish out of order", async () => {
+    const raw = {
+      urls: ["https://x.org/mid.png", "https://x.org/small.png"],
+    };
+    const h = harness(raw, { budget: 2 });
+    const stats = await runUpscales(normalizeInput(raw), {
+      ...h.deps,
+      download: async (job, path) => {
+        // The first image downloads last.
+        if (job.kind === "url" && job.url.endsWith("mid.png"))
+          await new Promise((r) => setTimeout(r, 50));
+        return h.deps.download(job, path);
+      },
+    });
+    // The budget goes to the first image, not the faster download.
+    expect(h.charges).toEqual([2]);
+    expect(h.items.map((i) => i.url)).toEqual(["https://x.org/mid.png"]);
+    expect(stats).toMatchObject({ upscaled: 1, stopReason: "budget" });
+  });
+
   it("returns free error items and keeps going", async () => {
     const h = harness({
       urls: [

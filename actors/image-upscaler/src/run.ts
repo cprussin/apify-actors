@@ -129,13 +129,24 @@ export async function forEachLimit<T>(
   return items.length - next;
 }
 
-/** Runs `fn` calls one at a time, in call order. */
-function serializer() {
+/**
+ * Hands out turns in claim order; each turn's `fn` runs only after every
+ * earlier turn's has settled. Every claimed turn must be used exactly once.
+ */
+function turns() {
   let tail: Promise<unknown> = Promise.resolve();
-  return <T>(fn: () => Promise<T>): Promise<T> => {
-    const run = tail.then(fn, fn);
-    tail = run.catch(() => {});
-    return run;
+  return () => {
+    const prev = tail;
+    let release!: () => void;
+    tail = new Promise<void>((r) => (release = r));
+    return async <T>(fn: () => Promise<T>): Promise<T> => {
+      await prev;
+      try {
+        return await fn();
+      } finally {
+        release();
+      }
+    };
   };
 }
 
@@ -145,7 +156,7 @@ export async function runUpscales(
 ): Promise<RunStats> {
   const log = deps.log ?? (() => {});
   const now = deps.now ?? (() => new Date());
-  const serial = serializer();
+  const nextTurn = turns();
   const stats: RunStats = {
     upscaled: 0,
     failed: 0,
@@ -290,34 +301,52 @@ export async function runUpscales(
     }
   };
 
-  const one = async (s: Source): Promise<boolean> => {
-    if (s.kind === "invalid") return fail(blank(s), s.error);
-    if (deps.budgetUnits() < 1) {
-      stats.stopReason = "budget";
-      return false;
-    }
+  // Download (in parallel) and return the step that finishes the job.
+  const prepare = async (s: Source): Promise<() => Promise<boolean>> => {
+    if (s.kind === "invalid") return () => fail(blank(s), s.error);
+    if (deps.budgetUnits() < 1)
+      return async () => {
+        stats.stopReason = "budget";
+        return false;
+      };
     const path = join(tmp, `in-${s.index}`);
     let file: Downloaded;
     try {
       file = await deps.download(s, path);
     } catch (e) {
       await rm(path, { force: true }).catch(() => {});
-      return fail(
-        blank(s),
-        e instanceof ImageError ? e.message : `Download failed: ${errMsg(e)}`,
-      );
+      return () =>
+        fail(
+          blank(s),
+          e instanceof ImageError ? e.message : `Download failed: ${errMsg(e)}`,
+        );
     }
     const detected = detectImage(file.head);
     if (!detected.format) {
       await rm(path, { force: true }).catch(() => {});
-      return fail(
-        blank(s, { fileName: file.fileName, inputBytes: file.bytes }),
-        detected.error,
-      );
+      const error = detected.error;
+      return () =>
+        fail(
+          blank(s, { fileName: file.fileName, inputBytes: file.bytes }),
+          error,
+        );
     }
     const format = detected.format;
-    // Downloads run in parallel; upscaling and charging one at a time.
-    return serial(() => upscaleOne(s, file, format));
+    return () => upscaleOne(s, file, format);
+  };
+
+  const one = async (s: Source): Promise<boolean> => {
+    // Claimed before any await, so turns follow input order: downloads run
+    // in parallel, but upscaling, charging and output happen one at a time
+    // in input order (deterministic budget use and dataset order).
+    const turn = nextTurn();
+    let step: () => Promise<boolean>;
+    try {
+      step = await prepare(s);
+    } catch (e) {
+      step = () => Promise.reject(e);
+    }
+    return turn(step);
   };
 
   try {
