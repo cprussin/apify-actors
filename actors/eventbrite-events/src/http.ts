@@ -31,8 +31,8 @@ export interface ClientOptions {
   fetch?: FetchLike;
   /**
    * Alternative transport (e.g. direct, no proxy). Used after
-   * `fallbackAfter` consecutive network errors/timeouts/5xx on `fetch`;
-   * a block (429/403/captcha) on it switches back to `fetch`.
+   * `fallbackAfter` consecutive failures (blocks, network errors, timeouts,
+   * 5xx) on `fetch`; any failure on it switches back to `fetch`.
    */
   fallbackFetch?: FetchLike;
   /** Consecutive primary failures before switching to `fallbackFetch`. Default 2. */
@@ -160,10 +160,12 @@ export class EventbriteClient {
       this.primaryFailures = 0;
       return "back to proxy, ";
     }
-    if (kind === "transient") this.primaryFailures += 1;
+    // Blocks count too: Eventbrite sometimes captchas every Apify Proxy
+    // datacenter IP in a row while direct requests still go through.
+    this.primaryFailures += 1;
     if (this.primaryFailures >= this.fallbackAfter) {
       this.onFallback = true;
-      return "proxy failing, trying direct, ";
+      return `proxy ${kind}, trying direct, `;
     }
     return "";
   }

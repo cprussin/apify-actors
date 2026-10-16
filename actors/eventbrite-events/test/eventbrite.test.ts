@@ -659,6 +659,21 @@ describe("http", () => {
     expect(client.route).toBe("fallback");
   });
 
+  it("falls back to direct requests when every proxy IP gets a captcha", async () => {
+    const proxy: FetchLike = vi.fn(async () =>
+      res(429, "<title>Human Verification</title>"),
+    );
+    const direct: FetchLike = vi.fn(async () => res(200, "direct"));
+    const client = new EventbriteClient({
+      fetch: proxy,
+      fallbackFetch: direct,
+      sleep: async () => {},
+    });
+    expect((await client.get(NY_URL)).html).toBe("direct");
+    expect(proxy).toHaveBeenCalledTimes(2);
+    expect(client.route).toBe("fallback");
+  });
+
   it("does not retry 404s", async () => {
     const fetch: FetchLike = vi.fn(async () => res(404, "gone"));
     const client = new EventbriteClient({ fetch, sleep: async () => {} });

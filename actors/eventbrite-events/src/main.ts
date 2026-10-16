@@ -73,8 +73,8 @@ try {
     }
   }
   // Same proxy session (IP) until a request fails, then a fresh one. If the
-  // proxy keeps failing (timeouts, 5xx), fall back to direct requests; when
-  // those get blocked, switch back to a new proxy IP.
+  // proxy keeps failing (captchas, timeouts, 5xx), fall back to direct
+  // requests; when those fail too, switch back to a new proxy IP.
   const prefix = `eb${Math.floor(Math.random() * 1e8)}`;
   let session = 0;
   if (proxy) log.info("Using Apify Proxy.");
