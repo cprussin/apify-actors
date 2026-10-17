@@ -1,0 +1,108 @@
+{
+  "title": "Luma Events Scraper input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "cities": {
+      "title": "Cities",
+      "type": "array",
+      "description": "Luma city slugs, as in luma.com/<b>nyc</b>: <code>nyc</code>, <code>sf</code>, <code>london</code>, <code>berlin</code>, <code>singapore</code>, ... or a point as <code>latitude,longitude</code>, e.g. <code>40.015,-105.27</code> (Boulder) for anywhere Luma has no city page. Each city is searched with the category and keyword below.",
+      "editor": "stringList",
+      "prefill": ["nyc"],
+      "sectionCaption": "What to scrape"
+    },
+    "startUrls": {
+      "title": "Start URLs",
+      "type": "array",
+      "description": "Optional Luma pages: a calendar/community (e.g. <code>https://luma.com/genai-sf</code>), an event (e.g. <code>https://lu.ma/abc123xy</code>) or a city page (<code>https://luma.com/nyc</code>). Calendars list all their events; category and keyword don't apply to them.",
+      "editor": "stringList"
+    },
+    "category": {
+      "title": "Category",
+      "type": "string",
+      "description": "Only events in this Luma category (applies to cities).",
+      "editor": "select",
+      "enum": [
+        "any",
+        "tech",
+        "ai",
+        "food",
+        "arts",
+        "climate",
+        "fitness",
+        "wellness",
+        "crypto",
+        "books",
+        "games",
+        "running",
+        "family"
+      ],
+      "enumTitles": [
+        "Any category",
+        "Tech",
+        "AI",
+        "Food & Drink",
+        "Arts & Culture",
+        "Climate",
+        "Fitness",
+        "Wellness",
+        "Crypto",
+        "Books",
+        "Games",
+        "Running",
+        "Family"
+      ],
+      "default": "any"
+    },
+    "keyword": {
+      "title": "Keyword",
+      "type": "string",
+      "description": "Optional search keyword (applies to cities), e.g. <code>hackathon</code> or <code>founders</code>. Luma returns up to 50 matches per city for a keyword search.",
+      "editor": "textfield"
+    },
+    "calendarPeriod": {
+      "title": "Calendar events",
+      "type": "string",
+      "description": "For calendar start URLs: upcoming or past events.",
+      "editor": "select",
+      "enum": ["future", "past"],
+      "enumTitles": ["Upcoming", "Past"],
+      "default": "future"
+    },
+    "maxEvents": {
+      "title": "Max events",
+      "type": "integer",
+      "description": "Stop after this many events in total, across all cities and URLs.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 10000,
+      "default": 20,
+      "prefill": 20,
+      "sectionCaption": "Limits"
+    },
+    "includeDetails": {
+      "title": "Include event details",
+      "type": "boolean",
+      "description": "Fetch each event's details for the full description, categories and ticket types (one extra request and one <code>event-detail</code> charge per event). Turn off for faster, cheaper runs with listing data only.",
+      "editor": "checkbox",
+      "default": true
+    },
+    "onlyNew": {
+      "title": "Only new events (monitoring)",
+      "type": "boolean",
+      "description": "Return only events not returned by an earlier run with the same cities, start URLs, category, keyword and calendar period. Schedule the actor (e.g. daily) for new-event alerts: the first run is a baseline, later runs output (and bill) only new events. State is kept in the key-value store \"luma-events-state\" in your account.",
+      "default": false,
+      "sectionCaption": "Monitoring"
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Optional. Luma's public API works without a proxy; turn on Apify Proxy (datacenter is enough) only if you see blocked requests.",
+      "editor": "proxy",
+      "default": {
+        "useApifyProxy": false
+      },
+      "sectionCaption": "Advanced"
+    }
+  }
+}

@@ -1,0 +1,187 @@
+{
+ "kind": "discover-place",
+ "data": {
+  "place": {
+   "api_id": "discplace-Izx1rQVSh8njYpP",
+   "coordinate": {
+    "longitude": -73.935242,
+    "latitude": 40.73061
+   },
+   "description": "NYC buzzes with events for every interest — tech, art, fitness, and comedy. Dive into a city where diversity thrives, and every gathering sparks connection and inspiration.",
+   "event_count": 83,
+   "featured_event_api_ids": [
+    "evt-CMQBTGMmpske1kt",
+    "evt-15p086LkX5EG4rp",
+    "evt-80fqfXUvfBVFcJi",
+    "evt-ahg6mqTJlIP1Mv7",
+    "evt-JhyDRgXH58tyARW",
+    "evt-WFEZ6FUAxFyNm7V",
+    "evt-z9kf4B1cEKQpbll",
+    "evt-D9XEvXi7NbPM9Bs",
+    "evt-N72Jqo30FUKeRdT"
+   ],
+   "geo_continent": "na",
+   "hero_image_desktop_url": "https://images.lumacdn.com/discovery/nyc-desktop2.jpg",
+   "hero_image_mobile_url": "https://images.lumacdn.com/discovery/nyc-mobile2.jpg",
+   "hero_image_square_url": "https://images.lumacdn.com/discovery/nyc-square2.jpg",
+   "icon_url": "https://images.lumacdn.com/discovery/nyc-icon.png",
+   "is_launched": true,
+   "locales": [
+    "en"
+   ],
+   "name": "New York",
+   "publication_name": "What’s happening in New York",
+   "slug": "nyc",
+   "social_image_url": "https://images.lumacdn.com/discovery/nyc-social2.png",
+   "timezone": "America/New_York",
+   "tint_color": "#e08d55",
+   "geo_continent_name": "North America"
+  },
+  "is_subscriber": false,
+  "events": [
+   {
+    "api_id": "evt-z8et71ZeQxyNnu2",
+    "event": {
+     "api_id": "evt-z8et71ZeQxyNnu2",
+     "calendar_api_id": "cal-H1FY60pnZtchaf4",
+     "cover_url": "https://images.lumacdn.com/uploads/1g/20d9b42d-9c9d-49fe-aeb2-5c62298a820e.png",
+     "end_at": "2026-10-17T14:00:00.000Z",
+     "event_type": "independent",
+     "hide_rsvp": false,
+     "location_type": "offline",
+     "name": "Aleph x Corgi Run Club NYC",
+     "one_to_one": true,
+     "recurrence_id": null,
+     "show_guest_list": true,
+     "social_image_url": "https://images.lumacdn.com/event-social/b6/d4c91009-2441-4dfa-b944-d8892d2df4a7.png",
+     "start_at": "2026-10-17T13:00:00.000Z",
+     "timezone": "America/New_York",
+     "url": "au1yymwo",
+     "visibility": "public",
+     "virtual_info": {
+      "has_access": false
+     },
+     "geo_address_info": {
+      "city": "New York",
+      "type": "google",
+      "region": "New York",
+      "address": "Pier 34 at Hudson River Park",
+      "country": "United States",
+      "place_id": "ChIJwTiyZ_FZwokRoBANwly4cYk",
+      "localized": null,
+      "city_state": "New York, NY",
+      "description": "",
+      "sublocality": "Lower Manhattan",
+      "country_code": "US",
+      "full_address": "Pier 34 at Hudson River Park, New York, NY 10013, USA",
+      "region_short": "NY",
+      "short_address": "New York",
+      "place_coordinate": {
+       "latitude": 40.7258979,
+       "longitude": -74.0116712
+      },
+      "apple_maps_place_id": null,
+      "mode": "shown"
+     },
+     "geo_address_visibility": "public",
+     "coordinate": {
+      "longitude": -74.0116712,
+      "latitude": 40.7258979
+     },
+     "waitlist_enabled": false,
+     "waitlist_status": "disabled"
+    },
+    "cover_image": {
+     "colors": [
+      "#fdfcfc",
+      "#45372e",
+      "#fb5904"
+     ]
+    },
+    "calendar": {
+     "access_level": "public",
+     "api_id": "cal-H1FY60pnZtchaf4",
+     "avatar_url": "https://images.lumacdn.com/uploads/9q/17869d8d-8ace-46b2-bc81-5e61f626e353.png",
+     "coordinate": {
+      "longitude": -74.0059728,
+      "latitude": 40.7127753
+     },
+     "cover_image_url": null,
+     "description_short": "",
+     "end_date": null,
+     "event_submission_restriction": "open",
+     "instagram_handle": "corgicafenyc",
+     "is_blocked": false,
+     "is_verified": false,
+     "launch_status": "launched",
+     "linkedin_handle": "/company/usecorgi",
+     "location": {
+      "city": "New York",
+      "region": null,
+      "country": "United States",
+      "place_id": "ChIJOwg_06VPwokRYv534QaPC8g",
+      "timezone": "America/New_York",
+      "country_code": "US"
+     },
+     "luma_plan": "plus",
+     "luma_plus_active": true,
+     "name": "Corgi NYC",
+     "refund_policy": null,
+     "sends_unlocked_at": "2026-07-30T21:22:39.449Z",
+     "slug": "usecorginyc",
+     "social_image_url": null,
+     "start_date": null,
+     "tiktok_handle": null,
+     "tint_color": "#fd5d01",
+     "track_meta_ads_from_luma": false,
+     "twitter_handle": "UseCorgi",
+     "website": "https://www.corgi.insure/",
+     "youtube_handle": null,
+     "is_personal": false,
+     "personal_user": null,
+     "timezone": "America/New_York"
+    },
+    "start_at": "2026-10-17T13:00:00.000Z",
+    "hosts": [
+     {
+      "api_id": "usr-JAfOLM2lGQn80k3",
+      "name": "Maddie",
+      "first_name": "Maddie",
+      "last_name": "Ford"
+     },
+     {
+      "api_id": "usr-2QGhSHN6DfqZHD0",
+      "name": "Tsering",
+      "first_name": "Tsering",
+      "last_name": ""
+     },
+     {
+      "api_id": "usr-oe2cHbD15RVAd2y",
+      "name": "Albert Gozzi",
+      "first_name": "Albert",
+      "last_name": "Gozzi"
+     }
+    ],
+    "guest_count": 128,
+    "ticket_count": 128,
+    "ticket_info": {
+     "price": null,
+     "is_free": true,
+     "max_price": null,
+     "is_sold_out": false,
+     "spots_remaining": null,
+     "is_near_capacity": false,
+     "require_approval": false
+    },
+    "registration_availability": "open",
+    "host_info": null,
+    "waitlist_active": false,
+    "featured_city": {
+     "api_id": "discplace-Izx1rQVSh8njYpP",
+     "name": "New York",
+     "slug": "nyc"
+    }
+   }
+  ]
+ }
+}

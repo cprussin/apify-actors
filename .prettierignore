@@ -16,5 +16,6 @@ actors/app-store-apps/test/fixtures
 actors/soundcloud-metadata/test/fixtures
 actors/instahyre-jobs/test/fixtures
 actors/cutshort-jobs/test/fixtures
+actors/luma-events/test/fixtures
 apps/*/build
 .claude/worktrees

@@ -1,0 +1,346 @@
+{
+ "kind": "event",
+ "data": {
+  "api_id": "evt-BY6CUfvAuCM89l4",
+  "accepts_usdc_for_usd": false,
+  "calendar": {
+   "access_level": "public",
+   "api_id": "cal-BvuRd9eaZnDGBwy",
+   "avatar_url": "https://images.lumacdn.com/calendars/dy/42a70c23-1dfd-4123-9ada-2d3b8b385ea8.png",
+   "coordinate": {
+    "longitude": -74.005973,
+    "latitude": 40.712775
+   },
+   "cover_image_url": "https://images.lumacdn.com/calendar-cover-images/pr/ffea5060-ec40-44d7-bec8-4469ec07fcba.png",
+   "description_short": "@haricotvert's crafty community in williamsburg, brooklyn. check out our events & workshops ♡",
+   "end_date": null,
+   "event_submission_restriction": "open",
+   "instagram_handle": "inthecraftnook",
+   "is_blocked": false,
+   "is_verified": false,
+   "launch_status": "launched",
+   "linkedin_handle": null,
+   "location": {
+    "city": "New York",
+    "region": null,
+    "country": "United States",
+    "place_id": "ChIJOwg_06VPwokRYv534QaPC8g",
+    "timezone": "America/New_York",
+    "country_code": "US"
+   },
+   "luma_plan": "plus",
+   "luma_plus_active": true,
+   "name": "welcome to the craftnook",
+   "refund_policy": null,
+   "sends_unlocked_at": "2024-10-29T00:57:30.013Z",
+   "slug": "craftnook",
+   "social_image_url": "https://images.lumacdn.com/calendar-cover-images/rx/457e2b13-8718-4491-b7d0-c5f994c0bf49.png",
+   "start_date": null,
+   "tiktok_handle": null,
+   "tint_color": "#de3163",
+   "track_meta_ads_from_luma": false,
+   "twitter_handle": null,
+   "website": "https://haricotvert.shop",
+   "youtube_handle": null,
+   "is_personal": false,
+   "personal_user": null,
+   "timezone": "America/New_York",
+   "charges_enabled": true
+  },
+  "event": {
+   "api_id": "evt-BY6CUfvAuCM89l4",
+   "calendar_api_id": "cal-BvuRd9eaZnDGBwy",
+   "cover_url": "https://images.lumacdn.com/uploads/l0/ce59d463-84d1-4805-b515-a183b1c3a8b5.png",
+   "end_at": "2026-10-17T22:00:00.000Z",
+   "event_type": "independent",
+   "hide_rsvp": false,
+   "location_type": "offline",
+   "name": "studio cleanout sale",
+   "one_to_one": true,
+   "recurrence_id": null,
+   "show_guest_list": false,
+   "social_image_url": "https://images.lumacdn.com/event-social/lz/c47eae36-0d85-4ded-b7da-4467a9870a7c.png",
+   "start_at": "2026-10-16T16:00:00.000Z",
+   "timezone": "America/New_York",
+   "url": "craftnook-f70s",
+   "visibility": "public",
+   "virtual_info": {
+    "has_access": false
+   },
+   "geo_address_info": {
+    "mode": "obfuscated",
+    "city": "Brooklyn",
+    "city_state": "Brooklyn, NY",
+    "sublocality": "Brooklyn",
+    "country": "United States",
+    "country_code": "US",
+    "region": "New York",
+    "region_short": "NY"
+   },
+   "geo_address_visibility": "guests-only",
+   "coordinate": {
+    "latitude": 40.72793586074224,
+    "longitude": -73.95586641937976
+   },
+   "waitlist_enabled": false,
+   "waitlist_status": "disabled"
+  },
+  "start_at": "2026-10-16T16:00:00.000Z",
+  "has_available_ticket_types": true,
+  "refund_policy": null,
+  "guest_count": 0,
+  "ticket_count": 0,
+  "hosts": [
+   {
+    "api_id": "usr-Yv1EkLAwR92KxzI",
+    "name": "craftnook",
+    "first_name": "Craft",
+    "last_name": "Nook"
+   }
+  ],
+  "cover_image": {
+   "colors": [
+    "#f6abd2",
+    "#f8f6fa",
+    "#a7c9ea",
+    "#e6d557"
+   ]
+  },
+  "social_image": {
+   "cdn_url": "https://images.lumacdn.com/event-social/lz/c47eae36-0d85-4ded-b7da-4467a9870a7c.png",
+   "width": 1200,
+   "height": 630,
+   "mime_type": "image/png"
+  },
+  "ticket_types": [
+   {
+    "api_id": "ttype-RAhbtOxgsHaASG8",
+    "cents": null,
+    "currency": null,
+    "description": "",
+    "ethereum_token_requirements": [],
+    "event_api_id": "evt-BY6CUfvAuCM89l4",
+    "is_flexible": false,
+    "is_hidden": false,
+    "max_capacity": null,
+    "max_per_guest": null,
+    "membership_restriction": null,
+    "min_cents": null,
+    "position": "8",
+    "name": "free rsvp",
+    "require_approval": false,
+    "tint_color": null,
+    "type": "free",
+    "valid_end_at": null,
+    "valid_start_at": null,
+    "num_tickets_registered": 291,
+    "num_guests": 291,
+    "spots_remaining": null,
+    "is_disabled": false
+   }
+  ],
+  "categories": [
+   {
+    "api_id": "cat-AzVAf6VmE9JEre4",
+    "description": "Whether it’s painting workshops or pottery classes, join an event to unleash your creativity, learn new techniques, and connect with fellow makers.",
+    "event_count": 3656,
+    "hero_image_desktop_url": "https://images.lumacdn.com/uploads/54/bc5c9b4f-cbfd-4f55-84d1-331e0a12523c.png",
+    "icon_url": "https://images.lumacdn.com/uploads/u8/5eeba5a4-d305-4bc1-9017-329937813f30.png",
+    "name": "Arts & Culture",
+    "page_title": "Arts & Culture Events",
+    "simple_icon_url": "https://images.lumacdn.com/uploads/o1/12999161-f382-4d97-b2f6-281fca336c04.png",
+    "slug": "arts",
+    "social_image_url": "https://images.lumacdn.com/uploads/jh/3f4210d6-8dd1-4a12-ae53-adb92d49c333.png",
+    "subscriber_count": 27204,
+    "tint_color": "#AEA73C"
+   }
+  ],
+  "ticket_info": {
+   "price": null,
+   "is_free": true,
+   "max_price": null,
+   "is_sold_out": false,
+   "spots_remaining": null,
+   "is_near_capacity": false,
+   "require_approval": false
+  },
+  "registration_availability": "open",
+  "subscribed_to_calendar": false,
+  "host_info": null,
+  "sold_out": false,
+  "locale": "en",
+  "ticket_transfer_enabled": false,
+  "tint_color": "#f2a7ce",
+  "can_register_for_multiple_tickets": false,
+  "font_title": "geist-mono",
+  "description_mirror": {
+   "type": "doc",
+   "content": [
+    {
+     "type": "paragraph",
+     "content": [
+      {
+       "text": "A little studio spring cleaning before the holidays... ⋆⁺₊★",
+       "type": "text"
+      }
+     ]
+    },
+    {
+     "type": "paragraph",
+     "content": [
+      {
+       "text": "We’re opening up our Greenpoint studio doors this weekend to clear out tons of sweet treasures at major deal & bundle prices. ✦",
+       "type": "text"
+      }
+     ]
+    },
+    {
+     "type": "paragraph",
+     "content": [
+      {
+       "text": "Details:",
+       "type": "text"
+      }
+     ]
+    },
+    {
+     "type": "bullet_list",
+     "content": [
+      {
+       "type": "list_item",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "text": "Friday 10/16, 12-6pm",
+           "type": "text"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "list_item",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "text": "Saturday 10/17, 12-6pm",
+           "type": "text"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "list_item",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "text": "Location: Greenpoint, Brooklyn (exact address revealed upon RSVP)",
+           "type": "text"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "paragraph",
+     "content": [
+      {
+       "text": "Expect vintage craft supplies, jewelry making finds, concept pieces, archive samples, and so much mystery goodness ★",
+       "type": "text"
+      }
+     ]
+    },
+    {
+     "type": "paragraph",
+     "content": [
+      {
+       "text": "Plus fresh Peter Pan donuts on us while you shop! ⋆⁺₊✧",
+       "type": "text"
+      }
+     ]
+    },
+    {
+     "type": "paragraph",
+     "content": [
+      {
+       "text": "Please note:",
+       "type": "text"
+      }
+     ]
+    },
+    {
+     "type": "bullet_list",
+     "content": [
+      {
+       "type": "list_item",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "text": "All sales are final. No returns, exchanges, or refunds.",
+           "type": "text"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "list_item",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "text": "We accept card, cash (limited change), or Zelle",
+           "type": "text"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "list_item",
+       "content": [
+        {
+         "type": "paragraph",
+         "content": [
+          {
+           "text": "Please bring your own bag",
+           "type": "text"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "paragraph",
+     "content": [
+      {
+       "text": "Come say hi and help us give these pieces a sweet new home. ꨄ︎",
+       "type": "text"
+      }
+     ]
+    }
+   ]
+  },
+  "is_flagged": false,
+  "is_managing_calendar_admin": false,
+  "show_unlock_code_option": false,
+  "has_multiple_ticket_types": false,
+  "waitlist_active": false,
+  "route": null,
+  "featured_city": null
+ }
+}

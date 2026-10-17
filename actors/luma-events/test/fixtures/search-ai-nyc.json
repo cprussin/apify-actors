@@ -1,0 +1,392 @@
+{
+ "entries": [
+  {
+   "api_id": "evt-E5Jx9D0IsF3kqY5",
+   "event": {
+    "api_id": "evt-E5Jx9D0IsF3kqY5",
+    "calendar_api_id": "cal-uYzPjdxdCyDtuNO",
+    "cover_url": "https://images.lumacdn.com/uploads/lu/ac6931da-3f31-477b-aca9-6a68f707b4c6.gif",
+    "end_at": "2026-11-04T23:00:00.000Z",
+    "event_type": "independent",
+    "hide_rsvp": false,
+    "location_type": "offline",
+    "name": "AI DevCon NYC",
+    "one_to_one": true,
+    "recurrence_id": null,
+    "show_guest_list": false,
+    "social_image_url": "https://images.lumacdn.com/event-social/tm/61998d79-e618-478a-a3a7-ace3510071df.png",
+    "start_at": "2026-11-02T16:00:00.000Z",
+    "timezone": "America/New_York",
+    "url": "aidevcon-nyc2026",
+    "visibility": "public",
+    "virtual_info": {
+     "has_access": false
+    },
+    "geo_address_info": {
+     "city": "Brooklyn",
+     "type": "google",
+     "region": "New York",
+     "address": "5-2-A at Industry City",
+     "country": "United States",
+     "place_id": "ChIJo2EvIVhbwokRR5XobNHAHpw",
+     "localized": {
+      "en-GB": {
+       "city": "Brooklyn",
+       "region": "New York",
+       "address": "5-2-A at Industry City",
+       "country": "United States",
+       "city_state": "Brooklyn, NY",
+       "sublocality": "Greenwood Heights",
+       "full_address": "5-2-A at Industry City, 33 35th St 2nd FL, Brooklyn, NY 11232, USA",
+       "region_short": "NY",
+       "short_address": "33 35th St 2nd FL, Brooklyn"
+      }
+     },
+     "city_state": "Brooklyn, NY",
+     "description": "",
+     "sublocality": "Greenwood Heights",
+     "country_code": "US",
+     "full_address": "5-2-A at Industry City, 33 35th St 2nd FL, Brooklyn, NY 11232, USA",
+     "region_short": "NY",
+     "short_address": "33 35th St 2nd FL, Brooklyn",
+     "place_coordinate": {
+      "latitude": 40.6572385,
+      "longitude": -74.0075533
+     },
+     "apple_maps_place_id": "I9D24FEFA89B00EAC",
+     "mode": "shown"
+    },
+    "geo_address_visibility": "public",
+    "coordinate": {
+     "longitude": -74.0075533,
+     "latitude": 40.6572385
+    },
+    "waitlist_enabled": false,
+    "waitlist_status": "disabled"
+   },
+   "cover_image": {
+    "colors": [
+     "#09090b",
+     "#ffffff",
+     "#fde047"
+    ]
+   },
+   "calendar": {
+    "access_level": "public",
+    "api_id": "cal-uYzPjdxdCyDtuNO",
+    "avatar_url": "https://images.lumacdn.com/calendars/uv/1f1205aa-5310-4ed7-b55c-565beeab16f3.png",
+    "coordinate": null,
+    "cover_image_url": "https://images.lumacdn.com/calendar-cover-images/fe/b5a13cd4-8e4a-43bb-9b3c-aeab5062782b.png",
+    "description_short": "",
+    "end_date": null,
+    "event_submission_restriction": "open",
+    "instagram_handle": "tessl_io",
+    "is_blocked": false,
+    "is_verified": false,
+    "launch_status": "launched",
+    "linkedin_handle": "/company/tesslio",
+    "location": null,
+    "luma_plan": "plus",
+    "luma_plus_active": true,
+    "name": "AI Native Dev",
+    "refund_policy": null,
+    "sends_unlocked_at": "2025-09-02T13:08:04.187Z",
+    "slug": "ainativedev",
+    "social_image_url": "https://images.lumacdn.com/calendar-cover-images/9q/893941d1-83a2-4581-b96a-5bcfedf1aeb4.png",
+    "start_date": null,
+    "tiktok_handle": "tessl_io",
+    "tint_color": "#D69712",
+    "track_meta_ads_from_luma": false,
+    "twitter_handle": "tessl_io",
+    "website": "https://tessl.io/",
+    "youtube_handle": "tessl-ai",
+    "is_personal": false,
+    "personal_user": null,
+    "timezone": null
+   },
+   "start_at": "2026-11-02T16:00:00.000Z",
+   "hosts": [
+    {
+     "api_id": "usr-8dQtAtssDYfmCzy",
+     "name": "Sam Hepburn",
+     "first_name": "Sam",
+     "last_name": "Hepburn"
+    },
+    {
+     "api_id": "usr-jnx0jbf2A3PBcyb",
+     "name": "Tom Dowler",
+     "first_name": "Tom",
+     "last_name": "Dowler"
+    }
+   ],
+   "guest_count": 0,
+   "ticket_count": 0,
+   "ticket_info": {
+    "price": null,
+    "is_free": true,
+    "max_price": {
+     "cents": 50000,
+     "currency": "usd"
+    },
+    "is_sold_out": false,
+    "spots_remaining": null,
+    "is_near_capacity": false,
+    "require_approval": false
+   },
+   "registration_availability": "open",
+   "host_info": null,
+   "waitlist_active": false,
+   "featured_city": null
+  },
+  {
+   "api_id": "evt-9eEkzjG3V1sHk5V",
+   "event": {
+    "api_id": "evt-9eEkzjG3V1sHk5V",
+    "calendar_api_id": "cal-hF4k4M4zrv6EuRt",
+    "cover_url": "https://images.lumacdn.com/uploads/i7/66281725-d364-4c5b-b669-132ea7bed68f.png",
+    "end_at": "2026-12-02T01:00:00.000Z",
+    "event_type": "independent",
+    "hide_rsvp": false,
+    "location_type": "offline",
+    "name": "AI Dev / New York City: The AI Developer Conference",
+    "one_to_one": true,
+    "recurrence_id": null,
+    "show_guest_list": false,
+    "social_image_url": "https://images.lumacdn.com/event-social/hn/5607a716-0bd2-4e65-86d0-c94118f1992d.png",
+    "start_at": "2026-11-30T13:00:00.000Z",
+    "timezone": "America/New_York",
+    "url": "AIDevNYC2026",
+    "visibility": "public",
+    "virtual_info": {
+     "has_access": false
+    },
+    "geo_address_info": {
+     "mode": "obfuscated",
+     "city": "New York",
+     "city_state": "New York, NY",
+     "sublocality": "Manhattan",
+     "country": "United States",
+     "country_code": "US",
+     "region": "New York",
+     "region_short": "NY"
+    },
+    "geo_address_visibility": "guests-only",
+    "coordinate": {
+     "latitude": 40.746256859816995,
+     "longitude": -74.00762590834707
+    },
+    "waitlist_enabled": false,
+    "waitlist_status": "disabled"
+   },
+   "cover_image": {
+    "colors": [
+     "#13131a",
+     "#f5f5f7",
+     "#10b981",
+     "#124237"
+    ]
+   },
+   "calendar": {
+    "access_level": "public",
+    "api_id": "cal-hF4k4M4zrv6EuRt",
+    "avatar_url": "https://images.lumacdn.com/uploads/f3/d2eec42a-ce5f-493c-af63-da003a6e3c56.png",
+    "coordinate": null,
+    "cover_image_url": "https://images.lumacdn.com/uploads/kz/83898b73-c4d4-4773-a182-0a74198ebfb9.png",
+    "description_short": "AI Dev is a technical, hands-on conference for people building with AI — hosted by the DeepLearning.AI team and Andrew Ng. Learn from real practitioners and the leading AI companies around the world.",
+    "end_date": null,
+    "event_submission_restriction": "open",
+    "instagram_handle": null,
+    "is_blocked": false,
+    "is_verified": false,
+    "launch_status": "launched",
+    "linkedin_handle": null,
+    "location": null,
+    "luma_plan": "plus",
+    "luma_plus_active": true,
+    "name": "AI Dev",
+    "refund_policy": null,
+    "sends_unlocked_at": "2026-08-31T23:04:43.332Z",
+    "slug": "AIDeveloperConference",
+    "social_image_url": null,
+    "start_date": null,
+    "tiktok_handle": null,
+    "tint_color": "#12b981",
+    "track_meta_ads_from_luma": false,
+    "twitter_handle": null,
+    "website": null,
+    "youtube_handle": null,
+    "is_personal": false,
+    "personal_user": null,
+    "timezone": null
+   },
+   "start_at": "2026-11-30T13:00:00.000Z",
+   "hosts": [
+    {
+     "api_id": "usr-tB9w3A82GxTbqGD",
+     "name": "AI Dev",
+     "first_name": "",
+     "last_name": ""
+    },
+    {
+     "api_id": "usr-07tyNcCzdqetipG",
+     "name": "DeepLearning.AI",
+     "first_name": "DLAI Events",
+     "last_name": null
+    }
+   ],
+   "guest_count": 0,
+   "ticket_count": 0,
+   "ticket_info": {
+    "price": {
+     "cents": 84694,
+     "currency": "usd",
+     "is_flexible": false
+    },
+    "is_free": false,
+    "max_price": null,
+    "is_sold_out": false,
+    "spots_remaining": null,
+    "is_near_capacity": false,
+    "require_approval": false
+   },
+   "registration_availability": "open",
+   "host_info": null,
+   "waitlist_active": false,
+   "featured_city": null
+  },
+  {
+   "api_id": "evt-2oioBoqEx6QW9ZM",
+   "event": {
+    "api_id": "evt-2oioBoqEx6QW9ZM",
+    "calendar_api_id": "cal-EDisCieHa0mXu0b",
+    "cover_url": "https://images.lumacdn.com/uploads/vb/53450420-0aba-4955-b3c6-543c5a8fc47b.png",
+    "end_at": "2026-10-21T01:00:00.000Z",
+    "event_type": "independent",
+    "hide_rsvp": false,
+    "location_type": "offline",
+    "name": "AI Agents Build Day with Genspark",
+    "one_to_one": true,
+    "recurrence_id": null,
+    "show_guest_list": false,
+    "social_image_url": "https://images.lumacdn.com/event-social/ia/4f868808-3baa-423d-9a7b-b4904cfc00cd.png",
+    "start_at": "2026-10-20T22:00:00.000Z",
+    "timezone": "America/New_York",
+    "url": "genspark-build",
+    "visibility": "public",
+    "virtual_info": {
+     "has_access": false
+    },
+    "geo_address_info": {
+     "mode": "obfuscated",
+     "city": "New York",
+     "city_state": "New York, NY",
+     "sublocality": "Meatpacking District",
+     "country": "United States",
+     "country_code": "US",
+     "region": "New York",
+     "region_short": "NY"
+    },
+    "geo_address_visibility": "guests-only",
+    "coordinate": {
+     "latitude": 40.739850262969824,
+     "longitude": -74.00986564535414
+    },
+    "waitlist_enabled": true,
+    "waitlist_status": "enabled"
+   },
+   "cover_image": {
+    "colors": [
+     "#101112",
+     "#faf7ee",
+     "#af9679"
+    ]
+   },
+   "calendar": {
+    "access_level": "public",
+    "api_id": "cal-EDisCieHa0mXu0b",
+    "avatar_url": "https://images.lumacdn.com/uploads/34/52563e12-4aa9-4f09-bb77-e9c9059f25a1.jpg",
+    "coordinate": null,
+    "cover_image_url": null,
+    "description_short": "AI After 5 is a curated community of ambitious women learning, applying, and building with AI. NYC, London, Toronto, Dublin & growing. Learn more at aiafter5.com",
+    "end_date": null,
+    "event_submission_restriction": "open",
+    "instagram_handle": "aiafter5",
+    "is_blocked": false,
+    "is_verified": false,
+    "launch_status": "launched",
+    "linkedin_handle": "/company/ai-after-5",
+    "location": null,
+    "luma_plan": "plus",
+    "luma_plus_active": true,
+    "name": "AI After 5",
+    "refund_policy": null,
+    "sends_unlocked_at": "2026-06-29T14:01:06.810Z",
+    "slug": "aiafter5",
+    "social_image_url": null,
+    "start_date": null,
+    "tiktok_handle": null,
+    "tint_color": "#4a2f1c",
+    "track_meta_ads_from_luma": false,
+    "twitter_handle": null,
+    "website": "https://aiafter5.com/",
+    "youtube_handle": null,
+    "is_personal": false,
+    "personal_user": null,
+    "timezone": null
+   },
+   "start_at": "2026-10-20T22:00:00.000Z",
+   "hosts": [
+    {
+     "api_id": "usr-jKbj4BlXyksdAqk",
+     "name": "Mina Abdulla",
+     "first_name": "Mina",
+     "last_name": "Abdulla"
+    },
+    {
+     "api_id": "usr-H4NAgGHFOyVeWFI",
+     "name": "Samuel",
+     "first_name": "Samuel",
+     "last_name": "Chien"
+    },
+    {
+     "api_id": "usr-4XwSfbTIcQ6btjw",
+     "name": "Betaworks",
+     "first_name": "Events",
+     "last_name": "NY"
+    },
+    {
+     "api_id": "usr-2Lrk4un6dL8HMIz",
+     "name": "Genspark.ai",
+     "first_name": null,
+     "last_name": null
+    },
+    {
+     "api_id": "usr-B3OKtjEeTlvnF2M",
+     "name": "Max Kuivenhoven",
+     "first_name": "Max",
+     "last_name": "Kuivenhoven"
+    }
+   ],
+   "guest_count": 0,
+   "ticket_count": 0,
+   "ticket_info": {
+    "price": null,
+    "is_free": true,
+    "max_price": null,
+    "is_sold_out": true,
+    "spots_remaining": 0,
+    "is_near_capacity": false,
+    "require_approval": true
+   },
+   "registration_availability": "waitlist",
+   "host_info": null,
+   "waitlist_active": true,
+   "featured_city": {
+    "api_id": "discplace-Izx1rQVSh8njYpP",
+    "name": "New York",
+    "slug": "nyc"
+   }
+  }
+ ],
+ "has_more": false
+}

@@ -1,0 +1,514 @@
+{
+ "entries": [
+  {
+   "api_id": "evt-BY6CUfvAuCM89l4",
+   "event": {
+    "api_id": "evt-BY6CUfvAuCM89l4",
+    "calendar_api_id": "cal-BvuRd9eaZnDGBwy",
+    "cover_url": "https://images.lumacdn.com/uploads/l0/ce59d463-84d1-4805-b515-a183b1c3a8b5.png",
+    "end_at": "2026-10-17T22:00:00.000Z",
+    "event_type": "independent",
+    "hide_rsvp": false,
+    "location_type": "offline",
+    "name": "studio cleanout sale",
+    "one_to_one": true,
+    "recurrence_id": null,
+    "show_guest_list": false,
+    "social_image_url": "https://images.lumacdn.com/event-social/lz/c47eae36-0d85-4ded-b7da-4467a9870a7c.png",
+    "start_at": "2026-10-16T16:00:00.000Z",
+    "timezone": "America/New_York",
+    "url": "craftnook-f70s",
+    "visibility": "public",
+    "virtual_info": {
+     "has_access": false
+    },
+    "geo_address_info": {
+     "mode": "obfuscated",
+     "city": "Brooklyn",
+     "city_state": "Brooklyn, NY",
+     "sublocality": "Brooklyn",
+     "country": "United States",
+     "country_code": "US",
+     "region": "New York",
+     "region_short": "NY"
+    },
+    "geo_address_visibility": "guests-only",
+    "coordinate": {
+     "latitude": 40.72793586074224,
+     "longitude": -73.95586641937976
+    },
+    "waitlist_enabled": false,
+    "waitlist_status": "disabled"
+   },
+   "cover_image": {
+    "colors": [
+     "#f6abd2",
+     "#f8f6fa",
+     "#a7c9ea",
+     "#e6d557"
+    ]
+   },
+   "calendar": {
+    "access_level": "public",
+    "api_id": "cal-BvuRd9eaZnDGBwy",
+    "avatar_url": "https://images.lumacdn.com/calendars/dy/42a70c23-1dfd-4123-9ada-2d3b8b385ea8.png",
+    "coordinate": {
+     "longitude": -74.005973,
+     "latitude": 40.712775
+    },
+    "cover_image_url": "https://images.lumacdn.com/calendar-cover-images/pr/ffea5060-ec40-44d7-bec8-4469ec07fcba.png",
+    "description_short": "@haricotvert's crafty community in williamsburg, brooklyn. check out our events & workshops ♡",
+    "end_date": null,
+    "event_submission_restriction": "open",
+    "instagram_handle": "inthecraftnook",
+    "is_blocked": false,
+    "is_verified": false,
+    "launch_status": "launched",
+    "linkedin_handle": null,
+    "location": {
+     "city": "New York",
+     "region": null,
+     "country": "United States",
+     "place_id": "ChIJOwg_06VPwokRYv534QaPC8g",
+     "timezone": "America/New_York",
+     "country_code": "US"
+    },
+    "luma_plan": "plus",
+    "luma_plus_active": true,
+    "name": "welcome to the craftnook",
+    "refund_policy": null,
+    "sends_unlocked_at": "2024-10-29T00:57:30.013Z",
+    "slug": "craftnook",
+    "social_image_url": "https://images.lumacdn.com/calendar-cover-images/rx/457e2b13-8718-4491-b7d0-c5f994c0bf49.png",
+    "start_date": null,
+    "tiktok_handle": null,
+    "tint_color": "#de3163",
+    "track_meta_ads_from_luma": false,
+    "twitter_handle": null,
+    "website": "https://haricotvert.shop",
+    "youtube_handle": null,
+    "is_personal": false,
+    "personal_user": null,
+    "timezone": "America/New_York"
+   },
+   "start_at": "2026-10-16T16:00:00.000Z",
+   "hosts": [
+    {
+     "api_id": "usr-Yv1EkLAwR92KxzI",
+     "name": "craftnook",
+     "first_name": "Craft",
+     "last_name": "Nook"
+    }
+   ],
+   "guest_count": 0,
+   "ticket_count": 0,
+   "ticket_info": {
+    "price": null,
+    "is_free": true,
+    "max_price": null,
+    "is_sold_out": false,
+    "spots_remaining": null,
+    "is_near_capacity": false,
+    "require_approval": false
+   },
+   "registration_availability": "open",
+   "host_info": null,
+   "waitlist_active": false,
+   "featured_city": null
+  },
+  {
+   "api_id": "evt-8B9O1EBFRmZsQVG",
+   "event": {
+    "api_id": "evt-8B9O1EBFRmZsQVG",
+    "calendar_api_id": "cal-k0oppywKeXDuqnG",
+    "cover_url": "https://images.lumacdn.com/uploads/rg/1b171205-38d8-4c34-a1b7-812135ea9f14.jpg",
+    "end_at": "2026-10-17T22:00:00.000Z",
+    "event_type": "independent",
+    "hide_rsvp": false,
+    "location_type": "offline",
+    "name": "Xavier B-day Café @New York DAY 1 (Fri.)",
+    "one_to_one": true,
+    "recurrence_id": null,
+    "show_guest_list": true,
+    "social_image_url": "https://images.lumacdn.com/event-social/o2/b60971bd-b616-40e5-b275-6a74b63b8da0.png",
+    "start_at": "2026-10-16T16:00:00.000Z",
+    "timezone": "America/New_York",
+    "url": "xt9dfpcx",
+    "visibility": "public",
+    "virtual_info": {
+     "has_access": false
+    },
+    "geo_address_info": {
+     "city": "New York",
+     "type": "google",
+     "region": "New York",
+     "address": "106 Rivington St",
+     "country": "United States",
+     "place_id": "ChIJ2wcBR4FZwokR1LPrjjQ_ZP8",
+     "localized": null,
+     "city_state": "New York, NY",
+     "description": "",
+     "sublocality": "Lower East Side",
+     "country_code": "US",
+     "full_address": "106 Rivington St, New York, NY 10002, USA",
+     "region_short": "NY",
+     "short_address": "106 Rivington St, New York",
+     "place_coordinate": {
+      "latitude": 40.720124999999996,
+      "longitude": -73.9879474
+     },
+     "apple_maps_place_id": null,
+     "mode": "shown"
+    },
+    "geo_address_visibility": "public",
+    "coordinate": {
+     "longitude": -73.9879474,
+     "latitude": 40.720124999999996
+    },
+    "waitlist_enabled": true,
+    "waitlist_status": "enabled"
+   },
+   "cover_image": {
+    "colors": [
+     "#111530",
+     "#2d2b6b",
+     "#f5f1f3"
+    ]
+   },
+   "calendar": {
+    "access_level": "public",
+    "api_id": "cal-k0oppywKeXDuqnG",
+    "avatar_url": "https://images.lumacdn.com/calendars/78/4d9b0e88-cf54-4a2b-a341-389e337abc36.png",
+    "coordinate": null,
+    "cover_image_url": "https://images.lumacdn.com/calendar-cover-images/my/2068b1f3-a566-4875-b015-4c8f92ce7e41.png",
+    "description_short": "Aniqueen advances the well-being of women and LGBTQ+ individuals who face patriarchal oppression within anime, manga, and related subcultural communities.",
+    "end_date": null,
+    "event_submission_restriction": "open",
+    "instagram_handle": null,
+    "is_blocked": false,
+    "is_verified": false,
+    "launch_status": "launched",
+    "linkedin_handle": null,
+    "location": null,
+    "luma_plan": "free",
+    "luma_plus_active": false,
+    "name": "Aniqueen",
+    "refund_policy": null,
+    "sends_unlocked_at": "2025-11-01T20:00:35.194Z",
+    "slug": "aniqueen",
+    "social_image_url": null,
+    "start_date": null,
+    "tiktok_handle": null,
+    "tint_color": "#ab3137",
+    "track_meta_ads_from_luma": false,
+    "twitter_handle": null,
+    "website": null,
+    "youtube_handle": null,
+    "is_personal": false,
+    "personal_user": null,
+    "timezone": null
+   },
+   "start_at": "2026-10-16T16:00:00.000Z",
+   "hosts": [
+    {
+     "api_id": "usr-4e9t7xVReomHVkE",
+     "name": "ANIQUEEN",
+     "first_name": "ladsevents",
+     "last_name": "nyc"
+    }
+   ],
+   "guest_count": 83,
+   "ticket_count": 83,
+   "ticket_info": {
+    "price": null,
+    "is_free": true,
+    "max_price": null,
+    "is_sold_out": false,
+    "spots_remaining": 67,
+    "is_near_capacity": false,
+    "require_approval": false
+   },
+   "registration_availability": "open",
+   "host_info": null,
+   "waitlist_active": false,
+   "featured_city": null
+  },
+  {
+   "api_id": "evt-c94cMCohcT10cRH",
+   "event": {
+    "api_id": "evt-c94cMCohcT10cRH",
+    "calendar_api_id": "cal-QKRD2iRyA1Gjvu3",
+    "cover_url": "https://images.lumacdn.com/uploads/7e/e877081f-46d5-4de1-ae43-85332488c3a8.jpg",
+    "end_at": "2026-10-17T23:00:00.000Z",
+    "event_type": "independent",
+    "hide_rsvp": false,
+    "location_type": "offline",
+    "name": "TSUYOSHI ANZAI PRIVATE STUDIO PREVIEW",
+    "one_to_one": true,
+    "recurrence_id": null,
+    "show_guest_list": true,
+    "social_image_url": "https://images.lumacdn.com/event-social/tu/d627e368-a835-4a3f-867e-fa64cffc3ba1.png",
+    "start_at": "2026-10-16T18:00:00.000Z",
+    "timezone": "America/New_York",
+    "url": "28wdrqzp",
+    "visibility": "public",
+    "virtual_info": {
+     "has_access": false
+    },
+    "geo_address_info": {
+     "city": "Brooklyn",
+     "type": "google",
+     "region": "New York",
+     "address": "International Studio & Curatorial Program",
+     "country": "United States",
+     "place_id": "ChIJoU11u6xewokRBry1mKr4C5o",
+     "localized": null,
+     "city_state": "Brooklyn, NY",
+     "description": "#209",
+     "sublocality": "East Williamsburg",
+     "country_code": "US",
+     "full_address": "International Studio & Curatorial Program, 1040 Metropolitan Ave, Brooklyn, NY 11211, USA",
+     "region_short": "NY",
+     "short_address": "1040 Metropolitan Ave, Brooklyn",
+     "place_coordinate": {
+      "latitude": 40.714163899999996,
+      "longitude": -73.93430239999999
+     },
+     "apple_maps_place_id": "IEA3BF8ADAC0FB18F",
+     "mode": "shown"
+    },
+    "geo_address_visibility": "public",
+    "coordinate": {
+     "longitude": -73.93430239999999,
+     "latitude": 40.714163899999996
+    },
+    "waitlist_enabled": false,
+    "waitlist_status": "disabled"
+   },
+   "cover_image": {
+    "colors": [
+     "#e8ebee",
+     "#babdbf",
+     "#c6773b",
+     "#29211f"
+    ]
+   },
+   "calendar": {
+    "access_level": "public",
+    "api_id": "cal-QKRD2iRyA1Gjvu3",
+    "avatar_url": "https://cdn.lu.ma/avatars-default/community_avatar_21.png",
+    "coordinate": null,
+    "cover_image_url": null,
+    "description_short": null,
+    "end_date": null,
+    "event_submission_restriction": "open",
+    "instagram_handle": null,
+    "is_blocked": false,
+    "is_verified": false,
+    "launch_status": "launched",
+    "linkedin_handle": null,
+    "location": null,
+    "luma_plan": "free",
+    "luma_plus_active": false,
+    "name": "Personal",
+    "refund_policy": null,
+    "sends_unlocked_at": null,
+    "slug": null,
+    "social_image_url": null,
+    "start_date": null,
+    "tiktok_handle": null,
+    "tint_color": "#F31A7C",
+    "track_meta_ads_from_luma": false,
+    "twitter_handle": null,
+    "website": null,
+    "youtube_handle": null,
+    "is_personal": true,
+    "personal_user": {
+     "api_id": "usr-oCI2f4K8ARUypCg",
+     "avatar_url": "https://images.lumacdn.com/uploads/mt/93c3f842-7a8b-496e-93d9-7dc5a9677e5f.png",
+     "bio_short": "",
+     "first_name": "Tsuyoshi",
+     "last_name": "Anzai",
+     "instagram_handle": "an2ai",
+     "is_verified": false,
+     "linkedin_handle": null,
+     "name": "Tsuyoshi Anzai",
+     "tiktok_handle": null,
+     "timezone": "America/New_York",
+     "twitter_handle": null,
+     "username": null,
+     "website": "https://an2ai.net/",
+     "youtube_handle": null
+    },
+    "timezone": null
+   },
+   "start_at": "2026-10-16T18:00:00.000Z",
+   "hosts": [
+    {
+     "api_id": "usr-oCI2f4K8ARUypCg",
+     "name": "Tsuyoshi Anzai",
+     "first_name": "Tsuyoshi",
+     "last_name": "Anzai"
+    }
+   ],
+   "guest_count": 19,
+   "ticket_count": 19,
+   "ticket_info": {
+    "price": null,
+    "is_free": true,
+    "max_price": null,
+    "is_sold_out": false,
+    "spots_remaining": null,
+    "is_near_capacity": false,
+    "require_approval": false
+   },
+   "registration_availability": "open",
+   "host_info": null,
+   "waitlist_active": false,
+   "featured_city": null
+  },
+  {
+   "api_id": "evt-EP0MREoPs1dnd9i",
+   "event": {
+    "api_id": "evt-EP0MREoPs1dnd9i",
+    "calendar_api_id": "cal-EUln7teTrcznoGx",
+    "cover_url": "https://images.lumacdn.com/uploads/tb/2106aa12-7280-4f01-b39b-64ecb7c6dc0f.png",
+    "end_at": "2026-10-17T14:00:00.000Z",
+    "event_type": "independent",
+    "hide_rsvp": false,
+    "location_type": "offline",
+    "name": "Fall Foliage Content Club: Small Group NYC 🍁",
+    "one_to_one": true,
+    "recurrence_id": null,
+    "show_guest_list": true,
+    "social_image_url": "https://images.lumacdn.com/event-social/gk/373ab36e-4d7e-48eb-b05e-d20f7a74aa65.png",
+    "start_at": "2026-10-17T12:00:00.000Z",
+    "timezone": "America/New_York",
+    "url": "fall202601",
+    "visibility": "public",
+    "virtual_info": {
+     "has_access": false
+    },
+    "geo_address_info": {
+     "city": "New York",
+     "type": "google",
+     "region": "New York",
+     "address": "Bethesda Terrace",
+     "country": "United States",
+     "place_id": "ChIJEYYWppJYwokRUTul6ztwlJ0",
+     "localized": null,
+     "city_state": "New York, NY",
+     "description": "",
+     "sublocality": "Manhattan",
+     "country_code": "US",
+     "full_address": "Bethesda Terrace, New York, NY 10024, USA",
+     "region_short": "NY",
+     "short_address": "New York",
+     "place_coordinate": {
+      "latitude": 40.773952799999996,
+      "longitude": -73.97096570000001
+     },
+     "apple_maps_place_id": "I25C4CC24D033A968",
+     "mode": "shown"
+    },
+    "geo_address_visibility": "public",
+    "coordinate": {
+     "longitude": -73.97096570000001,
+     "latitude": 40.773952799999996
+    },
+    "waitlist_enabled": true,
+    "waitlist_status": "active"
+   },
+   "cover_image": {
+    "colors": [
+     "#fdfaf1",
+     "#875a56",
+     "#d7ac5f",
+     "#80c7da"
+    ]
+   },
+   "calendar": {
+    "access_level": "public",
+    "api_id": "cal-EUln7teTrcznoGx",
+    "avatar_url": "https://cdn.lu.ma/avatars-default/community_avatar_9.png",
+    "coordinate": null,
+    "cover_image_url": null,
+    "description_short": null,
+    "end_date": null,
+    "event_submission_restriction": "open",
+    "instagram_handle": null,
+    "is_blocked": false,
+    "is_verified": false,
+    "launch_status": "launched",
+    "linkedin_handle": null,
+    "location": null,
+    "luma_plan": "free",
+    "luma_plus_active": false,
+    "name": "Personal",
+    "refund_policy": null,
+    "sends_unlocked_at": "2026-08-23T20:04:43.979Z",
+    "slug": null,
+    "social_image_url": null,
+    "start_date": null,
+    "tiktok_handle": null,
+    "tint_color": "#F31A7C",
+    "track_meta_ads_from_luma": false,
+    "twitter_handle": null,
+    "website": null,
+    "youtube_handle": null,
+    "is_personal": true,
+    "personal_user": {
+     "api_id": "usr-bwQ7fEOvhUMHRFp",
+     "avatar_url": "https://images.lumacdn.com/avatars/95/a02856be-2c09-453e-a461-83e3f805b093.jpg",
+     "bio_short": "",
+     "first_name": "Brea",
+     "last_name": "Galper",
+     "instagram_handle": "stylestoryteller",
+     "is_verified": false,
+     "linkedin_handle": "/in/brealightsey",
+     "name": "Brea Lightsey",
+     "tiktok_handle": "thestylestoryteller",
+     "timezone": "America/New_York",
+     "twitter_handle": null,
+     "username": "stylestory",
+     "website": "https://www.stylestoryteller.com/",
+     "youtube_handle": "brealightsey"
+    },
+    "timezone": null
+   },
+   "start_at": "2026-10-17T12:00:00.000Z",
+   "hosts": [
+    {
+     "api_id": "usr-bwQ7fEOvhUMHRFp",
+     "name": "Brea Lightsey",
+     "first_name": "Brea",
+     "last_name": "Galper"
+    }
+   ],
+   "guest_count": 10,
+   "ticket_count": 10,
+   "ticket_info": {
+    "price": {
+     "cents": 2500,
+     "currency": "usd",
+     "is_flexible": false
+    },
+    "is_free": false,
+    "max_price": {
+     "cents": 4500,
+     "currency": "usd"
+    },
+    "is_sold_out": true,
+    "spots_remaining": 0,
+    "is_near_capacity": false,
+    "require_approval": false
+   },
+   "registration_availability": "waitlist",
+   "host_info": null,
+   "waitlist_active": true,
+   "featured_city": null
+  }
+ ],
+ "has_more": true,
+ "next_cursor": "eyJzdiI6IjIwMjYtMTAtMTcgMTY6MDA6MDArMDAiLCJmYiI6ImV2dC1HNGxycmdkR3hrRER6SzUifQ"
+}

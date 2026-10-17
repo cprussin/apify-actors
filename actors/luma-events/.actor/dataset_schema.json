@@ -1,0 +1,353 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "eventId": {
+        "type": "string",
+        "title": "Event ID",
+        "description": "Luma event ID.",
+        "example": "evt-yEE1YSoVZ8qHMGt"
+      },
+      "name": {
+        "type": ["string", "null"],
+        "title": "Event",
+        "description": "Event name.",
+        "example": "Mem-Off! The Open Source AI Memory Showdown"
+      },
+      "url": {
+        "type": ["string", "null"],
+        "title": "Event page",
+        "description": "Luma event page URL.",
+        "example": "https://luma.com/cognee-cy86"
+      },
+      "startUtc": {
+        "type": ["string", "null"],
+        "title": "Starts (UTC)",
+        "description": "Start time in UTC (ISO 8601).",
+        "example": "2026-10-17T17:30:00.000Z"
+      },
+      "endUtc": {
+        "type": ["string", "null"],
+        "title": "Ends (UTC)",
+        "description": "End time in UTC (ISO 8601).",
+        "example": "2026-10-18T01:30:00.000Z"
+      },
+      "timezone": {
+        "type": ["string", "null"],
+        "title": "Time zone",
+        "description": "IANA time zone of the event.",
+        "example": "America/Los_Angeles"
+      },
+      "startLocal": {
+        "type": ["string", "null"],
+        "title": "Starts (local)",
+        "description": "Start time in the event's local time.",
+        "example": "2026-10-17T10:30:00"
+      },
+      "endLocal": {
+        "type": ["string", "null"],
+        "title": "Ends (local)",
+        "description": "End time in the event's local time.",
+        "example": "2026-10-17T18:30:00"
+      },
+      "locationType": {
+        "type": ["string", "null"],
+        "title": "Location type",
+        "description": "Luma location type, e.g. offline or online.",
+        "example": "offline"
+      },
+      "isOnline": {
+        "type": ["boolean", "null"],
+        "title": "Online",
+        "description": "Whether the event is online.",
+        "example": false
+      },
+      "venueName": {
+        "type": ["string", "null"],
+        "title": "Venue",
+        "description": "Venue name or street address as Luma shows it (null when the address is hidden).",
+        "example": "Pebblebed"
+      },
+      "venueAddress": {
+        "type": ["string", "null"],
+        "title": "Address",
+        "description": "Full venue address (null when the address is hidden).",
+        "example": "Pebblebed, 1417 15th St, San Francisco, CA 94103, USA"
+      },
+      "venueCity": {
+        "type": ["string", "null"],
+        "title": "City",
+        "description": "Venue city.",
+        "example": "San Francisco"
+      },
+      "venueRegion": {
+        "type": ["string", "null"],
+        "title": "Region",
+        "description": "Venue state or region.",
+        "example": "California"
+      },
+      "venueCountry": {
+        "type": ["string", "null"],
+        "title": "Country",
+        "description": "Venue country.",
+        "example": "United States"
+      },
+      "venueCountryCode": {
+        "type": ["string", "null"],
+        "title": "Country code",
+        "description": "ISO country code.",
+        "example": "US"
+      },
+      "latitude": {
+        "type": ["number", "null"],
+        "title": "Latitude",
+        "description": "Venue latitude (approximate when the address is hidden).",
+        "example": 37.7666648
+      },
+      "longitude": {
+        "type": ["number", "null"],
+        "title": "Longitude",
+        "description": "Venue longitude (approximate when the address is hidden).",
+        "example": -122.4161551
+      },
+      "addressHidden": {
+        "type": "boolean",
+        "title": "Address hidden",
+        "description": "True when the host shows the exact address to registered guests only.",
+        "example": false
+      },
+      "isFree": {
+        "type": ["boolean", "null"],
+        "title": "Free",
+        "description": "Whether the event is free.",
+        "example": true
+      },
+      "priceMin": {
+        "type": ["number", "null"],
+        "title": "Price min",
+        "description": "Lowest ticket price in currency units (0 when free).",
+        "example": 0
+      },
+      "priceMax": {
+        "type": ["number", "null"],
+        "title": "Price max",
+        "description": "Highest ticket price in currency units.",
+        "example": 0
+      },
+      "currency": {
+        "type": ["string", "null"],
+        "title": "Currency",
+        "description": "Ticket currency (ISO 4217).",
+        "example": null
+      },
+      "isSoldOut": {
+        "type": ["boolean", "null"],
+        "title": "Sold out",
+        "description": "Whether tickets are sold out.",
+        "example": false
+      },
+      "spotsRemaining": {
+        "type": ["number", "null"],
+        "title": "Spots left",
+        "description": "Remaining spots, when the host shows them.",
+        "example": null
+      },
+      "requiresApproval": {
+        "type": ["boolean", "null"],
+        "title": "Needs approval",
+        "description": "Whether registration needs host approval.",
+        "example": false
+      },
+      "waitlistActive": {
+        "type": ["boolean", "null"],
+        "title": "Waitlist",
+        "description": "Whether the waitlist is active.",
+        "example": false
+      },
+      "guestCount": {
+        "type": ["number", "null"],
+        "title": "Guests",
+        "description": "Number of registered guests Luma shows.",
+        "example": 202
+      },
+      "hostNames": {
+        "type": "array",
+        "title": "Hosts",
+        "description": "Names of the event's hosts.",
+        "items": {
+          "type": "string"
+        },
+        "example": ["cognee", "George Curtis", "Claude-Mem 🧠", "AJ Green"]
+      },
+      "calendarId": {
+        "type": ["string", "null"],
+        "title": "Calendar ID",
+        "description": "Luma calendar (community) ID.",
+        "example": "cal-hpIcdwBuL8vfdba"
+      },
+      "calendarName": {
+        "type": ["string", "null"],
+        "title": "Calendar",
+        "description": "Calendar/community name (null for a host's personal calendar).",
+        "example": "cognee"
+      },
+      "calendarUrl": {
+        "type": ["string", "null"],
+        "title": "Calendar page",
+        "description": "Calendar/community page URL.",
+        "example": "https://luma.com/cognee"
+      },
+      "imageUrl": {
+        "type": ["string", "null"],
+        "title": "Image",
+        "description": "Event cover image URL.",
+        "example": "https://images.lumacdn.com/uploads/7p/9231c06e-87c0-4442-8f15-b1523daaceb7.jpg"
+      },
+      "recurrenceId": {
+        "type": ["string", "null"],
+        "title": "Series ID",
+        "description": "Recurring-series ID, when the event repeats.",
+        "example": null
+      },
+      "categories": {
+        "type": "array",
+        "title": "Categories",
+        "description": "Luma categories (with Include event details).",
+        "items": {
+          "type": "string"
+        },
+        "example": ["AI"]
+      },
+      "ticketTypes": {
+        "type": "array",
+        "title": "Ticket types",
+        "description": "Visible ticket types with name, price, currency and type (with Include event details).",
+        "items": {
+          "type": "object"
+        },
+        "example": [
+          {
+            "name": "Standard",
+            "price": 0,
+            "currency": null,
+            "type": "free"
+          }
+        ]
+      },
+      "description": {
+        "type": ["string", "null"],
+        "title": "Description",
+        "description": "Full description as plain text (with Include event details).",
+        "example": "Mem Off - The AI Memory Showdown\n\nEveryone claims their AI has memory. But does it actually work?\n\nMem Off brings togeth..."
+      },
+      "source": {
+        "type": ["string", "null"],
+        "title": "Source",
+        "description": "What found the event: city:<slug>, coords:<lat,lon>, calendar:<slug> or event:<slug>.",
+        "example": "calendar:genai-sf"
+      },
+      "scrapedAt": {
+        "type": "string",
+        "title": "Scraped at",
+        "description": "When the event was scraped (ISO 8601).",
+        "example": "2026-10-17T00:00:00.000Z"
+      }
+    },
+    "required": ["eventId", "scrapedAt"]
+  },
+  "views": {
+    "overview": {
+      "title": "Events",
+      "transformation": {
+        "fields": [
+          "name",
+          "startLocal",
+          "timezone",
+          "venueName",
+          "venueCity",
+          "isOnline",
+          "isFree",
+          "priceMin",
+          "priceMax",
+          "currency",
+          "guestCount",
+          "hostNames",
+          "calendarName",
+          "url",
+          "imageUrl",
+          "scrapedAt"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "name": {
+            "label": "Event",
+            "format": "text"
+          },
+          "startLocal": {
+            "label": "Starts (local)",
+            "format": "text"
+          },
+          "timezone": {
+            "label": "Time zone",
+            "format": "text"
+          },
+          "venueName": {
+            "label": "Venue",
+            "format": "text"
+          },
+          "venueCity": {
+            "label": "City",
+            "format": "text"
+          },
+          "isOnline": {
+            "label": "Online",
+            "format": "boolean"
+          },
+          "isFree": {
+            "label": "Free",
+            "format": "boolean"
+          },
+          "priceMin": {
+            "label": "Price min",
+            "format": "number"
+          },
+          "priceMax": {
+            "label": "Price max",
+            "format": "number"
+          },
+          "currency": {
+            "label": "Currency",
+            "format": "text"
+          },
+          "guestCount": {
+            "label": "Guests",
+            "format": "number"
+          },
+          "hostNames": {
+            "label": "Hosts",
+            "format": "array"
+          },
+          "calendarName": {
+            "label": "Calendar",
+            "format": "text"
+          },
+          "url": {
+            "label": "Event page",
+            "format": "link"
+          },
+          "imageUrl": {
+            "label": "Image",
+            "format": "image"
+          },
+          "scrapedAt": {
+            "label": "Scraped at",
+            "format": "date"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,99 @@
+{
+ "kind": "calendar",
+ "data": {
+  "calendar": {
+   "access_level": "public",
+   "api_id": "cal-JTdFQadEz0AOxyV",
+   "avatar_url": "https://images.lumacdn.com/calendars/st/0a132c55-f6bd-44b6-b8fe-d452a223d78e.png",
+   "coordinate": {
+    "longitude": -122.419416,
+    "latitude": 37.77493
+   },
+   "cover_image_url": "https://images.lumacdn.com/uploads/vv/edfe69d3-2602-4fd6-9765-8044a298db8b.png",
+   "description_short": "Bond AI - the largest in-person AI events community (150k+ members)\n\n📢 Add your event submit.bondcommunity.ai\n📤 Subscribe to the weekly events email\n🌎 Explore other cities bondcommunity.ai/#join",
+   "end_date": null,
+   "event_submission_restriction": "open",
+   "instagram_handle": "Bondcommunityai",
+   "is_blocked": false,
+   "is_verified": false,
+   "launch_status": "launched",
+   "linkedin_handle": "/company/bond-ai-community",
+   "location": {
+    "city": "San Francisco",
+    "region": "California",
+    "country": "United States",
+    "place_id": "ChIJIQBpAG2ahYAR_6128GcTUEo",
+    "timezone": "America/Los_Angeles",
+    "country_code": "US"
+   },
+   "luma_plan": "plus",
+   "luma_plus_active": true,
+   "name": "Bond AI - San Francisco and Bay Area",
+   "refund_policy": {
+    "type": "doc",
+    "content": [
+     {
+      "type": "paragraph",
+      "content": [
+       {
+        "text": "Refund & Cancellation Policy",
+        "type": "text",
+        "marks": [
+         {
+          "type": "bold"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "paragraph",
+      "content": [
+       {
+        "text": "All Bond AI membership subscriptions are non-refundable. By subscribing, you acknowledge and agree that payments made for access to the Bond AI community, including any membership tiers or recurring billing periods, will not be refunded, whether in full or in part, regardless of usage or cancellation timing.",
+        "type": "text"
+       }
+      ]
+     },
+     {
+      "type": "paragraph",
+      "content": [
+       {
+        "text": "Cancellations",
+        "type": "text",
+        "marks": [
+         {
+          "type": "bold"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "paragraph",
+      "content": [
+       {
+        "text": "You may cancel your subscription at any time directly through Luma, where you manage your membership and billing preferences. To cancel, log in to your Luma account, navigate to your subscriptions, and follow the steps to cancel your Bond AI membership. Cancellations take effect at the end of the current billing cycle, and you will retain access to the community until that date.",
+        "type": "text"
+       }
+      ]
+     }
+    ]
+   },
+   "sends_unlocked_at": "2023-05-29T00:43:00.465Z",
+   "slug": "genai-sf",
+   "social_image_url": "https://images.lumacdn.com/uploads/3s/42524954-5f1e-4db3-8fd3-6340c85ba4ac.png",
+   "start_date": null,
+   "tiktok_handle": null,
+   "tint_color": "#e83b47",
+   "track_meta_ads_from_luma": false,
+   "twitter_handle": "bondaicommunity",
+   "website": "https://bondcommunity.ai",
+   "youtube_handle": null,
+   "is_personal": false,
+   "personal_user": null,
+   "timezone": "America/Los_Angeles"
+  },
+  "has_upcoming_events": true
+ }
+}

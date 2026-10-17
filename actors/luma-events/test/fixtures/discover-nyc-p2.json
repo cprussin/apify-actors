@@ -1,0 +1,402 @@
+{
+ "entries": [
+  {
+   "api_id": "evt-BY6CUfvAuCM89l4",
+   "event": {
+    "api_id": "evt-BY6CUfvAuCM89l4",
+    "calendar_api_id": "cal-BvuRd9eaZnDGBwy",
+    "cover_url": "https://images.lumacdn.com/uploads/l0/ce59d463-84d1-4805-b515-a183b1c3a8b5.png",
+    "end_at": "2026-10-17T22:00:00.000Z",
+    "event_type": "independent",
+    "hide_rsvp": false,
+    "location_type": "offline",
+    "name": "studio cleanout sale",
+    "one_to_one": true,
+    "recurrence_id": null,
+    "show_guest_list": false,
+    "social_image_url": "https://images.lumacdn.com/event-social/lz/c47eae36-0d85-4ded-b7da-4467a9870a7c.png",
+    "start_at": "2026-10-16T16:00:00.000Z",
+    "timezone": "America/New_York",
+    "url": "craftnook-f70s",
+    "visibility": "public",
+    "virtual_info": {
+     "has_access": false
+    },
+    "geo_address_info": {
+     "mode": "obfuscated",
+     "city": "Brooklyn",
+     "city_state": "Brooklyn, NY",
+     "sublocality": "Brooklyn",
+     "country": "United States",
+     "country_code": "US",
+     "region": "New York",
+     "region_short": "NY"
+    },
+    "geo_address_visibility": "guests-only",
+    "coordinate": {
+     "latitude": 40.72793586074224,
+     "longitude": -73.95586641937976
+    },
+    "waitlist_enabled": false,
+    "waitlist_status": "disabled"
+   },
+   "cover_image": {
+    "colors": [
+     "#f6abd2",
+     "#f8f6fa",
+     "#a7c9ea",
+     "#e6d557"
+    ]
+   },
+   "calendar": {
+    "access_level": "public",
+    "api_id": "cal-BvuRd9eaZnDGBwy",
+    "avatar_url": "https://images.lumacdn.com/calendars/dy/42a70c23-1dfd-4123-9ada-2d3b8b385ea8.png",
+    "coordinate": {
+     "longitude": -74.005973,
+     "latitude": 40.712775
+    },
+    "cover_image_url": "https://images.lumacdn.com/calendar-cover-images/pr/ffea5060-ec40-44d7-bec8-4469ec07fcba.png",
+    "description_short": "@haricotvert's crafty community in williamsburg, brooklyn. check out our events & workshops ♡",
+    "end_date": null,
+    "event_submission_restriction": "open",
+    "instagram_handle": "inthecraftnook",
+    "is_blocked": false,
+    "is_verified": false,
+    "launch_status": "launched",
+    "linkedin_handle": null,
+    "location": {
+     "city": "New York",
+     "region": null,
+     "country": "United States",
+     "place_id": "ChIJOwg_06VPwokRYv534QaPC8g",
+     "timezone": "America/New_York",
+     "country_code": "US"
+    },
+    "luma_plan": "plus",
+    "luma_plus_active": true,
+    "name": "welcome to the craftnook",
+    "refund_policy": null,
+    "sends_unlocked_at": "2024-10-29T00:57:30.013Z",
+    "slug": "craftnook",
+    "social_image_url": "https://images.lumacdn.com/calendar-cover-images/rx/457e2b13-8718-4491-b7d0-c5f994c0bf49.png",
+    "start_date": null,
+    "tiktok_handle": null,
+    "tint_color": "#de3163",
+    "track_meta_ads_from_luma": false,
+    "twitter_handle": null,
+    "website": "https://haricotvert.shop",
+    "youtube_handle": null,
+    "is_personal": false,
+    "personal_user": null,
+    "timezone": "America/New_York"
+   },
+   "start_at": "2026-10-16T16:00:00.000Z",
+   "hosts": [
+    {
+     "api_id": "usr-Yv1EkLAwR92KxzI",
+     "name": "craftnook",
+     "first_name": "Craft",
+     "last_name": "Nook"
+    }
+   ],
+   "guest_count": 0,
+   "ticket_count": 0,
+   "ticket_info": {
+    "price": null,
+    "is_free": true,
+    "max_price": null,
+    "is_sold_out": false,
+    "spots_remaining": null,
+    "is_near_capacity": false,
+    "require_approval": false
+   },
+   "registration_availability": "open",
+   "host_info": null,
+   "waitlist_active": false,
+   "featured_city": null
+  },
+  {
+   "api_id": "evt-pbuCdGCqkVtLY1U",
+   "event": {
+    "api_id": "evt-pbuCdGCqkVtLY1U",
+    "calendar_api_id": "cal-flpU4FlCEMIV5H5",
+    "cover_url": "https://images.lumacdn.com/uploads/kj/2491c8a1-c0d1-4665-b391-3bdf60e1cccd.png",
+    "end_at": "2026-10-17T20:00:00.000Z",
+    "event_type": "independent",
+    "hide_rsvp": false,
+    "location_type": "offline",
+    "name": "Black Ecologies: Land, Memory, and the More-than-Human",
+    "one_to_one": true,
+    "recurrence_id": null,
+    "show_guest_list": true,
+    "social_image_url": "https://images.lumacdn.com/event-social/ka/906d6129-c4d7-4f7d-bb50-921eb5ce25df.png",
+    "start_at": "2026-10-17T16:00:00.000Z",
+    "timezone": "America/New_York",
+    "url": "o8mdgnsy",
+    "visibility": "public",
+    "virtual_info": {
+     "has_access": false
+    },
+    "geo_address_info": {
+     "city": "New York",
+     "type": "google",
+     "region": "New York",
+     "address": "The Arts Center at Governors Island (Building 110)",
+     "country": "United States",
+     "place_id": "ChIJmTLaJONbwokRr9FCwVsMESg",
+     "localized": null,
+     "city_state": "New York, NY",
+     "description": "",
+     "sublocality": "Governors Island",
+     "country_code": "US",
+     "full_address": "The Arts Center at Governors Island (Building 110), 110 Andes Rd, New York, NY 10004, USA",
+     "region_short": "NY",
+     "short_address": "110 Andes Rd, New York",
+     "place_coordinate": {
+      "latitude": 40.6927051,
+      "longitude": -74.0164113
+     },
+     "apple_maps_place_id": "I530BAE6EC9E7314C",
+     "mode": "shown"
+    },
+    "geo_address_visibility": "public",
+    "coordinate": {
+     "longitude": -74.0164113,
+     "latitude": 40.6927051
+    },
+    "waitlist_enabled": false,
+    "waitlist_status": "disabled"
+   },
+   "cover_image": {
+    "colors": [
+     "#f6f1e0",
+     "#28ab67"
+    ]
+   },
+   "calendar": {
+    "access_level": "public",
+    "api_id": "cal-flpU4FlCEMIV5H5",
+    "avatar_url": "https://cdn.lu.ma/avatars-default/community_avatar_15.png",
+    "coordinate": null,
+    "cover_image_url": null,
+    "description_short": null,
+    "end_date": null,
+    "event_submission_restriction": "open",
+    "instagram_handle": null,
+    "is_blocked": false,
+    "is_verified": false,
+    "launch_status": "launched",
+    "linkedin_handle": null,
+    "location": null,
+    "luma_plan": "free",
+    "luma_plus_active": false,
+    "name": "Personal",
+    "refund_policy": null,
+    "sends_unlocked_at": null,
+    "slug": null,
+    "social_image_url": null,
+    "start_date": null,
+    "tiktok_handle": null,
+    "tint_color": "#F31A7C",
+    "track_meta_ads_from_luma": false,
+    "twitter_handle": null,
+    "website": null,
+    "youtube_handle": null,
+    "is_personal": true,
+    "personal_user": {
+     "api_id": "usr-BoekrxJDJZDcA0u",
+     "avatar_url": "https://cdn.lu.ma/avatars-default/avatar_23.png",
+     "bio_short": "",
+     "first_name": "Gwen",
+     "last_name": "Goins",
+     "instagram_handle": null,
+     "is_verified": false,
+     "linkedin_handle": null,
+     "name": "Gwen Go",
+     "tiktok_handle": null,
+     "timezone": "America/New_York",
+     "twitter_handle": null,
+     "username": null,
+     "website": null,
+     "youtube_handle": null
+    },
+    "timezone": null
+   },
+   "start_at": "2026-10-17T16:00:00.000Z",
+   "hosts": [
+    {
+     "api_id": "usr-BoekrxJDJZDcA0u",
+     "name": "Gwen Go",
+     "first_name": "Gwen",
+     "last_name": "Goins"
+    },
+    {
+     "api_id": "usr-CiuMD5TNe4wJ29A",
+     "name": "Brian Bishop",
+     "first_name": "Brian",
+     "last_name": "Bishop"
+    },
+    {
+     "api_id": "usr-qFsZXomuTC2dXNi",
+     "name": "Ryan Webber",
+     "first_name": "Ryan",
+     "last_name": "Webber"
+    }
+   ],
+   "guest_count": 80,
+   "ticket_count": 80,
+   "ticket_info": {
+    "price": null,
+    "is_free": true,
+    "max_price": null,
+    "is_sold_out": false,
+    "spots_remaining": null,
+    "is_near_capacity": false,
+    "require_approval": false
+   },
+   "registration_availability": "open",
+   "host_info": null,
+   "waitlist_active": false,
+   "featured_city": {
+    "api_id": "discplace-Izx1rQVSh8njYpP",
+    "name": "New York",
+    "slug": "nyc"
+   }
+  },
+  {
+   "api_id": "evt-ig7UIt6Nq0cylh1",
+   "event": {
+    "api_id": "evt-ig7UIt6Nq0cylh1",
+    "calendar_api_id": "cal-RkPyjEEMStEoAaM",
+    "cover_url": "https://images.lumacdn.com/uploads/6e/5ca019e6-faf9-48af-87bf-3180ef5d7fbd.jpg",
+    "end_at": "2026-10-17T18:30:00.000Z",
+    "event_type": "independent",
+    "hide_rsvp": false,
+    "location_type": "offline",
+    "name": "Black Skin, White Masks by Frantz Fanon",
+    "one_to_one": true,
+    "recurrence_id": null,
+    "show_guest_list": true,
+    "social_image_url": "https://images.lumacdn.com/event-social/xy/bd754818-0bea-4d17-af25-176d75faf61c.png",
+    "start_at": "2026-10-17T16:00:00.000Z",
+    "timezone": "America/New_York",
+    "url": "8q5lvha6",
+    "visibility": "public",
+    "virtual_info": {
+     "has_access": false
+    },
+    "geo_address_info": {
+     "city": "New York",
+     "type": "google",
+     "region": "New York",
+     "address": "200 E 23rd St",
+     "country": "United States",
+     "place_id": "ChIJa402DApZwokRx2pOTsC2nmc",
+     "localized": null,
+     "city_state": "New York, NY",
+     "description": "If this is your first time attending, text me before you arrive for entry instructions: 646 430 3423",
+     "sublocality": "Manhattan",
+     "country_code": "US",
+     "full_address": "200 E 23rd St, New York, NY 10010, USA",
+     "region_short": "NY",
+     "short_address": "200 E 23rd St, New York",
+     "place_coordinate": {
+      "latitude": 40.738597399999996,
+      "longitude": -73.9829524
+     },
+     "apple_maps_place_id": null,
+     "mode": "shown"
+    },
+    "geo_address_visibility": "public",
+    "coordinate": {
+     "longitude": -73.9829524,
+     "latitude": 40.738597399999996
+    },
+    "waitlist_enabled": false,
+    "waitlist_status": "disabled"
+   },
+   "cover_image": {
+    "colors": [
+     "#b8b8b8",
+     "#212321"
+    ]
+   },
+   "calendar": {
+    "access_level": "public",
+    "api_id": "cal-RkPyjEEMStEoAaM",
+    "avatar_url": "https://cdn.lu.ma/avatars-default/community_avatar_16.png",
+    "coordinate": null,
+    "cover_image_url": null,
+    "description_short": null,
+    "end_date": null,
+    "event_submission_restriction": "open",
+    "instagram_handle": null,
+    "is_blocked": false,
+    "is_verified": false,
+    "launch_status": "launched",
+    "linkedin_handle": null,
+    "location": null,
+    "luma_plan": "free",
+    "luma_plus_active": false,
+    "name": "Personal",
+    "refund_policy": null,
+    "sends_unlocked_at": "2026-08-23T20:45:39.078Z",
+    "slug": null,
+    "social_image_url": null,
+    "start_date": null,
+    "tiktok_handle": null,
+    "tint_color": "#F31A7C",
+    "track_meta_ads_from_luma": false,
+    "twitter_handle": null,
+    "website": null,
+    "youtube_handle": null,
+    "is_personal": true,
+    "personal_user": {
+     "api_id": "usr-2X3CBFU1067ySs4",
+     "avatar_url": "https://images.lumacdn.com/uploads/gf/a30c7dc1-afc0-424b-8d22-3a7ee81a3b63.jpg",
+     "bio_short": "",
+     "first_name": "Amber",
+     "last_name": "C",
+     "instagram_handle": null,
+     "is_verified": false,
+     "linkedin_handle": null,
+     "name": "Amber C",
+     "tiktok_handle": null,
+     "timezone": "America/New_York",
+     "twitter_handle": null,
+     "username": null,
+     "website": null,
+     "youtube_handle": null
+    },
+    "timezone": null
+   },
+   "start_at": "2026-10-17T16:00:00.000Z",
+   "hosts": [
+    {
+     "api_id": "usr-2X3CBFU1067ySs4",
+     "name": "Amber C",
+     "first_name": "Amber",
+     "last_name": "C"
+    }
+   ],
+   "guest_count": 9,
+   "ticket_count": 9,
+   "ticket_info": {
+    "price": null,
+    "is_free": true,
+    "max_price": null,
+    "is_sold_out": false,
+    "spots_remaining": 15,
+    "is_near_capacity": false,
+    "require_approval": false
+   },
+   "registration_availability": "open",
+   "host_info": null,
+   "waitlist_active": false,
+   "featured_city": null
+  }
+ ],
+ "has_more": false,
+ "next_cursor": null
+}

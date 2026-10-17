@@ -1,0 +1,487 @@
+{
+ "entries": [
+  {
+   "api_id": "calev-RtcFW5BpKOeZPhJ",
+   "event": {
+    "api_id": "evt-yEE1YSoVZ8qHMGt",
+    "calendar_api_id": "cal-hpIcdwBuL8vfdba",
+    "cover_url": "https://images.lumacdn.com/uploads/7p/9231c06e-87c0-4442-8f15-b1523daaceb7.jpg",
+    "end_at": "2026-10-18T01:30:00.000Z",
+    "event_type": "independent",
+    "hide_rsvp": false,
+    "location_type": "offline",
+    "name": "Mem-Off! The Open Source AI Memory Showdown",
+    "one_to_one": true,
+    "recurrence_id": null,
+    "show_guest_list": true,
+    "social_image_url": "https://images.lumacdn.com/event-social/ln/c6d0b684-aa54-47b2-b681-383fe8b162bb.png",
+    "start_at": "2026-10-17T17:30:00.000Z",
+    "timezone": "America/Los_Angeles",
+    "url": "cognee-cy86",
+    "visibility": "public",
+    "virtual_info": {
+     "has_access": false
+    },
+    "geo_address_info": {
+     "city": "San Francisco",
+     "type": "google",
+     "region": "California",
+     "address": "Pebblebed",
+     "country": "United States",
+     "place_id": "ChIJxWqRGWh_j4ARNHUWWtiyZ7o",
+     "localized": {
+      "en-GB": {
+       "city": "San Francisco",
+       "region": "California",
+       "address": "Pebblebed",
+       "country": "United States",
+       "city_state": "San Francisco, CA",
+       "sublocality": "Mission District",
+       "full_address": "Pebblebed, 1417 15th St, San Francisco, CA 94103, USA",
+       "region_short": "CA",
+       "short_address": "1417 15th St, San Francisco"
+      }
+     },
+     "city_state": "San Francisco, CA",
+     "description": "",
+     "sublocality": "Mission District",
+     "country_code": "US",
+     "full_address": "Pebblebed, 1417 15th St, San Francisco, CA 94103, USA",
+     "region_short": "CA",
+     "short_address": "1417 15th St, San Francisco",
+     "place_coordinate": {
+      "latitude": 37.7666648,
+      "longitude": -122.4161551
+     },
+     "apple_maps_place_id": "I5AC6FBE596D4405D",
+     "mode": "shown"
+    },
+    "geo_address_visibility": "public",
+    "coordinate": {
+     "longitude": -122.4161551,
+     "latitude": 37.7666648
+    },
+    "waitlist_enabled": false,
+    "waitlist_status": "disabled"
+   },
+   "cover_image": {
+    "colors": [
+     "#110e14",
+     "#f8eddd",
+     "#f04c25",
+     "#63d7ba"
+    ]
+   },
+   "calendar": {
+    "access_level": "public",
+    "api_id": "cal-hpIcdwBuL8vfdba",
+    "avatar_url": "https://images.lumacdn.com/calendars/7u/3d7d3be2-21b5-4779-a5df-8dbb69a3e7f5.png",
+    "coordinate": null,
+    "cover_image_url": "https://images.lumacdn.com/uploads/pd/d6e778a8-a768-41b5-8e8d-554b7c6114bd.png",
+    "description_short": "",
+    "end_date": null,
+    "event_submission_restriction": "open",
+    "instagram_handle": null,
+    "is_blocked": false,
+    "is_verified": false,
+    "launch_status": "launched",
+    "linkedin_handle": "/company/cognee-ai",
+    "location": null,
+    "luma_plan": "plus",
+    "luma_plus_active": true,
+    "name": "cognee",
+    "refund_policy": null,
+    "sends_unlocked_at": "2026-06-24T23:22:19.061Z",
+    "slug": "cognee",
+    "social_image_url": "https://images.lumacdn.com/uploads/lh/88381e92-d51f-4e70-86a6-38784960a274.png",
+    "start_date": null,
+    "tiktok_handle": "cognee.ai",
+    "tint_color": "#682FFF",
+    "track_meta_ads_from_luma": false,
+    "twitter_handle": "cognee_",
+    "website": "https://www.cognee.ai/",
+    "youtube_handle": "cognee-ef",
+    "is_personal": false,
+    "personal_user": null,
+    "timezone": null
+   },
+   "start_at": "2026-10-17T17:30:00.000Z",
+   "hosts": [
+    {
+     "api_id": "usr-2buKTuTrRtMoTfT",
+     "name": "cognee",
+     "first_name": "Cognee",
+     "last_name": "Cognee"
+    },
+    {
+     "api_id": "usr-tGiBraYTFfdSDIJ",
+     "name": "George Curtis",
+     "first_name": "George",
+     "last_name": "Curtis"
+    },
+    {
+     "api_id": "usr-2UmkxQYQhIrgOp8",
+     "name": "Claude-Mem 🧠",
+     "first_name": "Claude-Mem",
+     "last_name": "🧠"
+    },
+    {
+     "api_id": "usr-SiylGOwVOW0Wei6",
+     "name": "AJ Green",
+     "first_name": "AJ",
+     "last_name": "Green"
+    }
+   ],
+   "guest_count": 202,
+   "ticket_count": 202,
+   "ticket_info": {
+    "price": null,
+    "is_free": true,
+    "max_price": null,
+    "is_sold_out": false,
+    "spots_remaining": null,
+    "is_near_capacity": false,
+    "require_approval": false
+   },
+   "registration_availability": "open",
+   "host_info": null,
+   "waitlist_active": false,
+   "featured_city": null,
+   "calendar_api_id": "cal-JTdFQadEz0AOxyV",
+   "is_manager": false,
+   "platform": "luma",
+   "status": "approved",
+   "submitted_by_user_api_id": "usr-eGOHWjRQ2O39POL",
+   "tags": []
+  },
+  {
+   "api_id": "calev-CanGbagnFsuEsYL",
+   "event": {
+    "api_id": "evt-lRI6M6CyLp0ADc7",
+    "calendar_api_id": "cal-nMWMgVPGa08iqg1",
+    "cover_url": "https://images.lumacdn.com/uploads/cp/29f8ff59-8bb1-4a87-8bc3-a6d3215928e0.jpg",
+    "end_at": "2026-10-19T02:00:00.000Z",
+    "event_type": "independent",
+    "hide_rsvp": false,
+    "location_type": "offline",
+    "name": "Builder Odyssey: AI Infra, Multimodal & FDE | Founder Demos & AI Film Showcase",
+    "one_to_one": true,
+    "recurrence_id": null,
+    "show_guest_list": true,
+    "social_image_url": "https://images.lumacdn.com/event-social/9f/fe14bb90-3918-440e-81dd-51c82012de92.png",
+    "start_at": "2026-10-18T20:00:00.000Z",
+    "timezone": "America/Los_Angeles",
+    "url": "seamate-tey7",
+    "visibility": "public",
+    "virtual_info": {
+     "has_access": false
+    },
+    "geo_address_info": {
+     "mode": "obfuscated",
+     "city": "San Francisco",
+     "city_state": "San Francisco, CA",
+     "sublocality": "Central Waterfront",
+     "country": "United States",
+     "country_code": "US",
+     "region": "California",
+     "region_short": "CA"
+    },
+    "geo_address_visibility": "guests-only",
+    "coordinate": {
+     "latitude": 37.75000836935471,
+     "longitude": -122.38462466742156
+    },
+    "waitlist_enabled": false,
+    "waitlist_status": "disabled"
+   },
+   "cover_image": {
+    "colors": [
+     "#fefefe",
+     "#0e0a0b",
+     "#fa8b14",
+     "#5dc1fa"
+    ]
+   },
+   "calendar": {
+    "access_level": "public",
+    "api_id": "cal-nMWMgVPGa08iqg1",
+    "avatar_url": "https://images.lumacdn.com/calendars/i0/b3da8476-1c97-4f6d-82c4-256af55960e7.png",
+    "coordinate": {
+     "longitude": -122.08123040000001,
+     "latitude": 37.390026399999996
+    },
+    "cover_image_url": "https://images.lumacdn.com/calendar-cover-images/0d/df388824-d8ab-4a33-b879-ccb2cf0e4bdc.jpg",
+    "description_short": "A community for founders, builders, and investors exploring AI, startups, and global markets · 40k+ members · 10+ countries",
+    "end_date": null,
+    "event_submission_restriction": "open",
+    "instagram_handle": null,
+    "is_blocked": false,
+    "is_verified": false,
+    "launch_status": "launched",
+    "linkedin_handle": "/company/chuhaimate",
+    "location": {
+     "city": "Mountain View",
+     "region": "California",
+     "country": "United States",
+     "place_id": "ChIJiQHsW0m3j4ARm69rRkrUF3w",
+     "timezone": "America/Los_Angeles",
+     "country_code": "US"
+    },
+    "luma_plan": "plus",
+    "luma_plus_active": true,
+    "name": "SEAMATE",
+    "refund_policy": null,
+    "sends_unlocked_at": "2025-05-08T16:15:58.084Z",
+    "slug": "seamate",
+    "social_image_url": null,
+    "start_date": null,
+    "tiktok_handle": null,
+    "tint_color": "#6982d1",
+    "track_meta_ads_from_luma": false,
+    "twitter_handle": null,
+    "website": "https://seamate.world",
+    "youtube_handle": null,
+    "is_personal": false,
+    "personal_user": null,
+    "timezone": "America/Los_Angeles"
+   },
+   "start_at": "2026-10-18T20:00:00.000Z",
+   "hosts": [
+    {
+     "api_id": "usr-ULWuLmdoPiKDRfz",
+     "name": "SEAMATE",
+     "first_name": "",
+     "last_name": ""
+    },
+    {
+     "api_id": "usr-s0N27BY0E9CFkv4",
+     "name": "Linkloud",
+     "first_name": "Jing",
+     "last_name": "Chi"
+    }
+   ],
+   "guest_count": 662,
+   "ticket_count": 662,
+   "ticket_info": {
+    "price": null,
+    "is_free": true,
+    "max_price": null,
+    "is_sold_out": false,
+    "spots_remaining": null,
+    "is_near_capacity": false,
+    "require_approval": true
+   },
+   "registration_availability": "open",
+   "host_info": null,
+   "waitlist_active": false,
+   "featured_city": null,
+   "calendar_api_id": "cal-JTdFQadEz0AOxyV",
+   "is_manager": false,
+   "platform": "luma",
+   "status": "approved",
+   "submitted_by_user_api_id": "usr-eGOHWjRQ2O39POL",
+   "tags": []
+  },
+  {
+   "api_id": "calev-9iHtgoy58XHuepZ",
+   "event": {
+    "api_id": "evt-ioQeG2P1ztZbBUn",
+    "calendar_api_id": "cal-DdwWIagKbNy3P6J",
+    "cover_url": "https://images.lumacdn.com/uploads/bg/9c8992cd-d55b-43b5-86f5-3fb028611df1.png",
+    "end_at": "2026-10-20T03:30:00.000Z",
+    "event_type": "independent",
+    "hide_rsvp": false,
+    "location_type": "offline",
+    "name": "Universal Hackathon - Create Your Own AI Workforce | AWS Builder Loft",
+    "one_to_one": true,
+    "recurrence_id": null,
+    "show_guest_list": false,
+    "social_image_url": "https://images.lumacdn.com/event-social/7q/bb9ee5f6-d153-4d59-8545-1256ba31c215.png",
+    "start_at": "2026-10-19T16:30:00.000Z",
+    "timezone": "America/Los_Angeles",
+    "url": "lfjtdq6b",
+    "visibility": "public",
+    "virtual_info": {
+     "has_access": false
+    },
+    "geo_address_info": {
+     "city": "San Francisco",
+     "type": "google",
+     "region": "California",
+     "address": "AWS Builder Loft",
+     "country": "United States",
+     "place_id": "ChIJYU1rSACBhYAR8gX_suu-tiA",
+     "localized": null,
+     "city_state": "San Francisco, CA",
+     "description": "",
+     "sublocality": "Financial District",
+     "country_code": "US",
+     "full_address": "AWS Builder Loft, First Market Tower, 525 Market St Entrance, San Francisco, CA 94105, USA",
+     "region_short": "CA",
+     "short_address": "First Market Tower, 525 Market St Entrance, San Francisco",
+     "place_coordinate": {
+      "latitude": 37.7904122,
+      "longitude": -122.39934480000001
+     },
+     "apple_maps_place_id": "I878B8BA4F4614156",
+     "mode": "shown"
+    },
+    "geo_address_visibility": "public",
+    "coordinate": {
+     "longitude": -122.39934480000001,
+     "latitude": 37.7904122
+    },
+    "waitlist_enabled": false,
+    "waitlist_status": "disabled"
+   },
+   "cover_image": {
+    "colors": [
+     "#fcfdfd",
+     "#07177d",
+     "#ee7158",
+     "#c0e562"
+    ]
+   },
+   "calendar": {
+    "access_level": "public",
+    "api_id": "cal-DdwWIagKbNy3P6J",
+    "avatar_url": "https://images.lumacdn.com/calendars/be/8d977259-c4c3-478b-90d8-a33a8db4bd4d.png",
+    "coordinate": {
+     "longitude": -122.41941550000001,
+     "latitude": 37.7749295
+    },
+    "cover_image_url": null,
+    "description_short": "",
+    "end_date": null,
+    "event_submission_restriction": "open",
+    "instagram_handle": null,
+    "is_blocked": false,
+    "is_verified": false,
+    "launch_status": "launched",
+    "linkedin_handle": null,
+    "location": {
+     "city": "San Francisco",
+     "region": "California",
+     "country": "United States",
+     "place_id": "ChIJIQBpAG2ahYAR_6128GcTUEo",
+     "timezone": "America/Los_Angeles",
+     "country_code": "US"
+    },
+    "luma_plan": "plus",
+    "luma_plus_active": true,
+    "name": "Venture Bridge Hub",
+    "refund_policy": null,
+    "sends_unlocked_at": "2026-01-20T18:32:54.014Z",
+    "slug": "venturebridgehub",
+    "social_image_url": null,
+    "start_date": null,
+    "tiktok_handle": null,
+    "tint_color": "#DFDFE2",
+    "track_meta_ads_from_luma": false,
+    "twitter_handle": null,
+    "website": null,
+    "youtube_handle": null,
+    "is_personal": false,
+    "personal_user": null,
+    "timezone": "America/Los_Angeles"
+   },
+   "start_at": "2026-10-19T16:30:00.000Z",
+   "hosts": [
+    {
+     "api_id": "usr-BhL1mNyX78ZX6D1",
+     "name": "AWS Builder Loft",
+     "first_name": "AWS",
+     "last_name": "Builder Loft"
+    },
+    {
+     "api_id": "usr-W0QIRNpVwCr9HbJ",
+     "name": "The AI Collective",
+     "first_name": "The AI",
+     "last_name": "Collective"
+    },
+    {
+     "api_id": "usr-eovuwENQ3YC5oKg",
+     "name": "AdaL",
+     "first_name": "Ada",
+     "last_name": "L"
+    },
+    {
+     "api_id": "usr-2WHLRHVu7xHOlvN",
+     "name": "GenAI Assembling",
+     "first_name": "GenAI",
+     "last_name": "Assembling"
+    },
+    {
+     "api_id": "usr-Oa7Xtemac7tJOmW",
+     "name": "Dwayne Campbell",
+     "first_name": "Dwayne",
+     "last_name": "Campbell"
+    },
+    {
+     "api_id": "usr-rlgwZEydkZkYaoE",
+     "name": "Mansi More",
+     "first_name": "Mansi",
+     "last_name": "More"
+    },
+    {
+     "api_id": "usr-loEHrFAyTzR0zfr",
+     "name": "Aria",
+     "first_name": "Aria",
+     "last_name": "Shi"
+    },
+    {
+     "api_id": "usr-IJYie0ceyeIUQFM",
+     "name": "articuler.ai",
+     "first_name": "",
+     "last_name": ""
+    },
+    {
+     "api_id": "usr-o8xFUn5FEODuT85",
+     "name": "Annie Liao",
+     "first_name": "Annie",
+     "last_name": "Liao"
+    },
+    {
+     "api_id": "usr-Eub2cmjFEkRxQtF",
+     "name": "Seth Caldwell",
+     "first_name": "Seth",
+     "last_name": "Caldwell"
+    },
+    {
+     "api_id": "usr-eGOHWjRQ2O39POL",
+     "name": "Sahar Mor (Bond AI)",
+     "first_name": "Sahar",
+     "last_name": "Mor (Bond AI)"
+    }
+   ],
+   "guest_count": 0,
+   "ticket_count": 0,
+   "ticket_info": {
+    "price": null,
+    "is_free": true,
+    "max_price": null,
+    "is_sold_out": false,
+    "spots_remaining": null,
+    "is_near_capacity": false,
+    "require_approval": false
+   },
+   "registration_availability": "open",
+   "host_info": null,
+   "waitlist_active": false,
+   "featured_city": null,
+   "calendar_api_id": "cal-JTdFQadEz0AOxyV",
+   "is_manager": false,
+   "platform": "luma",
+   "status": "approved",
+   "submitted_by_user_api_id": "usr-eGOHWjRQ2O39POL",
+   "tags": [
+    {
+     "api_id": "tag-rKxjhDHOUAdJYJe",
+     "name": "Hackathon",
+     "color": "red"
+    }
+   ]
+  }
+ ],
+ "has_more": false
+}

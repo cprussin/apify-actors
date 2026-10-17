@@ -1,0 +1,18 @@
+{
+  "actorSpecification": 1,
+  "name": "luma-events",
+  "title": "Luma Events Scraper: lu.ma Cities, Calendars & Tickets",
+  "description": "Scrape Luma (lu.ma) events by city, category, keyword or coordinates, or from calendar and event URLs: name, start/end time, time zone, venue and coordinates, ticket price range, sold-out and approval flags, guest count, hosts, calendar and description. No login. $2.50 per 1,000 events.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "defaultMemoryMbytes": 256,
+  "maxMemoryMbytes": 1024,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}

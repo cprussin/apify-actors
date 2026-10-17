@@ -1,0 +1,24 @@
+{
+ "kind": "category",
+ "data": {
+  "category": {
+   "api_id": "cat-ai",
+   "description": "Join a hackathon, learn about LLMs and prompt engineering, or connect with other AI practitioners.",
+   "event_count": 3808,
+   "hero_image_desktop_url": "https://images.lumacdn.com/uploads/42/5719a861-c421-4624-a9dc-8b8b73e3cf57.png",
+   "icon_url": "https://images.lumacdn.com/uploads/0z/c1143c0e-a2ab-4434-b82b-80b0ba3ec2f0.png",
+   "name": "AI",
+   "page_title": "AI Events",
+   "simple_icon_url": "https://images.lumacdn.com/uploads/2g/4121b0fa-bd9e-4a50-ad85-cf0000b6d919.png",
+   "slug": "ai",
+   "social_image_url": "https://images.lumacdn.com/uploads/c1/486065e1-2511-4577-a0e0-5eb683d38a3d.png",
+   "subscriber_count": 107895,
+   "tint_color": "#D96D9B"
+  },
+  "is_subscriber": false,
+  "timeline_calendars": [],
+  "featured_calendars": [],
+  "num_upcoming_events": 3808,
+  "subscriber_count": 107895
+ }
+}

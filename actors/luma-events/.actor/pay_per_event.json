@@ -1,0 +1,18 @@
+{
+  "event": {
+    "eventTitle": "Event",
+    "eventDescription": "One Luma event written to the dataset.",
+    "eventPriceUsd": 0.0025,
+    "isPrimaryEvent": true
+  },
+  "event-detail": {
+    "eventTitle": "Event details",
+    "eventDescription": "Event details fetched (description, categories, ticket types) when includeDetails is on.",
+    "eventPriceUsd": 0.001
+  },
+  "apify-actor-start": {
+    "eventTitle": "Actor start",
+    "eventDescription": "Synthetic start event (covers the first 5 s of compute).",
+    "eventPriceUsd": 5e-5
+  }
+}
