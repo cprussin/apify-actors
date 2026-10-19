@@ -1,0 +1,208 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "input": {
+        "type": "string",
+        "title": "Input",
+        "description": "The domain or URL as given in the input.",
+        "example": "heise.de"
+      },
+      "domain": {
+        "type": ["string", "null"],
+        "title": "Domain",
+        "description": "Domain without www. (null for invalid input lines).",
+        "example": "heise.de"
+      },
+      "status": {
+        "type": "string",
+        "title": "Status",
+        "description": "found, notFound, blocked, robotsDisallowed, unreachable, invalidInput or error.",
+        "example": "found"
+      },
+      "sourceUrl": {
+        "type": ["string", "null"],
+        "title": "Impressum page",
+        "description": "URL of the Impressum / legal-notice page the fields come from.",
+        "example": "https://www.heise.de/impressum.html"
+      },
+      "companyName": {
+        "type": ["string", "null"],
+        "title": "Company",
+        "description": "Legal company name as written in the Impressum, including the legal form.",
+        "example": "Heise Medien GmbH & Co. KG"
+      },
+      "legalForm": {
+        "type": ["string", "null"],
+        "title": "Legal form",
+        "description": "Legal form: GmbH, AG, UG (haftungsbeschränkt), GmbH & Co. KG, e.K., SE, Sàrl, SAS, ...",
+        "example": "GmbH & Co. KG"
+      },
+      "street": {
+        "type": ["string", "null"],
+        "title": "Street",
+        "description": "Street and house number (or Postfach).",
+        "example": "Karl-Wiechert-Allee 10"
+      },
+      "postalCode": {
+        "type": ["string", "null"],
+        "title": "Postal code",
+        "description": "Postal code.",
+        "example": "30625"
+      },
+      "city": {
+        "type": ["string", "null"],
+        "title": "City",
+        "description": "City.",
+        "example": "Hannover"
+      },
+      "address": {
+        "type": ["string", "null"],
+        "title": "Address",
+        "description": "Street, postal code and city in one line.",
+        "example": "Karl-Wiechert-Allee 10, 30625 Hannover"
+      },
+      "countryGuess": {
+        "type": ["string", "null"],
+        "title": "Country",
+        "description": "ISO 3166-1 alpha-2 country guessed from the VAT ID, register type, court, address, phone prefix and TLD.",
+        "example": "DE"
+      },
+      "phone": {
+        "type": ["string", "null"],
+        "title": "Phone",
+        "description": "Company phone number as shown.",
+        "example": null
+      },
+      "fax": {
+        "type": ["string", "null"],
+        "title": "Fax",
+        "description": "Company fax number as shown.",
+        "example": null
+      },
+      "email": {
+        "type": ["string", "null"],
+        "title": "Email",
+        "description": "Generic contact mailbox shown on the page (info@, kontakt@, office@, ...). Personal addresses are never output.",
+        "example": "webmaster@heise.de"
+      },
+      "registerCourt": {
+        "type": ["string", "null"],
+        "title": "Register court",
+        "description": "Register court or registry: Amtsgericht (DE), Handelsgericht/Landesgericht (AT), Handelsregisteramt (CH) or RCS city (FR).",
+        "example": "Amtsgericht Hannover"
+      },
+      "registerType": {
+        "type": ["string", "null"],
+        "title": "Register type",
+        "description": "HRB, HRA, GnR, PR, VR (DE), FN (AT), CHE (CH UID), RCS or SIREN (FR).",
+        "example": "HRB"
+      },
+      "registerNumber": {
+        "type": ["string", "null"],
+        "title": "Register number",
+        "description": "Register number with its prefix, e.g. HRB 60405, FN 482913 k, CHE-317.482.905 or RCS Lyon 842 315 907.",
+        "example": "HRB 60405"
+      },
+      "vatId": {
+        "type": ["string", "null"],
+        "title": "VAT ID",
+        "description": "VAT ID (USt-IdNr., UID, MWST, TVA) without spaces, e.g. DE813501887, ATU71839245, CHE-317.482.905 MWST.",
+        "example": "DE813501887"
+      },
+      "pagesFetched": {
+        "type": "number",
+        "title": "Pages fetched",
+        "description": "HTTP requests made for this domain, robots.txt included.",
+        "example": 4
+      },
+      "error": {
+        "type": ["string", "null"],
+        "title": "Error",
+        "description": "Why no Impressum was found (blocked, unreachable, ...), else null.",
+        "example": null
+      },
+      "scrapedAt": {
+        "type": "string",
+        "title": "Scraped at",
+        "description": "When the domain was processed (ISO 8601).",
+        "example": "2026-10-19T12:00:00.000Z"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Imprints",
+      "transformation": {
+        "fields": [
+          "domain",
+          "status",
+          "companyName",
+          "legalForm",
+          "address",
+          "countryGuess",
+          "registerCourt",
+          "registerNumber",
+          "vatId",
+          "phone",
+          "email",
+          "sourceUrl"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "domain": {
+            "label": "Domain",
+            "format": "text"
+          },
+          "status": {
+            "label": "Status",
+            "format": "text"
+          },
+          "companyName": {
+            "label": "Company",
+            "format": "text"
+          },
+          "legalForm": {
+            "label": "Legal form",
+            "format": "text"
+          },
+          "address": {
+            "label": "Address",
+            "format": "text"
+          },
+          "countryGuess": {
+            "label": "Country",
+            "format": "text"
+          },
+          "registerCourt": {
+            "label": "Register court",
+            "format": "text"
+          },
+          "registerNumber": {
+            "label": "Register number",
+            "format": "text"
+          },
+          "vatId": {
+            "label": "VAT ID",
+            "format": "text"
+          },
+          "phone": {
+            "label": "Phone",
+            "format": "text"
+          },
+          "email": {
+            "label": "Email",
+            "format": "text"
+          },
+          "sourceUrl": {
+            "label": "Impressum page",
+            "format": "link"
+          }
+        }
+      }
+    }
+  }
+}

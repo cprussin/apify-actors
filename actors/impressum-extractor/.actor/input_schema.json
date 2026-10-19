@@ -1,0 +1,26 @@
+{
+  "title": "Impressum Extractor input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "domains": {
+      "title": "Company domains or URLs",
+      "type": "array",
+      "description": "Company websites, one per line: a domain (<code>example.de</code>), a URL (<code>https://www.example.at</code>) or the Impressum URL itself. One output row per domain. Only rows with a register number or VAT ID are billed.",
+      "editor": "stringList",
+      "prefill": ["heise.de"],
+      "sectionCaption": "What to extract"
+    },
+    "maxConcurrency": {
+      "title": "Max concurrency",
+      "type": "integer",
+      "description": "Domains processed in parallel. Each domain is fetched one page at a time (robots.txt, home page, Impressum).",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 20,
+      "default": 5,
+      "sectionCaption": "Advanced"
+    }
+  },
+  "required": ["domains"]
+}

@@ -1,0 +1,25 @@
+{
+  "name": "impressum-extractor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Impressum / legal-notice extractor for company domains: legal name and form, address, phone, email, register court and number, VAT ID. Company fields only.",
+  "main": "dist/main.js",
+  "scripts": {
+    "start": "node dist/main.js",
+    "start:dev": "tsx src/main.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "smoke": "tsx scripts/smoke.ts"
+  },
+  "dependencies": {
+    "apify": "^3.7.2",
+    "cheerio": "^1.2.0",
+    "got-scraping": "^4.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.4",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  }
+}

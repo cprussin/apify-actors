@@ -1,0 +1,18 @@
+{
+  "actorSpecification": 1,
+  "name": "impressum-extractor",
+  "title": "Impressum Extractor: DACH Legal Notice, HRB & VAT ID",
+  "description": "Extract company data from the Impressum / legal notice of German, Austrian, Swiss and French websites: legal name and form, address, phone, register court, HRB/FN/CHE/RCS number and VAT ID. Company fields only, no personal names. $3 per 1,000 imprints with register or VAT.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "defaultMemoryMbytes": 256,
+  "maxMemoryMbytes": 1024,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}
