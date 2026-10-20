@@ -1,8 +1,8 @@
 {
   "actorSpecification": 1,
   "name": "soundcloud-metadata",
-  "title": "SoundCloud Metadata Scraper: Tracks, Users & Playlists",
-  "description": "Get SoundCloud metadata (no audio) for tracks, users and playlists by URL or keyword search: title, plays, likes, reposts, comments, duration, genre, tags, artwork, followers and more. Uses the public api-v2 endpoints. No login. $2 per 1,000 items.",
+  "title": "SoundCloud Scraper: Tracks, Users & Playlists",
+  "description": "Get SoundCloud metadata (no audio) for tracks, users and playlists by URL or keyword search: title, plays, likes, reposts, comments, duration, genre, tags, artwork, followers and more. Public data only, no login. $2 per 1,000 items.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 256,

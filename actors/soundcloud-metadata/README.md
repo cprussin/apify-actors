@@ -165,6 +165,6 @@ Items that fail to load or are not found are not charged. A small `$0.00005` act
 
 ## Related actors
 
-- [youtube-transcripts](https://apify.com/cprussin/youtube-transcripts?fpr=to54nm): Captions and transcripts from YouTube videos and channels.
-- [substack-scraper](https://apify.com/cprussin/substack-scraper?fpr=to54nm): Posts, content and stats from any Substack newsletter.
-- [bilibili-scraper](https://apify.com/cprussin/bilibili-scraper?fpr=to54nm): Bilibili videos, comments, trending and search results.
+- [YouTube Transcript Scraper](https://apify.com/cprussin/youtube-transcripts?fpr=to54nm): YouTube transcripts as text, segments, SRT or VTT, for AI and RAG.
+- [DeviantArt Scraper](https://apify.com/cprussin/deviantart-metadata?fpr=to54nm): DeviantArt deviation, gallery and profile metadata (no images downloaded).
+- [Whisper Audio & Video Transcriber](https://apify.com/cprussin/media-transcriber?fpr=to54nm): Audio, video and podcast transcription with Whisper, with SRT and VTT subtitles.

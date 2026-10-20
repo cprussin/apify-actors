@@ -204,6 +204,6 @@ This actor is built on [MarkItDown](https://github.com/microsoft/markitdown) (MI
 
 ## Related actors
 
-- [youtube-transcripts](https://apify.com/cprussin/youtube-transcripts?fpr=to54nm): YouTube transcripts as text, segments, SRT or VTT, for AI and RAG.
-- [website-screenshot](https://apify.com/cprussin/website-screenshot?fpr=to54nm): Full-page or viewport screenshots and PDFs of any URL.
-- [substack-scraper](https://apify.com/cprussin/substack-scraper?fpr=to54nm): Substack newsletter posts, content and public stats.
+- [YouTube Transcript Scraper](https://apify.com/cprussin/youtube-transcripts?fpr=to54nm): YouTube transcripts as text, segments, SRT or VTT, for AI and RAG.
+- [Whisper Audio & Video Transcriber](https://apify.com/cprussin/media-transcriber?fpr=to54nm): Audio, video and podcast transcription with Whisper, with SRT and VTT subtitles.
+- [Website Screenshot API](https://apify.com/cprussin/website-screenshot?fpr=to54nm): Full-page or viewport screenshots and PDFs of any URL.

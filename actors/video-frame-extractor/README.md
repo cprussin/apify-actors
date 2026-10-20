@@ -253,6 +253,6 @@ This actor runs [FFmpeg](https://ffmpeg.org/) 7.1 in an LGPL build compiled from
 
 ## Related actors
 
-- [media-transcriber](https://apify.com/cprussin/media-transcriber?fpr=to54nm): Audio, video and podcast transcription with Whisper, with SRT and VTT subtitles.
-- [image-upscaler](https://apify.com/cprussin/image-upscaler?fpr=to54nm): Upscale and enhance images 2x-4x with Real-ESRGAN.
-- [website-screenshot](https://apify.com/cprussin/website-screenshot?fpr=to54nm): Full-page or viewport screenshots and PDFs of any URL.
+- [Whisper Audio & Video Transcriber](https://apify.com/cprussin/media-transcriber?fpr=to54nm): Audio, video and podcast transcription with Whisper, with SRT and VTT subtitles.
+- [AI Image Upscaler](https://apify.com/cprussin/image-upscaler?fpr=to54nm): Upscale and enhance images 2x, 3x or 4x with Real-ESRGAN.
+- [YouTube Transcript Scraper](https://apify.com/cprussin/youtube-transcripts?fpr=to54nm): YouTube transcripts as text, segments, SRT or VTT, for AI and RAG.

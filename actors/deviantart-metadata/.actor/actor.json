@@ -1,7 +1,7 @@
 {
   "actorSpecification": 1,
   "name": "deviantart-metadata",
-  "title": "DeviantArt Metadata Scraper: Deviations, Galleries & Profiles",
+  "title": "DeviantArt Scraper: Deviations, Galleries & Profiles",
   "description": "Get DeviantArt metadata (no images downloaded) by keyword search, user gallery, profile or deviation URL: views, favourites, comments, tags, author watchers, license, mature and noai flags, thumbnail URL. Public pages only, no login. $3 per 1,000 deviations.",
   "version": "0.1",
   "buildTag": "latest",

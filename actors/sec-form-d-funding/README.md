@@ -223,6 +223,6 @@ For example, 1,000 filings cost $10.00, and a daily delta-mode feed of new start
 
 ## Related actors
 
-- [new-business-registrations](https://apify.com/cprussin/new-business-registrations?fpr=to54nm): Newly registered LLCs and corporations from state registries.
-- [ycombinator-companies](https://apify.com/cprussin/ycombinator-companies?fpr=to54nm): Y Combinator startups by batch, industry and region, plus YC startup jobs.
-- [federal-recompete-radar](https://apify.com/cprussin/federal-recompete-radar?fpr=to54nm): US federal contracts nearing expiry, for recompete pipelines.
+- [New Business Registrations](https://apify.com/cprussin/new-business-registrations?fpr=to54nm): Newly registered LLCs and corporations from official state registries.
+- [Y Combinator Scraper](https://apify.com/cprussin/ycombinator-companies?fpr=to54nm): Y Combinator company directory by batch, industry and region, plus YC startup jobs.
+- [Federal Recompete Radar](https://apify.com/cprussin/federal-recompete-radar?fpr=to54nm): US federal contracts nearing expiry, with incumbent and value, for recompete pipelines.

@@ -242,6 +242,6 @@ Use mode `trendingNow`, turn on `onlyNew` and run the actor on an [Apify schedul
 
 ## Related actors
 
-- [google-ads-transparency](https://apify.com/cprussin/google-ads-transparency?fpr=to54nm): Ads from the Google Ads Transparency Center by advertiser or domain.
-- [product-hunt-launches](https://apify.com/cprussin/product-hunt-launches?fpr=to54nm): Product Hunt launches, leaderboards, upvotes and makers.
-- [youtube-transcripts](https://apify.com/cprussin/youtube-transcripts?fpr=to54nm): Captions and transcripts from YouTube videos and channels.
+- [Google Ads Transparency Scraper](https://apify.com/cprussin/google-ads-transparency?fpr=to54nm): Competitor ads from the Google Ads Transparency Center by advertiser or domain.
+- [App Store & Google Play Scraper](https://apify.com/cprussin/app-store-apps?fpr=to54nm): App Store keyword ranks, App Store and Google Play top charts and app details.
+- [YouTube Transcript Scraper](https://apify.com/cprussin/youtube-transcripts?fpr=to54nm): YouTube transcripts as text, segments, SRT or VTT, for AI and RAG.

@@ -270,6 +270,6 @@ Turn on `onlyNew` and run the actor on an [Apify schedule](https://docs.apify.co
 
 ## Related actors
 
-- [aliexpress-scraper](https://apify.com/cprussin/aliexpress-scraper?fpr=to54nm): AliExpress product search results, prices and buyer reviews.
-- [google-trends](https://apify.com/cprussin/google-trends?fpr=to54nm): Google Trends interest over time, regions, related queries and trending searches.
-- [eventbrite-events](https://apify.com/cprussin/eventbrite-events?fpr=to54nm): Eventbrite events by city, category and date, with venues, organizers and prices.
+- [Eventbrite Events Scraper](https://apify.com/cprussin/eventbrite-events?fpr=to54nm): Eventbrite events by city, category and date, with venues, organizers and prices.
+- [Luma Events Scraper](https://apify.com/cprussin/luma-events?fpr=to54nm): Luma (lu.ma) events by city, category, keyword or calendar, with hosts and tickets.
+- [Google Trends Scraper](https://apify.com/cprussin/google-trends?fpr=to54nm): Google Trends interest over time, by region, related queries and trending searches.

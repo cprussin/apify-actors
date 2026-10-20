@@ -217,6 +217,6 @@ For example, 1,000 new businesses cost $2.00. If you set a **maximum cost per ru
 
 ## Related actors
 
-- [federal-recompete-radar](https://apify.com/cprussin/federal-recompete-radar?fpr=to54nm): US federal contracts nearing expiry, for recompete pipelines.
-- [trustpilot-reviews](https://apify.com/cprussin/trustpilot-reviews?fpr=to54nm): Trustpilot reviews, ratings and TrustScore for any company.
-- [eventbrite-events](https://apify.com/cprussin/eventbrite-events?fpr=to54nm): Eventbrite events by city, category and date, with venues, organizers and prices.
+- [SEC Form D Scraper](https://apify.com/cprussin/sec-form-d-funding?fpr=to54nm): New startup funding rounds and private placements from SEC EDGAR Form D filings.
+- [Federal Recompete Radar](https://apify.com/cprussin/federal-recompete-radar?fpr=to54nm): US federal contracts nearing expiry, with incumbent and value, for recompete pipelines.
+- [Impressum Extractor](https://apify.com/cprussin/impressum-extractor?fpr=to54nm): Company name, address, register number and VAT ID from DACH website imprints.

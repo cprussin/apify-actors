@@ -263,6 +263,6 @@ Turn on `onlyNew` and run the actor on an [Apify schedule](https://docs.apify.co
 
 ## Related actors
 
-- [product-hunt-launches](https://apify.com/cprussin/product-hunt-launches?fpr=to54nm): Product Hunt launches, leaderboards, upvotes and makers.
-- [wellfound-jobs](https://apify.com/cprussin/wellfound-jobs?fpr=to54nm): Startup jobs from Wellfound (AngelList Talent) with salary, equity and company data.
-- [new-business-registrations](https://apify.com/cprussin/new-business-registrations?fpr=to54nm): New LLC and corporation filings from state open-data portals.
+- [Wellfound Jobs Scraper](https://apify.com/cprussin/wellfound-jobs?fpr=to54nm): Startup jobs from Wellfound (AngelList Talent) with salary, equity and company data.
+- [Product Hunt Scraper](https://apify.com/cprussin/product-hunt-launches?fpr=to54nm): Product Hunt launches, leaderboards, upvotes and makers.
+- [SEC Form D Scraper](https://apify.com/cprussin/sec-form-d-funding?fpr=to54nm): New startup funding rounds and private placements from SEC EDGAR Form D filings.

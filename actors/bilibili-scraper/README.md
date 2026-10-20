@@ -237,6 +237,6 @@ Turn on `onlyNew` and run the actor on an [Apify schedule](https://docs.apify.co
 
 ## Related actors
 
-- [youtube-transcripts](https://apify.com/cprussin/youtube-transcripts?fpr=to54nm): Captions and transcripts from YouTube videos and channels.
-- [telegram-channel-scraper](https://apify.com/cprussin/telegram-channel-scraper?fpr=to54nm): Posts, views and reactions from public Telegram channels.
-- [substack-scraper](https://apify.com/cprussin/substack-scraper?fpr=to54nm): Substack newsletter posts, content and public stats.
+- [YouTube Transcript Scraper](https://apify.com/cprussin/youtube-transcripts?fpr=to54nm): YouTube transcripts as text, segments, SRT or VTT, for AI and RAG.
+- [Telegram Channel Scraper](https://apify.com/cprussin/telegram-channel-scraper?fpr=to54nm): Posts, views and reactions from public Telegram channels.
+- [Whisper Audio & Video Transcriber](https://apify.com/cprussin/media-transcriber?fpr=to54nm): Audio, video and podcast transcription with Whisper, with SRT and VTT subtitles.

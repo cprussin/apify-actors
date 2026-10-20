@@ -267,6 +267,6 @@ Turn on `onlyNew` and run the actor on an [Apify schedule](https://docs.apify.co
 
 ## Related actors
 
-- [google-flights-prices](https://apify.com/cprussin/google-flights-prices?fpr=to54nm): Google Flights itineraries and prices across date ranges.
-- [trustpilot-reviews](https://apify.com/cprussin/trustpilot-reviews?fpr=to54nm): Trustpilot reviews, ratings and TrustScore for any company.
-- [google-trends](https://apify.com/cprussin/google-trends?fpr=to54nm): Google Trends interest over time, regions, related queries and trending searches.
+- [Trustpilot Reviews Scraper](https://apify.com/cprussin/trustpilot-reviews?fpr=to54nm): Trustpilot reviews, ratings and TrustScore for any company.
+- [Google Trends Scraper](https://apify.com/cprussin/google-trends?fpr=to54nm): Google Trends interest over time, by region, related queries and trending searches.
+- [Google Ads Transparency Scraper](https://apify.com/cprussin/google-ads-transparency?fpr=to54nm): Competitor ads from the Google Ads Transparency Center by advertiser or domain.

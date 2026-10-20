@@ -17,13 +17,13 @@ Click **Start** with the prefilled input:
 ```json
 {
   "tours": ["ATP", "WTA"],
-  "maxMatches": 500
+  "maxMatches": 100
 }
 ```
 
 You get: Yesterday's ATP and WTA singles matches, each with `tournament`, `round`, `surface`, `player1`/`player2`, `winnerName`, `score` and closing odds (`oddsHome`, `oddsAway`).
 
-**Cost:** up to $2.00: 500 matches × $0.004 (you pay only for the matches played yesterday). No start fee.
+**Cost:** up to $0.40: 100 matches × $0.004 (you pay only for the matches played yesterday, often fewer). No start fee.
 
 ## Use with an AI assistant
 
@@ -229,5 +229,5 @@ That's **$4 per 1,000 matches**, or $6 per 1,000 with per-bookmaker odds. Filter
 
 ## Related actors
 
-- [google-trends](https://apify.com/cprussin/google-trends?fpr=to54nm): Google Trends interest over time, regions, related queries and trending searches.
-- [telegram-channel-scraper](https://apify.com/cprussin/telegram-channel-scraper?fpr=to54nm): Posts, views and reactions from public Telegram channels.
+- [Google Trends Scraper](https://apify.com/cprussin/google-trends?fpr=to54nm): Google Trends interest over time, by region, related queries and trending searches.
+- [Google Flights Scraper](https://apify.com/cprussin/google-flights-prices?fpr=to54nm): Google Flights itineraries and prices for any route and date range.

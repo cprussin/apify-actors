@@ -267,7 +267,7 @@ Yes, like any Apify actor: Apify API, JavaScript/Python clients, Make, Zapier, n
 
 ## Related actors
 
-- [google-trends](https://apify.com/cprussin/google-trends?fpr=to54nm): Google Trends interest over time, regions, related queries and trending searches.
-- [google-ads-transparency](https://apify.com/cprussin/google-ads-transparency?fpr=to54nm): Ads from the Google Ads Transparency Center by advertiser or domain.
-- [app-store-reviews](https://apify.com/cprussin/app-store-reviews?fpr=to54nm): App Store and Google Play reviews for any app.
-- [ycombinator-companies](https://apify.com/cprussin/ycombinator-companies?fpr=to54nm): Y Combinator company directory by batch, industry and region, plus YC startup jobs.
+- [Y Combinator Scraper](https://apify.com/cprussin/ycombinator-companies?fpr=to54nm): Y Combinator company directory by batch, industry and region, plus YC startup jobs.
+- [App Store & Google Play Scraper](https://apify.com/cprussin/app-store-apps?fpr=to54nm): App Store keyword ranks, App Store and Google Play top charts and app details.
+- [Google Trends Scraper](https://apify.com/cprussin/google-trends?fpr=to54nm): Google Trends interest over time, by region, related queries and trending searches.
+- [SEC Form D Scraper](https://apify.com/cprussin/sec-form-d-funding?fpr=to54nm): New startup funding rounds and private placements from SEC EDGAR Form D filings.

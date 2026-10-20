@@ -209,6 +209,6 @@ This actor is built on [faster-whisper](https://github.com/SYSTRAN/faster-whispe
 
 ## Related actors
 
-- [document-to-markdown](https://apify.com/cprussin/document-to-markdown?fpr=to54nm): PDF, Word, PowerPoint, Excel and EPUB to Markdown or RAG chunks.
-- [youtube-transcripts](https://apify.com/cprussin/youtube-transcripts?fpr=to54nm): YouTube transcripts as text, segments, SRT or VTT, for AI and RAG.
-- [website-screenshot](https://apify.com/cprussin/website-screenshot?fpr=to54nm): Full-page or viewport screenshots and PDFs of any URL.
+- [YouTube Transcript Scraper](https://apify.com/cprussin/youtube-transcripts?fpr=to54nm): YouTube transcripts as text, segments, SRT or VTT, for AI and RAG.
+- [Video Frame Extractor](https://apify.com/cprussin/video-frame-extractor?fpr=to54nm): Thumbnails, scene keyframes, contact sheets and GIFs from video files.
+- [PDF to Markdown Converter](https://apify.com/cprussin/document-to-markdown?fpr=to54nm): PDF, Word, PowerPoint, Excel and EPUB to Markdown or RAG chunks.

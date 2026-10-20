@@ -1,7 +1,7 @@
 {
   "actorSpecification": 1,
   "name": "hirist-iimjobs-jobs",
-  "title": "Hirist & iimjobs Jobs Scraper: India Tech & Management Jobs",
+  "title": "Hirist & iimjobs Scraper: India Tech & Management Jobs",
   "description": "Scrape Hirist (tech) and iimjobs (management, finance, sales) jobs in India by keyword, city and experience: title, company, locations, experience range, salary, skills, posted date and job URL. New-job monitoring. No login. $2 per 1,000 jobs.",
   "version": "0.1",
   "buildTag": "latest",

@@ -206,5 +206,6 @@ For example, 100 contracts cost $1.00, and a weekly delta-mode alert that return
 
 ## Related actors
 
-- [new-business-registrations](https://apify.com/cprussin/new-business-registrations?fpr=to54nm): New LLC and corporation filings from state open-data portals.
-- [trustpilot-reviews](https://apify.com/cprussin/trustpilot-reviews?fpr=to54nm): Trustpilot reviews, ratings and TrustScore for any company.
+- [SEC Form D Scraper](https://apify.com/cprussin/sec-form-d-funding?fpr=to54nm): New startup funding rounds and private placements from SEC EDGAR Form D filings.
+- [New Business Registrations](https://apify.com/cprussin/new-business-registrations?fpr=to54nm): Newly registered LLCs and corporations from official state registries.
+- [Impressum Extractor](https://apify.com/cprussin/impressum-extractor?fpr=to54nm): Company name, address, register number and VAT ID from DACH website imprints.

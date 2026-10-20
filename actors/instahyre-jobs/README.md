@@ -172,6 +172,7 @@ Turn on `monitorMode` and run the actor on an [Apify schedule](https://docs.apif
 
 ## Related actors
 
-- [foundit-jobs](https://apify.com/cprussin/foundit-jobs?fpr=to54nm): Indian job listings from Foundit (formerly Monster India) with salary, experience and skills.
-- [hirist-iimjobs-jobs](https://apify.com/cprussin/hirist-iimjobs-jobs?fpr=to54nm): India tech jobs from Hirist and management jobs from iimjobs.
-- [wellfound-jobs](https://apify.com/cprussin/wellfound-jobs?fpr=to54nm): Startup jobs from Wellfound (AngelList Talent) with salary, equity and company data.
+- [Cutshort Jobs Scraper](https://apify.com/cprussin/cutshort-jobs?fpr=to54nm): India tech jobs from Cutshort with salary, experience and skills.
+- [Hirist & iimjobs Jobs Scraper](https://apify.com/cprussin/hirist-iimjobs-jobs?fpr=to54nm): India tech jobs from Hirist and management jobs from iimjobs.
+- [Foundit Jobs Scraper](https://apify.com/cprussin/foundit-jobs?fpr=to54nm): India jobs from Foundit (formerly Monster India) with salary, experience and skills.
+- [Wellfound Jobs Scraper](https://apify.com/cprussin/wellfound-jobs?fpr=to54nm): Startup jobs from Wellfound (AngelList Talent) with salary, equity and company data.

@@ -190,6 +190,6 @@ That's **$3 per 1,000 screenshots or PDFs**, any format or size. Failed URLs are
 
 ## Related actors
 
-- [google-ads-transparency](https://apify.com/cprussin/google-ads-transparency?fpr=to54nm): Ads from the Google Ads Transparency Center by advertiser or domain.
-- [product-hunt-launches](https://apify.com/cprussin/product-hunt-launches?fpr=to54nm): Product Hunt launches, leaderboards, upvotes and makers.
-- [trustpilot-reviews](https://apify.com/cprussin/trustpilot-reviews?fpr=to54nm): Trustpilot reviews, ratings and TrustScore for any company.
+- [PDF to Markdown Converter](https://apify.com/cprussin/document-to-markdown?fpr=to54nm): PDF, Word, PowerPoint, Excel and EPUB to Markdown or RAG chunks.
+- [Video Frame Extractor](https://apify.com/cprussin/video-frame-extractor?fpr=to54nm): Thumbnails, scene keyframes, contact sheets and GIFs from video files.
+- [Google Ads Transparency Scraper](https://apify.com/cprussin/google-ads-transparency?fpr=to54nm): Competitor ads from the Google Ads Transparency Center by advertiser or domain.

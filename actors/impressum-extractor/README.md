@@ -178,6 +178,6 @@ The Impressum is a legally required public disclosure, but how you use the data 
 
 ## Related actors
 
-- [new-business-registrations](https://apify.com/cprussin/new-business-registrations?fpr=to54nm): newly registered businesses from official registries.
-- [website-screenshot](https://apify.com/cprussin/website-screenshot?fpr=to54nm): screenshots and PDFs of any list of URLs.
-- [ycombinator-companies](https://apify.com/cprussin/ycombinator-companies?fpr=to54nm): Y Combinator companies by batch, industry, region and status.
+- [New Business Registrations](https://apify.com/cprussin/new-business-registrations?fpr=to54nm): Newly registered LLCs and corporations from official state registries.
+- [SEC Form D Scraper](https://apify.com/cprussin/sec-form-d-funding?fpr=to54nm): New startup funding rounds and private placements from SEC EDGAR Form D filings.
+- [Website Screenshot API](https://apify.com/cprussin/website-screenshot?fpr=to54nm): Full-page or viewport screenshots and PDFs of any URL.

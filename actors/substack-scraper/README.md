@@ -217,6 +217,6 @@ Turn on `onlyNew` and run the actor on an [Apify schedule](https://docs.apify.co
 
 ## Related actors
 
-- [telegram-channel-scraper](https://apify.com/cprussin/telegram-channel-scraper?fpr=to54nm): Posts, views and reactions from public Telegram channels.
-- [youtube-transcripts](https://apify.com/cprussin/youtube-transcripts?fpr=to54nm): Captions and transcripts from YouTube videos and channels.
-- [bilibili-scraper](https://apify.com/cprussin/bilibili-scraper?fpr=to54nm): Bilibili videos, comments, trending and search results.
+- [Telegram Channel Scraper](https://apify.com/cprussin/telegram-channel-scraper?fpr=to54nm): Posts, views and reactions from public Telegram channels.
+- [YouTube Transcript Scraper](https://apify.com/cprussin/youtube-transcripts?fpr=to54nm): YouTube transcripts as text, segments, SRT or VTT, for AI and RAG.
+- [PDF to Markdown Converter](https://apify.com/cprussin/document-to-markdown?fpr=to54nm): PDF, Word, PowerPoint, Excel and EPUB to Markdown or RAG chunks.

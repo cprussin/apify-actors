@@ -211,7 +211,7 @@ Turn on `onlyNew` and run the actor on an [Apify schedule](https://docs.apify.co
 
 ## Related actors
 
-- [hirist-iimjobs-jobs](https://apify.com/cprussin/hirist-iimjobs-jobs?fpr=to54nm): India tech jobs from Hirist and management jobs from iimjobs, with experience, salary and skills.
-- [wellfound-jobs](https://apify.com/cprussin/wellfound-jobs?fpr=to54nm): Startup jobs from Wellfound (AngelList Talent) with salary, equity and company data.
-- [new-business-registrations](https://apify.com/cprussin/new-business-registrations?fpr=to54nm): New LLC and corporation filings from state open-data portals.
-- [trustpilot-reviews](https://apify.com/cprussin/trustpilot-reviews?fpr=to54nm): Trustpilot reviews, ratings and TrustScore for any company.
+- [Hirist & iimjobs Jobs Scraper](https://apify.com/cprussin/hirist-iimjobs-jobs?fpr=to54nm): India tech jobs from Hirist and management jobs from iimjobs.
+- [Cutshort Jobs Scraper](https://apify.com/cprussin/cutshort-jobs?fpr=to54nm): India tech jobs from Cutshort with salary, experience and skills.
+- [Instahyre Jobs Scraper](https://apify.com/cprussin/instahyre-jobs?fpr=to54nm): India tech jobs from Instahyre with employer size and founding year.
+- [Wellfound Jobs Scraper](https://apify.com/cprussin/wellfound-jobs?fpr=to54nm): Startup jobs from Wellfound (AngelList Talent) with salary, equity and company data.

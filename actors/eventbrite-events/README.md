@@ -219,6 +219,6 @@ Turn on `onlyNew` and run the actor on an [Apify schedule](https://docs.apify.co
 
 ## Related actors
 
-- [google-flights-prices](https://apify.com/cprussin/google-flights-prices?fpr=to54nm): Google Flights itineraries and prices across date ranges.
-- [new-business-registrations](https://apify.com/cprussin/new-business-registrations?fpr=to54nm): New LLC and corporation filings from state open-data portals.
-- [trustpilot-reviews](https://apify.com/cprussin/trustpilot-reviews?fpr=to54nm): Trustpilot reviews, ratings and TrustScore for any company.
+- [Luma Events Scraper](https://apify.com/cprussin/luma-events?fpr=to54nm): Luma (lu.ma) events by city, category, keyword or calendar, with hosts and tickets.
+- [New Business Registrations](https://apify.com/cprussin/new-business-registrations?fpr=to54nm): Newly registered LLCs and corporations from official state registries.
+- [Google Flights Scraper](https://apify.com/cprussin/google-flights-prices?fpr=to54nm): Google Flights itineraries and prices for any route and date range.

@@ -229,6 +229,6 @@ Turn on `onlyNew` and run the actor on an [Apify schedule](https://docs.apify.co
 
 ## Related actors
 
-- [eventbrite-events](https://apify.com/cprussin/eventbrite-events?fpr=to54nm): Eventbrite events by city, category and date, with venues, organizers and prices.
-- [product-hunt-launches](https://apify.com/cprussin/product-hunt-launches?fpr=to54nm): Product Hunt launches with upvotes, ranks, topics and websites.
-- [ycombinator-companies](https://apify.com/cprussin/ycombinator-companies?fpr=to54nm): Y Combinator companies by batch, industry, region and status.
+- [Eventbrite Events Scraper](https://apify.com/cprussin/eventbrite-events?fpr=to54nm): Eventbrite events by city, category and date, with venues, organizers and prices.
+- [Product Hunt Scraper](https://apify.com/cprussin/product-hunt-launches?fpr=to54nm): Product Hunt launches, leaderboards, upvotes and makers.
+- [Y Combinator Scraper](https://apify.com/cprussin/ycombinator-companies?fpr=to54nm): Y Combinator company directory by batch, industry and region, plus YC startup jobs.

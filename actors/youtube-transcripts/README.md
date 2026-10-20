@@ -231,6 +231,6 @@ Add channel or playlist URLs, turn on `onlyNew` and run the actor on an [Apify s
 
 ## Related actors
 
-- [substack-scraper](https://apify.com/cprussin/substack-scraper?fpr=to54nm): Substack newsletter posts, content and public stats.
-- [bilibili-scraper](https://apify.com/cprussin/bilibili-scraper?fpr=to54nm): Bilibili videos, comments, trending and search results.
-- [telegram-channel-scraper](https://apify.com/cprussin/telegram-channel-scraper?fpr=to54nm): Posts, views and reactions from public Telegram channels.
+- [Whisper Audio & Video Transcriber](https://apify.com/cprussin/media-transcriber?fpr=to54nm): Audio, video and podcast transcription with Whisper, with SRT and VTT subtitles.
+- [PDF to Markdown Converter](https://apify.com/cprussin/document-to-markdown?fpr=to54nm): PDF, Word, PowerPoint, Excel and EPUB to Markdown or RAG chunks.
+- [Video Frame Extractor](https://apify.com/cprussin/video-frame-extractor?fpr=to54nm): Thumbnails, scene keyframes, contact sheets and GIFs from video files.

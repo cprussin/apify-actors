@@ -60,7 +60,7 @@
       "minimum": 1,
       "maximum": 1000000,
       "default": 500,
-      "prefill": 500
+      "prefill": 100
     },
     "includeRoundAndSurface": {
       "title": "Add round and surface",

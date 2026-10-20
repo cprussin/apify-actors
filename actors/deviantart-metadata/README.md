@@ -178,6 +178,6 @@ Items that are skipped (mature, older than `sinceDate`), not found or failed are
 
 ## Related actors
 
-- [soundcloud-metadata](https://apify.com/cprussin/soundcloud-metadata?fpr=to54nm): SoundCloud track, user and playlist metadata (no audio).
-- [youtube-transcripts](https://apify.com/cprussin/youtube-transcripts?fpr=to54nm): Captions and transcripts from YouTube videos and channels.
-- [substack-scraper](https://apify.com/cprussin/substack-scraper?fpr=to54nm): Posts, content and stats from any Substack newsletter.
+- [SoundCloud Scraper](https://apify.com/cprussin/soundcloud-metadata?fpr=to54nm): SoundCloud track, user and playlist metadata (no audio).
+- [AI Image Upscaler](https://apify.com/cprussin/image-upscaler?fpr=to54nm): Upscale and enhance images 2x, 3x or 4x with Real-ESRGAN.
+- [Substack Scraper](https://apify.com/cprussin/substack-scraper?fpr=to54nm): Posts, full text and engagement stats from any Substack newsletter.

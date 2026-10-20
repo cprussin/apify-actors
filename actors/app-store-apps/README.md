@@ -247,6 +247,6 @@ Examples: 10 keywords × top 50 = 500 rank rows = $0.50. Four top-100 charts = $
 
 ## Related actors
 
-- [app-store-reviews](https://apify.com/cprussin/app-store-reviews?fpr=to54nm): App Store and Google Play reviews in one schema, with new-review alerts.
-- [google-trends](https://apify.com/cprussin/google-trends?fpr=to54nm): Google Trends interest over time, regions, related queries and trending searches.
-- [product-hunt-launches](https://apify.com/cprussin/product-hunt-launches?fpr=to54nm): Product Hunt launches, leaderboards, upvotes and makers.
+- [App Store & Google Play Reviews Scraper](https://apify.com/cprussin/app-store-reviews?fpr=to54nm): iOS and Android app reviews in one schema, with new-review alerts.
+- [Google Trends Scraper](https://apify.com/cprussin/google-trends?fpr=to54nm): Google Trends interest over time, by region, related queries and trending searches.
+- [Product Hunt Scraper](https://apify.com/cprussin/product-hunt-launches?fpr=to54nm): Product Hunt launches, leaderboards, upvotes and makers.
