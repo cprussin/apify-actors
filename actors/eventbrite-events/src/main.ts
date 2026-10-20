@@ -28,6 +28,7 @@ try {
       ".",
   );
   for (const s of input.searches) log.info(`Search: ${s.url}`);
+  for (const w of input.warnings) log.warning(w);
 
   // onlyNew: state is keyed by the query, so each distinct input (e.g. each
   // scheduled task) tracks its own "already returned" events.
@@ -107,12 +108,22 @@ try {
     `Done after ${client.requests} requests (${client.blocks} blocked, ${client.errors} errors): ${JSON.stringify(stats)}`,
   );
   const failed = stats.searches.filter((s) => s.status === "failed").length;
+  const notFound = stats.searches.filter((s) => s.status === "notFound");
   await Actor.setStatusMessage(
     `${stats.emitted} events from ${stats.searches.length} search(es), ${stats.pages} page(s)` +
       (input.includeDetails ? `, ${stats.detailPages} event page(s)` : "") +
       (failed ? `, ${failed} failed` : "") +
+      (notFound.length
+        ? `, not found on Eventbrite: ${notFound.map((s) => s.search).join(", ")} (check the location slug)`
+        : "") +
+      (stats.missingEvents
+        ? `, ${stats.missingEvents} event URL(s) not found`
+        : "") +
       (stats.skippedSeen ? `, skipped ${stats.skippedSeen} seen before` : "") +
-      (stats.stopReason === "budget" ? " (stopped at max charge)" : ""),
+      (stats.stopReason === "budget" ? " (stopped at max charge)" : "") +
+      (input.warnings.length
+        ? `. Input warnings: ${input.warnings.join(" ")}`
+        : ""),
     { isStatusMessageTerminal: true },
   );
   await Actor.exit();

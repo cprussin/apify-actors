@@ -109,7 +109,8 @@ export function eventIdFromUrl(url: string): string | null {
 
 /**
  * Parse a start URL: an Eventbrite search page (/d/...) or an event page
- * (/e/...). Query parameters other than `page` are dropped.
+ * (/e/...). Query parameters other than `page` (and `q` on a city landing
+ * page) are dropped.
  */
 export function parseStartUrl(raw: string): StartUrl | null {
   let u: URL;
@@ -126,6 +127,14 @@ export function parseStartUrl(raw: string): StartUrl | null {
   if (ev) return { kind: "event", url: `${origin}${path}`, id: ev[1]! };
   // Location only (/d/ny--new-york): all events there.
   if (/^\/d\/[^/]+$/i.test(path)) path += "/all-events";
+  // City landing page (/d/ny--new-york/events, the URL Eventbrite shows):
+  // a browse page without search data. Same events as all-events, or as
+  // the keyword search when it has ?q=.
+  const landing = /^(\/d\/[^/]+)\/events$/i.exec(path);
+  if (landing) {
+    const q = slugify(u.searchParams.get("q") ?? "");
+    path = `${landing[1]}/${q || "all-events"}`;
+  }
   // Category browse page (/b/ny--new-york/music): same events as the search.
   const browse = /^\/b\/([^/]+)\/([^/]+)$/i.exec(path);
   if (browse && (CATEGORIES as readonly string[]).includes(browse[2]!))

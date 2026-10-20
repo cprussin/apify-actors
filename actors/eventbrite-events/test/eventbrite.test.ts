@@ -115,6 +115,25 @@ describe("URLs", () => {
       url: "https://www.eventbrite.com/d/ny--new-york/music--events/",
       page: 1,
     });
+    // City landing pages (no search data) map to the equivalent search.
+    expect(
+      parseStartUrl(
+        "https://www.eventbrite.co.uk/d/united-kingdom--london/events/",
+      ),
+    ).toEqual({
+      kind: "search",
+      url: "https://www.eventbrite.co.uk/d/united-kingdom--london/all-events/",
+      page: 1,
+    });
+    expect(
+      parseStartUrl(
+        "https://www.eventbrite.com/d/ny--new-york/events/?q=Wine Tasting",
+      ),
+    ).toEqual({
+      kind: "search",
+      url: "https://www.eventbrite.com/d/ny--new-york/wine-tasting/",
+      page: 1,
+    });
     expect(
       parseStartUrl("https://www.eventbrite.com/b/ny--new-york/bogus/"),
     ).toBeNull();
@@ -376,6 +395,7 @@ describe("input", () => {
       maxEvents: 20,
       includeDetails: true,
       onlyNew: false,
+      warnings: [],
     });
   });
 
@@ -427,17 +447,42 @@ describe("input", () => {
     ).toBe(NY_URL);
   });
 
+  it("accepts Store titles for category and date", () => {
+    expect(
+      normalizeInput({
+        category: "Business & Professional",
+        dateFilter: "This weekend",
+      }).searches[0]!.url,
+    ).toBe(
+      "https://www.eventbrite.com/d/ny--new-york/business--events--this-weekend/",
+    );
+  });
+
+  it("works around fixable input with warnings", () => {
+    const r = normalizeInput({
+      locations: [NY_URL, "--"],
+      startUrls: ["https://www.eventbrite.com/o/x-1", EVENT_URL],
+      keyword: "!!",
+      maxEvents: 20000,
+    });
+    expect(r.searches.map((s) => s.url)).toEqual([NY_URL]);
+    expect(r.eventUrls).toEqual([EVENT_URL]);
+    expect(r.maxEvents).toBe(10000);
+    expect(r.warnings).toHaveLength(5);
+    expect(r.warnings.join(" ")).toMatch(/organizer pages/);
+    expect(normalizeInput({ maxEvents: 0 }).maxEvents).toBe(1);
+  });
+
   it("rejects bad input", () => {
     expect(() => normalizeInput({ category: "bogus" })).toThrow(InputError);
     expect(() => normalizeInput({ dateFilter: "yesterday" })).toThrow(
       InputError,
     );
+    // Nothing usable left.
     expect(() =>
       normalizeInput({ startUrls: ["https://www.eventbrite.com/o/x-1"] }),
-    ).toThrow(/organizer pages can't be scraped yet/);
-    expect(() => normalizeInput({ locations: [NY_URL] })).toThrow(InputError);
-    expect(() => normalizeInput({ maxEvents: 0 })).toThrow(InputError);
-    expect(() => normalizeInput({ maxEvents: 10001 })).toThrow(InputError);
+    ).toThrow(/organizer pages aren't supported yet/);
+    expect(() => normalizeInput({ maxEvents: "lots" })).toThrow(InputError);
   });
 });
 
@@ -525,7 +570,7 @@ describe("run", () => {
     expect(out.length).toBe(5);
   });
 
-  it("keeps going when one search fails, fails when all do", async () => {
+  it("reports unknown locations (404) without failing", async () => {
     const out: EventResult[] = [];
     const logs: string[] = [];
     const stats = await runEvents(
@@ -539,15 +584,68 @@ describe("run", () => {
       { get, emit: async (r) => (out.push(r), true), log: (m) => logs.push(m) },
     );
     expect(out.length).toBe(5);
-    expect(stats.searches.map((s) => s.status)).toEqual(["failed", "done"]);
-    expect(logs[0]).toMatch(/HTTP 404/);
+    expect(stats.searches.map((s) => s.status)).toEqual(["notFound", "done"]);
+    expect(logs[0]).toMatch(/not found on Eventbrite.*location slug/);
 
+    const none = await runEvents(
+      normalizeInput({ locations: ["xx--nowhere"] }),
+      { get, emit: async () => true },
+    );
+    expect(none).toMatchObject({
+      emitted: 0,
+      searches: [{ status: "notFound" }],
+    });
+  });
+
+  it("keeps going when one search fails, fails when all do", async () => {
+    const down = async (url: string) => {
+      if (url.includes("xx--down")) throw new HttpError(503, "down", url);
+      return get(url);
+    };
+    const stats = await runEvents(
+      normalizeInput({
+        locations: ["xx--down", "ny--new-york"],
+        maxEvents: 5,
+        includeDetails: false,
+      }),
+      { get: down, emit: async () => true },
+    );
+    expect(stats.searches.map((s) => s.status)).toEqual(["failed", "done"]);
     await expect(
-      runEvents(normalizeInput({ locations: ["xx--nowhere"] }), {
-        get,
+      runEvents(normalizeInput({ locations: ["xx--down"] }), {
+        get: down,
         emit: async () => true,
       }),
-    ).rejects.toThrow(/All searches failed/);
+    ).rejects.toThrow(/All searches failed: HTTP 503/);
+  });
+
+  it("stops at a 404 past the last page", async () => {
+    const stats = await runEvents(
+      normalizeInput({ maxEvents: 1000, includeDetails: false }),
+      { get, emit: async () => true },
+    );
+    expect(stats.searches[0]).toMatchObject({ status: "done", pages: 2 });
+  });
+
+  it("skips deleted event URLs without failing; fails on blocks", async () => {
+    const gone = "https://www.eventbrite.com/e/gone-tickets-100000000001";
+    const logs: string[] = [];
+    const stats = await runEvents(normalizeInput({ startUrls: [gone] }), {
+      get,
+      emit: async () => true,
+      log: (m) => logs.push(m),
+    });
+    expect(stats).toMatchObject({ emitted: 0, missingEvents: 1 });
+    expect(logs[0]).toMatch(/event not found/);
+    await expect(
+      runEvents(normalizeInput({ startUrls: [gone] }), {
+        get: async (url) => ({
+          url,
+          html: "<title>Human Verification</title>",
+        }),
+        emit: async () => true,
+      }),
+    ).rejects.toThrow(/All event pages failed/);
   });
 
   it("onlyNew: skips (and doesn't charge) events returned by earlier runs", async () => {

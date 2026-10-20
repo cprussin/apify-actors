@@ -10,7 +10,7 @@ import {
   type EventDetails,
   type RawEvent,
 } from "./eventbrite.js";
-import type { Page } from "./http.js";
+import { HttpError, type Page } from "./http.js";
 import type { NormalizedInput, SearchPlan } from "./input.js";
 import type { Seen } from "./state.js";
 
@@ -72,7 +72,8 @@ export interface SearchStats {
   pages: number;
   events: number;
   totalEvents: number | null;
-  status: "done" | "failed" | "empty" | "stopped";
+  /** notFound: Eventbrite has no such search page (404, e.g. a bad location slug). */
+  status: "done" | "failed" | "empty" | "stopped" | "notFound";
   error?: string;
 }
 
@@ -80,6 +81,8 @@ export interface RunStats {
   pages: number;
   detailPages: number;
   detailErrors: number;
+  /** Event start URLs that no longer exist (404, or not an event page). */
+  missingEvents: number;
   emitted: number;
   duplicates: number;
   /** onlyNew: events already returned by an earlier run (not charged). */
@@ -90,6 +93,12 @@ export interface RunStats {
 
 /** Eventbrite lists at most 50 pages per search. */
 export const MAX_PAGES = 50;
+
+/** Eventbrite has no page at that URL (deleted event, unknown location). */
+const isGone = (e: unknown) =>
+  e instanceof HttpError && (e.status === 404 || e.status === 410);
+
+class NotEventPage extends Error {}
 
 const errMsg = (e: unknown) =>
   (e instanceof Error ? e.message : String(e)).slice(0, 300);
@@ -207,6 +216,7 @@ export async function runEvents(
     pages: 0,
     detailPages: 0,
     detailErrors: 0,
+    missingEvents: 0,
     emitted: 0,
     duplicates: 0,
     skippedSeen: 0,
@@ -228,7 +238,7 @@ export async function runEvents(
     const d = parseEventPage(res.html);
     if (!d) {
       if (isBlockPage(res.html)) throw new Error("Blocked by Eventbrite.");
-      throw new Error(`Not an event page: ${res.url}`);
+      throw new NotEventPage(`Not an event page: ${res.url}`);
     }
     return d;
   };
@@ -272,17 +282,25 @@ export async function runEvents(
         });
       } catch (e) {
         stats.detailErrors += 1;
-        log(`${url}: ${errMsg(e)}`);
+        if (isGone(e) || e instanceof NotEventPage) {
+          stats.missingEvents += 1;
+          log(
+            `${url}: event not found (deleted, private or not an event page); skipped.`,
+          );
+        } else log(`${url}: ${errMsg(e)}`);
         return null;
       }
     });
     const ok = results.filter((r): r is EventResult => !!r);
     if (!(await emitAll(ok))) return stats;
   }
+  // Only real failures (blocks, network) fail the run; events that no
+  // longer exist just give no results.
   if (
     direct.length &&
     stats.emitted === 0 &&
     stats.skippedSeen === 0 &&
+    stats.detailErrors > stats.missingEvents &&
     !input.searches.length
   )
     throw new Error("All event pages failed.");
@@ -292,7 +310,14 @@ export async function runEvents(
     const last = Math.min(MAX_PAGES, s.startPage + MAX_PAGES - 1);
     for (let p = s.startPage; p <= last; p++) {
       const url = pageUrl(s.url, p);
-      const res = await deps.get(url);
+      let res: Page;
+      try {
+        res = await deps.get(url);
+      } catch (e) {
+        // Past the last page; on the first page, no such search.
+        if (isGone(e) && p > s.startPage) return;
+        throw e;
+      }
       stats.pages += 1;
       st.pages += 1;
       const page = parseSearchPage(res.html);
@@ -348,6 +373,14 @@ export async function runEvents(
     try {
       await runSearch(s, st);
     } catch (e) {
+      if (isGone(e) && !st.events) {
+        st.status = "notFound";
+        st.error = "not found on Eventbrite (HTTP 404)";
+        log(
+          `${st.search}: not found on Eventbrite (HTTP 404). Check the location slug (e.g. ny--new-york, united-kingdom--london) or URL.`,
+        );
+        continue;
+      }
       const error = errMsg(e);
       // Events from earlier pages are kept; only a search with none fails.
       st.status =

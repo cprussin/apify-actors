@@ -5,6 +5,7 @@ import {
   locationSlug,
   parseStartUrl,
   searchPath,
+  slugify,
 } from "./eventbrite.js";
 
 /** Raw actor input, as defined in .actor/input_schema.json. */
@@ -38,6 +39,8 @@ export interface NormalizedInput {
   includeDetails: boolean;
   /** Skip events returned by earlier runs with the same input (monitoring). */
   onlyNew: boolean;
+  /** Input problems that were worked around (skipped entries, clamped limits). */
+  warnings: string[];
 }
 
 export const MAX_EVENTS = 10_000;
@@ -64,19 +67,43 @@ const list = (v: unknown): string[] =>
     .map((x) => (typeof x === "string" ? x.trim() : ""))
     .filter(Boolean);
 
+/** Store titles (input schema enumTitles) and common names -> slugs. */
+const ALIASES: Record<string, string> = {
+  "business-and-professional": "business",
+  "community-and-culture": "community",
+  "performing-and-visual-arts": "arts",
+  "film-media-and-entertainment": "film-and-media",
+  "health-and-wellness": "health",
+  "science-and-technology": "science-and-tech",
+  technology: "science-and-tech",
+  tech: "science-and-tech",
+  "religion-and-spirituality": "spirituality",
+  "government-and-politics": "government",
+  "fashion-and-beauty": "fashion",
+  "hobbies-and-special-interest": "hobbies",
+  weekend: "this-weekend",
+  "any-upcoming-date": "any",
+  "any-category": "any",
+};
+
 function pick<T extends string>(
   v: unknown,
   allowed: readonly T[],
   name: string,
 ): T | null {
-  if (v === undefined || v === null || v === "" || v === "any") return null;
-  const s = String(v).trim().toLowerCase().replace(/\s+/g, "-");
+  if (v === undefined || v === null || v === "") return null;
+  const slug = slugify(String(v));
+  const s = ALIASES[slug] ?? slug;
+  if (!s || s === "any") return null;
   if (!(allowed as readonly string[]).includes(s))
     throw new InputError(
       `${name} "${String(v)}" is not supported. Use one of: ${allowed.join(", ")}.`,
     );
   return s as T;
 }
+
+const EXAMPLE_URLS =
+  "URLs like https://www.eventbrite.com/d/ny--new-york/music--events/ or https://www.eventbrite.com/e/some-event-tickets-123456789";
 
 export function normalizeInput(
   raw: RawInput | null | undefined,
@@ -95,9 +122,12 @@ export function normalizeInput(
 
   const category = pick(r.category, CATEGORIES, "category");
   const date = pick(r.dateFilter, DATE_FILTERS, "dateFilter");
-  const keyword = typeof r.keyword === "string" ? r.keyword.trim() : "";
-  if (keyword && !/[a-z0-9]/i.test(keyword))
-    throw new InputError(`keyword "${keyword}" has no letters or digits.`);
+  const warnings: string[] = [];
+  let keyword = typeof r.keyword === "string" ? r.keyword.trim() : "";
+  if (keyword && !slugify(keyword)) {
+    warnings.push(`Ignored keyword "${keyword}": no letters or digits.`);
+    keyword = "";
+  }
 
   const searches: SearchPlan[] = [];
   const eventUrls: string[] = [];
@@ -108,26 +138,39 @@ export function normalizeInput(
     searches.push(s);
   };
 
-  for (const u of startUrls) {
-    const parsed = parseStartUrl(u);
-    if (!parsed)
-      throw new InputError(
-        `Start URL "${u}" is not ${/eventbrite\.[a-z.]+\/o\//i.test(u) ? "supported: organizer pages can't be scraped yet. Use" : "an Eventbrite search or event page. Use"} URLs like https://www.eventbrite.com/d/ny--new-york/music--events/ or https://www.eventbrite.com/e/some-event-tickets-123456789.`,
-      );
+  const addUrl = (parsed: NonNullable<ReturnType<typeof parseStartUrl>>) => {
     if (parsed.kind === "event") {
       if (!eventUrls.includes(parsed.url)) eventUrls.push(parsed.url);
     } else add({ url: parsed.url, startPage: parsed.page, location: null });
+  };
+
+  // Unusable entries are skipped with a warning so the rest still runs.
+  for (const u of startUrls) {
+    const parsed = parseStartUrl(u);
+    if (parsed) addUrl(parsed);
+    else
+      warnings.push(
+        /eventbrite\.[a-z.]+\/o\//i.test(u)
+          ? `Skipped start URL "${u}": organizer pages aren't supported yet. Use ${EXAMPLE_URLS}.`
+          : `Skipped start URL "${u}": not an Eventbrite search or event page. Use ${EXAMPLE_URLS}.`,
+      );
   }
 
   for (const l of list(r.locations)) {
     const fromUrl = /eventbrite\./i.test(l) ? parseStartUrl(l) : null;
-    if (fromUrl)
-      throw new InputError(
-        `Location "${l}" is a URL. Put Eventbrite URLs in startUrls instead.`,
+    if (fromUrl) {
+      // A URL in locations: use it like a start URL (filters don't apply).
+      warnings.push(
+        `Location "${l}" is a URL; used it as a start URL (category, date and keyword filters don't apply to it).`,
       );
+      addUrl(fromUrl);
+      continue;
+    }
     const location = locationSlug(l);
-    if (!location)
-      throw new InputError(`Location "${l}" is not a valid location slug.`);
+    if (!location) {
+      warnings.push(`Skipped location "${l}": not a valid location slug.`);
+      continue;
+    }
     add({
       url: `${BASE_URL}${searchPath({ location, category, date, keyword: keyword || null })}`,
       startPage: 1,
@@ -137,18 +180,32 @@ export function normalizeInput(
 
   if (!searches.length && !eventUrls.length)
     throw new InputError(
-      'Add at least one location or start URL, e.g. locations: ["ny--new-york"].',
+      [
+        ...warnings,
+        'Add at least one location or start URL, e.g. locations: ["ny--new-york"].',
+      ].join(" "),
     );
-  if (searches.length > MAX_SEARCHES)
-    throw new InputError(
-      `At most ${MAX_SEARCHES} searches (locations + start URLs) per run; got ${searches.length}.`,
+  if (searches.length > MAX_SEARCHES) {
+    warnings.push(
+      `At most ${MAX_SEARCHES} searches (locations + start URLs) per run; got ${searches.length}, using the first ${MAX_SEARCHES}.`,
     );
-  if (eventUrls.length > MAX_EVENT_URLS)
-    throw new InputError(`At most ${MAX_EVENT_URLS} event URLs per run.`);
+    searches.length = MAX_SEARCHES;
+  }
+  if (eventUrls.length > MAX_EVENT_URLS) {
+    warnings.push(
+      `At most ${MAX_EVENT_URLS} event URLs per run; got ${eventUrls.length}, using the first ${MAX_EVENT_URLS}.`,
+    );
+    eventUrls.length = MAX_EVENT_URLS;
+  }
 
-  const maxEvents = toInt(r.maxEvents, "maxEvents", DEFAULT_INPUT.maxEvents);
-  if (maxEvents < 1 || maxEvents > MAX_EVENTS)
-    throw new InputError(`maxEvents must be between 1 and ${MAX_EVENTS}.`);
+  let maxEvents = toInt(r.maxEvents, "maxEvents", DEFAULT_INPUT.maxEvents);
+  if (maxEvents < 1 || maxEvents > MAX_EVENTS) {
+    const clamped = Math.min(MAX_EVENTS, Math.max(1, maxEvents));
+    warnings.push(
+      `maxEvents ${maxEvents} is out of range (1-${MAX_EVENTS}); using ${clamped}.`,
+    );
+    maxEvents = clamped;
+  }
 
   return {
     searches,
@@ -156,5 +213,6 @@ export function normalizeInput(
     maxEvents,
     includeDetails: r.includeDetails !== false,
     onlyNew: r.onlyNew === true,
+    warnings,
   };
 }
