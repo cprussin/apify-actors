@@ -1,0 +1,35 @@
+{
+  "title": "China Hot Search input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "platforms": {
+      "title": "Boards",
+      "type": "array",
+      "description": "Hot-search boards to fetch. Leave empty for all four. Douyin has ~50 rows, Baidu ~50, Toutiao ~50 and Bilibili 10.",
+      "editor": "select",
+      "items": {
+        "type": "string",
+        "enum": ["douyin", "baidu", "toutiao", "bilibili"],
+        "enumTitles": [
+          "Douyin hot search (抖音热榜)",
+          "Baidu realtime hot search (百度热搜)",
+          "Toutiao hot board (头条热榜)",
+          "Bilibili hot search words (B站热搜)"
+        ]
+      },
+      "prefill": ["douyin", "baidu", "toutiao", "bilibili"],
+      "default": ["douyin", "baidu", "toutiao", "bilibili"],
+      "sectionCaption": "What to fetch"
+    },
+    "maxItemsPerPlatform": {
+      "title": "Max rows per board",
+      "type": "integer",
+      "description": "Keep only the top N rows of each board (e.g. 10 for a top-10 digest). 0 = every row.",
+      "editor": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "default": 0
+    }
+  }
+}

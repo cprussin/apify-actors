@@ -1,0 +1,18 @@
+{
+  "actorSpecification": 1,
+  "name": "china-hot-search",
+  "title": "Douyin Hot Search & China Trending: Baidu, Toutiao, Bilibili",
+  "description": "Douyin hot search (抖音热榜), Baidu realtime hot search, Toutiao hot board and Bilibili hot search words in one run: rank, keyword, hot value, 新/热 label and link. $4 per 1,000 trends, no start fee.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "defaultMemoryMbytes": 256,
+  "maxMemoryMbytes": 1024,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}

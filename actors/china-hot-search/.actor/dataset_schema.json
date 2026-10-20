@@ -1,0 +1,146 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "platform": {
+        "type": "string",
+        "title": "Platform",
+        "description": "douyin, baidu, toutiao or bilibili.",
+        "example": "douyin"
+      },
+      "platformName": {
+        "type": "string",
+        "title": "Platform name",
+        "description": "Platform name in English and Chinese.",
+        "example": "Douyin (抖音)"
+      },
+      "board": {
+        "type": "string",
+        "title": "Board",
+        "description": "Board name in Chinese: 抖音热榜, 百度热搜, 头条热榜 or B站热搜.",
+        "example": "抖音热榜"
+      },
+      "rank": {
+        "type": "number",
+        "title": "Rank",
+        "description": "Position on the board (1 = top). Pinned editorial items are not included.",
+        "example": 1
+      },
+      "title": {
+        "type": "string",
+        "title": "Keyword / headline",
+        "description": "The trending keyword or headline as shown (Chinese).",
+        "example": "英雄联盟S16瑞士轮首日赛程"
+      },
+      "hotValue": {
+        "type": ["number", "null"],
+        "title": "Hot value",
+        "description": "The platform's heat score (热度). Scales differ between platforms.",
+        "example": 11793500
+      },
+      "label": {
+        "type": ["string", "null"],
+        "title": "Label",
+        "description": "Badge as shown: 新, 热, 爆, 首发, 独家, 辟谣, ... null when none.",
+        "example": "热"
+      },
+      "labelEn": {
+        "type": ["string", "null"],
+        "title": "Label (English)",
+        "description": "The badge in English: new, hot, explosive, first release, exclusive, debunk, ...",
+        "example": "hot"
+      },
+      "url": {
+        "type": "string",
+        "title": "URL",
+        "description": "The keyword's search or topic page on the platform.",
+        "example": "https://www.douyin.com/search/%E8%8B%B1%E9%9B%84%E8%81%94%E7%9B%9FS16%E7%91%9E%E5%A3%AB%E8%BD%AE%E9%A6%96%E6%97%A5%E8%B5%9B%E7%A8%8B"
+      },
+      "description": {
+        "type": ["string", "null"],
+        "title": "Description",
+        "description": "Short summary of the topic (Baidu only).",
+        "example": null
+      },
+      "categories": {
+        "type": "array",
+        "title": "Categories",
+        "description": "Topic categories in English (Toutiao only), e.g. military, finance, international.",
+        "example": []
+      },
+      "videoCount": {
+        "type": ["number", "null"],
+        "title": "Video count",
+        "description": "Videos about the topic (Douyin, when the douyin.com board is used).",
+        "example": null
+      },
+      "eventTime": {
+        "type": ["string", "null"],
+        "title": "Event time",
+        "description": "When the topic started trending, ISO 8601 (Douyin, when the douyin.com board is used).",
+        "example": null
+      },
+      "fetchedAt": {
+        "type": "string",
+        "title": "Fetched at",
+        "description": "When the board was fetched (ISO 8601).",
+        "example": "2026-10-20T06:17:12.000Z"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Hot searches",
+      "transformation": {
+        "fields": [
+          "platform",
+          "rank",
+          "title",
+          "hotValue",
+          "label",
+          "labelEn",
+          "url",
+          "fetchedAt"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "platform": {
+            "label": "Platform",
+            "format": "text"
+          },
+          "rank": {
+            "label": "Rank",
+            "format": "number"
+          },
+          "title": {
+            "label": "Keyword",
+            "format": "text"
+          },
+          "hotValue": {
+            "label": "Hot value",
+            "format": "number"
+          },
+          "label": {
+            "label": "Label",
+            "format": "text"
+          },
+          "labelEn": {
+            "label": "Label (EN)",
+            "format": "text"
+          },
+          "url": {
+            "label": "Link",
+            "format": "link"
+          },
+          "fetchedAt": {
+            "label": "Fetched at",
+            "format": "date"
+          }
+        }
+      }
+    }
+  }
+}

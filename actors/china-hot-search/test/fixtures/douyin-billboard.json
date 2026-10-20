@@ -1,0 +1,40 @@
+{
+  "active_time": "2026-10-20 14:14:24",
+  "extra": {
+    "logid": "20261020141712B7F68CCBF989EDC1FFD0",
+    "now": 1792477032534
+  },
+  "status_code": 0,
+  "word_list": [
+    {
+      "word": "美舰冲闯南沙群岛仙宾礁附近海域",
+      "hot_value": 12051956,
+      "label": 1
+    },
+    {
+      "word": "英雄联盟S16瑞士轮首日赛程",
+      "hot_value": 11793500,
+      "label": 3
+    },
+    {
+      "word": "何以中国当惊世界殊",
+      "hot_value": 11102223,
+      "label": 3
+    },
+    {
+      "word": "吴艳妮说只要跑得动就不会退役",
+      "hot_value": 11099299,
+      "label": 1
+    },
+    {
+      "word": "我关注的中国设计师都在抖音大秀",
+      "hot_value": 10541611,
+      "label": 0
+    },
+    {
+      "word": "",
+      "hot_value": 1,
+      "label": 0
+    }
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "success": true,
+  "data": {
+    "cards": [
+      {
+        "component": "hotList",
+        "content": [
+          {
+            "appUrl": "https://www.baidu.com/s?wd=%E5%B0%8F%E5%A4%A9%E6%89%8D%E6%89%8B%E8%A1%A8+%E5%B0%81%E9%97%AD%E7%A4%BE%E4%BA%A4&sa=fyb_news&rsv_dl=fyb_news",
+            "desc": "10月20日，“小天才手表封闭社交被质疑”登上热搜。博主称小天才构建封闭社交平台，不与其他品牌互通，利用儿童社交需求迫使家长购买。",
+            "hotChange": "same",
+            "hotScore": "7808526",
+            "hotTag": "0",
+            "img": "https://fyb-2.cdn.bcebos.com/hotboard_image/1452040ab565bcce8a79230789544905",
+            "index": 0,
+            "indexUrl": "",
+            "query": "小天才手表 封闭社交",
+            "rawUrl": "https://www.baidu.com/s?wd=%E5%B0%8F%E5%A4%A9%E6%89%8D%E6%89%8B%E8%A1%A8+%E5%B0%81%E9%97%AD%E7%A4%BE%E4%BA%A4",
+            "show": [],
+            "url": "https://www.baidu.com/s?wd=%E5%B0%8F%E5%A4%A9%E6%89%8D%E6%89%8B%E8%A1%A8+%E5%B0%81%E9%97%AD%E7%A4%BE%E4%BA%A4&sa=fyb_news&rsv_dl=fyb_news",
+            "word": "小天才手表 封闭社交"
+          },
+          {
+            "appUrl": "https://www.baidu.com/s?wd=%E5%8D%81%E9%80%9A%E9%99%8C%E7%94%9F%E7%94%B5%E8%AF%9D%E4%B8%83%E9%80%9A%E6%B2%A1%E4%BA%BA%E6%8E%A5&sa=fyb_news&rsv_dl=fyb_news",
+            "desc": "近日，“越来越多人不接陌生电话”话题登热搜。调研显示，全国陌生电话接听率暴跌70%，25至40岁群体漏接率高达76%。此前，推销骚扰泛滥及AI伪造等诈骗风险频发，且由于微信等社交工具普及，越来越多的人干脆选择拒绝来电。",
+            "hotChange": "same",
+            "hotScore": "7712334",
+            "hotTag": "1",
+            "hotTagImg": "https://search-operate.cdn.bcebos.com/42e626c5469cc4cd3b91131bcfe53d44.png",
+            "img": "https://fyb-2.cdn.bcebos.com/hotboard_image/a0762c065281ee7ec873d0d419a857cc",
+            "index": 1,
+            "indexUrl": "",
+            "query": "十通陌生电话七通没人接",
+            "rawUrl": "https://www.baidu.com/s?wd=%E5%8D%81%E9%80%9A%E9%99%8C%E7%94%9F%E7%94%B5%E8%AF%9D%E4%B8%83%E9%80%9A%E6%B2%A1%E4%BA%BA%E6%8E%A5",
+            "show": [],
+            "url": "https://www.baidu.com/s?wd=%E5%8D%81%E9%80%9A%E9%99%8C%E7%94%9F%E7%94%B5%E8%AF%9D%E4%B8%83%E9%80%9A%E6%B2%A1%E4%BA%BA%E6%8E%A5&sa=fyb_news&rsv_dl=fyb_news",
+            "word": "十通陌生电话七通没人接"
+          },
+          {
+            "appUrl": "https://www.baidu.com/s?wd=%E8%AE%A9%E5%88%9B%E6%96%B0%E5%8A%BF%E8%83%BD%E8%BF%9B%E4%B8%80%E6%AD%A5%E6%BF%80%E5%8F%91%E6%B6%88%E8%B4%B9%E6%BD%9C%E8%83%BD&sa=fyb_news&rsv_dl=fyb_news",
+            "desc": "10月19日，商务部等9部门发布《关于加快推进科技兴商的意见》，这是首份以“科技兴商”为主题的政策文件。文件核心是将科技创新作为贯穿商贸全链条的重要驱动力，概括为“新、全、实”，旨在进一步激发消费潜能。",
+            "hotChange": "same",
+            "hotScore": "7619483",
+            "hotTag": "0",
+            "img": "https://fyb-2.cdn.bcebos.com/hotboard_image/7dc7175b28ced3ae66ae3b76b60b8f75",
+            "index": 2,
+            "indexUrl": "",
+            "query": "让创新势能进一步激发消费潜能",
+            "rawUrl": "https://www.baidu.com/s?wd=%E8%AE%A9%E5%88%9B%E6%96%B0%E5%8A%BF%E8%83%BD%E8%BF%9B%E4%B8%80%E6%AD%A5%E6%BF%80%E5%8F%91%E6%B6%88%E8%B4%B9%E6%BD%9C%E8%83%BD",
+            "show": [],
+            "url": "https://www.baidu.com/s?wd=%E8%AE%A9%E5%88%9B%E6%96%B0%E5%8A%BF%E8%83%BD%E8%BF%9B%E4%B8%80%E6%AD%A5%E6%BF%80%E5%8F%91%E6%B6%88%E8%B4%B9%E6%BD%9C%E8%83%BD&sa=fyb_news&rsv_dl=fyb_news",
+            "word": "让创新势能进一步激发消费潜能"
+          },
+          {
+            "appUrl": "https://www.baidu.com/s?wd=%E9%80%80%E4%BC%91%E6%97%B6%E9%97%B4%E6%98%AF%E6%8C%89%E7%94%9F%E6%97%A5%E5%BD%93%E5%A4%A9%E8%BF%98%E6%98%AF%E5%BD%93%E6%9C%88%E7%AE%97&sa=fyb_news&rsv_dl=fyb_news",
+            "desc": "近日，针对网友关于退休时间如何确定的提问，北京人社作出回应。退休时间通常以当月为准，到达退休年龄后次月开始领取养老金。退休时间的确定需依据档案和身份证上的出生日期，若两者不一致，通常以档案中最先记载的日期为准。",
+            "hotChange": "same",
+            "hotScore": "7523163",
+            "hotTag": "1",
+            "hotTagImg": "https://search-operate.cdn.bcebos.com/42e626c5469cc4cd3b91131bcfe53d44.png",
+            "img": "https://fyb-2.cdn.bcebos.com/hotboard_image/59b0f8d7180aeadb63b1e7984e2d874d",
+            "index": 3,
+            "indexUrl": "",
+            "query": "退休时间是按生日当天还是当月算",
+            "rawUrl": "https://www.baidu.com/s?wd=%E9%80%80%E4%BC%91%E6%97%B6%E9%97%B4%E6%98%AF%E6%8C%89%E7%94%9F%E6%97%A5%E5%BD%93%E5%A4%A9%E8%BF%98%E6%98%AF%E5%BD%93%E6%9C%88%E7%AE%97",
+            "show": [],
+            "url": "https://www.baidu.com/s?wd=%E9%80%80%E4%BC%91%E6%97%B6%E9%97%B4%E6%98%AF%E6%8C%89%E7%94%9F%E6%97%A5%E5%BD%93%E5%A4%A9%E8%BF%98%E6%98%AF%E5%BD%93%E6%9C%88%E7%AE%97&sa=fyb_news&rsv_dl=fyb_news",
+            "word": "退休时间是按生日当天还是当月算"
+          },
+          {
+            "appUrl": "https://www.baidu.com/s?wd=%E5%B0%8F%E7%B1%B3%E6%96%B0%E8%BD%A6%E8%A6%81%E4%B8%8B%E9%A5%BA%E5%AD%90+8%E6%AC%BE%E6%96%B0%E8%BD%A6%E5%95%86%E6%A0%87%E6%9B%9D%E5%85%89&sa=fyb_news&rsv_dl=fyb_news",
+            "desc": "10月20日消息，国家知识产权局披露小米于年初申报的8个汽车类商标已陆续通过初审，涵盖SU8、SU9及YU9等。从命名体系推测，SU指轿车，YU指SUV，LUX或为豪华版，GT代表高性能。",
+            "hotChange": "same",
+            "hotScore": "7427955",
+            "hotTag": "0",
+            "img": "https://fyb-2.cdn.bcebos.com/hotboard_image/3f83c2e168bf439b5eac12cff3d4c28c",
+            "index": 4,
+            "indexUrl": "",
+            "query": "小米新车要下饺子 8款新车商标曝光",
+            "rawUrl": "https://www.baidu.com/s?wd=%E5%B0%8F%E7%B1%B3%E6%96%B0%E8%BD%A6%E8%A6%81%E4%B8%8B%E9%A5%BA%E5%AD%90+8%E6%AC%BE%E6%96%B0%E8%BD%A6%E5%95%86%E6%A0%87%E6%9B%9D%E5%85%89",
+            "show": [],
+            "url": "https://www.baidu.com/s?wd=%E5%B0%8F%E7%B1%B3%E6%96%B0%E8%BD%A6%E8%A6%81%E4%B8%8B%E9%A5%BA%E5%AD%90+8%E6%AC%BE%E6%96%B0%E8%BD%A6%E5%95%86%E6%A0%87%E6%9B%9D%E5%85%89&sa=fyb_news&rsv_dl=fyb_news",
+            "word": "小米新车要下饺子 8款新车商标曝光"
+          }
+        ],
+        "more": 0,
+        "moreAppUrl": "https://top.baidu.com/board?tab=realtime&sa=fyb_realtime",
+        "moreUrl": "https://top.baidu.com/board?tab=realtime&sa=fyb_realtime",
+        "text": "热搜榜",
+        "topContent": [
+          {
+            "appUrl": "https://www.baidu.com/s?wd=%E5%86%9B%E6%B0%91%E5%9B%A2%E7%BB%93%E5%A6%82%E4%B8%80%E4%BA%BA&sa=fyb_news&rsv_dl=fyb_news",
+            "desc": "岁月在变，“共用一条被子”的感情从未改变；时代在变，“军民团结如一人，试看天下谁能敌”的真理永远颠扑不破。正如习近平总书记所说：“同人民风雨同舟、血脉相通、生死与共，是中国共产党和红军取得长征胜利的根本保证，也是我们战胜一切困难和风险的根本保证。”",
+            "hotChange": "same",
+            "hotScore": "7904746",
+            "hotTag": "0",
+            "img": "https://fyb-2.cdn.bcebos.com/hotboard_image/0d54696d0389d809f28b87ca162f6227",
+            "index": 0,
+            "indexUrl": "",
+            "query": "军民团结如一人",
+            "rawUrl": "https://www.baidu.com/s?wd=%E5%86%9B%E6%B0%91%E5%9B%A2%E7%BB%93%E5%A6%82%E4%B8%80%E4%BA%BA",
+            "show": [],
+            "url": "https://www.baidu.com/s?wd=%E5%86%9B%E6%B0%91%E5%9B%A2%E7%BB%93%E5%A6%82%E4%B8%80%E4%BA%BA&sa=fyb_news&rsv_dl=fyb_news",
+            "word": "军民团结如一人"
+          }
+        ],
+        "typeName": "realtime",
+        "updateTime": "1792476987"
+      }
+    ],
+    "curBoardName": "热搜榜",
+    "logid": "3128225801",
+    "platform": "pc",
+    "tabBoard": [
+      {
+        "index": 0,
+        "text": "首页",
+        "typeName": "homepage"
+      },
+      {
+        "index": 1,
+        "text": "热搜榜",
+        "typeName": "realtime"
+      },
+      {
+        "index": 2,
+        "text": "小说榜",
+        "typeName": "novel"
+      },
+      {
+        "index": 3,
+        "text": "电影榜",
+        "typeName": "movie"
+      },
+      {
+        "index": 4,
+        "text": "电视剧榜",
+        "typeName": "teleplay"
+      }
+    ],
+    "tag": [
+      {
+        "typeName": "category",
+        "text": "类型",
+        "content": ["全部类型"],
+        "curIndex": 0
+      }
+    ]
+  },
+  "error": {
+    "code": 0,
+    "message": "api response ok"
+  }
+}

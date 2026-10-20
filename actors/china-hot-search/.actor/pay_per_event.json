@@ -1,0 +1,13 @@
+{
+  "trend": {
+    "eventTitle": "Trend",
+    "eventDescription": "One hot-search row (keyword or headline with rank, hot value and link) from Douyin, Baidu, Toutiao or Bilibili written to the dataset.",
+    "eventPriceUsd": 0.004,
+    "isPrimaryEvent": true
+  },
+  "apify-actor-start": {
+    "eventTitle": "Actor start",
+    "eventDescription": "Synthetic start event (covers the first 5 s of compute).",
+    "eventPriceUsd": 5e-5
+  }
+}
