@@ -58,8 +58,18 @@ export function parseChannelRef(input: string): string {
   return name.toLowerCase();
 }
 
-export const previewUrl = (username: string, before?: number): string =>
-  `https://t.me/s/${username}` + (before ? `?before=${before}` : "");
+/** The web preview, optionally searched for `query` (t.me/s/<name>?q=). */
+export function previewUrl(
+  username: string,
+  before?: number,
+  query?: string,
+): string {
+  const params = new URLSearchParams();
+  if (query) params.set("q", query);
+  if (before) params.set("before", String(before));
+  const qs = params.toString();
+  return `https://t.me/s/${username}` + (qs ? `?${qs}` : "");
+}
 
 export const profileUrl = (username: string): string =>
   `https://t.me/${username}`;

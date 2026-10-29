@@ -2,7 +2,7 @@
   "actorSpecification": 1,
   "name": "document-to-markdown",
   "title": "PDF to Markdown Converter: Word, PPTX, Excel & EPUB",
-  "description": "Convert PDF, Word (DOCX), PowerPoint (PPTX), Excel (XLSX), HTML and EPUB files from URLs or uploads to Markdown, plain text or RAG chunks with page numbers. Tables become Markdown tables; scanned PDFs are OCR'd. No API key or LLM. $4 per 1,000 documents.",
+  "description": "Convert PDF, Word (DOCX), PowerPoint (PPTX), Excel (XLSX), HTML and EPUB files from URLs or uploads to Markdown, plain text or RAG chunks with page numbers. Tables become Markdown tables; scanned PDFs and images are OCR'd. No API key or LLM. $4 per 1,000 documents.",
   "version": "0.1",
   "buildTag": "latest",
   "minMemoryMbytes": 1024,

@@ -106,6 +106,22 @@ describe("input", () => {
     expect(n.includeChannelInfo).toBe(true);
   });
 
+  it("parses keywords", () => {
+    expect(normalizeInput({ channels: ["durov"] }).keywords).toEqual([]);
+    expect(
+      normalizeInput({
+        channels: ["durov"],
+        keywords: [" TON ", "ton", "", "Telegram  Stars"],
+      }).keywords,
+    ).toEqual(["TON", "Telegram Stars"]);
+    expect(
+      normalizeInput({ channels: ["durov"], keywords: "a, b\nc" }).keywords,
+    ).toEqual(["a", "b", "c"]);
+    expect(() =>
+      normalizeInput({ channels: ["durov"], keywords: ["x".repeat(101)] }),
+    ).toThrow(InputError);
+  });
+
   it("applies defaults and limits", () => {
     const n = normalizeInput({ channels: ["durov"] }, NOW);
     expect(n.maxPostsPerChannel).toBe(100);
@@ -377,7 +393,98 @@ function harness(
   };
 }
 
+/** In-channel search: posts whose text contains ?q=, 20 per page. */
+function searchSite(
+  channel: string,
+  posts: { id: number; text: string }[],
+  perPage = 20,
+) {
+  return (url: string): string => {
+    const u = new URL(url);
+    const q = (u.searchParams.get("q") ?? "").toLowerCase();
+    const before = Number(u.searchParams.get("before") ?? Infinity);
+    const hits = posts
+      .filter((p) => p.id < before && p.text.toLowerCase().includes(q))
+      .sort((a, b) => b.id - a.id)
+      .slice(0, perPage);
+    return page(channel, hits);
+  };
+}
+
 describe("runChannels", () => {
+  it("searches each channel per keyword, paging with q and before", async () => {
+    const posts = Array.from({ length: 60 }, (_, i) => ({
+      id: i + 1,
+      text: i % 2 ? `Odd TON post ${i + 1}` : `Even Stars post ${i + 1}`,
+    }));
+    posts[59]!.text = "TON and Stars"; // id 60 matches both keywords
+    const h = harness(searchSite("chan", posts));
+    const stats = await runChannels(
+      normalizeInput({
+        channels: ["chan"],
+        keywords: ["ton", "stars"],
+        maxPostsPerChannel: 25,
+        includeChannelInfo: false,
+      }),
+      h.deps,
+    );
+    const got = h.posts();
+    const ton = got.filter((p) => p.matchedKeyword === "ton");
+    const stars = got.filter((p) => p.matchedKeyword === "stars");
+    expect(ton).toHaveLength(25);
+    expect(ton[0]!.postId).toBe(60);
+    // Post 60 was already returned for "ton": not repeated or billed again.
+    expect(stars).toHaveLength(25);
+    expect(stars.map((p) => p.postId)).not.toContain(60);
+    expect(new Set(got.map((p) => p.postId)).size).toBe(50);
+    expect(h.urls).toEqual([
+      previewUrl("chan", undefined, "ton"),
+      previewUrl("chan", 22, "ton"),
+      previewUrl("chan", undefined, "stars"),
+      previewUrl("chan", 23, "stars"),
+    ]);
+    expect(h.urls[1]).toBe("https://t.me/s/chan?q=ton&before=22");
+    expect(stats.channels.chan).toMatchObject({ posts: 50, pages: 4 });
+  });
+
+  it("returns nothing for a keyword with no matches", async () => {
+    const h = harness(searchSite("chan", [{ id: 5, text: "hello" }]));
+    const stats = await runChannels(
+      normalizeInput({
+        channels: ["chan"],
+        keywords: ["absent"],
+        includeChannelInfo: false,
+      }),
+      h.deps,
+    );
+    expect(h.items).toEqual([]);
+    expect(stats.channels.chan).toMatchObject({
+      status: "exhausted",
+      pages: 1,
+    });
+  });
+
+  it("onlyNew with keywords skips posts returned before", async () => {
+    const posts = Array.from({ length: 10 }, (_, i) => ({
+      id: i + 1,
+      text: `TON ${i + 1}`,
+    }));
+    const input = normalizeInput({
+      channels: ["chan"],
+      keywords: ["ton"],
+      includeChannelInfo: false,
+      onlyNew: true,
+    });
+    const seen = new Seen();
+    const h1 = harness(searchSite("chan", posts));
+    await runChannels(input, { ...h1.deps, seen });
+    expect(h1.posts()).toHaveLength(10);
+    posts.push({ id: 11, text: "TON 11" });
+    const h2 = harness(searchSite("chan", posts));
+    await runChannels(input, { ...h2.deps, seen });
+    expect(h2.posts().map((p) => p.postId)).toEqual([11]);
+  });
+
   it("paginates backwards with ?before= and stops at maxPostsPerChannel", async () => {
     const h = harness(pagedSite("chan", 200));
     const stats = await runChannels(

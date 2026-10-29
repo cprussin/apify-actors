@@ -26,6 +26,9 @@ try {
     `${input.channels.length} channel(s), up to ${input.maxPostsPerChannel} posts each` +
       (input.since ? `, since ${input.since}` : "") +
       (input.includeChannelInfo ? ", with channel info" : "") +
+      (input.keywords.length
+        ? `, searching for ${input.keywords.map((k) => JSON.stringify(k)).join(", ")}`
+        : "") +
       (input.onlyNew ? ", only new" : "") +
       ".",
   );
@@ -38,6 +41,10 @@ try {
     const store = await Actor.openKeyValueStore(STATE_STORE);
     const key = stateKey({
       channels: input.channels.map((c) => c.username ?? c.input).sort(),
+      // Unset without keywords, so existing state keys stay the same.
+      keywords: input.keywords.length
+        ? input.keywords.map((k) => k.toLowerCase()).sort()
+        : undefined,
     });
     const s = new Seen(await store.getValue(key));
     seen = s;

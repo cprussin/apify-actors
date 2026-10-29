@@ -50,6 +50,8 @@ export interface EmitResult {
 export interface Charge {
   /** Charge one document-converted event (successful documents only). */
   document: boolean;
+  /** Charge one image-ocr event instead (successful images only). */
+  image: boolean;
   ocrPages: number;
 }
 
@@ -58,8 +60,8 @@ export interface RunDeps {
   convert: Convert;
   /** Max OCR pages the remaining budget allows after one more document. */
   ocrBudget: () => number;
-  /** False when the budget can't pay for another document. */
-  canConvert: () => boolean;
+  /** False when the budget can't pay for another document (or image). */
+  canConvert: (type: DocType) => boolean;
   /**
    * Push one document's items, charging for them. `pushed: false` when the
    * budget was used up; `more: false` to stop.
@@ -77,6 +79,8 @@ export interface RunDeps {
 
 export interface RunStats {
   converted: number;
+  /** Of `converted`, how many were images. */
+  images: number;
   failed: number;
   skipped: number;
   ocrPages: number;
@@ -191,6 +195,7 @@ export async function runConversions(
   const serial = serializer();
   const stats: RunStats = {
     converted: 0,
+    images: 0,
     failed: 0,
     skipped: 0,
     ocrPages: 0,
@@ -231,6 +236,7 @@ export async function runConversions(
     log(`${s.input}: ${error}`);
     const res = await deps.emit([{ ...base(s), ...extra, error }], {
       document: false,
+      image: false,
       ocrPages: 0,
     });
     if (res.pushed) stats.items += 1;
@@ -248,7 +254,14 @@ export async function runConversions(
       fileType: type,
       bytes: file.body.length,
     };
-    if (!deps.canConvert()) {
+    const image = type === "image";
+    if (image && !input.ocr)
+      return failure(
+        s,
+        "Images are read with OCR. Turn on OCR to convert them.",
+        meta,
+      );
+    if (!deps.canConvert(type)) {
       stats.stopReason = "budget";
       return false;
     }
@@ -270,7 +283,9 @@ export async function runConversions(
           maxOcrPages,
           maxPages: input.maxPagesPerDocument,
         },
-        convertTimeoutMs(maxOcrPages),
+        convertTimeoutMs(
+          image ? Math.min(input.maxPagesPerDocument, 50) : maxOcrPages,
+        ),
       );
     } catch (e) {
       res = { ok: false, error: `Conversion failed: ${errMsg(e)}` };
@@ -350,13 +365,16 @@ export async function runConversions(
       ];
     }
 
+    // An image is billed once (image-ocr), however many TIFF frames it has.
     const emitted = await deps.emit(items, {
-      document: true,
-      ocrPages: doc.ocrPages,
+      document: !image,
+      image,
+      ocrPages: image ? 0 : doc.ocrPages,
     });
     if (emitted.pushed) {
       stats.converted += 1;
-      stats.ocrPages += doc.ocrPages;
+      if (image) stats.images += 1;
+      else stats.ocrPages += doc.ocrPages;
       stats.items += items.length;
     }
     if (!emitted.more) stats.stopReason = "budget";

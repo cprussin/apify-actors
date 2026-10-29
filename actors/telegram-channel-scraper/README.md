@@ -7,6 +7,7 @@
 - ✅ **Media:** photo URLs, video URLs with thumbnails and durations, albums, audio, documents, link previews.
 - ✅ **Context:** "forwarded from" (channel + original post), replies (quoted post + text), outbound links and hashtags.
 - ✅ **Channel info:** title, description, exact subscriber count, profile photo, verified badge, photo/video/link counters.
+- ✅ **Keyword search inside channels.** List keywords and get only the posts that mention them, from each channel you list, using Telegram's own in-channel search. Good for brand, ticker or topic monitoring.
 - ✅ **Incremental runs.** Set `sinceDate` (e.g. `"24 hours"`) and the run stops at older posts, so scheduled runs only pay for new posts.
 - ✅ **Pay per result, no start fee.** Missing, private or disabled channels cost nothing.
 
@@ -87,6 +88,19 @@ Schedule it hourly: after the first run you get (and pay for) only posts not ret
 }
 ```
 
+### Brand mentions across a channel list
+
+Posts that mention your keywords in each channel, newest first. Add `onlyNew` and a schedule for alerts.
+
+```json
+{
+  "channels": ["durov", "telegram"],
+  "keywords": ["TON", "Stars"],
+  "maxPostsPerChannel": 50,
+  "onlyNew": true
+}
+```
+
 ## Who uses Telegram channel data?
 
 - **Brand and media monitoring**: track what news, crypto, finance or industry channels post, and how many people see it.
@@ -98,7 +112,7 @@ Schedule it hourly: after the first run you get (and pay for) only posts not ret
 ## How does the Telegram channel scraper work?
 
 1. Add channels as usernames or links. All of these work: `durov`, `@durov`, `https://t.me/durov`, `https://t.me/s/durov`, `https://t.me/durov/528`.
-2. The actor opens each channel's public web preview and pages backwards through its history (`?before=<post id>`), newest post first.
+2. The actor opens each channel's public web preview and pages backwards through its history (`?before=<post id>`), newest post first. With `keywords`, it pages through Telegram's in-channel search results (`?q=<keyword>`) instead.
 3. Each post is parsed into one clean dataset item. Requests are retried with backoff, rate limits (HTTP 429) are respected, and duplicates are removed.
 4. Channels that can't be read (don't exist, are groups/users/bots, or have the web preview disabled) produce one **free** error item explaining why. The rest of the run continues.
 
@@ -107,6 +121,7 @@ Schedule it hourly: after the first run you get (and pay for) only posts not ret
 | Field                | Description                                                                                           | Example                          |
 | -------------------- | ----------------------------------------------------------------------------------------------------- | -------------------------------- |
 | `channels`           | Public channel usernames or t.me links                                                                | `["durov", "https://t.me/tass"]` |
+| `keywords`           | Optional: only posts matching these words, searched inside each channel (limit applies per keyword)   | `["TON", "Stars"]`               |
 | `maxPostsPerChannel` | Stop after this many posts per channel (newest first)                                                 | `500`                            |
 | `sinceDate`          | Only posts on or after this date: `YYYY-MM-DD`, ISO timestamp, or relative (`"24 hours"`, `"7 days"`) | `"7 days"`                       |
 | `includeChannelInfo` | Add one channel-profile item per channel (default `true`)                                             | `true`                           |
@@ -238,6 +253,8 @@ Turn on `onlyNew` and run the actor on an [Apify schedule](https://docs.apify.co
 **Do I need a Telegram account, API ID or phone number?** No. The actor uses Telegram's public web preview, the same page you see when you open `https://t.me/s/durov` in a browser.
 
 **Can it scrape private channels or groups?** No, and it never will. Only public channels with the web preview enabled are supported.
+
+**Can it search all of Telegram for a keyword?** No. `keywords` searches inside the channels you list (Telegram's own channel search). It does not discover new channels. A post that matches two keywords is returned (and billed) once.
 
 **How far back can it go?** Usually to the channel's first post. `maxPostsPerChannel` and `sinceDate` let you limit it.
 

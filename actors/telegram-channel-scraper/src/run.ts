@@ -113,9 +113,16 @@ export async function runChannels(
       }
       const channel = entry.username;
       st.status = "ok";
-      const seen = new Set<number>();
+      // Without keywords, one pass over all posts; else one search per keyword.
+      const queries: (string | undefined)[] = input.keywords.length
+        ? input.keywords
+        : [undefined];
+      // Posts already output for this channel (a post can match 2 keywords).
+      const returned = new Set<number>();
       try {
-        let html = await deps.fetchHtml(previewUrl(channel));
+        let html = await deps.fetchHtml(
+          previewUrl(channel, undefined, queries[0]),
+        );
         st.pages += 1;
         const kind = classifyPage(html);
         if (kind.kind === "notFound") {
@@ -175,57 +182,73 @@ export async function runChannels(
           await emit(info, "channel-info", () => (stats.channelInfos += 1));
         }
 
-        let oldStreak = 0;
-        let seenStreak = 0;
-        for (;;) {
-          let fresh = 0;
-          for (const post of page.posts) {
-            if (seen.has(post.postId)) continue;
-            seen.add(post.postId);
-            fresh += 1;
-            if (input.since && post.date < input.since) {
-              if (++oldStreak >= OLD_STREAK_STOP) {
-                st.status = "reachedSinceDate";
+        for (const [qi, query] of queries.entries()) {
+          if (qi > 0) {
+            html = await deps.fetchHtml(previewUrl(channel, undefined, query));
+            st.pages += 1;
+            page = parsePreviewPage(html, channel);
+          }
+          st.status = "ok";
+          const seen = new Set<number>();
+          let found = 0;
+          let oldStreak = 0;
+          let seenStreak = 0;
+          for (;;) {
+            let fresh = 0;
+            for (const post of page.posts) {
+              if (seen.has(post.postId)) continue;
+              seen.add(post.postId);
+              fresh += 1;
+              if (returned.has(post.postId)) continue;
+              if (input.since && post.date < input.since) {
+                if (++oldStreak >= OLD_STREAK_STOP) {
+                  st.status = "reachedSinceDate";
+                  break;
+                }
+                continue;
+              }
+              oldStreak = 0;
+              const key = postKey(channel, post.postId);
+              if (deps.seen?.has(key)) {
+                deps.seen.add(key);
+                st.skippedSeen += 1;
+                if (++seenStreak >= ONLY_NEW_SEEN_STREAK) {
+                  st.status = "reachedSeen";
+                  break;
+                }
+                continue;
+              }
+              seenStreak = 0;
+              const item: Post = input.keywords.length
+                ? { ...post, matchedKeyword: query ?? null }
+                : post;
+              await emit(item, "post", () => {
+                deps.seen?.add(key);
+                returned.add(post.postId);
+                found += 1;
+                st.posts += 1;
+                stats.posts += 1;
+              });
+              if (found >= input.maxPostsPerChannel) {
+                st.status = "maxPosts";
                 break;
               }
-              continue;
             }
-            oldStreak = 0;
-            const key = postKey(channel, post.postId);
-            if (deps.seen?.has(key)) {
-              deps.seen.add(key);
-              st.skippedSeen += 1;
-              if (++seenStreak >= ONLY_NEW_SEEN_STREAK) {
-                st.status = "reachedSeen";
-                break;
-              }
-              continue;
-            }
-            seenStreak = 0;
-            await emit(post satisfies Post, "post", () => {
-              deps.seen?.add(key);
-              st.posts += 1;
-              stats.posts += 1;
-            });
-            if (st.posts >= input.maxPostsPerChannel) {
-              st.status = "maxPosts";
+            if (st.status !== "ok") break;
+            const before = page.minPostId;
+            if (!before || before <= 1 || (fresh === 0 && page.posts.length)) {
+              st.status = "exhausted";
               break;
             }
+            html = await deps.fetchHtml(previewUrl(channel, before, query));
+            st.pages += 1;
+            const next = parsePreviewPage(html, channel);
+            if (next.minPostId === null || next.minPostId >= before) {
+              st.status = "exhausted";
+              break;
+            }
+            page = next;
           }
-          if (st.status !== "ok") break;
-          const before = page.minPostId;
-          if (!before || before <= 1 || (fresh === 0 && page.posts.length)) {
-            st.status = "exhausted";
-            break;
-          }
-          html = await deps.fetchHtml(previewUrl(channel, before));
-          st.pages += 1;
-          const next = parsePreviewPage(html, channel);
-          if (next.minPostId === null || next.minPostId >= before) {
-            st.status = "exhausted";
-            break;
-          }
-          page = next;
         }
       } catch (e) {
         if (e instanceof BudgetStop) throw e;

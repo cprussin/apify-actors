@@ -35,6 +35,11 @@ const files: Record<string, Fetched | Error> = {
     contentType: "image/png",
     fileName: "img.png",
   },
+  "https://x.org/anim.gif": {
+    body: Buffer.from("GIF89a\x01\x00\x01\x00\x00\x00\x00", "latin1"),
+    contentType: "image/gif",
+    fileName: "anim.gif",
+  },
 };
 
 const pdfResult = (pages: string[], ocr: boolean[] = []): ConvertResult => ({
@@ -68,6 +73,7 @@ function harness(
           title: null,
           markdown: "# Report\n\n|  |  |\n| --- | --- |\n| A | B |\n| 1 | 2 |",
         };
+      if (req.type === "image") return pdfResult(["Receipt total 42"], [true]);
       if (req.path.endsWith("doc-2"))
         return pdfResult(["", "Scanned text here"], [false, true]);
       return pdfResult(["Page one text.", "Page two text."]);
@@ -75,7 +81,7 @@ function harness(
     canConvert: () => budget >= 1,
     ocrBudget: () => opts.ocrBudget ?? Infinity,
     emit: async (batch, charge) => {
-      if (charge.document) {
+      if (charge.document || charge.image) {
         if (budget < 1) return { pushed: false, more: false };
         budget -= 1;
         charges.push(charge);
@@ -96,7 +102,7 @@ describe("runConversions", () => {
         "https://x.org/a.pdf",
         "https://x.org/b.docx",
         "https://x.org/404.pdf",
-        "https://x.org/img.png",
+        "https://x.org/anim.gif",
         "bad url",
       ],
       maxConcurrency: 2,
@@ -108,8 +114,8 @@ describe("runConversions", () => {
       stopReason: "done",
     });
     expect(h.charges).toEqual([
-      { document: true, ocrPages: 0 },
-      { document: true, ocrPages: 0 },
+      { document: true, image: false, ocrPages: 0 },
+      { document: true, image: false, ocrPages: 0 },
     ]);
     const byUrl = Object.fromEntries(h.items.map((i) => [i.url, i]));
     expect(byUrl["https://x.org/a.pdf"]).toMatchObject({
@@ -126,9 +132,31 @@ describe("runConversions", () => {
     expect(byUrl["https://x.org/404.pdf"]!.error).toBe(
       "Download failed: HTTP 404.",
     );
-    expect(byUrl["https://x.org/img.png"]!.error).toMatch(/image/);
+    expect(byUrl["https://x.org/anim.gif"]!.error).toMatch(/Unsupported/);
     expect(byUrl["bad url"]!.error).toMatch(/Invalid URL/);
     expect(h.requests.map((r) => r.type).sort()).toEqual(["docx", "pdf"]);
+  });
+
+  it("OCRs images, charging one image-ocr event each", async () => {
+    const h = harness({ urls: ["https://x.org/img.png"] });
+    const stats = await runConversions(h.input, h.deps);
+    expect(stats).toMatchObject({ converted: 1, images: 1, ocrPages: 0 });
+    expect(h.charges).toEqual([{ document: false, image: true, ocrPages: 0 }]);
+    expect(h.requests[0]).toMatchObject({ type: "image", ocrLanguage: "eng" });
+    expect(h.items[0]).toMatchObject({
+      fileType: "image",
+      content: "Receipt total 42",
+      pageCount: 1,
+      error: null,
+    });
+  });
+
+  it("refuses images for free when OCR is off", async () => {
+    const h = harness({ urls: ["https://x.org/img.png"], ocr: false });
+    await runConversions(h.input, h.deps);
+    expect(h.charges).toEqual([]);
+    expect(h.requests).toEqual([]);
+    expect(h.items[0]!.error).toMatch(/Turn on OCR/);
   });
 
   it("outputs plain text", async () => {
@@ -171,7 +199,11 @@ describe("runConversions", () => {
       { ocrBudget: 4 },
     );
     await runConversions(h.input, h.deps);
-    expect(h.charges.at(-1)).toEqual({ document: true, ocrPages: 1 });
+    expect(h.charges.at(-1)).toEqual({
+      document: true,
+      image: false,
+      ocrPages: 1,
+    });
     const pdfReq = h.requests.find((r) => r.path.endsWith("doc-2"))!;
     expect(pdfReq).toMatchObject({ ocr: true, maxOcrPages: 4 });
     expect(h.requests.find((r) => r.type === "docx")!.maxOcrPages).toBe(0);

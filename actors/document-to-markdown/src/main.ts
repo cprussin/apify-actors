@@ -6,6 +6,7 @@ import { runConversions } from "./run.js";
 
 export const DOCUMENT_EVENT = "document-converted";
 export const OCR_EVENT = "ocr-page";
+export const IMAGE_EVENT = "image-ocr";
 
 await Actor.init();
 
@@ -77,7 +78,8 @@ try {
       };
     },
     convert: worker.convert,
-    canConvert: () => !ppe || left(DOCUMENT_EVENT) >= 1,
+    canConvert: (type) =>
+      !ppe || left(type === "image" ? IMAGE_EVENT : DOCUMENT_EVENT) >= 1,
     ocrBudget: () => {
       if (!ppe) return Infinity;
       const docPrice = pricing.perEventPrices[DOCUMENT_EVENT] ?? 0;
@@ -93,11 +95,18 @@ try {
     // Charge first, then push, so a document is never delivered unpaid and
     // the run stops at ACTOR_MAX_TOTAL_CHARGE_USD. Failures are free.
     emit: async (items, charge) => {
-      if (!ppe || !charge.document) {
+      if (!ppe || (!charge.document && !charge.image)) {
         await Actor.pushData(items);
         return { pushed: true, more: true };
       }
       const stop = { pushed: false, more: false };
+      if (charge.image) {
+        if (left(IMAGE_EVENT) < 1) return stop;
+        const res = await Actor.charge({ eventName: IMAGE_EVENT });
+        if (res.chargedCount < 1) return stop;
+        await Actor.pushData(items);
+        return { pushed: true, more: left(IMAGE_EVENT) >= 1 };
+      }
       if (left(DOCUMENT_EVENT) < 1) return stop;
       const res = await Actor.charge({ eventName: DOCUMENT_EVENT });
       if (res.chargedCount < 1) return stop;
@@ -114,6 +123,7 @@ try {
   log.info(`Done: ${JSON.stringify(stats)}`);
   await Actor.setStatusMessage(
     `Converted ${stats.converted} of ${input.sources.length} document(s)` +
+      (stats.images ? ` (${stats.images} image(s))` : "") +
       (stats.ocrPages ? `, ${stats.ocrPages} OCR page(s)` : "") +
       (stats.failed ? `, ${stats.failed} failed` : "") +
       (stats.stopReason === "budget" ? " (stopped at max charge)" : ""),

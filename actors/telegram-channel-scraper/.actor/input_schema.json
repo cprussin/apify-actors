@@ -12,10 +12,16 @@
       "default": ["durov", "https://t.me/telegram"],
       "sectionCaption": "Channels"
     },
+    "keywords": {
+      "title": "Search keywords (optional)",
+      "type": "array",
+      "description": "Only posts that match these words, searched inside each listed channel with Telegram's own search (t.me/s/<channel>?q=...). One keyword or phrase per line; each post gets a matchedKeyword field. Max posts per channel applies to each keyword. Leave empty for all posts. This does not discover new channels.",
+      "editor": "stringList"
+    },
     "maxPostsPerChannel": {
       "title": "Max posts per channel",
       "type": "integer",
-      "description": "Stop after this many posts for each channel, newest first. Each post is billed as one event.",
+      "description": "Stop after this many posts for each channel (for each channel and keyword when keywords are set), newest first. Each post is billed as one event.",
       "editor": "number",
       "minimum": 1,
       "maximum": 100000,
@@ -37,7 +43,7 @@
     "onlyNew": {
       "title": "Only new posts (monitoring)",
       "type": "boolean",
-      "description": "Return only posts not returned by an earlier run with the same channels. Schedule the actor (e.g. hourly or daily) for new-post alerts: the first run is a baseline, later runs output (and bill) only new posts and stop reading each channel after 3 known posts in a row. State is kept in the key-value store \"telegram-channel-scraper-state\" in your account.",
+      "description": "Return only posts not returned by an earlier run with the same channels (and keywords). Schedule the actor (e.g. hourly or daily) for new-post alerts: the first run is a baseline, later runs output (and bill) only new posts and stop reading each channel after 3 known posts in a row. State is kept in the key-value store \"telegram-channel-scraper-state\" in your account.",
       "default": false,
       "sectionCaption": "Monitoring"
     },

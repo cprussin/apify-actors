@@ -7,6 +7,7 @@ export const DOC_TYPES = [
   "epub",
   "csv",
   "txt",
+  "image",
 ] as const;
 export type DocType = (typeof DOC_TYPES)[number];
 
@@ -25,6 +26,13 @@ const EXT: Record<string, DocType> = {
   txt: "txt",
   md: "txt",
   markdown: "txt",
+  png: "image",
+  jpg: "image",
+  jpeg: "image",
+  webp: "image",
+  tif: "image",
+  tiff: "image",
+  bmp: "image",
 };
 
 const MIME: Record<string, DocType> = {
@@ -41,9 +49,39 @@ const MIME: Record<string, DocType> = {
   "text/csv": "csv",
   "text/plain": "txt",
   "text/markdown": "txt",
+  "image/png": "image",
+  "image/jpeg": "image",
+  "image/webp": "image",
+  "image/tiff": "image",
+  "image/bmp": "image",
 };
 
-const BINARY = new Set<DocType>(["pdf", "docx", "pptx", "xlsx", "epub"]);
+const SUPPORTED =
+  "PDF, DOCX, PPTX, XLSX, HTML, EPUB, CSV, TXT, PNG, JPEG, WebP, TIFF, BMP";
+
+/** PNG, JPEG, WebP, TIFF or BMP, from the magic bytes. */
+export function isImage(buf: Buffer): boolean {
+  return (
+    startsWith(buf, [0x89, 0x50, 0x4e, 0x47]) ||
+    startsWith(buf, [0xff, 0xd8, 0xff]) ||
+    (startsWith(buf, [0x52, 0x49, 0x46, 0x46]) &&
+      buf.subarray(8, 12).toString("latin1") === "WEBP") ||
+    startsWith(buf, [0x49, 0x49, 0x2a, 0x00]) ||
+    startsWith(buf, [0x4d, 0x4d, 0x00, 0x2a]) ||
+    (startsWith(buf, [0x42, 0x4d]) &&
+      buf.length >= 18 &&
+      [12, 40, 52, 56, 64, 108, 124].includes(buf.readUInt32LE(14)))
+  );
+}
+
+const BINARY = new Set<DocType>([
+  "pdf",
+  "docx",
+  "pptx",
+  "xlsx",
+  "epub",
+  "image",
+]);
 
 const LEGACY_OFFICE =
   "Legacy Office format (.doc, .xls or .ppt) is not supported. Save it as .docx, .xlsx or .pptx.";
@@ -123,19 +161,12 @@ export function detectType(
 
   if (startsWith(body, [0xd0, 0xcf, 0x11, 0xe0]))
     return { type: null, error: LEGACY_OFFICE };
-  if (
-    startsWith(body, [0x89, 0x50, 0x4e, 0x47]) ||
-    startsWith(body, [0xff, 0xd8, 0xff])
-  )
-    return {
-      type: null,
-      error: "Unsupported file type: an image. Only documents are converted.",
-    };
+  if (isImage(body)) return { type: "image" };
 
   if (!looksLikeText(body))
     return {
       type: null,
-      error: `Unsupported file type${contentType ? ` (${mimeOf(contentType)})` : ""}. Supported: PDF, DOCX, PPTX, XLSX, HTML, EPUB, CSV, TXT.`,
+      error: `Unsupported file type${contentType ? ` (${mimeOf(contentType)})` : ""}. Supported: ${SUPPORTED}.`,
     };
 
   const start = body
@@ -161,6 +192,6 @@ export function detectType(
   if (!ext && !mime) return { type: "txt" };
   return {
     type: null,
-    error: `Unsupported file type (${mimeOf(contentType) || extensionOf(nameOrUrl)}). Supported: PDF, DOCX, PPTX, XLSX, HTML, EPUB, CSV, TXT.`,
+    error: `Unsupported file type (${mimeOf(contentType) || extensionOf(nameOrUrl)}). Supported: ${SUPPORTED}.`,
   };
 }

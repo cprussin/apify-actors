@@ -143,6 +143,12 @@
         "description": "Post URL on t.me (post items).",
         "example": "https://t.me/durov_russia/63"
       },
+      "matchedKeyword": {
+        "type": ["string", "null"],
+        "title": "Matched keyword",
+        "description": "The search keyword that found this post (post items, keywords input only).",
+        "example": null
+      },
       "title": {
         "type": ["string", "null"],
         "title": "Title",

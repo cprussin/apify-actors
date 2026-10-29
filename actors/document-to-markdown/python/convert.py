@@ -9,7 +9,8 @@ Request:  {"id", "path", "type", "ocr", "ocrLanguage", "maxOcrPages",
            "maxPages"}
 Response: {"id", "ok": true, "title", "markdown"}            (non-PDF)
           {"id", "ok": true, "title", "pages": [{"text", "ocr"}],
-           "pageCount", "ocrSkipped"}                           (PDF)
+           "pageCount", "ocrSkipped"}                (PDF; images, one
+                                                      page per TIFF frame)
           {"id", "ok": false, "error"}
 """
 
@@ -47,6 +48,8 @@ OCR_DPI = 300
 # Cap the rendered image size (pixels per side) so huge pages can't exhaust
 # memory.
 MAX_OCR_SIDE = 6000
+# Images larger than this (pixels) are refused (decompression bombs).
+MAX_IMAGE_PIXELS = 200_000_000
 OCR_TIMEOUT_SECS = 180
 # Zip-based formats: refuse archives that expand beyond this (zip bombs).
 MAX_UNZIPPED_BYTES = 1024 * 1024 * 1024
@@ -83,6 +86,11 @@ def ocr_page(pdfium_doc, index, language):
         image = page.render(scale=scale, grayscale=True).to_pil()
     finally:
         page.close()
+    return ocr_image(image, language)
+
+
+def ocr_image(image, language):
+    """OCRs a PIL image (closed afterwards) with tesseract."""
     with tempfile.TemporaryDirectory() as tmp:
         png = os.path.join(tmp, "page.png")
         image.save(png)
@@ -162,6 +170,37 @@ def convert_pdf(req):
     }
 
 
+def convert_image(req):
+    """PNG, JPEG, WebP, TIFF or BMP: OCR every frame (multi-page TIFF)."""
+    from PIL import Image, ImageOps, UnidentifiedImageError
+
+    # Refuse decompression bombs instead of OCRing for minutes.
+    Image.MAX_IMAGE_PIXELS = MAX_IMAGE_PIXELS
+    try:
+        img = Image.open(req["path"])
+    except (UnidentifiedImageError, Image.DecompressionBombError) as e:
+        raise UserError(f"The image could not be read: {e}") from e
+    max_pages = int(req.get("maxPages") or 0)
+    language = req.get("ocrLanguage") or "eng"
+    pages = []
+    with img:
+        frames = getattr(img, "n_frames", 1)
+        n = min(frames, max_pages) if max_pages else frames
+        for i in range(n):
+            img.seek(i)
+            try:
+                frame = ImageOps.exif_transpose(img).convert("L")
+            except (OSError, Image.DecompressionBombError) as e:
+                raise UserError(f"The image could not be read: {e}") from e
+            scale = MAX_OCR_SIDE / max(frame.size)
+            if scale < 1:
+                frame = frame.resize(
+                    (max(1, int(frame.width * scale)), max(1, int(frame.height * scale)))
+                )
+            pages.append({"text": ocr_image(frame, language), "ocr": True})
+    return {"title": None, "pages": pages, "pageCount": frames, "ocrSkipped": 0}
+
+
 def convert_other(req):
     kind = req["type"]
     if kind in ("docx", "pptx", "xlsx", "epub"):
@@ -176,6 +215,8 @@ def convert_other(req):
 def handle(req):
     if req["type"] == "pdf":
         return convert_pdf(req)
+    if req["type"] == "image":
+        return convert_image(req)
     if req["type"] in EXTENSIONS:
         return convert_other(req)
     raise UserError(f"Unsupported document type: {req['type']}")

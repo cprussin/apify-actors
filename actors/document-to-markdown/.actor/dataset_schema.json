@@ -18,7 +18,7 @@
       "fileType": {
         "type": ["string", "null"],
         "title": "File type",
-        "description": "Detected type: pdf, docx, pptx, xlsx, html, epub, csv or txt.",
+        "description": "Detected type: pdf, docx, pptx, xlsx, html, epub, csv, txt or image.",
         "example": "pdf"
       },
       "title": {

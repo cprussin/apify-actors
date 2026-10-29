@@ -66,6 +66,11 @@ font = ImageFont.load_default(size=72)
 draw.text((80, 120), "Scanned invoice", fill=0, font=font)
 draw.text((80, 300), "Total due 1250 dollars", fill=0, font=font)
 img.save(os.path.join(out, "scanned.pdf"), resolution=200)
+img.save(os.path.join(out, "receipt.png"))
+img.save(os.path.join(out, "receipt.jpg"), quality=90)
+page2 = Image.new("L", (1700, 600), 255)
+ImageDraw.Draw(page2).text((80, 120), "Second page", fill=0, font=font)
+img.save(os.path.join(out, "pages.tiff"), save_all=True, append_images=[page2])
 
 W = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 

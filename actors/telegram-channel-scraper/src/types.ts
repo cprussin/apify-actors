@@ -60,6 +60,8 @@ export interface Post {
   links: string[];
   hashtags: string[];
   permalink: string;
+  /** The keyword whose in-channel search found this post (keywords input). */
+  matchedKeyword?: string | null;
 }
 
 export interface ChannelInfo {

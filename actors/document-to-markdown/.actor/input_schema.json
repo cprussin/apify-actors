@@ -6,7 +6,7 @@
     "urls": {
       "title": "Document URLs",
       "type": "array",
-      "description": "Links to PDF, DOCX, PPTX, XLSX, HTML, EPUB, CSV or TXT files, one per line. The type is detected from the file itself, so links without an extension work too. Apify key-value store record URLs (api.apify.com/v2/key-value-stores/.../records/...) are read with your token. Each converted document is billed once; failed ones are free.",
+      "description": "Links to PDF, DOCX, PPTX, XLSX, HTML, EPUB, CSV or TXT files, or PNG, JPEG, WebP, TIFF or BMP images (read with OCR), one per line. The type is detected from the file itself, so links without an extension work too. Apify key-value store record URLs (api.apify.com/v2/key-value-stores/.../records/...) are read with your token. Each converted document or image is billed once; failed ones are free.",
       "editor": "stringList",
       "prefill": ["https://arxiv.org/pdf/1706.03762"],
       "sectionCaption": "Documents"
@@ -52,9 +52,9 @@
       "default": 200
     },
     "ocr": {
-      "title": "OCR scanned pages",
+      "title": "OCR scanned pages and images",
       "type": "boolean",
-      "description": "Read PDF pages that have no text layer (scans, photos) with Tesseract OCR. Pages with text are never OCR'd. Each OCR'd page is billed as an extra event.",
+      "description": "Read PDF pages that have no text layer (scans, photos) and image files with Tesseract OCR. Pages with text are never OCR'd. Each OCR'd PDF page is billed as an extra event; each image is billed once (image-ocr). With OCR off, images return a free error.",
       "editor": "checkbox",
       "default": true,
       "sectionCaption": "OCR"
@@ -62,7 +62,7 @@
     "ocrLanguage": {
       "title": "OCR language",
       "type": "string",
-      "description": "Language of the scanned text.",
+      "description": "Language of the scanned text (PDF scans and images).",
       "editor": "select",
       "enum": ["eng", "deu", "fra", "spa", "ita", "por", "nld"],
       "enumTitles": [
@@ -98,7 +98,7 @@
     "maxPagesPerDocument": {
       "title": "Max PDF pages per document",
       "type": "integer",
-      "description": "Only the first pages of longer PDFs are converted (noted in the item's warning).",
+      "description": "Only the first pages of longer PDFs (or frames of multi-page TIFFs) are converted (noted in the item's warning).",
       "editor": "number",
       "minimum": 1,
       "maximum": 5000,

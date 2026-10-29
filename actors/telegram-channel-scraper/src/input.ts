@@ -7,6 +7,7 @@ export interface RawInput {
   sinceDate?: string;
   includeChannelInfo?: boolean;
   onlyNew?: boolean;
+  keywords?: string[] | string;
   proxyConfiguration?: Record<string, unknown>;
 }
 
@@ -26,6 +27,33 @@ export interface NormalizedInput {
   includeChannelInfo: boolean;
   /** Skip posts returned by earlier runs with the same channels (monitoring). */
   onlyNew: boolean;
+  /** Search each channel for these (t.me/s/<channel>?q=); empty: all posts. */
+  keywords: string[];
+}
+
+export const MAX_KEYWORDS = 50;
+export const MAX_KEYWORD_LENGTH = 100;
+
+/** Trimmed, deduped (case-insensitive) search keywords. */
+export function parseKeywords(v: unknown): string[] {
+  if (v === undefined || v === null || v === "") return [];
+  const list = Array.isArray(v) ? v : String(v).split(/[\n,]/);
+  const out: string[] = [];
+  const seen = new Set<string>();
+  for (const item of list) {
+    if (typeof item !== "string") continue;
+    const k = item.trim().replace(/\s+/g, " ");
+    if (!k || seen.has(k.toLowerCase())) continue;
+    if (k.length > MAX_KEYWORD_LENGTH)
+      throw new InputError(
+        `Keyword "${k.slice(0, 40)}..." is longer than ${MAX_KEYWORD_LENGTH} characters.`,
+      );
+    seen.add(k.toLowerCase());
+    out.push(k);
+  }
+  if (out.length > MAX_KEYWORDS)
+    throw new InputError(`Use at most ${MAX_KEYWORDS} keywords.`);
+  return out;
 }
 
 export const DEFAULT_MAX_POSTS = 100;
@@ -103,5 +131,6 @@ export function normalizeInput(
     since: parseSince(r.sinceDate, now),
     includeChannelInfo: r.includeChannelInfo ?? true,
     onlyNew: r.onlyNew === true,
+    keywords: parseKeywords(r.keywords),
   };
 }

@@ -37,7 +37,26 @@ describe("detectType", () => {
     });
   });
 
-  it("rejects legacy Office, images and binaries with a reason", () => {
+  it("detects PNG, JPEG, WebP, TIFF and BMP images", () => {
+    const bmp = Buffer.alloc(30);
+    bmp.write("BM", 0, "latin1");
+    bmp.writeUInt32LE(40, 14);
+    for (const body of [
+      Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a]),
+      Buffer.from([0xff, 0xd8, 0xff, 0xe0, 0]),
+      Buffer.from("RIFF\x10\x00\x00\x00WEBPVP8 ", "latin1"),
+      Buffer.from([0x49, 0x49, 0x2a, 0x00, 8, 0]),
+      Buffer.from([0x4d, 0x4d, 0x00, 0x2a, 0, 8]),
+      bmp,
+    ])
+      expect(detectType(body, null, null)).toEqual({ type: "image" });
+    // Text that merely starts with "BM" stays text.
+    expect(detectType(Buffer.from("BMW sales were up."), null, null)).toEqual({
+      type: "txt",
+    });
+  });
+
+  it("rejects legacy Office, GIFs and binaries with a reason", () => {
     expect(
       detectType(Buffer.from([0xd0, 0xcf, 0x11, 0xe0, 1, 2]), null, "a.doc"),
     ).toMatchObject({
@@ -45,12 +64,11 @@ describe("detectType", () => {
       error: expect.stringMatching(/Legacy Office/),
     });
     expect(
-      detectType(
-        Buffer.from([0x89, 0x50, 0x4e, 0x47, 0, 0]),
-        "image/png",
-        null,
-      ),
-    ).toMatchObject({ type: null, error: expect.stringMatching(/image/) });
+      detectType(Buffer.from("GIF89a\x01\x00", "latin1"), "image/gif", null),
+    ).toMatchObject({
+      type: null,
+      error: expect.stringMatching(/Unsupported/),
+    });
     expect(
       detectType(Buffer.from([1, 2, 0, 3]), "application/octet-stream", null),
     ).toMatchObject({

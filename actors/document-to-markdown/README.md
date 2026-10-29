@@ -5,10 +5,10 @@
 - ✅ **Six document formats, one actor**: PDF, DOCX, PPTX, XLSX, HTML and EPUB (plus CSV and TXT). The type is detected from the file itself, so download links without an extension work too.
 - ✅ **Tables stay tables.** Word, Excel, PowerPoint, HTML and PDF tables become **Markdown tables**, not a jumble of words.
 - ✅ **RAG chunks with page numbers.** Paragraph-aware chunks of the size you choose, with overlap, the **PDF page / slide / sheet** each chunk comes from and the **nearest heading**. Long tables are split by rows and repeat their header.
-- ✅ **OCR for scanned PDFs.** Pages without a text layer are read with Tesseract (English, German, French, Spanish, Italian, Portuguese, Dutch). Pages that already have text are never OCR'd or billed.
+- ✅ **OCR for scanned PDFs and images.** PDF pages without a text layer, and **PNG, JPEG, WebP, TIFF and BMP images** (screenshots, receipt photos, scanned faxes), are read with Tesseract (English, German, French, Spanish, Italian, Portuguese, Dutch). Pages that already have text are never OCR'd or billed.
 - ✅ **Batch mode.** Thousands of URLs per run; one bad link, a 404, an oversized or unsupported file never fails the run. You get an item with the reason, for free.
 - ✅ **No API keys, no LLM.** Built on Microsoft's open-source [MarkItDown](https://github.com/microsoft/markitdown): deterministic output, no per-token cost, your documents aren't sent to an AI provider.
-- ✅ **Pay per document.** $4 per 1,000 documents, any size. No start fee.
+- ✅ **Pay per document.** $4 per 1,000 documents or images, any size. No start fee.
 
 ## Start in one minute
 
@@ -71,6 +71,17 @@ Files uploaded to your key-value store, with OCR capped at 10 pages per document
 }
 ```
 
+### Text from images (OCR)
+
+Screenshots, photos and scans as text. A multi-page TIFF becomes one item, with one page per frame.
+
+```json
+{
+  "urls": ["https://example.com/receipt.jpg", "https://example.com/fax.tiff"],
+  "ocrLanguage": "eng"
+}
+```
+
 ### Only the first pages, never OCR
 
 The first 3 pages of each PDF, with no OCR charges.
@@ -95,8 +106,8 @@ The first 3 pages of each PDF, with no OCR charges.
 ## How does it work?
 
 1. Each URL is downloaded (with size and time limits), or each key-value store record is read.
-2. The file type is detected from its content: PDF, DOCX, PPTX, XLSX, HTML, EPUB, CSV or TXT. Legacy `.doc`/`.xls`/`.ppt`, images and other files get a clear error.
-3. The document is converted with [MarkItDown](https://github.com/microsoft/markitdown). PDFs are read page by page (with table detection), so every page keeps its number; PDF pages with no text are OCR'd with [Tesseract](https://github.com/tesseract-ocr/tesseract) when OCR is on.
+2. The file type is detected from its content: PDF, DOCX, PPTX, XLSX, HTML, EPUB, CSV, TXT, or a PNG, JPEG, WebP, TIFF or BMP image. Legacy `.doc`/`.xls`/`.ppt`, GIFs and other files get a clear error.
+3. The document is converted with [MarkItDown](https://github.com/microsoft/markitdown). PDFs are read page by page (with table detection), so every page keeps its number; PDF pages with no text, and images, are OCR'd with [Tesseract](https://github.com/tesseract-ocr/tesseract) when OCR is on.
 4. You get the Markdown, the plain text, or the chunks, with title, page count, word count and any warnings.
 
 ## How do I convert documents?
@@ -109,7 +120,7 @@ The first 3 pages of each PDF, with no OCR charges.
 | `outputFormat`           | `markdown`, `text` or `chunks`                                                 | `markdown`         |
 | `chunkSize`              | Max characters per chunk, overlap included (about 4 characters per token)      | `2000`             |
 | `chunkOverlap`           | Characters repeated from the previous chunk                                    | `200`              |
-| `ocr`                    | OCR PDF pages that have no text layer                                          | `true`             |
+| `ocr`                    | OCR PDF pages that have no text layer, and images                              | `true`             |
 | `ocrLanguage`            | `eng`, `deu`, `fra`, `spa`, `ita`, `por` or `nld`                              | `eng`              |
 | `maxOcrPagesPerDocument` | Cap on OCR pages per document (cost and time control)                          | `50`               |
 | `maxFileSizeMb`          | Larger files are skipped with an error                                         | `50`               |
@@ -170,9 +181,10 @@ Pay per event, no subscription and no start fee:
 | Event                                            | Price                     |
 | ------------------------------------------------ | ------------------------- |
 | Document converted (any size, any chunk count)   | **$0.004** ($4 per 1,000) |
+| Image OCR (PNG, JPEG, WebP, TIFF or BMP)         | **$0.004** ($4 per 1,000) |
 | OCR page (scanned PDF page, only when OCR is on) | **$0.01** ($10 per 1,000) |
 
-Failed documents are free, and pages that already have text are never billed as OCR. A 300-page text PDF costs $0.004; a 10-page scanned PDF costs $0.004 + 10 × $0.01 = $0.104. Compute is included. If you set a **maximum cost per run**, the actor stops cleanly when it's reached and never starts OCR it can't bill.
+Failed documents and images are free (an image with no readable text counts as failed), and pages that already have text are never billed as OCR. A 300-page text PDF costs $0.004; a 10-page scanned PDF costs $0.004 + 10 × $0.01 = $0.104; 1,000 receipt photos cost $4. Compute is included. If you set a **maximum cost per run**, the actor stops cleanly when it's reached and never starts OCR it can't bill.
 
 ## Tips
 
@@ -184,7 +196,7 @@ Failed documents are free, and pages that already have text are never billed as 
 
 ## FAQ
 
-**Which formats are supported?** PDF, DOCX, PPTX, XLSX, HTML, EPUB, CSV and TXT/Markdown. Legacy binary Office files (`.doc`, `.xls`, `.ppt`), images, audio and ZIP archives are not; you get a free error item.
+**Which formats are supported?** PDF, DOCX, PPTX, XLSX, HTML, EPUB, CSV and TXT/Markdown, plus PNG, JPEG, WebP, TIFF and BMP images (OCR). Legacy binary Office files (`.doc`, `.xls`, `.ppt`), GIFs, audio and ZIP archives are not; you get a free error item.
 
 **How good is the table extraction?** Tables in DOCX, XLSX, PPTX, HTML and EPUB are converted exactly. PDF tables are detected from word positions (PDFs don't store tables), which works well for clean, ruled tables and less well for complex multi-level headers.
 
@@ -192,7 +204,7 @@ Failed documents are free, and pages that already have text are never billed as 
 
 **Can I convert password-protected PDFs?** No. They return a free error item.
 
-**What about math, images and charts?** Text and tables are extracted; images and charts are not described (no LLM). Math in PDFs comes out as plain characters.
+**What about math, images and charts?** Text and tables are extracted, and image files are OCR'd; pictures inside documents and charts are not described (no LLM). Math in PDFs comes out as plain characters.
 
 **Can AI agents use it?** Yes, through the Apify API, the Apify MCP server or any Apify integration (Make, Zapier, n8n, LangChain, LlamaIndex).
 

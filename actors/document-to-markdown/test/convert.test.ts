@@ -131,6 +131,26 @@ describe.skipIf(!hasPython)("Python converter", () => {
     120_000,
   );
 
+  it.skipIf(!hasTesseract)(
+    "OCRs PNG, JPEG and multi-page TIFF images",
+    async () => {
+      const items = await convert(["receipt.png", "receipt.jpg", "pages.tiff"]);
+      for (const i of items) {
+        expect(i, i.fileName!).toMatchObject({
+          fileType: "image",
+          error: null,
+        });
+        expect(i.content).toMatch(/1250/);
+      }
+      expect(items.find((i) => i.fileName === "pages.tiff")).toMatchObject({
+        pageCount: 2,
+      });
+      const [off] = await convert(["receipt.png"], { ocr: false });
+      expect(off!.error).toMatch(/Turn on OCR/);
+    },
+    120_000,
+  );
+
   it("reports corrupt files without crashing the worker", async () => {
     const items = await convert(["text.pdf"], {});
     expect(items[0]!.error).toBeNull();
