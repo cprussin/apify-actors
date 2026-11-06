@@ -6,7 +6,7 @@ import {
   type RawPost,
 } from "./post.js";
 import type { Seen } from "./state.js";
-import type { SubstackClient } from "./substack.js";
+import type { ArchivePageRef, SubstackClient } from "./substack.js";
 import { targetKey, type Target } from "./target.js";
 
 /** Charge events (see .actor/pay_per_event.json). */
@@ -172,17 +172,21 @@ export async function runScrape(
           continue;
         }
 
-        let offset = 0;
+        let pageRef: ArchivePageRef = {};
+        let first = true;
+        let lastPage = false;
         let oldStreak = 0;
         let seenStreak = 0;
         for (;;) {
-          const page = await deps.client.archivePage(
+          const res = await deps.client.archivePage(
             t.origin,
-            offset,
+            pageRef,
             input.search,
           );
-          if (page === null) {
-            if (offset === 0) {
+          const wasFirst = first;
+          first = false;
+          if (res === null) {
+            if (wasFirst) {
               st.status = "notFound";
               st.error = "Publication not found (is it a Substack URL?).";
               log(`${key}: ${st.error}`);
@@ -191,11 +195,19 @@ export async function runScrape(
             }
             break;
           }
+          const page = res.posts;
           if (page.length === 0) {
             st.status = "exhausted";
             break;
           }
-          offset += page.length;
+          if (res.nextCursor === undefined) {
+            // Legacy bare-array API: page by offset.
+            pageRef = { offset: (pageRef.offset ?? 0) + page.length };
+          } else if (res.nextCursor === null) {
+            lastPage = true;
+          } else {
+            pageRef = { cursor: res.nextCursor };
+          }
           learnPublicationNames(page, names);
 
           const batch: RawPost[] = [];
@@ -239,7 +251,7 @@ export async function runScrape(
             st.status = stop;
             break;
           }
-          if (newOnPage === 0) {
+          if (newOnPage === 0 || lastPage) {
             st.status = "exhausted";
             break;
           }

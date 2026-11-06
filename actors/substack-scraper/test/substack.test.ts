@@ -146,19 +146,32 @@ describe("normalizeInput", () => {
 
 describe("substack urls and parsing", () => {
   it("builds API urls", () => {
-    expect(archiveUrl(LENNY, 50)).toBe(
-      `${LENNY}/api/v1/archive?sort=new&offset=50&limit=50`,
+    expect(archiveUrl(LENNY)).toBe(`${LENNY}/api/v1/archive?sort=new&limit=20`);
+    expect(archiveUrl(LENNY, { cursor: "abc=" }, "ai agents")).toBe(
+      `${LENNY}/api/v1/archive?sort=new&search=ai+agents&cursor=abc%3D&limit=20`,
     );
-    expect(archiveUrl(LENNY, 0, "ai agents")).toBe(
-      `${LENNY}/api/v1/archive?sort=new&search=ai+agents&offset=0&limit=50`,
+    expect(archiveUrl(LENNY, { offset: 40 })).toBe(
+      `${LENNY}/api/v1/archive?sort=new&offset=40&limit=20`,
     );
     expect(postUrl(LENNY, "a-b")).toBe(`${LENNY}/api/v1/posts/a-b`);
   });
 
-  it("parses the archive fixture", () => {
-    const posts = parseArchive(fixture("archive.json"), LENNY);
+  it("parses the legacy (bare array) archive fixture", () => {
+    const { posts, nextCursor } = parseArchive(fixture("archive.json"), LENNY);
     expect(posts).toHaveLength(ARCHIVE.length);
     expect(posts[0]!.slug).toBeTruthy();
+    expect(nextCursor).toBeUndefined();
+  });
+
+  it("parses the cursor-paged archive shape", () => {
+    const body = JSON.stringify({ posts: ARCHIVE, nextCursor: "eyJ4IjoxfQ==" });
+    const { posts, nextCursor } = parseArchive(body, LENNY);
+    expect(posts).toHaveLength(ARCHIVE.length);
+    expect(nextCursor).toBe("eyJ4IjoxfQ==");
+    expect(
+      parseArchive(JSON.stringify({ posts: [], nextCursor: null }), LENNY)
+        .nextCursor,
+    ).toBeNull();
   });
 
   it("rejects non-JSON (not a Substack site)", () => {
@@ -296,15 +309,28 @@ const mkPost = (
 function fakeSubstack(
   posts: RawPost[],
   pageSize = 3,
-  opts: { failSlugs?: string[] } = {},
+  opts: { failSlugs?: string[]; legacy?: boolean } = {},
 ) {
   const fetch = fakeFetch((url) => {
     const u = new URL(url);
     if (u.hostname !== "www.lennysnewsletter.com")
       return { status: 404, body: "" };
     if (u.pathname === "/api/v1/archive") {
-      const off = Number(u.searchParams.get("offset"));
-      return { body: JSON.stringify(posts.slice(off, off + pageSize)) };
+      if (opts.legacy) {
+        const off = Number(u.searchParams.get("offset") ?? 0);
+        return { body: JSON.stringify(posts.slice(off, off + pageSize)) };
+      }
+      // Current API: offset is rejected; pages are linked by nextCursor.
+      if (u.searchParams.has("offset")) return { status: 400, body: "{}" };
+      const c = u.searchParams.get("cursor");
+      const off = c ? Number(atob(c)) : 0;
+      const end = off + pageSize;
+      return {
+        body: JSON.stringify({
+          posts: posts.slice(off, end),
+          nextCursor: end < posts.length ? btoa(String(end)) : null,
+        }),
+      };
     }
     const slug = u.pathname.split("/").pop()!;
     if (opts.failSlugs?.includes(slug)) return { status: 500, body: "boom" };
@@ -418,6 +444,18 @@ describe("runScrape", () => {
       status: "exhausted",
       skippedDuplicate: 1,
     });
+  });
+
+  it("still pages a legacy bare-array archive by offset", async () => {
+    const { client, fetch } = fakeSubstack(POSTS, 4, { legacy: true });
+    const { out, emit } = collect();
+    const stats = await runScrape(
+      normalizeInput({ publications: [LENNY] }, NOW),
+      { client, emit },
+    );
+    expect(out.map((p) => p.postId)).toEqual(POSTS.map((p) => p.id));
+    expect(stats.targets[LENNY]!.status).toBe("exhausted");
+    expect(String(fetch.mock.calls[1]![0])).toContain("offset=4");
   });
 
   it("fetches content, skipping (not charging) posts that fail", async () => {
