@@ -19,6 +19,17 @@ export class MediaError extends Error {
   override name = "MediaError";
 }
 
+/**
+ * robots.txt disallows a URL (or a redirect hop), names a Claude crawler, or
+ * can't be verified. The item is skipped, not failed, and never charged.
+ */
+export class RobotsBlockedError extends MediaError {
+  override name = "RobotsBlockedError";
+}
+
+/** Called before each request and each redirect hop; throws to refuse it. */
+export type UrlCheck = (url: URL) => Promise<void>;
+
 export interface DownloadOptions {
   maxBytes: number;
   timeoutMs: number;
@@ -27,24 +38,33 @@ export interface DownloadOptions {
   attempts?: number;
   fetchImpl?: typeof fetch;
   sleep?: (ms: number) => Promise<void>;
+  /** robots.txt gate for the URL and every redirect hop. */
+  checkUrl?: UrlCheck;
 }
 
-const USER_AGENT =
+/** Extra init for nodeFetch: a check before every redirect hop. */
+export interface NodeFetchInit extends RequestInit {
+  checkUrl?: UrlCheck;
+}
+
+export const USER_AGENT =
   "Mozilla/5.0 (compatible; media-transcriber/0.1; +https://apify.com/cprussin/media-transcriber)";
 
 export const HEAD_BYTES = 4096;
 const MAX_REDIRECTS = 10;
 
 /**
- * A minimal fetch() on node:http(s), following redirects. Node 22.23's
- * built-in fetch (undici 6.28) crashes the whole process with
- * "assert(!this.paused)" when a server closes the connection while a slow
- * reader (e.g. writing to disk) holds the body back.
+ * A minimal fetch() on node:http(s), following redirects (unless `redirect:
+ * "manual"`). Node 22.23's built-in fetch (undici 6.28) crashes the whole
+ * process with "assert(!this.paused)" when a server closes the connection
+ * while a slow reader (e.g. writing to disk) holds the body back.
  */
 export const nodeFetch: typeof fetch = async (input, init = {}) => {
   let url = new URL(String(input));
   const headers = (init.headers ?? {}) as Record<string, string>;
+  const checkUrl = (init as NodeFetchInit).checkUrl;
   for (let hop = 0; ; hop++) {
+    if (hop > 0) await checkUrl?.(url);
     const res = await new Promise<IncomingMessage>((resolve, reject) => {
       const send = url.protocol === "https:" ? httpsRequest : httpRequest;
       const req = send(
@@ -57,7 +77,12 @@ export const nodeFetch: typeof fetch = async (input, init = {}) => {
     });
     const status = res.statusCode ?? 0;
     const location = res.headers.location;
-    if (status >= 300 && status < 400 && location) {
+    if (
+      status >= 300 &&
+      status < 400 &&
+      location &&
+      init.redirect !== "manual"
+    ) {
       res.resume();
       if (hop >= MAX_REDIRECTS) throw new Error("too many redirects");
       url = new URL(location, url);
@@ -66,7 +91,8 @@ export const nodeFetch: typeof fetch = async (input, init = {}) => {
     const h = new Headers();
     for (const [k, v] of Object.entries(res.headers))
       for (const x of [v ?? []].flat()) h.append(k, x);
-    const empty = status === 204 || status === 205 || status === 304;
+    const empty =
+      status === 204 || status === 205 || (status >= 300 && status < 400);
     if (empty) res.resume();
     const response = new Response(
       empty ? null : (Readable.toWeb(res) as ReadableStream<Uint8Array>),
@@ -170,6 +196,8 @@ async function request(
     opts.sleep ?? ((ms: number) => new Promise((r) => setTimeout(r, ms)));
   const attempts = opts.attempts ?? 2;
   let lastError: Error = new MediaError(`${what} failed.`);
+  // nodeFetch checks the redirect hops; the first URL is checked here.
+  await opts.checkUrl?.(new URL(url));
   for (let attempt = 1; attempt <= attempts; attempt++) {
     if (attempt > 1) await sleep(1000 * attempt);
     const signal = AbortSignal.timeout(opts.timeoutMs);
@@ -179,8 +207,10 @@ async function request(
         redirect: "follow",
         signal,
         headers: { "User-Agent": USER_AGENT, Accept: "*/*", ...opts.headers },
-      });
+        checkUrl: opts.checkUrl,
+      } as NodeFetchInit);
     } catch (e) {
+      if (e instanceof RobotsBlockedError) throw e;
       lastError = new MediaError(
         signal.aborted
           ? `${what} timed out after ${opts.timeoutMs / 1000} s.`
@@ -237,19 +267,37 @@ export async function downloadToFile(
   })) as Downloaded;
 }
 
-/** Fetches a text document (an RSS feed) with size and time limits. */
-export async function fetchText(
+/** A fetched text document. */
+export interface TextDocument {
+  text: string;
+  contentType: string | null;
+}
+
+/** Fetches a text document with size and time limits. */
+export async function fetchDocument(
   url: string,
   opts: DownloadOptions,
-): Promise<string> {
-  return (await request(url, opts, "Fetching the feed", async (res) => {
+  what = "Fetching the feed",
+): Promise<TextDocument> {
+  return (await request(url, opts, what, async (res) => {
     const chunks: Buffer[] = [];
     if (res.body)
       await pipeLimited(res.body, opts.maxBytes, (c) => {
         chunks.push(Buffer.from(c));
       });
-    return Buffer.concat(chunks).toString("utf8");
-  })) as string;
+    return {
+      text: Buffer.concat(chunks).toString("utf8"),
+      contentType: res.headers.get("content-type"),
+    } satisfies TextDocument;
+  })) as TextDocument;
+}
+
+/** Fetches a text document (an RSS feed) with size and time limits. */
+export async function fetchText(
+  url: string,
+  opts: DownloadOptions,
+): Promise<string> {
+  return (await fetchDocument(url, opts)).text;
 }
 
 /**

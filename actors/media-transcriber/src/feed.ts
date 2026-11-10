@@ -1,4 +1,5 @@
 import * as cheerio from "cheerio";
+import { transcriptKind, type PublishedTranscript } from "./transcript.js";
 
 /** One podcast episode with an audio or video enclosure. */
 export interface Episode {
@@ -11,12 +12,22 @@ export interface Episode {
   publishedAt: string | null;
   /** From itunes:duration, when present. */
   durationSecs: number | null;
+  /** Podcasting 2.0 <podcast:transcript> links, best (timed) first. */
+  transcripts: PublishedTranscript[];
 }
 
 export interface Feed {
   title: string | null;
+  /** Primary language subtag of the channel's <language>, e.g. "en". */
+  language: string | null;
   episodes: Episode[];
 }
+
+/** "en-US" -> "en". */
+export const langCode = (raw: string | null | undefined): string | null => {
+  const m = /^\s*([a-z]{2,3})(?:[-_]|\s*$)/i.exec(raw ?? "");
+  return m ? m[1]!.toLowerCase() : null;
+};
 
 /** itunes:duration: "HH:MM:SS", "MM:SS" or seconds. */
 export function parseDuration(raw: string | null | undefined): number | null {
@@ -35,6 +46,9 @@ const isoDate = (raw: string | undefined): string | null => {
 
 const isMediaType = (type: string | undefined) =>
   !type || /^(audio|video)\//i.test(type) || /octet-stream/i.test(type);
+
+/** Timed formats first; plain text and HTML only as a last resort. */
+const KIND_ORDER = { vtt: 0, srt: 1, json: 2, text: 3, html: 4 } as const;
 
 const clean = (s: string | undefined) => s?.replace(/\s+/g, " ").trim() || null;
 
@@ -80,6 +94,18 @@ export function parseFeed(xml: string, baseUrl?: string): Feed {
     if (!enc) return;
     const url = abs(enc.url)!;
     const guid = clean(item.children("guid, id").first().text()) ?? url;
+    const transcripts: PublishedTranscript[] = [];
+    for (const t of item.children("podcast\\:transcript").toArray()) {
+      const kind = transcriptKind($(t).attr("type"));
+      const tUrl = abs($(t).attr("url"));
+      if (kind && tUrl && !transcripts.some((x) => x.url === tUrl))
+        transcripts.push({
+          url: tUrl,
+          kind,
+          language: langCode($(t).attr("language")),
+        });
+    }
+    transcripts.sort((a, b) => KIND_ORDER[a.kind] - KIND_ORDER[b.kind]);
     episodes.push({
       guid,
       title: clean(item.children("title").first().text()),
@@ -91,6 +117,7 @@ export function parseFeed(xml: string, baseUrl?: string): Feed {
       durationSecs: parseDuration(
         item.children("itunes\\:duration").first().text(),
       ),
+      transcripts,
     });
   });
   // Newest first; undated episodes keep feed order, after dated ones.
@@ -106,6 +133,10 @@ export function parseFeed(xml: string, baseUrl?: string): Feed {
   return {
     title: clean(
       $("channel > title").first().text() || $("feed > title").first().text(),
+    ),
+    language: langCode(
+      $("channel > language").first().text() ||
+        $("feed").first().attr("xml:lang"),
     ),
     episodes: order.map((o) => o.e),
   };

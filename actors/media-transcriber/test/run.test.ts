@@ -1,6 +1,10 @@
 import { writeFile } from "node:fs/promises";
 import { describe, expect, it } from "vitest";
-import { MediaError, type Downloaded } from "../src/download.js";
+import {
+  MediaError,
+  RobotsBlockedError,
+  type Downloaded,
+} from "../src/download.js";
 import { normalizeInput, type RawInput } from "../src/input.js";
 import {
   billableMinutes,
@@ -19,6 +23,33 @@ const FEED = `<rss><channel><title>Pod</title>
 <item><title>Long</title><guid>g0</guid><pubDate>Fri, 01 Aug 2026 00:00:00 GMT</pubDate><enclosure url="https://x.org/ep0.mp3" type="audio/mpeg"/><itunes:duration>5:00:00</itunes:duration></item>
 </channel></rss>`;
 
+/** Episodes with <podcast:transcript> links (best first after parsing). */
+const PUB_FEED = `<rss xmlns:podcast="https://podcastindex.org/namespace/1.0"><channel><title>Pub</title><language>en-us</language>
+<item><title>Vtt</title><guid>p3</guid><pubDate>Wed, 01 Oct 2026 00:00:00 GMT</pubDate><enclosure url="https://x.org/p3.mp3" type="audio/mpeg"/><itunes:duration>5:00:00</itunes:duration>
+<podcast:transcript url="https://t.org/p3.txt" type="text/plain"/>
+<podcast:transcript url="https://t.org/p3.vtt" type="text/vtt" language="de"/></item>
+<item><title>Broken</title><guid>p2</guid><pubDate>Mon, 01 Sep 2026 00:00:00 GMT</pubDate><enclosure url="https://x.org/ep1.mp3" type="audio/mpeg"/>
+<podcast:transcript url="https://t.org/missing.vtt" type="text/vtt"/>
+<podcast:transcript url="https://blocked.org/p2.srt" type="application/srt"/></item>
+<item><title>Plain</title><guid>p1</guid><pubDate>Fri, 01 Aug 2026 00:00:00 GMT</pubDate><enclosure url="https://x.org/ep2.mp3" type="audio/mpeg"/>
+<podcast:transcript url="https://t.org/p1.html" type="text/html"/></item>
+<item><title>None</title><guid>p0</guid><pubDate>Thu, 01 Jan 2026 00:00:00 GMT</pubDate><enclosure url="https://megaphone.org/ep.mp3" type="audio/mpeg"/></item>
+</channel></rss>`;
+
+const transcripts: Record<string, string | Error> = {
+  "https://t.org/p3.vtt":
+    "WEBVTT\n\n00:00:00.000 --> 00:00:04.000\n<v Ann>Hallo zusammen.\n\n00:00:04.000 --> 00:09:30.500\nWillkommen.\n",
+  "https://t.org/p3.txt": "should not be used",
+  "https://t.org/missing.vtt": new MediaError(
+    "Fetching the transcript failed: HTTP 404.",
+  ),
+  "https://blocked.org/p2.srt": new RobotsBlockedError(
+    "Skipped (robots.txt): blocked.org: robots.txt disallows /p2.srt.",
+  ),
+  "https://t.org/p1.html":
+    "<html><body><p>First paragraph.</p><p>Second one.</p></body></html>",
+};
+
 /** Fake media: the body says how long it is and what it says. */
 const media: Record<string, string | Error> = {
   "https://x.org/a.mp3": "ID3 65|Hello there. General Kenobi.",
@@ -30,6 +61,9 @@ const media: Record<string, string | Error> = {
   "https://x.org/ep1.mp3": "ID3 59|Episode one.",
   "https://x.org/huge.mp3": "ID3 600|Too long for the budget.",
   "abc/rec.wav": "RIFF 5|From a record.",
+  "https://megaphone.org/ep.mp3": new RobotsBlockedError(
+    "Skipped (robots.txt): megaphone.org: robots.txt has a group for a Claude crawler (anthropic-ai).",
+  ),
 };
 
 function harness(
@@ -38,16 +72,30 @@ function harness(
 ) {
   const items: OutputItem[] = [];
   const charges: number[] = [];
+  const published: string[] = [];
+  const transcriptFetches: string[] = [];
   const requests: TranscribeRequest[] = [];
   const files: Record<string, string> = {};
   let budget = opts.budget ?? Infinity;
   let saves = 0;
   const deps: RunDeps = {
     fetchFeed: async (url) => {
+      if (url.includes("megaphone"))
+        throw new RobotsBlockedError(
+          "Skipped (robots.txt): feeds.megaphone.fm: robots.txt has a group for a Claude crawler (anthropic-ai, claude-web).",
+        );
+      if (url.includes("pub")) return PUB_FEED;
       if (url.includes("bad"))
         throw new MediaError("Fetching the feed failed: HTTP 500.");
       if (url.includes("page")) return "<html><body>not a feed";
       return FEED;
+    },
+    fetchTranscript: async (url) => {
+      transcriptFetches.push(url);
+      const t = transcripts[url];
+      if (t === undefined) throw new Error("no such transcript");
+      if (t instanceof Error) throw t;
+      return { text: t, contentType: null };
     },
     download: async (job: Job, path) => {
       const m = media[job.kind === "kv" ? job.input : job.url];
@@ -96,7 +144,11 @@ function harness(
       };
     },
     budgetMinutes: () => budget,
-    emit: async (batch, minutes) => {
+    emit: async (batch, minutes, pub) => {
+      if (pub) {
+        if (budget < 1) return { pushed: false, more: false };
+        published.push(batch[0]!.title ?? "");
+      }
       if (minutes > 0) {
         if (budget < minutes) return { pushed: false, more: false };
         budget -= minutes;
@@ -120,6 +172,8 @@ function harness(
     deps,
     items,
     charges,
+    published,
+    transcriptFetches,
     requests,
     files,
     saves: () => saves,
@@ -308,6 +362,128 @@ describe("runTranscriptions", () => {
     const stats = await runTranscriptions(h.input, h.deps);
     expect(stats).toMatchObject({ transcribed: 0, stopReason: "budget" });
     expect(h.requests).toHaveLength(0);
+  });
+
+  it("skips robots-blocked feeds and files, free", async () => {
+    const h = harness({
+      rssFeeds: ["https://feeds.megaphone.fm/show"],
+      urls: ["https://megaphone.org/ep.mp3", "https://x.org/a.mp3"],
+    });
+    const stats = await runTranscriptions(h.input, h.deps);
+    expect(stats).toMatchObject({
+      transcribed: 1,
+      failed: 0,
+      skippedRobots: 2,
+    });
+    expect(h.charges).toEqual([2]);
+    const by = Object.fromEntries(h.items.map((i) => [i.url, i]));
+    expect(by["https://feeds.megaphone.fm/show"]).toMatchObject({
+      status: "skipped_robots",
+      sourceType: "rss",
+      billedMinutes: 0,
+      error: expect.stringMatching(/anthropic-ai/),
+    });
+    expect(by["https://megaphone.org/ep.mp3"]).toMatchObject({
+      status: "skipped_robots",
+      billedMinutes: 0,
+    });
+    expect(by["https://x.org/a.mp3"]).toMatchObject({
+      status: "transcribed",
+      transcriptSource: "whisper",
+      publishedTranscriptUrl: null,
+    });
+  });
+
+  it("uses published transcripts first, falls back to Whisper", async () => {
+    const h = harness({ rssFeeds: ["https://feeds.x.org/pub.xml"] });
+    const stats = await runTranscriptions(h.input, h.deps);
+    expect(stats).toMatchObject({
+      transcribed: 3,
+      published: 2,
+      skippedRobots: 1,
+      billedMinutes: 1,
+    });
+    // One published-transcript event each; Whisper minutes only for p2.
+    expect(h.published.sort()).toEqual(["Plain", "Vtt"]);
+    expect(h.charges).toEqual([1]);
+    expect(h.requests).toHaveLength(1);
+    const by = Object.fromEntries(h.items.map((i) => [i.title, i]));
+    // Long episode (5 h): no Whisper, so maxDurationMinutes doesn't apply.
+    expect(by["Vtt"]).toMatchObject({
+      status: "transcribed",
+      transcriptSource: "published",
+      publishedTranscriptUrl: "https://t.org/p3.vtt",
+      language: "de",
+      durationSeconds: 18000,
+      billedMinutes: 0,
+      text: "Hallo zusammen. Willkommen.",
+      segmentCount: 2,
+      srtUrl: "https://kv/transcript-0001.srt",
+      error: null,
+    });
+    expect(by["Vtt"]!.segments![0]).toEqual({
+      start: 0,
+      end: 4,
+      text: "Hallo zusammen.",
+      speaker: "Ann",
+    });
+    expect(h.files["transcript-0001.vtt"]).toContain("<v Ann>Hallo zusammen.");
+    expect(h.transcriptFetches).not.toContain("https://t.org/p3.txt");
+    expect(by["Broken"]).toMatchObject({
+      status: "transcribed",
+      transcriptSource: "whisper",
+      publishedTranscriptUrl: null,
+      billedMinutes: 1,
+      warning: expect.stringMatching(/Published transcript unavailable.*404/),
+    });
+    expect(by["Plain"]).toMatchObject({
+      transcriptSource: "published",
+      language: "en",
+      text: "First paragraph.\n\nSecond one.",
+      segments: null,
+      segmentCount: null,
+      srtUrl: null,
+      vttUrl: null,
+    });
+    expect(by["None"]).toMatchObject({ status: "skipped_robots" });
+  });
+
+  it("publishedOnly: never runs Whisper", async () => {
+    const h = harness({
+      rssFeeds: ["https://feeds.x.org/pub.xml"],
+      publishedOnly: true,
+      outputFormat: "chunks",
+    });
+    const stats = await runTranscriptions(h.input, h.deps);
+    expect(h.requests).toHaveLength(0);
+    expect(h.charges).toEqual([]);
+    expect(stats).toMatchObject({ published: 2, transcribed: 2 });
+    const by = Object.fromEntries(h.items.map((i) => [i.title, i]));
+    expect(by["Broken"]).toMatchObject({
+      status: "no_published_transcript",
+      error: expect.stringMatching(/unavailable/),
+    });
+    expect(by["None"]).toMatchObject({
+      status: "no_published_transcript",
+      error: expect.stringMatching(/no published transcript/),
+    });
+    expect(by["Plain"]).toMatchObject({ startTime: null, endTime: null });
+    expect(by["Vtt"]).toMatchObject({ startTime: 0, endTime: 570.5 });
+  });
+
+  it("preferPublishedTranscripts: false always uses Whisper", async () => {
+    const h = harness({
+      rssFeeds: ["https://feeds.x.org/pub.xml"],
+      preferPublishedTranscripts: false,
+    });
+    await runTranscriptions(h.input, h.deps);
+    expect(h.transcriptFetches).toEqual([]);
+    expect(h.published).toEqual([]);
+    expect(
+      h.items
+        .filter((i) => i.status === "transcribed")
+        .map((i) => i.transcriptSource),
+    ).toEqual(["whisper", "whisper"]);
   });
 
   it("bills started minutes", () => {

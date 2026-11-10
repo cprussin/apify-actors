@@ -22,6 +22,8 @@ describe("normalizeInput", () => {
       outputFormat: "transcript",
       maxEpisodes: DEFAULT_INPUT.maxEpisodes,
       onlyNewEpisodes: false,
+      preferPublishedTranscripts: true,
+      publishedOnly: false,
       maxDurationSecs: 180 * 60,
       maxBytes: 1000 * 1024 * 1024,
       timeoutMs: 600_000,
@@ -86,6 +88,16 @@ describe("normalizeInput", () => {
     expect(
       normalizeInput({ maxDurationMinutes: "30", onlyNewEpisodes: true }),
     ).toMatchObject({ maxDurationSecs: 1800, onlyNewEpisodes: true });
+    expect(normalizeInput({ preferPublishedTranscripts: false })).toMatchObject(
+      { preferPublishedTranscripts: false, publishedOnly: false },
+    );
+    // publishedOnly implies using published transcripts.
+    expect(
+      normalizeInput({
+        preferPublishedTranscripts: false,
+        publishedOnly: true,
+      }),
+    ).toMatchObject({ preferPublishedTranscripts: true, publishedOnly: true });
   });
 
   it("knows Whisper's 100 languages", () => {

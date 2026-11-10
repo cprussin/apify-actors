@@ -9,6 +9,24 @@
         "description": "Media file URL (the episode's enclosure for podcasts), storeId/key for a key-value store record, or the feed URL when a feed failed.",
         "example": "https://www.nasa.gov/wp-content/uploads/2015/01/590325main_ringtone_kennedy_WeChoose.mp3"
       },
+      "status": {
+        "type": "string",
+        "title": "Status",
+        "description": "transcribed, failed (free), skipped_robots (the host's robots.txt disallows it, names Claude's crawlers, or can't be verified; free) or no_published_transcript (publishedOnly; free).",
+        "example": "transcribed"
+      },
+      "transcriptSource": {
+        "type": ["string", "null"],
+        "title": "Transcript source",
+        "description": "published (the podcast's own <podcast:transcript>) or whisper (transcribed by the actor); null when not transcribed.",
+        "example": "whisper"
+      },
+      "publishedTranscriptUrl": {
+        "type": ["string", "null"],
+        "title": "Published transcript URL",
+        "description": "The <podcast:transcript> link used, when transcriptSource is published.",
+        "example": null
+      },
       "sourceType": {
         "type": "string",
         "title": "Source type",
@@ -66,7 +84,7 @@
       "language": {
         "type": ["string", "null"],
         "title": "Language",
-        "description": "Detected (or given) language code, e.g. en, de, es.",
+        "description": "Detected (or given) language code, e.g. en, de, es. For published transcripts, from the transcript tag or the feed.",
         "example": "en"
       },
       "languageProbability": {
@@ -84,7 +102,7 @@
       "billedMinutes": {
         "type": "number",
         "title": "Billed minutes",
-        "description": "Started minutes of audio billed for this file (on the first chunk only in chunks format; 0 on failure).",
+        "description": "Started minutes of audio billed for this file (on the first chunk only in chunks format; 0 on failure and for published transcripts, which are one published-transcript event per episode).",
         "example": 1
       },
       "outputFormat": {
@@ -185,7 +203,9 @@
       "transformation": {
         "fields": [
           "url",
+          "status",
           "title",
+          "transcriptSource",
           "language",
           "durationSeconds",
           "billedMinutes",
@@ -204,8 +224,16 @@
             "label": "URL",
             "format": "link"
           },
+          "status": {
+            "label": "Status",
+            "format": "text"
+          },
           "title": {
             "label": "Title",
+            "format": "text"
+          },
+          "transcriptSource": {
+            "label": "Source",
             "format": "text"
           },
           "language": {

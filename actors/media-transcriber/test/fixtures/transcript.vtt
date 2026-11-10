@@ -1,0 +1,17 @@
+WEBVTT - Episode 12
+
+NOTE This is a comment
+that spans lines.
+
+STYLE
+::cue { color: yellow }
+
+intro
+0:00:01.490 --> 0:00:05.070 align:start
+<v Speaker 1>Welcome to the show &amp; thanks for listening.
+
+00:05.500 --> 00:08.000
+<v.loud Speaker 2>Glad to <i>be</i> here.
+
+00:00:08.000 --> 00:00:09.000
+

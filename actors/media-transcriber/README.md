@@ -4,12 +4,14 @@
 
 - ✅ **Any audio or video file**: MP3, M4A, WAV, OGG, OPUS, FLAC, AAC, MP4, MOV, MKV, WEBM and more. Video files are fine: only the audio track is used.
 - ✅ **Podcast RSS feeds** with a **new-episodes mode**: schedule the actor daily and each new episode is transcribed exactly once.
+- ✅ **Published transcripts first**: when an episode links its own transcript (`<podcast:transcript>`, e.g. Omny, Buzzsprout, Transistor), you get it in the same text/segments/SRT/VTT shape for **$0.01 per episode**, no Whisper wait.
 - ✅ **SRT and VTT subtitles** for every file, plus the full text and **timestamped segments** in the dataset.
 - ✅ **Language detection** across Whisper's 99 languages, or set the language yourself.
 - ✅ **RAG chunks with start and end times**, ready for a vector database. Pairs with [Document to Markdown](https://apify.com/cprussin/document-to-markdown?fpr=to54nm) for PDFs and Office files.
 - ✅ **No API key**: Whisper runs inside the actor. Your audio isn't sent to an AI provider.
 - ✅ **Batch-safe**: a 404, a web page, a corrupt or over-long file never fails the run. You get an item with the reason, for free.
-- ✅ **Pay per audio minute**: $0.008/min (base model) or $0.016/min (small model). No start fee.
+- ✅ **Respects robots.txt**: feeds, files and published transcripts are skipped (free, `status: "skipped_robots"`) when the host's robots.txt disallows them or opts out of Claude's crawlers.
+- ✅ **Pay per audio minute**: $0.008/min (base model) or $0.016/min (small model), or $0.01 per episode with a published transcript. No start fee.
 
 ## Start in one minute
 
@@ -47,6 +49,20 @@ The 3 newest episodes of a feed; schedule the same input daily to transcribe onl
   "maxEpisodes": 3,
   "onlyNewEpisodes": true,
   "model": "base"
+}
+```
+
+### Published podcast transcripts only (no Whisper)
+
+Shows that publish transcripts in their feed, at $0.01 per episode; episodes without one are skipped for free.
+
+```json
+{
+  "rssFeeds": [
+    "https://omny.fm/shows/stuff-you-should-know-1/playlists/podcast.rss"
+  ],
+  "maxEpisodes": 10,
+  "publishedOnly": true
 }
 ```
 
@@ -101,29 +117,32 @@ Files over 30 minutes are skipped with a free error item.
 
 ## How does it work?
 
-1. Each file is downloaded (with size and time limits), each key-value store record is read, and each RSS feed is fetched for its newest episodes.
-2. [FFmpeg](https://ffmpeg.org/) decodes the audio track to 16 kHz mono. Files longer than **Max duration** are skipped (free).
-3. [faster-whisper](https://github.com/SYSTRAN/faster-whisper) transcribes it on CPU with voice activity detection, which skips silence and music and reduces hallucinated text.
-4. You get the text, segments, detected language and duration, and links to the SRT and VTT files.
+1. Each feed, file and published transcript URL (and every redirect hop) is checked against its host's robots.txt (loaded once per host per run). It's skipped for free when the `*` group disallows it, when robots.txt has a group for a Claude crawler (`ClaudeBot`, `Claude-User`, `Claude-Web`, `anthropic-ai`), or when robots.txt can't be verified (an HTTP status other than 200/404, or an HTML page). Megaphone-hosted feeds and audio (`feeds.megaphone.fm`, `traffic.megaphone.fm`) are skipped this way.
+2. Each file is downloaded (with size and time limits), each key-value store record is read, and each RSS feed is fetched for its newest episodes. An episode with a `<podcast:transcript>` link uses that transcript instead (VTT, SRT and JSON first, then plain text and HTML); if it's missing or broken, the audio is transcribed as below.
+3. [FFmpeg](https://ffmpeg.org/) decodes the audio track to 16 kHz mono. Files longer than **Max duration** are skipped (free).
+4. [faster-whisper](https://github.com/SYSTRAN/faster-whisper) transcribes it on CPU with voice activity detection, which skips silence and music and reduces hallucinated text.
+5. You get the text, segments, detected language and duration, and links to the SRT and VTT files.
 
 ## How do I transcribe audio, video or a podcast?
 
-| Field                  | Description                                                               | Default          |
-| ---------------------- | ------------------------------------------------------------------------- | ---------------- |
-| `urls`                 | Direct links to audio or video files, one per line                        | a 20 s NASA clip |
-| `startUrls`            | Same, in Apify request-list format (combined with `urls`)                 | none             |
-| `keyValueStoreRecords` | Uploaded files, as `storeId/recordKey` or `username~store-name/recordKey` | none             |
-| `rssFeeds`             | Podcast RSS or Atom feed URLs                                             | none             |
-| `maxEpisodes`          | Newest episodes per feed to consider                                      | `5`              |
-| `onlyNewEpisodes`      | Skip episodes transcribed by an earlier run with the same feeds           | `false`          |
-| `model`                | `base` (fast, $0.008/min) or `small` (more accurate, $0.016/min)          | `base`           |
-| `language`             | `auto` or a language code (`en`, `de`, `es`, `fr`, `ja`, `zh`, ...)       | `auto`           |
-| `outputFormat`         | `transcript` (one item per file) or `chunks` (one item per RAG chunk)     | `transcript`     |
-| `chunkSize`            | Max characters per chunk, overlap included                                | `1500`           |
-| `chunkOverlap`         | Characters of whole segments repeated from the previous chunk             | `150`            |
-| `maxDurationMinutes`   | Longer files are skipped with a free error (at most 300)                  | `180`            |
-| `maxFileSizeMb`        | Larger downloads are skipped with a free error                            | `1000`           |
-| `timeoutSecs`          | Max download time per file                                                | `600`            |
+| Field                        | Description                                                               | Default          |
+| ---------------------------- | ------------------------------------------------------------------------- | ---------------- |
+| `urls`                       | Direct links to audio or video files, one per line                        | a 20 s NASA clip |
+| `startUrls`                  | Same, in Apify request-list format (combined with `urls`)                 | none             |
+| `keyValueStoreRecords`       | Uploaded files, as `storeId/recordKey` or `username~store-name/recordKey` | none             |
+| `rssFeeds`                   | Podcast RSS or Atom feed URLs                                             | none             |
+| `maxEpisodes`                | Newest episodes per feed to consider                                      | `5`              |
+| `onlyNewEpisodes`            | Skip episodes transcribed by an earlier run with the same feeds           | `false`          |
+| `preferPublishedTranscripts` | Use an episode's own `<podcast:transcript>` instead of Whisper            | `true`           |
+| `publishedOnly`              | Never run Whisper on episodes; no published transcript → free skip        | `false`          |
+| `model`                      | `base` (fast, $0.008/min) or `small` (more accurate, $0.016/min)          | `base`           |
+| `language`                   | `auto` or a language code (`en`, `de`, `es`, `fr`, `ja`, `zh`, ...)       | `auto`           |
+| `outputFormat`               | `transcript` (one item per file) or `chunks` (one item per RAG chunk)     | `transcript`     |
+| `chunkSize`                  | Max characters per chunk, overlap included                                | `1500`           |
+| `chunkOverlap`               | Characters of whole segments repeated from the previous chunk             | `150`            |
+| `maxDurationMinutes`         | Longer files are skipped with a free error (at most 300)                  | `180`            |
+| `maxFileSizeMb`              | Larger downloads are skipped with a free error                            | `1000`           |
+| `timeoutSecs`                | Max download time per file                                                | `600`            |
 
 **Transcribing your own recordings:** upload them to a key-value store in your Apify account (Storage → Key-value stores → your store → upload a record) and list them in `keyValueStoreRecords`, e.g. `my-user~interviews/call-2026-10-01.m4a`. Private record URLs (`https://api.apify.com/v2/key-value-stores/.../records/...`) also work in `urls`; the actor reads them with your run's token.
 
@@ -136,6 +155,9 @@ Files over 30 minutes are skipped with a free error item.
 ```json
 {
   "url": "https://www.nasa.gov/wp-content/uploads/2015/01/590325main_ringtone_kennedy_WeChoose.mp3",
+  "status": "transcribed",
+  "transcriptSource": "whisper",
+  "publishedTranscriptUrl": null,
   "sourceType": "url",
   "title": "590325main_ringtone_kennedy_WeChoose.mp3",
   "model": "base",
@@ -163,9 +185,12 @@ Files over 30 minutes are skipped with a free error item.
 
 That is the fast `base` model; `small` gets this clip word-perfect ("...in this decade... because they are hard."). Podcast episodes also have `feedUrl`, `podcastTitle`, `episodeGuid` and `publishedAt`, and `title` is the episode title.
 
+**Published transcripts** have `transcriptSource: "published"`, `publishedTranscriptUrl` (the feed's transcript link), `billedMinutes: 0`, and the language from the tag or the feed. Timed formats (VTT, SRT, JSON, timestamped text) give segments, SRT and VTT; untimed plain text or HTML gives the `text` (paragraphs) with `segments`, `srtUrl` and `vttUrl` set to `null`. VTT and JSON speaker names are kept as `speaker` on each segment.
+
 **RAG chunks** (`outputFormat: "chunks"`): one item per chunk, with the same file fields plus `chunkIndex`, `chunkCount`, `startTime` and `endTime` (seconds), and the chunk's `text`. Chunks break between Whisper segments, so every chunk maps to an exact time range.
 
 - **SRT and VTT** files are saved in the run's key-value store as `transcript-0001.srt` / `.vtt` and linked from every item.
+- Every item has a `status`: `transcribed`, `failed`, `skipped_robots` or `no_published_transcript` (with `publishedOnly`). Only `transcribed` items are billed.
 - Failed files are returned with `text: null` and an `error`, such as `Download failed: HTTP 404.`, `This link is a web page, not an audio or video file.`, `The media is 212.4 min long, over the 180.0 min limit (maxDurationMinutes).` or `No speech detected.`
 
 ## How much does audio transcription cost?
@@ -176,8 +201,9 @@ Pay per event, per **started minute** of audio actually transcribed. No subscrip
 | ----------------------- | ---------------------- | -------------- |
 | `base` (default)        | **$0.008**             | $0.48          |
 | `small` (more accurate) | **$0.016**             | $0.96          |
+| Published transcript    | **$0.01 per episode**  | $0.01          |
 
-A 30 min 20 s file is billed as 31 minutes. Failed files, files over your limits and episodes skipped by new-episodes mode are free. If you set a **maximum cost per run**, the actor never starts a file the remaining budget can't pay for: it skips it with a free error item and moves on to shorter files.
+A 30 min 20 s file is billed as 31 minutes. An episode is charged either audio minutes or one published-transcript event, never both. Failed files, files over your limits, robots.txt skips and episodes skipped by new-episodes mode are free. If you set a **maximum cost per run**, the actor never starts a file the remaining budget can't pay for: it skips it with a free error item and moves on to shorter files.
 
 ## Tips
 
@@ -193,7 +219,7 @@ A 30 min 20 s file is billed as 31 minutes. Failed files, files over your limits
 
 **Which languages are supported?** All 99 Whisper languages, with automatic detection. Accuracy is best for English and widely spoken languages; use the `small` model for others.
 
-**Does it identify speakers?** No, there is no speaker diarization. Segments have timestamps but no speaker labels.
+**Does it identify speakers?** Whisper has no speaker diarization: its segments have timestamps but no speaker labels. Published transcripts keep the publisher's speaker names (`speaker` on each segment) when they have them.
 
 **Can I transcribe YouTube or TikTok videos?** Not by page link. Use direct media file links, your own uploads or podcast feeds. For YouTube captions, see [YouTube Transcripts](https://apify.com/cprussin/youtube-transcripts?fpr=to54nm).
 

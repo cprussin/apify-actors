@@ -3,6 +3,8 @@ export interface Segment {
   start: number;
   end: number;
   text: string;
+  /** Speaker label, from a published transcript only. */
+  speaker?: string;
 }
 
 export const segmentsToText = (segments: Segment[]): string =>
@@ -38,7 +40,7 @@ export function toSrt(segments: Segment[]): string {
 export function toVtt(segments: Segment[]): string {
   const cues = segments.map(
     (s) =>
-      `${formatTimestamp(s.start, ".")} --> ${formatTimestamp(endOf(s), ".")}\n${s.text}\n`,
+      `${formatTimestamp(s.start, ".")} --> ${formatTimestamp(endOf(s), ".")}\n${s.speaker ? `<v ${s.speaker}>` : ""}${s.text}\n`,
   );
   return ["WEBVTT\n", ...cues].join("\n");
 }

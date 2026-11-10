@@ -26,6 +26,8 @@ export interface RawInput {
   rssFeeds?: (string | { url?: string } | null)[] | string;
   maxEpisodes?: number | string | null;
   onlyNewEpisodes?: boolean;
+  preferPublishedTranscripts?: boolean;
+  publishedOnly?: boolean;
   model?: string | null;
   language?: string | null;
   outputFormat?: string | null;
@@ -53,6 +55,10 @@ export interface NormalizedInput {
   sources: Source[];
   maxEpisodes: number;
   onlyNewEpisodes: boolean;
+  /** Use an episode's <podcast:transcript> instead of Whisper when present. */
+  preferPublishedTranscripts: boolean;
+  /** Never run Whisper on episodes: no published transcript -> skipped. */
+  publishedOnly: boolean;
   model: Model;
   /** null: detect. */
   language: string | null;
@@ -271,6 +277,10 @@ export function normalizeInput(
       500,
     ),
     onlyNewEpisodes: r.onlyNewEpisodes === true,
+    // publishedOnly implies using published transcripts.
+    preferPublishedTranscripts:
+      r.preferPublishedTranscripts !== false || r.publishedOnly === true,
+    publishedOnly: r.publishedOnly === true,
     model: pick(r.model, MODELS, "model", DEFAULT_INPUT.model),
     language: language === "auto" ? null : language,
     outputFormat: pick(

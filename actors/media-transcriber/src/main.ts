@@ -2,20 +2,25 @@ import { Actor, log } from "apify";
 import {
   authHeaders,
   downloadToFile,
+  fetchDocument,
   fetchText,
   MediaError,
   saveStream,
 } from "./download.js";
 import { InputError, normalizeInput, type RawInput } from "./input.js";
+import { RobotsGate } from "./robots-gate.js";
 import { runTranscriptions } from "./run.js";
 import { Seen, stateKey } from "./state.js";
 import { PythonWorker } from "./worker.js";
 
 /** One event per started minute of transcribed audio, priced per model. */
 export const minuteEvent = (model: string) => `audio-minute-${model}`;
+/** One event per episode served from its published transcript. */
+export const PUBLISHED_EVENT = "published-transcript";
 /** Named (persistent) key-value store holding onlyNewEpisodes state. */
 export const STATE_STORE = "media-transcriber-state";
 const MAX_FEED_BYTES = 20 * 1024 * 1024;
+const MAX_TRANSCRIPT_BYTES = 10 * 1024 * 1024;
 
 await Actor.init();
 
@@ -44,7 +49,12 @@ try {
   const charging = Actor.getChargingManager();
   const ppe = charging.getPricingInfo().isPayPerEvent;
   const left = () => charging.calculateMaxEventChargeCountWithinLimit(event);
-  if (ppe && left() <= 0) {
+  const leftPublished = () =>
+    charging.calculateMaxEventChargeCountWithinLimit(PUBLISHED_EVENT);
+  const usesPublished =
+    input.preferPublishedTranscripts &&
+    input.sources.some((s) => s.kind === "feed");
+  if (ppe && left() <= 0 && !(usesPublished && leftPublished() > 0)) {
     log.warning("Max charge per run is too low for a single minute of audio.");
     await Actor.exit();
   }
@@ -67,13 +77,33 @@ try {
 
   const token = Actor.config.get("token");
   const store = await Actor.openKeyValueStore();
-  const limits = { maxBytes: input.maxBytes, timeoutMs: input.timeoutMs };
+  // Every URL the actor fetches itself (feeds, files, published transcripts
+  // and their redirect hops) passes robots.txt first; records are read
+  // through the Apify API.
+  const robots = new RobotsGate({ log: (m) => log.info(m) });
+  const limits = {
+    maxBytes: input.maxBytes,
+    timeoutMs: input.timeoutMs,
+    checkUrl: robots.assert,
+  };
+  const docTimeoutMs = Math.min(input.timeoutMs, 60_000);
   const stats = await runTranscriptions(input, {
     fetchFeed: (url) =>
       fetchText(url, {
         maxBytes: MAX_FEED_BYTES,
-        timeoutMs: Math.min(input.timeoutMs, 60_000),
+        timeoutMs: docTimeoutMs,
+        checkUrl: robots.assert,
       }),
+    fetchTranscript: (url) =>
+      fetchDocument(
+        url,
+        {
+          maxBytes: MAX_TRANSCRIPT_BYTES,
+          timeoutMs: docTimeoutMs,
+          checkUrl: robots.assert,
+        },
+        "Fetching the transcript",
+      ),
     download: async (job, path) => {
       if (job.kind !== "kv")
         return downloadToFile(job.url, path, {
@@ -116,8 +146,18 @@ try {
       return store.getPublicUrl(key);
     },
     // Charge first, then push, so a transcript is never delivered unpaid.
-    // Failures are free.
-    emit: async (items, minutes) => {
+    // Failures and robots skips are free. A published transcript is one
+    // published-transcript event instead of audio minutes.
+    emit: async (items, minutes, published) => {
+      const more = () => left() >= 1 || (usesPublished && leftPublished() >= 1);
+      if (published && ppe) {
+        const stop = { pushed: false, more: false };
+        if (leftPublished() < 1) return stop;
+        const res = await Actor.charge({ eventName: PUBLISHED_EVENT });
+        if (res.chargedCount < 1) return stop;
+        await Actor.pushData(items);
+        return { pushed: true, more: more() };
+      }
       if (!ppe || minutes === 0) {
         await Actor.pushData(items);
         return { pushed: true, more: true };
@@ -129,7 +169,7 @@ try {
       const res = await Actor.charge({ eventName: event, count: minutes });
       if (res.chargedCount < 1) return stop;
       await Actor.pushData(items);
-      return { pushed: true, more: left() >= 1 };
+      return { pushed: true, more: more() };
     },
     seen,
     saveState,
@@ -140,7 +180,13 @@ try {
   log.info(`Done: ${JSON.stringify(stats)}`);
   await Actor.setStatusMessage(
     `Transcribed ${stats.transcribed} file(s), ${stats.billedMinutes} min` +
+      (stats.published
+        ? `, ${stats.published} from published transcripts`
+        : "") +
       (stats.failed ? `, ${stats.failed} failed` : "") +
+      (stats.skippedRobots
+        ? `, ${stats.skippedRobots} skipped by robots.txt`
+        : "") +
       (stats.skippedSeen
         ? `, ${stats.skippedSeen} episode(s) done in earlier runs`
         : "") +

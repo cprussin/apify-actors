@@ -47,6 +47,18 @@
       "description": "Skip episodes transcribed by an earlier run with the same feeds. Schedule the actor (e.g. daily) to transcribe each new episode once. Failed episodes are retried next run. State is kept in the key-value store \"media-transcriber-state\" in your account.",
       "default": false
     },
+    "preferPublishedTranscripts": {
+      "title": "Use published transcripts",
+      "type": "boolean",
+      "description": "When an episode links its own transcript (<podcast:transcript>, e.g. on Omny, Buzzsprout, Transistor), use it instead of Whisper: faster and $0.01 per episode instead of per-minute pricing. Timed formats (VTT, SRT, JSON) are preferred over plain text and HTML. Falls back to Whisper when the transcript is missing or broken.",
+      "default": true
+    },
+    "publishedOnly": {
+      "title": "Published transcripts only",
+      "type": "boolean",
+      "description": "Never run Whisper on podcast episodes: episodes without a usable published transcript get a free item with status no_published_transcript.",
+      "default": false
+    },
     "model": {
       "title": "Whisper model",
       "type": "string",

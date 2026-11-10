@@ -10,18 +10,42 @@ import {
 } from "./captions.js";
 import { chunkSegments } from "./chunk.js";
 import { notMediaError } from "./detect.js";
-import { MediaError, type Downloaded } from "./download.js";
+import {
+  MediaError,
+  RobotsBlockedError,
+  type Downloaded,
+  type TextDocument,
+} from "./download.js";
 import { parseFeed, type Episode } from "./feed.js";
 import type { Model, NormalizedInput, OutputFormat, Source } from "./input.js";
 import type { Seen } from "./state.js";
+import {
+  parsePublishedTranscript,
+  type ParsedTranscript,
+} from "./transcript.js";
 import type { Transcribe, TranscribeResult } from "./worker.js";
 
 export type SourceType = "url" | "kv" | "rss";
+
+/**
+ * transcribed: success. failed: an error (free). skipped_robots: robots.txt
+ * disallows the feed, file or a redirect hop, names a Claude crawler, or
+ * can't be verified (free). no_published_transcript: publishedOnly and the
+ * episode has no usable published transcript (free).
+ */
+export type ItemStatus =
+  "transcribed" | "failed" | "skipped_robots" | "no_published_transcript";
+
+export type TranscriptSource = "published" | "whisper";
 
 /** One dataset item: a whole transcript, one chunk of it, or a failure. */
 export interface OutputItem {
   /** Media URL, "storeId/key" for a key-value store record, or the feed URL of a failed feed. */
   url: string;
+  status: ItemStatus;
+  /** published: the podcast's own <podcast:transcript>; whisper: transcribed here. */
+  transcriptSource: TranscriptSource | null;
+  publishedTranscriptUrl: string | null;
   sourceType: SourceType;
   feedUrl: string | null;
   podcastTitle: string | null;
@@ -67,21 +91,32 @@ export type Job =
       kind: "episode";
       input: string;
       url: string;
-      episode: Episode & { feedUrl: string; podcastTitle: string | null };
+      episode: Episode & {
+        feedUrl: string;
+        podcastTitle: string | null;
+        feedLanguage: string | null;
+      };
     };
 
 export interface RunDeps {
   fetchFeed: (url: string) => Promise<string>;
+  /** Fetches a published transcript (robots-checked). */
+  fetchTranscript?: (url: string) => Promise<TextDocument>;
   /** Saves the job's file to `path`. Throws MediaError for user-facing failures. */
   download: (job: Job, path: string) => Promise<Downloaded>;
   transcribe: Transcribe;
   /** Minutes the remaining budget pays for (Infinity when unlimited). */
   budgetMinutes: () => number;
   /**
-   * Push one media's items, charging `minutes` (0 for failures). `pushed:
-   * false` when the budget was used up; `more: false` to stop.
+   * Push one media's items, charging `minutes` (0 for failures), or one
+   * published-transcript event when `published`. `pushed: false` when the
+   * budget was used up; `more: false` to stop.
    */
-  emit: (items: OutputItem[], minutes: number) => Promise<EmitResult>;
+  emit: (
+    items: OutputItem[],
+    minutes: number,
+    published?: boolean,
+  ) => Promise<EmitResult>;
   /** Stores a caption file; returns its public URL. */
   saveFile: (key: string, text: string, contentType: string) => Promise<string>;
   /** onlyNewEpisodes: episodes returned by earlier runs. */
@@ -93,8 +128,12 @@ export interface RunDeps {
 }
 
 export interface RunStats {
+  /** Whisper and published transcripts. */
   transcribed: number;
+  /** Episodes served from a published transcript. */
+  published: number;
   failed: number;
+  skippedRobots: number;
   feeds: number;
   episodes: number;
   skippedSeen: number;
@@ -161,7 +200,9 @@ export async function runTranscriptions(
   const now = deps.now ?? (() => new Date());
   const stats: RunStats = {
     transcribed: 0,
+    published: 0,
     failed: 0,
+    skippedRobots: 0,
     feeds: 0,
     episodes: 0,
     skippedSeen: 0,
@@ -178,6 +219,9 @@ export async function runTranscriptions(
     extra: Partial<OutputItem> = {},
   ): OutputItem => ({
     url,
+    status: "failed",
+    transcriptSource: null,
+    publishedTranscriptUrl: null,
     sourceType,
     feedUrl: null,
     podcastTitle: null,
@@ -221,13 +265,26 @@ export async function runTranscriptions(
     });
   };
 
-  const fail = async (item: OutputItem, error: string) => {
-    stats.failed += 1;
+  const fail = async (
+    item: OutputItem,
+    error: string,
+    status: Exclude<ItemStatus, "transcribed"> = "failed",
+  ) => {
+    if (status === "skipped_robots") stats.skippedRobots += 1;
+    else stats.failed += 1;
     log(`${item.url}: ${error}`);
-    const res = await deps.emit([{ ...item, error }], 0);
+    const res = await deps.emit([{ ...item, status, error }], 0);
     if (res.pushed) stats.items += 1;
     return res.more;
   };
+  /** A caught download/feed error: robots skips keep their own status. */
+  const failWith = (item: OutputItem, e: unknown, prefix: string) =>
+    e instanceof RobotsBlockedError
+      ? fail(item, e.message, "skipped_robots")
+      : fail(
+          item,
+          e instanceof MediaError ? e.message : `${prefix}: ${errMsg(e)}`,
+        );
 
   // 1. Expand feeds into episode jobs; report invalid inputs.
   const jobs: Job[] = [];
@@ -245,9 +302,13 @@ export async function runTranscriptions(
     try {
       feed = parseFeed(await deps.fetchFeed(s.url), s.url);
     } catch (e) {
-      const msg =
-        e instanceof MediaError ? e.message : `Invalid feed: ${errMsg(e)}`;
-      if (!(await fail(blank(s.url, "rss", { feedUrl: s.url }), msg)))
+      if (
+        !(await failWith(
+          blank(s.url, "rss", { feedUrl: s.url }),
+          e,
+          "Invalid feed",
+        ))
+      )
         return stats;
       continue;
     }
@@ -278,7 +339,12 @@ export async function runTranscriptions(
         kind: "episode",
         input: e.url,
         url: e.url,
-        episode: { ...e, feedUrl: s.url, podcastTitle: feed.title },
+        episode: {
+          ...e,
+          feedUrl: s.url,
+          podcastTitle: feed.title,
+          feedLanguage: feed.language,
+        },
       });
   }
   jobs.forEach((j, i) => (j.index = i));
@@ -350,30 +416,60 @@ export async function runTranscriptions(
       );
 
     const minutes = billableMinutes(res.duration);
-    const key = `transcript-${String(job.index + 1).padStart(4, "0")}`;
-    const [srtUrl, vttUrl] = await Promise.all([
-      deps.saveFile(
-        `${key}.srt`,
-        toSrt(res.segments),
-        "application/x-subrip; charset=utf-8",
-      ),
-      deps.saveFile(
-        `${key}.vtt`,
-        toVtt(res.segments),
-        "text/vtt; charset=utf-8",
-      ),
-    ]);
+    const warning = [publishedNotes.get(job.index), ...res.warnings].filter(
+      Boolean,
+    );
+    return emitTranscript(
+      job,
+      {
+        ...done,
+        transcriptSource: "whisper",
+        billedMinutes: minutes,
+        warning: warning.join(" ") || null,
+      },
+      { segments: res.segments, timed: true },
+      minutes,
+      res.duration,
+    );
+  };
+
+  /** Saves captions, builds the items and charges for one transcript. */
+  const emitTranscript = async (
+    job: Job,
+    base: OutputItem,
+    parsed: ParsedTranscript,
+    /** Billed minutes (whisper), or 0 for one published-transcript event. */
+    minutes: number,
+    audioSeconds: number,
+  ): Promise<boolean> => {
+    const { segments, timed } = parsed;
+    const published = base.transcriptSource === "published";
+    const text = timed
+      ? segmentsToText(segments)
+      : segments.map((s) => s.text).join("\n\n");
+    let srtUrl: string | null = null;
+    let vttUrl: string | null = null;
+    if (timed) {
+      const key = `transcript-${String(job.index + 1).padStart(4, "0")}`;
+      [srtUrl, vttUrl] = await Promise.all([
+        deps.saveFile(
+          `${key}.srt`,
+          toSrt(segments),
+          "application/x-subrip; charset=utf-8",
+        ),
+        deps.saveFile(`${key}.vtt`, toVtt(segments), "text/vtt; charset=utf-8"),
+      ]);
+    }
     const common: OutputItem = {
-      ...done,
-      billedMinutes: minutes,
-      segmentCount: res.segments.length,
+      ...base,
+      status: "transcribed",
+      segmentCount: timed ? segments.length : null,
       srtUrl,
       vttUrl,
-      warning: res.warnings.join(" ") || null,
     };
     let items: OutputItem[];
     if (input.outputFormat === "chunks") {
-      const chunks = chunkSegments(res.segments, {
+      const chunks = chunkSegments(segments, {
         size: input.chunkSize,
         overlap: input.chunkOverlap,
       });
@@ -385,25 +481,26 @@ export async function runTranscriptions(
         wordCount: wordCount(c.text),
         chunkIndex: i,
         chunkCount: chunks.length,
-        startTime: c.start,
-        endTime: c.end,
+        startTime: timed ? c.start : null,
+        endTime: timed ? c.end : null,
       }));
     } else {
       items = [
         {
           ...common,
           text,
-          segments: res.segments,
+          segments: timed ? segments : null,
           wordCount: wordCount(text),
         },
       ];
     }
 
-    const emitted = await deps.emit(items, minutes);
+    const emitted = await deps.emit(items, minutes, published || undefined);
     if (emitted.pushed) {
       stats.transcribed += 1;
+      if (published) stats.published += 1;
       stats.billedMinutes += minutes;
-      stats.audioSeconds += res.duration;
+      stats.audioSeconds += audioSeconds;
       stats.items += items.length;
       if (job.kind === "episode" && deps.seen) {
         deps.seen.add(seenId(job.episode.feedUrl, job.episode.guid));
@@ -414,7 +511,89 @@ export async function runTranscriptions(
     return emitted.more;
   };
 
+  /**
+   * Fetches and parses the episode's published transcripts, best first.
+   * Returns the transcript, or why none could be used.
+   */
+  const fetchPublished = async (
+    job: Extract<Job, { kind: "episode" }>,
+  ): Promise<
+    | {
+        ok: true;
+        url: string;
+        language: string | null;
+        parsed: ParsedTranscript;
+      }
+    | { ok: false; reason: string; robots: boolean }
+  > => {
+    const reasons: string[] = [];
+    let robots = 0;
+    for (const t of job.episode.transcripts) {
+      try {
+        if (!deps.fetchTranscript) throw new Error("not available");
+        const doc = await deps.fetchTranscript(t.url);
+        return {
+          ok: true,
+          url: t.url,
+          language: t.language,
+          parsed: parsePublishedTranscript(doc.text, t.kind),
+        };
+      } catch (e) {
+        if (e instanceof RobotsBlockedError) robots += 1;
+        reasons.push(`${t.kind}: ${errMsg(e)}`);
+      }
+    }
+    return {
+      ok: false,
+      // Only when every link was refused by robots.txt.
+      robots: robots > 0 && robots === reasons.length,
+      reason: reasons.length
+        ? `Published transcript unavailable (${reasons.join("; ")}).`
+        : "The episode has no published transcript (<podcast:transcript>).",
+    };
+  };
+
+  /** Why the published transcript wasn't used, per job (a warning). */
+  const publishedNotes = new Map<number, string>();
+
   const oneJob = async (job: Job): Promise<boolean> => {
+    // Published transcript fast path: no download, no Whisper.
+    if (job.kind === "episode" && input.preferPublishedTranscripts) {
+      const pub = await fetchPublished(job);
+      if (pub.ok) {
+        await turns.wait(job.index);
+        const { segments, timed } = pub.parsed;
+        const end = timed
+          ? segments.reduce((m, s) => Math.max(m, s.end), 0)
+          : 0;
+        const duration = job.episode.durationSecs ?? (end > 0 ? end : null);
+        return emitTranscript(
+          job,
+          {
+            ...jobBase(job),
+            transcriptSource: "published",
+            publishedTranscriptUrl: pub.url,
+            language: pub.language ?? job.episode.feedLanguage,
+            durationSeconds: duration,
+          },
+          pub.parsed,
+          0,
+          0,
+        );
+      }
+      if (job.episode.transcripts.length) {
+        publishedNotes.set(job.index, pub.reason);
+        log(`${job.url}: ${pub.reason}`);
+      }
+      if (input.publishedOnly) {
+        await turns.wait(job.index);
+        return fail(
+          jobBase(job),
+          pub.reason,
+          pub.robots ? "skipped_robots" : "no_published_transcript",
+        );
+      }
+    }
     const declared = job.episode?.durationSecs;
     if (declared && declared > input.maxDurationSecs * 1.1)
       return fail(
@@ -431,10 +610,7 @@ export async function runTranscriptions(
       file = await deps.download(job, path);
     } catch (e) {
       await rm(path, { force: true }).catch(() => {});
-      return fail(
-        jobBase(job),
-        e instanceof MediaError ? e.message : `Download failed: ${errMsg(e)}`,
-      );
+      return failWith(jobBase(job), e, "Download failed");
     }
     const notMedia = notMediaError(file.head, file.contentType);
     if (notMedia) {

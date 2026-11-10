@@ -56,6 +56,7 @@ describe("parseFeed", () => {
         url: "https://feeds.x.org/media/ep3.m4a",
         publishedAt: "2026-10-01T10:00:00.000Z",
         durationSecs: 3725,
+        transcripts: [],
       },
       {
         guid: "https://cdn.x.org/ep2.mp4",
@@ -63,6 +64,7 @@ describe("parseFeed", () => {
         url: "https://cdn.x.org/ep2.mp4",
         publishedAt: "2026-09-15T10:00:00.000Z",
         durationSecs: 3723,
+        transcripts: [],
       },
       {
         guid: "ep-1",
@@ -70,6 +72,7 @@ describe("parseFeed", () => {
         url: "https://cdn.x.org/ep1.mp3",
         publishedAt: "2026-09-01T10:00:00.000Z",
         durationSecs: 750,
+        transcripts: [],
       },
     ]);
   });
@@ -77,6 +80,7 @@ describe("parseFeed", () => {
   it("parses Atom enclosures", () => {
     expect(parseFeed(ATOM)).toEqual({
       title: "Atom Pod",
+      language: null,
       episodes: [
         {
           guid: "urn:talk-1",
@@ -84,9 +88,34 @@ describe("parseFeed", () => {
           url: "https://x.org/talk.ogg",
           publishedAt: "2026-10-01T00:00:00.000Z",
           durationSecs: null,
+          transcripts: [],
         },
       ],
     });
+  });
+
+  it("reads <podcast:transcript> links, timed formats first", () => {
+    const feed = parseFeed(
+      `<rss xmlns:podcast="https://podcastindex.org/namespace/1.0"><channel>
+<title>T</title><language>en-US</language>
+<item><guid>a</guid><enclosure url="https://x.org/a.mp3" type="audio/mpeg"/>
+<podcast:transcript url="https://x.org/a.html" type="text/html"/>
+<podcast:transcript url="https://x.org/a.txt" type="text/plain"/>
+<podcast:transcript url="/a.json" type="application/json" language="es"/>
+<podcast:transcript url="https://x.org/a.srt" type="application/x-subrip"/>
+<podcast:transcript url="https://x.org/a.vtt" type="text/vtt" language="en-GB"/>
+<podcast:transcript url="https://x.org/a.pdf" type="application/pdf"/>
+</item></channel></rss>`,
+      "https://feeds.x.org/f.xml",
+    );
+    expect(feed.language).toBe("en");
+    expect(feed.episodes[0]!.transcripts).toEqual([
+      { url: "https://x.org/a.vtt", kind: "vtt", language: "en" },
+      { url: "https://x.org/a.srt", kind: "srt", language: null },
+      { url: "https://feeds.x.org/a.json", kind: "json", language: "es" },
+      { url: "https://x.org/a.txt", kind: "text", language: null },
+      { url: "https://x.org/a.html", kind: "html", language: null },
+    ]);
   });
 
   it("rejects web pages and other files", () => {

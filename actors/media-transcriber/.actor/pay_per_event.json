@@ -9,5 +9,10 @@
     "eventTitle": "Audio minute (small model)",
     "eventDescription": "One started minute of audio or video transcribed with the more accurate small Whisper model. Failed files are free.",
     "eventPriceUsd": 0.016
+  },
+  "published-transcript": {
+    "eventTitle": "Published transcript",
+    "eventDescription": "One podcast episode returned from the transcript its publisher links in the feed (<podcast:transcript>), instead of Whisper. Charged instead of audio minutes, never both.",
+    "eventPriceUsd": 0.01
   }
 }
