@@ -1,0 +1,13 @@
+{
+  "image-converted": {
+    "eventTitle": "Image converted",
+    "eventDescription": "One image converted and saved, up to 12 megapixels of input (e.g. 4000x3000). Failed images are free.",
+    "eventPriceUsd": 0.002,
+    "isPrimaryEvent": true
+  },
+  "image-converted-large": {
+    "eventTitle": "Large image converted",
+    "eventDescription": "One image over 12 megapixels of input converted and saved (charged instead of image-converted). Failed images are free.",
+    "eventPriceUsd": 0.004
+  }
+}

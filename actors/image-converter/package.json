@@ -1,0 +1,24 @@
+{
+  "name": "image-converter",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Convert and compress images to WebP, AVIF, JPEG or PNG with sharp (libvips): resize, quality or target-KB mode, metadata strip. Input from URLs, key-value store uploads or a dataset field. No API key.",
+  "main": "dist/main.js",
+  "scripts": {
+    "start": "node dist/main.js",
+    "start:dev": "tsx src/main.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "smoke": "tsx scripts/smoke.ts"
+  },
+  "dependencies": {
+    "apify": "^3.7.2",
+    "sharp": "^0.35.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.4",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  }
+}

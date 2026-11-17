@@ -1,0 +1,134 @@
+{
+  "title": "Image Converter input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "urls": {
+      "title": "Image URLs",
+      "type": "array",
+      "description": "Direct links to JPEG, PNG, WebP, AVIF, GIF, TIFF, BMP, HEIC or SVG images, one per line. Apify key-value store record URLs are read with your token. Social-network links and private or internal addresses are refused. Leave every image source empty to convert a generated 640x480 test image. Failed images are free.",
+      "editor": "stringList",
+      "sectionCaption": "Images"
+    },
+    "startUrls": {
+      "title": "Start URLs",
+      "type": "array",
+      "description": "Optional alternative to Image URLs, in Apify's request-list format (e.g. a file with one URL per line). Combined with Image URLs.",
+      "editor": "requestListSources"
+    },
+    "keyValueStoreRecords": {
+      "title": "Key-value store records",
+      "type": "array",
+      "description": "Images uploaded to an Apify key-value store, as <code>storeId/recordKey</code> or <code>username~store-name/recordKey</code>, one per line. Use this to convert your own files without hosting them anywhere.",
+      "editor": "stringList"
+    },
+    "datasetId": {
+      "title": "Dataset ID",
+      "type": "string",
+      "description": "Optional: convert the image URLs in another run's dataset (e.g. a product scraper's output). Dataset ID or <code>username~dataset-name</code>.",
+      "editor": "textfield"
+    },
+    "imageField": {
+      "title": "Dataset image field",
+      "type": "string",
+      "description": "The dataset field that holds the image URL: a string, an array of URLs, or objects with a url/src. Dot paths like <code>product.image</code> work.",
+      "editor": "textfield",
+      "default": "url"
+    },
+    "outputFormat": {
+      "title": "Output format",
+      "type": "string",
+      "description": "WebP: small files, transparency, best support. AVIF: smallest files, slower to encode. JPEG: works everywhere, no transparency (flattened onto white). PNG: lossless, large files.",
+      "editor": "select",
+      "enum": ["webp", "avif", "jpeg", "png"],
+      "enumTitles": ["WebP", "AVIF", "JPEG", "PNG"],
+      "default": "webp",
+      "prefill": "webp",
+      "sectionCaption": "Output"
+    },
+    "quality": {
+      "title": "Quality",
+      "type": "integer",
+      "description": "1-100 for WebP, AVIF and JPEG. 80 is a good balance; 90+ for near-lossless. PNG is lossless and ignores it. With a target size, this is the highest quality tried.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 80,
+      "prefill": 80
+    },
+    "targetKb": {
+      "title": "Target file size (KB)",
+      "type": "integer",
+      "description": "Optional: the actor picks the highest quality whose file fits this size (PNG is reduced to a 256-colour palette if lossless is too big). If even quality 1 doesn't fit, you get the smallest file with a warning. Leave empty for fixed quality.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 100000
+    },
+    "maxWidth": {
+      "title": "Max width (px)",
+      "type": "integer",
+      "description": "Optional: shrink images wider than this. Images are never enlarged.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 16383,
+      "sectionCaption": "Resize"
+    },
+    "maxHeight": {
+      "title": "Max height (px)",
+      "type": "integer",
+      "description": "Optional: shrink images taller than this. Images are never enlarged.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 16383
+    },
+    "fit": {
+      "title": "Fit",
+      "type": "string",
+      "description": "With both max width and height: inside keeps the aspect ratio within the box; cover crops to fill the box; contain pads to the box (transparent, or white for JPEG); fill stretches; outside covers the box without cropping.",
+      "editor": "select",
+      "enum": ["inside", "cover", "contain", "fill", "outside"],
+      "enumTitles": [
+        "Inside (keep aspect ratio)",
+        "Cover (crop)",
+        "Contain (pad)",
+        "Fill (stretch)",
+        "Outside"
+      ],
+      "default": "inside"
+    },
+    "stripMetadata": {
+      "title": "Strip metadata",
+      "type": "boolean",
+      "description": "Remove EXIF (camera, GPS location), XMP and ICC data; colours are converted to sRGB and the EXIF rotation is applied first. Turn off to keep the metadata.",
+      "default": true,
+      "sectionCaption": "Limits and privacy"
+    },
+    "maxInputMegapixels": {
+      "title": "Max input size (megapixels)",
+      "type": "integer",
+      "description": "Larger images are skipped with a free error item (at most 100). Images over 12 MP cost $0.004 instead of $0.002, so 12 caps the price per image.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 50
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "description": "Larger downloads are skipped with a free error item.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 200,
+      "default": 50
+    },
+    "timeoutSecs": {
+      "title": "Download timeout (seconds)",
+      "type": "integer",
+      "description": "Max time to download one image.",
+      "editor": "number",
+      "minimum": 5,
+      "maximum": 600,
+      "default": 60
+    }
+  }
+}

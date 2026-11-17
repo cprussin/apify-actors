@@ -1,0 +1,197 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "url": {
+        "type": "string",
+        "title": "Source",
+        "description": "Image URL, storeId/key for a key-value store record, or the generated sample's name.",
+        "example": "sample-640x480.png"
+      },
+      "sourceType": {
+        "type": "string",
+        "title": "Source type",
+        "description": "url, kv (key-value store record), dataset (from datasetId) or sample (generated test image).",
+        "example": "sample"
+      },
+      "fileName": {
+        "type": ["string", "null"],
+        "title": "File name",
+        "description": "From the Content-Disposition header, the URL path or the record key.",
+        "example": "sample-640x480.png"
+      },
+      "inputFormat": {
+        "type": ["string", "null"],
+        "title": "Input format",
+        "description": "Detected input format: jpeg, png, webp, avif, gif, tiff, bmp, heic or svg.",
+        "example": "png"
+      },
+      "inputBytes": {
+        "type": ["number", "null"],
+        "title": "Input size (bytes)",
+        "description": "Downloaded file size in bytes.",
+        "example": 40428
+      },
+      "inputWidth": {
+        "type": ["number", "null"],
+        "title": "Input width",
+        "description": "Input width in pixels (after EXIF rotation).",
+        "example": 640
+      },
+      "inputHeight": {
+        "type": ["number", "null"],
+        "title": "Input height",
+        "description": "Input height in pixels (after EXIF rotation).",
+        "example": 480
+      },
+      "inputMegapixels": {
+        "type": ["number", "null"],
+        "title": "Input megapixels",
+        "description": "Input width x height in millions of pixels; over 12 is billed as a large image.",
+        "example": 0.31
+      },
+      "outputFormat": {
+        "type": "string",
+        "title": "Output format",
+        "description": "webp, avif, jpeg or png.",
+        "example": "webp"
+      },
+      "outputWidth": {
+        "type": ["number", "null"],
+        "title": "Output width",
+        "description": "Output width in pixels.",
+        "example": 640
+      },
+      "outputHeight": {
+        "type": ["number", "null"],
+        "title": "Output height",
+        "description": "Output height in pixels.",
+        "example": 480
+      },
+      "outputBytes": {
+        "type": ["number", "null"],
+        "title": "Output size (bytes)",
+        "description": "Converted file size in bytes.",
+        "example": 11368
+      },
+      "savedPercent": {
+        "type": ["number", "null"],
+        "title": "Saved (%)",
+        "description": "How much smaller the output is than the input, in percent (negative if larger).",
+        "example": 71.9
+      },
+      "quality": {
+        "type": ["number", "null"],
+        "title": "Quality",
+        "description": "Encoder quality used (with targetKb, the one found); null for lossless PNG.",
+        "example": 80
+      },
+      "outputKey": {
+        "type": ["string", "null"],
+        "title": "Output key",
+        "description": "Record key of the converted image in the run's key-value store.",
+        "example": "converted-0001-sample-640x480.webp"
+      },
+      "outputUrl": {
+        "type": ["string", "null"],
+        "title": "Converted image",
+        "description": "Link to the converted image in the run's key-value store.",
+        "example": "https://api.apify.com/v2/key-value-stores/abc/records/converted-0001-sample-640x480.webp"
+      },
+      "chargedEvent": {
+        "type": ["string", "null"],
+        "title": "Charged event",
+        "description": "image-converted (up to 12 MP) or image-converted-large; null for failures, which are free.",
+        "example": "image-converted"
+      },
+      "warning": {
+        "type": ["string", "null"],
+        "title": "Warning",
+        "description": "Notes such as an animated GIF of which only the first frame was converted, or a target size that could not be reached.",
+        "example": null
+      },
+      "error": {
+        "type": ["string", "null"],
+        "title": "Error",
+        "description": "Why the image failed (not billed), or null on success.",
+        "example": null
+      },
+      "convertedAt": {
+        "type": "string",
+        "title": "Converted at",
+        "description": "When the image was processed (ISO 8601 UTC).",
+        "example": "2026-11-17T00:00:00.000Z"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Converted images",
+      "transformation": {
+        "fields": [
+          "url",
+          "inputFormat",
+          "inputBytes",
+          "outputFormat",
+          "outputWidth",
+          "outputHeight",
+          "outputBytes",
+          "savedPercent",
+          "outputUrl",
+          "warning",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "url": {
+            "label": "Source",
+            "format": "link"
+          },
+          "inputFormat": {
+            "label": "Input format",
+            "format": "text"
+          },
+          "inputBytes": {
+            "label": "Input bytes",
+            "format": "number"
+          },
+          "outputFormat": {
+            "label": "Output format",
+            "format": "text"
+          },
+          "outputWidth": {
+            "label": "Width",
+            "format": "number"
+          },
+          "outputHeight": {
+            "label": "Height",
+            "format": "number"
+          },
+          "outputBytes": {
+            "label": "Output bytes",
+            "format": "number"
+          },
+          "savedPercent": {
+            "label": "Saved (%)",
+            "format": "number"
+          },
+          "outputUrl": {
+            "label": "Converted image",
+            "format": "link"
+          },
+          "warning": {
+            "label": "Warning",
+            "format": "text"
+          },
+          "error": {
+            "label": "Error",
+            "format": "text"
+          }
+        }
+      }
+    }
+  }
+}

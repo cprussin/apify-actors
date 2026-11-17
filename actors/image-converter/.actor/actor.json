@@ -1,0 +1,18 @@
+{
+  "actorSpecification": 1,
+  "name": "image-converter",
+  "title": "Image Converter & Compressor: WebP, AVIF, JPEG, PNG",
+  "description": "Convert and compress images to WebP, AVIF, JPEG or PNG: resize, set quality or a target size in KB, strip EXIF. Reads HEIC, TIFF, BMP, GIF and SVG. Input: image URLs, key-value store uploads or a dataset field. Output: file links with bytes saved. $0.002 per image.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 512,
+  "defaultMemoryMbytes": 1024,
+  "maxMemoryMbytes": 8192,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}
