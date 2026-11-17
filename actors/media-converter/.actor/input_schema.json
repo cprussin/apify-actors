@@ -1,0 +1,122 @@
+{
+  "title": "Video & Audio Converter input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "urls": {
+      "title": "File URLs",
+      "type": "array",
+      "description": "Direct links to video or audio files (MP4, MOV, MKV, WebM, AVI, MP3, M4A, WAV, FLAC and most others FFmpeg reads), one per line. Apify key-value store record URLs are read with your token. YouTube, TikTok, Instagram, X and other platform links, and private or internal addresses, are refused. Leave every source empty to convert a generated 3-second test clip. Failed files are free.",
+      "editor": "stringList",
+      "sectionCaption": "Files"
+    },
+    "startUrls": {
+      "title": "Start URLs",
+      "type": "array",
+      "description": "Optional alternative to File URLs, in Apify's request-list format (e.g. a file with one URL per line). Combined with File URLs.",
+      "editor": "requestListSources"
+    },
+    "keyValueStoreRecords": {
+      "title": "Key-value store records",
+      "type": "array",
+      "description": "Files uploaded to an Apify key-value store, as <code>storeId/recordKey</code> or <code>username~store-name/recordKey</code>, one per line. Use this to convert your own files without hosting them anywhere.",
+      "editor": "stringList"
+    },
+    "outputFormat": {
+      "title": "Output format",
+      "type": "string",
+      "description": "MP4: H.264 video and AAC audio, plays everywhere. WebM: VP9 video and Opus audio, for the web. MP3, M4A (AAC) and WAV: the audio track only, billed as audio minutes.",
+      "editor": "select",
+      "enum": ["mp4", "webm", "mp3", "m4a", "wav"],
+      "enumTitles": [
+        "MP4 (H.264 + AAC)",
+        "WebM (VP9 + Opus)",
+        "MP3 (audio only)",
+        "M4A (AAC audio only)",
+        "WAV (uncompressed audio only)"
+      ],
+      "default": "mp4",
+      "prefill": "mp4",
+      "sectionCaption": "Output"
+    },
+    "maxHeight": {
+      "title": "Max resolution (p)",
+      "type": "integer",
+      "description": "480, 720 or 1080: the shorter side of the output in pixels (a portrait 1080x1920 video is 1080p), with the longer side at most 16:9 of it. Smaller videos are never enlarged. The price per minute depends on this: 480p $0.008, 720p $0.02, 1080p $0.04.",
+      "editor": "number",
+      "minimum": 144,
+      "maximum": 1080,
+      "default": 1080,
+      "prefill": 720
+    },
+    "crf": {
+      "title": "Quality (CRF)",
+      "type": "integer",
+      "description": "Video quality when no target size is set: lower is better and bigger. 18 is near-transparent, 23 the default, 28 small files, 32+ visibly soft. The same scale is used for WebM (mapped to VP9). Ignored for audio outputs and with a target size.",
+      "editor": "number",
+      "minimum": 10,
+      "maximum": 45,
+      "default": 23
+    },
+    "targetMb": {
+      "title": "Target file size (MB)",
+      "type": "integer",
+      "description": "Optional: compress each file to about this size instead of a fixed quality (e.g. 25 for Discord, 16 for WhatsApp). The bitrate is set from the length; if the first pass misses by more than 5%, it is encoded once more. Very small targets for long files get a warning. For MP3 and M4A it sets the audio bitrate. Leave empty for the CRF quality.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 4000
+    },
+    "startSeconds": {
+      "title": "Start at (seconds)",
+      "type": "integer",
+      "description": "Optional: trim the start. The output begins this many seconds into the file.",
+      "editor": "number",
+      "minimum": 0,
+      "maximum": 86400,
+      "default": 0,
+      "sectionCaption": "Trim and audio"
+    },
+    "durationSeconds": {
+      "title": "Duration (seconds)",
+      "type": "integer",
+      "description": "Optional: keep only this many seconds from the start point. Leave empty for the rest of the file. You pay for the output length only.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 10800
+    },
+    "mute": {
+      "title": "Remove audio",
+      "type": "boolean",
+      "description": "MP4 and WebM only: drop the audio track.",
+      "default": false
+    },
+    "maxDurationMinutes": {
+      "title": "Max output length (minutes)",
+      "type": "integer",
+      "description": "Files whose output would be longer are skipped with a free error item (trim them with Start at and Duration, or raise this, up to 180). Caps the cost per file.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 180,
+      "default": 30,
+      "sectionCaption": "Limits"
+    },
+    "maxFileSizeMb": {
+      "title": "Max input file size (MB)",
+      "type": "integer",
+      "description": "Larger downloads are skipped with a free error item.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 4000,
+      "default": 1000
+    },
+    "timeoutSecs": {
+      "title": "Download timeout (seconds)",
+      "type": "integer",
+      "description": "Max time to download one file.",
+      "editor": "number",
+      "minimum": 10,
+      "maximum": 3600,
+      "default": 600
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "audio-minute": {
+    "eventTitle": "Audio minute",
+    "eventDescription": "One started minute of MP3, M4A or WAV output (a 3 min 20 s file is 4 minutes). Failed files are free.",
+    "eventPriceUsd": 0.003
+  },
+  "video-480p-minute": {
+    "eventTitle": "480p video minute",
+    "eventDescription": "One started minute of MP4 or WebM output at up to 480p (e.g. 854x480). Failed files are free.",
+    "eventPriceUsd": 0.008
+  },
+  "video-720p-minute": {
+    "eventTitle": "720p video minute",
+    "eventDescription": "One started minute of MP4 or WebM output at up to 720p (e.g. 1280x720). Failed files are free.",
+    "eventPriceUsd": 0.02,
+    "isPrimaryEvent": true
+  },
+  "video-1080p-minute": {
+    "eventTitle": "1080p video minute",
+    "eventDescription": "One started minute of MP4 or WebM output at up to 1080p (e.g. 1920x1080), or of any video output from an input above 1080p (e.g. 4K). Failed files are free.",
+    "eventPriceUsd": 0.04
+  }
+}

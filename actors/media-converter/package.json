@@ -1,0 +1,23 @@
+{
+  "name": "media-converter",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Convert and compress video and audio files to MP4 (H.264), WebM (VP9), MP3, M4A or WAV with FFmpeg: CRF or target-size compression, resize to 480p/720p/1080p, trim and mute. Input from URLs or key-value store uploads. No API key.",
+  "main": "dist/main.js",
+  "scripts": {
+    "start": "node dist/main.js",
+    "start:dev": "tsx src/main.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "smoke": "tsx scripts/smoke.ts"
+  },
+  "dependencies": {
+    "apify": "^3.7.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.4",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  }
+}

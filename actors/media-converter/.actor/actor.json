@@ -1,0 +1,18 @@
+{
+  "actorSpecification": 1,
+  "name": "media-converter",
+  "title": "Video & Audio Converter: MP4, WebM, MP3, M4A, WAV",
+  "description": "Convert and compress video and audio files to MP4 (H.264), WebM (VP9), MP3, M4A or WAV with FFmpeg: quality or target size in MB, resize to 480p/720p/1080p, trim, mute. Input: file URLs or key-value store uploads. Pay per output minute from $0.003.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 1024,
+  "defaultMemoryMbytes": 4096,
+  "maxMemoryMbytes": 16384,
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md"
+}

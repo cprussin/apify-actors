@@ -1,0 +1,267 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "url": {
+        "type": "string",
+        "title": "Source",
+        "description": "File URL, storeId/key for a key-value store record, or the generated sample's name.",
+        "example": "sample-320x240-3s.mp4"
+      },
+      "sourceType": {
+        "type": "string",
+        "title": "Source type",
+        "description": "url, kv (key-value store record) or sample (generated test clip).",
+        "example": "sample"
+      },
+      "fileName": {
+        "type": ["string", "null"],
+        "title": "File name",
+        "description": "From the Content-Disposition header, the URL path or the record key.",
+        "example": "sample-320x240-3s.mp4"
+      },
+      "inputBytes": {
+        "type": ["number", "null"],
+        "title": "Input size (bytes)",
+        "description": "Downloaded file size in bytes.",
+        "example": 177872
+      },
+      "inputContainer": {
+        "type": ["string", "null"],
+        "title": "Input container",
+        "description": "Container FFprobe detected, e.g. mov,mp4,m4a,3gp,3g2,mj2 or matroska,webm.",
+        "example": "mov,mp4,m4a,3gp,3g2,mj2"
+      },
+      "inputVideoCodec": {
+        "type": ["string", "null"],
+        "title": "Input video codec",
+        "description": "e.g. h264, hevc, vp9, av1, mpeg4; null for audio-only files.",
+        "example": "mpeg4"
+      },
+      "inputAudioCodec": {
+        "type": ["string", "null"],
+        "title": "Input audio codec",
+        "description": "e.g. aac, mp3, opus, pcm_s16le; null when the file has no audio.",
+        "example": "aac"
+      },
+      "inputWidth": {
+        "type": ["number", "null"],
+        "title": "Input width",
+        "description": "Display width in pixels (rotation applied).",
+        "example": 320
+      },
+      "inputHeight": {
+        "type": ["number", "null"],
+        "title": "Input height",
+        "description": "Display height in pixels (rotation applied).",
+        "example": 240
+      },
+      "inputDurationSeconds": {
+        "type": ["number", "null"],
+        "title": "Input duration (s)",
+        "description": "Length of the input file in seconds.",
+        "example": 3
+      },
+      "inputBitrate": {
+        "type": ["number", "null"],
+        "title": "Input bitrate (bit/s)",
+        "description": "Overall bitrate of the input file.",
+        "example": 474325
+      },
+      "outputFormat": {
+        "type": "string",
+        "title": "Output format",
+        "description": "mp4, webm, mp3, m4a or wav.",
+        "example": "mp4"
+      },
+      "outputVideoCodec": {
+        "type": ["string", "null"],
+        "title": "Output video codec",
+        "description": "h264 (MP4) or vp9 (WebM); null for audio outputs and failures.",
+        "example": "h264"
+      },
+      "outputAudioCodec": {
+        "type": ["string", "null"],
+        "title": "Output audio codec",
+        "description": "aac, opus, mp3 or pcm_s16le; null when muted or silent.",
+        "example": "aac"
+      },
+      "outputWidth": {
+        "type": ["number", "null"],
+        "title": "Output width",
+        "description": "Output width in pixels.",
+        "example": 320
+      },
+      "outputHeight": {
+        "type": ["number", "null"],
+        "title": "Output height",
+        "description": "Output height in pixels.",
+        "example": 240
+      },
+      "outputDurationSeconds": {
+        "type": ["number", "null"],
+        "title": "Output duration (s)",
+        "description": "Length of the output in seconds.",
+        "example": 3.018
+      },
+      "outputBitrate": {
+        "type": ["number", "null"],
+        "title": "Output bitrate (bit/s)",
+        "description": "Overall bitrate of the output file.",
+        "example": 176527
+      },
+      "outputBytes": {
+        "type": ["number", "null"],
+        "title": "Output size (bytes)",
+        "description": "Converted file size in bytes.",
+        "example": 66595
+      },
+      "savedPercent": {
+        "type": ["number", "null"],
+        "title": "Saved (%)",
+        "description": "How much smaller the output is than the input, in percent (negative if larger).",
+        "example": 62.6
+      },
+      "crf": {
+        "type": ["number", "null"],
+        "title": "CRF",
+        "description": "Video quality used; null in target-size mode and for audio outputs.",
+        "example": 23
+      },
+      "targetMb": {
+        "type": ["number", "null"],
+        "title": "Target size (MB)",
+        "description": "The targetMb input, or null.",
+        "example": null
+      },
+      "outputKey": {
+        "type": ["string", "null"],
+        "title": "Output key",
+        "description": "Record key of the converted file in the run's key-value store.",
+        "example": "converted-0001-sample-320x240-3s.mp4"
+      },
+      "outputUrl": {
+        "type": ["string", "null"],
+        "title": "Converted file",
+        "description": "Link to the converted file in the run's key-value store.",
+        "example": "https://api.apify.com/v2/key-value-stores/abc/records/converted-0001-sample-320x240-3s.mp4"
+      },
+      "chargedEvent": {
+        "type": ["string", "null"],
+        "title": "Charged event",
+        "description": "audio-minute, video-480p-minute, video-720p-minute or video-1080p-minute; null for failures, which are free.",
+        "example": "video-480p-minute"
+      },
+      "chargedMinutes": {
+        "type": ["number", "null"],
+        "title": "Charged minutes",
+        "description": "Started minutes of output billed (with a 1-second grace); null for failures.",
+        "example": 1
+      },
+      "processingSeconds": {
+        "type": ["number", "null"],
+        "title": "Processing time (s)",
+        "description": "Wall time to probe, convert and save the file.",
+        "example": 0.4
+      },
+      "warning": {
+        "type": ["string", "null"],
+        "title": "Warning",
+        "description": "Notes such as a silent input, a target size that could not be reached, or an input above 1080p billed as 1080p.",
+        "example": null
+      },
+      "error": {
+        "type": ["string", "null"],
+        "title": "Error",
+        "description": "Why the file failed (not billed), or null on success.",
+        "example": null
+      },
+      "convertedAt": {
+        "type": "string",
+        "title": "Converted at",
+        "description": "When the file was processed (ISO 8601 UTC).",
+        "example": "2026-11-17T00:00:00.000Z"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Converted files",
+      "transformation": {
+        "fields": [
+          "url",
+          "inputVideoCodec",
+          "inputBytes",
+          "outputFormat",
+          "outputWidth",
+          "outputHeight",
+          "outputDurationSeconds",
+          "outputBytes",
+          "savedPercent",
+          "outputUrl",
+          "chargedMinutes",
+          "warning",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "url": {
+            "label": "Source",
+            "format": "link"
+          },
+          "inputVideoCodec": {
+            "label": "Input video",
+            "format": "text"
+          },
+          "inputBytes": {
+            "label": "Input bytes",
+            "format": "number"
+          },
+          "outputFormat": {
+            "label": "Output format",
+            "format": "text"
+          },
+          "outputWidth": {
+            "label": "Width",
+            "format": "number"
+          },
+          "outputHeight": {
+            "label": "Height",
+            "format": "number"
+          },
+          "outputDurationSeconds": {
+            "label": "Duration (s)",
+            "format": "number"
+          },
+          "outputBytes": {
+            "label": "Output bytes",
+            "format": "number"
+          },
+          "savedPercent": {
+            "label": "Saved (%)",
+            "format": "number"
+          },
+          "outputUrl": {
+            "label": "Converted file",
+            "format": "link"
+          },
+          "chargedMinutes": {
+            "label": "Minutes",
+            "format": "number"
+          },
+          "warning": {
+            "label": "Warning",
+            "format": "text"
+          },
+          "error": {
+            "label": "Error",
+            "format": "text"
+          }
+        }
+      }
+    }
+  }
+}
