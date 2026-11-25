@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import type { UpcomingMatch } from "./match.js";
 
 /**
  * "Only new matches" (monitoring) state, persisted between runs in a named
@@ -37,6 +38,84 @@ function stable(v: unknown): string {
 export function stateKey(params: unknown): string {
   const h = createHash("sha256").update(stable(params)).digest("hex");
   return `STATE-${h.slice(0, 16)}`;
+}
+
+/**
+ * Hash of a scheduled match's prices: the average home/away odds plus every
+ * bookmaker's current home/away odds (order-independent). Opening odds are
+ * left out: they never move once set.
+ */
+export function oddsHash(m: UpcomingMatch): string {
+  const books = (m.bookmakers ?? [])
+    .map((b) => [b.name, b.home, b.away] as const)
+    .sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0));
+  return createHash("sha256")
+    .update(stable({ h: m.oddsHome, a: m.oddsAway, b: books }))
+    .digest("hex")
+    .slice(0, 16);
+}
+
+export interface OddsState {
+  version: 1;
+  /** matchId -> [odds hash, scheduled date] */
+  odds: Record<string, [string, string]>;
+}
+
+/** Keep upcoming-match hashes this many days older than the newest date. */
+export const ODDS_KEEP_DAYS = 30;
+
+/**
+ * Upcoming-mode onlyNew state: the last emitted odds hash per match, so a
+ * scheduled run re-emits a match only when its prices change.
+ */
+export class OddsSeen {
+  private readonly odds: Record<string, [string, string]> = {};
+
+  constructor(raw?: unknown) {
+    const o = (raw as OddsState | null)?.odds;
+    if (o && typeof o === "object") {
+      for (const [id, v] of Object.entries(o)) {
+        if (
+          Array.isArray(v) &&
+          typeof v[0] === "string" &&
+          typeof v[1] === "string"
+        )
+          this.odds[id] = [v[0], v[1]];
+      }
+    }
+  }
+
+  get size(): number {
+    return Object.keys(this.odds).length;
+  }
+
+  /** True when the match was emitted before with exactly these odds. */
+  unchanged(id: string, hash: string): boolean {
+    return this.odds[id]?.[0] === hash;
+  }
+
+  /** Record a match that was emitted (and charged) with these odds. */
+  add(id: string, hash: string, date: string): void {
+    this.odds[id] = [hash, date];
+  }
+
+  toJSON(): OddsState {
+    const entries = Object.entries(this.odds).sort((a, b) =>
+      a[1][1] < b[1][1] ? 1 : a[1][1] > b[1][1] ? -1 : 0,
+    );
+    const newest = entries[0]?.[1][1];
+    const cutoff = newest
+      ? new Date(Date.parse(`${newest}T00:00:00Z`) - ODDS_KEEP_DAYS * DAY_MS)
+          .toISOString()
+          .slice(0, 10)
+      : "";
+    return {
+      version: 1,
+      odds: Object.fromEntries(
+        entries.filter(([, v]) => v[1] >= cutoff).slice(0, MAX_SEEN),
+      ),
+    };
+  }
 }
 
 export class Seen {

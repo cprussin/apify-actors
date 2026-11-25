@@ -42,7 +42,7 @@
       "tour": {
         "type": ["string", "null"],
         "title": "Tour",
-        "description": "Tour, e.g. ATP, WTA, CHALLENGER, ITF_MEN.",
+        "description": "Tour, e.g. ATP, WTA, CHALLENGER, ITF_MEN, ATP_DOUBLES.",
         "example": "ATP"
       },
       "surface": {
@@ -60,7 +60,7 @@
       "player1": {
         "type": ["object", "null"],
         "title": "Player 1",
-        "description": "First-listed player: name, slug, country, seed, rank.",
+        "description": "First-listed player: name, slug, country, seed, rank. Doubles results: the team as listed; upcoming doubles: null (see team1).",
         "example": {
           "name": "Hurkacz Hubert",
           "slug": "hurkacz",
@@ -136,19 +136,124 @@
       "status": {
         "type": ["string", "null"],
         "title": "Status",
-        "description": "completed, retired or walkover.",
+        "description": "Results: completed, retired or walkover. Upcoming: scheduled.",
         "example": "completed"
+      },
+      "state": {
+        "type": ["string", "null"],
+        "title": "State",
+        "description": "finished (results mode) or scheduled (upcoming mode).",
+        "example": "finished"
+      },
+      "team1": {
+        "type": ["array", "null"],
+        "title": "Team 1",
+        "description": "Doubles only: the two players of side 1 (name, slug, rank); null for singles. In results, player1 then holds the team as listed.",
+        "example": [
+          {
+            "name": "Falck R.",
+            "slug": "falck",
+            "country": null,
+            "seed": null,
+            "rank": null
+          },
+          {
+            "name": "Suarez B.",
+            "slug": "suarez-e2086",
+            "country": null,
+            "seed": null,
+            "rank": null
+          }
+        ]
+      },
+      "team2": {
+        "type": ["array", "null"],
+        "title": "Team 2",
+        "description": "Doubles only: the two players of side 2; null for singles.",
+        "example": [
+          {
+            "name": "Santillan A.",
+            "slug": "santillan-29bed",
+            "country": null,
+            "seed": null,
+            "rank": null
+          },
+          {
+            "name": "Zheng B.",
+            "slug": "zheng-642ed",
+            "country": null,
+            "seed": null,
+            "rank": null
+          }
+        ]
+      },
+      "scheduledDate": {
+        "type": ["string", "null"],
+        "title": "Scheduled date",
+        "description": "Upcoming mode: match day (YYYY-MM-DD, TennisExplorer's Central European day).",
+        "example": "2026-11-26"
+      },
+      "startTime": {
+        "type": ["string", "null"],
+        "title": "Start time",
+        "description": "Upcoming mode: start time as shown (HH:MM in timeZone); null while not set.",
+        "example": "14:00"
+      },
+      "timeZone": {
+        "type": ["string", "null"],
+        "title": "Time zone",
+        "description": "Upcoming mode: time zone of scheduledDate and startTime as shown by TennisExplorer (GMT+1 in winter, GMT+2 in summer).",
+        "example": "GMT+1"
+      },
+      "seed1": {
+        "type": ["string", "null"],
+        "title": "Seed 1",
+        "description": "Upcoming mode: seed or entry label of side 1 (5, Q, WC, LL...).",
+        "example": null
+      },
+      "seed2": {
+        "type": ["string", "null"],
+        "title": "Seed 2",
+        "description": "Upcoming mode: seed or entry label of side 2.",
+        "example": "6"
+      },
+      "bookmakers": {
+        "type": ["array", "null"],
+        "title": "Bookmakers",
+        "description": "Upcoming mode with includeBookmakerOdds: per-bookmaker pre-match odds: name, home, away (current), openingHome, openingAway.",
+        "example": [
+          {
+            "name": "bet365",
+            "home": 3.2,
+            "away": 1.33,
+            "openingHome": 3,
+            "openingAway": 1.36
+          },
+          {
+            "name": "Pinnacle",
+            "home": 3.24,
+            "away": 1.37,
+            "openingHome": 3.1,
+            "openingAway": 1.39
+          }
+        ]
+      },
+      "sourceUrl": {
+        "type": ["string", "null"],
+        "title": "Source URL",
+        "description": "Upcoming mode: match page on TennisExplorer.",
+        "example": "https://www.tennisexplorer.com/match-detail/?id=3388457"
       },
       "oddsHome": {
         "type": ["number", "null"],
         "title": "Odds P1",
-        "description": "Closing decimal odds for player1 (TennisExplorer average).",
+        "description": "Decimal odds for player1 / side 1 (TennisExplorer average): closing odds in results, current pre-match odds in upcoming mode.",
         "example": 1.61
       },
       "oddsAway": {
         "type": ["number", "null"],
         "title": "Odds P2",
-        "description": "Closing decimal odds for player2 (TennisExplorer average).",
+        "description": "Decimal odds for player2 / side 2 (TennisExplorer average): closing odds in results, current pre-match odds in upcoming mode.",
         "example": 2.29
       },
       "bookmakerOdds": {
@@ -273,6 +378,104 @@
             "format": "text"
           },
           "url": {
+            "label": "URL",
+            "format": "link"
+          }
+        }
+      }
+    },
+    "upcoming": {
+      "title": "Upcoming matches",
+      "transformation": {
+        "fields": [
+          "scheduledDate",
+          "startTime",
+          "timeZone",
+          "tour",
+          "tournament",
+          "surface",
+          "round",
+          "player1.name",
+          "player2.name",
+          "team1",
+          "team2",
+          "seed1",
+          "seed2",
+          "oddsHome",
+          "oddsAway",
+          "matchId",
+          "sourceUrl"
+        ],
+        "flatten": ["player1", "player2"]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "scheduledDate": {
+            "label": "Date",
+            "format": "date"
+          },
+          "startTime": {
+            "label": "Time",
+            "format": "text"
+          },
+          "timeZone": {
+            "label": "Time zone",
+            "format": "text"
+          },
+          "tour": {
+            "label": "Tour",
+            "format": "text"
+          },
+          "tournament": {
+            "label": "Tournament",
+            "format": "text"
+          },
+          "surface": {
+            "label": "Surface",
+            "format": "text"
+          },
+          "round": {
+            "label": "Round",
+            "format": "text"
+          },
+          "player1.name": {
+            "label": "Player 1",
+            "format": "text"
+          },
+          "player2.name": {
+            "label": "Player 2",
+            "format": "text"
+          },
+          "team1": {
+            "label": "Team 1",
+            "format": "array"
+          },
+          "team2": {
+            "label": "Team 2",
+            "format": "array"
+          },
+          "seed1": {
+            "label": "Seed 1",
+            "format": "text"
+          },
+          "seed2": {
+            "label": "Seed 2",
+            "format": "text"
+          },
+          "oddsHome": {
+            "label": "Odds 1",
+            "format": "number"
+          },
+          "oddsAway": {
+            "label": "Odds 2",
+            "format": "number"
+          },
+          "matchId": {
+            "label": "Match ID",
+            "format": "text"
+          },
+          "sourceUrl": {
             "label": "URL",
             "format": "link"
           }

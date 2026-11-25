@@ -4,12 +4,14 @@ import { classifyTour, summarize } from "../src/match.js";
 import {
   LayoutError,
   applyDetail,
+  applyUpcomingDetail,
   normalizeRound,
   parseMatchDetail,
   parsePlayerPage,
   parseResultsPage,
   parseScoreHtml,
   parseTournamentPage,
+  parseUpcomingPage,
 } from "../src/parse.js";
 
 const fx = (name: string) =>
@@ -110,12 +112,268 @@ describe("parseResultsPage", () => {
   });
 });
 
+describe("parseResultsPage (doubles)", () => {
+  const page = parseResultsPage(
+    fx("results-atp-double-2026-11-24.html"),
+    "2026-11-24",
+    "men",
+    "doubles",
+  );
+
+  it("parses teams, scores and odds", () => {
+    expect(page.matches.length).toBe(3);
+    expect(page.matches.every((m) => m.tour === "ATP_DOUBLES")).toBe(true);
+    const m = page.matches.find((x) => x.matchId === "3386434")!;
+    expect(m).toMatchObject({
+      tournament: "Playford 2 challenger",
+      player1: { name: "Falck R. / Suarez B.", slug: null },
+      player2: { name: "Santillan A. / Zheng B." },
+      team1: [
+        { name: "Falck R.", slug: "falck" },
+        { name: "Suarez B.", slug: "suarez-e2086" },
+      ],
+      team2: [
+        { name: "Santillan A.", slug: "santillan-29bed" },
+        { name: "Zheng B.", slug: "zheng-642ed" },
+      ],
+      winner: "player1",
+      winnerName: "Falck R. / Suarez B.",
+      score: "2-6 6-4 10-6",
+      status: "completed",
+      state: "finished",
+      oddsHome: 1.96,
+      oddsAway: 1.7,
+    });
+  });
+
+  it("singles rows keep team1/team2 null", () => {
+    const s = parseResultsPage(
+      fx("results-atp-2026-09-28.html"),
+      "2026-09-28",
+      "men",
+    );
+    expect(s.matches[0]).toMatchObject({
+      team1: null,
+      team2: null,
+      state: "finished",
+    });
+  });
+});
+
+describe("parseUpcomingPage", () => {
+  const page = parseUpcomingPage(
+    fx("matches-atp-2026-11-26.html"),
+    "2026-11-26",
+    "men",
+  );
+
+  it("lists scheduled matches with pre-match odds and start times", () => {
+    expect(page).toMatchObject({ started: 0, noMatches: false });
+    expect(page.matches.length).toBe(28);
+    expect(page.matches[0]).toEqual({
+      matchId: "3388457",
+      scheduledDate: "2026-11-26",
+      startTime: "14:00",
+      timeZone: "GMT+1",
+      tournament: "Florianopolis challenger",
+      tournamentUrl:
+        "https://www.tennisexplorer.com/florianopolis-challenger/2026/atp-men/",
+      tournamentCountry: "BR",
+      tour: "CHALLENGER",
+      surface: null,
+      round: null,
+      status: "scheduled",
+      state: "scheduled",
+      player1: {
+        name: "Nijboer R.",
+        slug: "nijboer",
+        country: null,
+        seed: null,
+        rank: null,
+      },
+      player2: {
+        name: "Roncadelli F.",
+        slug: "roncadelli",
+        country: null,
+        seed: "6",
+        rank: null,
+      },
+      team1: null,
+      team2: null,
+      seed1: null,
+      seed2: "6",
+      oddsHome: 3.09,
+      oddsAway: 1.32,
+      sourceUrl: "https://www.tennisexplorer.com/match-detail/?id=3388457",
+    });
+  });
+
+  it("handles unset times, missing odds and Futures without a page", () => {
+    const tbd = page.matches.find((m) => m.matchId === "3388915")!;
+    expect(tbd).toMatchObject({
+      startTime: null,
+      tour: "ITF_MEN",
+      tournamentUrl: null,
+      oddsHome: null,
+      oddsAway: null,
+    });
+    expect(page.matches.filter((m) => m.oddsHome !== null).length).toBe(11);
+  });
+
+  it("today: skips live/finished matches and yesterday's box", () => {
+    const t = parseUpcomingPage(
+      fx("matches-atp-2026-11-25-today.html"),
+      "2026-11-25",
+      "men",
+    );
+    expect(t.started).toBe(4);
+    expect(t.matches.map((m) => m.matchId)).toEqual([
+      "3386144",
+      "3386146",
+      "3386142",
+      "3388196",
+      "3388198",
+      "3386150",
+    ]);
+    expect(
+      t.matches.every((m) => m.tournament === "Florianopolis challenger"),
+    ).toBe(true);
+  });
+
+  it("parses doubles teams and team seeds", () => {
+    const d = parseUpcomingPage(
+      fx("matches-atp-double-2026-11-26.html"),
+      "2026-11-26",
+      "men",
+      "doubles",
+    );
+    expect(d.matches.length).toBe(4);
+    expect(d.matches[0]).toMatchObject({
+      matchId: "3388857",
+      tour: "ATP_DOUBLES",
+      player1: null,
+      player2: null,
+      team1: [
+        { name: "Delaney J.", slug: "delaney" },
+        { name: "Delaney J.", slug: "delaney-da784" },
+      ],
+      team2: [
+        { name: "Falck R.", slug: "falck" },
+        { name: "Suarez B.", slug: "suarez-e2086" },
+      ],
+      seed1: "3",
+      seed2: null,
+      oddsHome: 1.86,
+      oddsAway: 1.65,
+    });
+  });
+
+  it("empty day and unrelated pages", () => {
+    expect(
+      parseUpcomingPage(fx("results-empty.html"), "2026-12-25", "men"),
+    ).toEqual({ matches: [], started: 0, noMatches: true });
+    expect(() =>
+      parseUpcomingPage("<html>blocked</html>", "2026-11-26", "men"),
+    ).toThrow(LayoutError);
+  });
+});
+
+describe("upcoming match detail", () => {
+  it("singles: pre-match bookmaker odds, round, surface, ranks", () => {
+    const m = parseUpcomingPage(
+      fx("matches-atp-2026-11-26.html"),
+      "2026-11-26",
+      "men",
+    ).matches[0]!;
+    const d = parseMatchDetail(fx("match-detail-3388457.html"));
+    expect(d.teams).toBeNull();
+    const a = applyUpcomingDetail(m, d, true);
+    expect(a).toMatchObject({
+      round: "R16",
+      surface: "clay",
+      player1: { name: "Nijboer Ryan", rank: 386 },
+      player2: { name: "Roncadelli Franco", rank: 210, seed: "6" },
+    });
+    expect(a.bookmakers!.length).toBe(d.bookmakerOdds.length);
+    expect(a.bookmakers!.length).toBeGreaterThanOrEqual(10);
+    for (const b of a.bookmakers!) {
+      expect(b.home).toBeGreaterThan(1);
+      expect(b.openingHome).toBeGreaterThan(1);
+    }
+    // Reversed listing: odds follow the players.
+    const r = applyUpcomingDetail(
+      { ...m, player1: m.player2, player2: m.player1 },
+      d,
+      true,
+    );
+    expect(r.player1!.name).toBe("Roncadelli Franco");
+    expect(r.bookmakers![0]!.home).toBe(a.bookmakers![0]!.away);
+    expect(r.bookmakers![0]!.openingAway).toBe(a.bookmakers![0]!.openingHome);
+  });
+
+  it("doubles: both teams with full names and doubles ranks", () => {
+    const d = parseMatchDetail(fx("match-detail-3388857.html"));
+    expect(d).toMatchObject({ round: "QF", surface: "hard", time: "03:00" });
+    expect(d.teams![0].map((p) => p.slug)).toEqual([
+      "delaney",
+      "delaney-da784",
+    ]);
+    expect(d.teams![1].map((p) => p.rank)).toEqual([335, 231]);
+    const m = parseUpcomingPage(
+      fx("matches-atp-double-2026-11-26.html"),
+      "2026-11-26",
+      "men",
+      "doubles",
+    ).matches[0]!;
+    const a = applyUpcomingDetail(m, d, true);
+    expect(a.team2).toEqual([
+      {
+        name: "Falck Reece",
+        slug: "falck",
+        country: null,
+        seed: null,
+        rank: 335,
+      },
+      {
+        name: "Suarez Billy",
+        slug: "suarez-e2086",
+        country: null,
+        seed: null,
+        rank: 231,
+      },
+    ]);
+    expect(a.bookmakers![0]).toEqual({
+      name: "bet-at-home",
+      home: 1.95,
+      away: 1.75,
+      openingHome: 1.9,
+      openingAway: 1.8,
+    });
+    const swapped = applyUpcomingDetail(
+      { ...m, team1: m.team2, team2: m.team1 },
+      d,
+      true,
+    );
+    expect(swapped.team1![0]!.name).toBe("Falck Reece");
+    expect(swapped.bookmakers![0]!.home).toBe(1.75);
+  });
+});
+
 describe("parseTournamentPage", () => {
   it("reads surface and rounds by match ID", () => {
     const t = parseTournamentPage(fx("tournament-porto-challenger-2026.html"));
     expect(t.surface).toBe("hard");
     expect(t.rounds["3333630"]).toBe("1R");
     expect(Object.keys(t.rounds).length).toBeGreaterThanOrEqual(10);
+  });
+
+  it("reads rounds of scheduled matches", () => {
+    const t = parseTournamentPage(
+      fx("tournament-florianopolis-challenger-2026.html"),
+    );
+    expect(t.surface).toBe("clay");
+    expect(t.rounds["3388457"]).toBe("R16");
+    expect(t.rounds["3388194"]).toBe("1R");
   });
 });
 

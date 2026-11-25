@@ -34,8 +34,9 @@ export interface HttpOptions {
 
 const RETRYABLE = new Set([403, 408, 425, 429, 500, 502, 503, 504]);
 
+/** Honest, identifiable User-Agent (never a browser UA). */
 export const USER_AGENT =
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36";
+  "tennis-matches-odds/1.0 (+https://apify.com/cprussin/tennis-matches-odds)";
 
 /**
  * Sequential, polite fetch: one request at a time, ~1 req/s with jitter,

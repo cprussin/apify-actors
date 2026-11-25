@@ -1,31 +1,43 @@
-import { datesDesc, type NormalizedInput } from "./input.js";
+import { datesAsc, datesDesc, type NormalizedInput } from "./input.js";
 import {
   BASE_URL,
   genderOfTour,
+  isDoublesTour,
+  listTypeOf,
+  listTypeOfTour,
   matchUrl,
   orderFields,
+  orderUpcomingFields,
+  type Discipline,
   type Gender,
+  type Item,
+  type ListType,
   type Match,
+  type UpcomingMatch,
 } from "./match.js";
 import {
   applyDetail,
+  applyUpcomingDetail,
   parseMatchDetail,
   parsePlayerPage,
   parseResultsPage,
   parseTournamentPage,
+  parseUpcomingPage,
   type TournamentInfo,
 } from "./parse.js";
-import type { Seen } from "./state.js";
+import { oddsHash, type OddsSeen, type Seen } from "./state.js";
 
 export interface RunDeps {
   /** GET a TennisExplorer page; null = 404. Throws on persistent failure. */
   fetchPage: (url: string) => Promise<string | null>;
-  /** Push + charge one match. Return `false` to stop (e.g. budget exhausted). */
-  emit: (m: Match) => Promise<boolean>;
+  /** Push + charge one item. Return `false` to stop (e.g. budget exhausted). */
+  emit: (m: Item) => Promise<boolean>;
   log?: (msg: string) => void;
   warn?: (msg: string) => void;
-  /** onlyNew mode: skip previously returned matches and record new ones. */
+  /** Results-mode onlyNew: skip previously returned matches, record new ones. */
   seen?: Seen;
+  /** Upcoming-mode onlyNew: skip matches whose odds did not change. */
+  oddsSeen?: OddsSeen;
   /** Called after each page of matches, e.g. to persist onlyNew state. */
   afterBatch?: () => Promise<void>;
 }
@@ -35,24 +47,61 @@ export interface RunStats {
   withBookmakerOdds: number;
   pagesOk: number;
   pagesFailed: number;
-  /** Results pages that said "no matches" for that day. */
+  /** List pages that said "no matches" for that day. */
   emptyDays: string[];
   skippedTour: number;
+  /** onlyNew: already returned (results) or odds unchanged (upcoming). */
   skippedSeen: number;
+  /** Upcoming mode: listed matches that are already live or finished. */
+  skippedStarted: number;
   playersNotFound: string[];
   errors: string[];
   stopReason: "done" | "maxMatches" | "budget";
 }
 
-const TYPE: Record<Gender, string> = { men: "atp-single", women: "wta-single" };
-
-export const resultsUrl = (gender: Gender, date: string): string => {
+const dateParams = (date: string): string => {
   const [y, m, d] = date.split("-");
-  return `${BASE_URL}/results/?type=${TYPE[gender]}&year=${y}&month=${m}&day=${d}`;
+  return `year=${y}&month=${m}&day=${d}`;
 };
+
+export const resultsUrl = (
+  gender: Gender,
+  date: string,
+  discipline: Discipline = "singles",
+): string =>
+  `${BASE_URL}/results/?type=${listTypeOf(gender, discipline)}&${dateParams(date)}`;
+
+export const upcomingUrl = (
+  gender: Gender,
+  date: string,
+  discipline: Discipline = "singles",
+): string =>
+  `${BASE_URL}/matches/?type=${listTypeOf(gender, discipline)}&${dateParams(date)}`;
 
 export const playerUrl = (slug: string, year: number): string =>
   `${BASE_URL}/player/${encodeURIComponent(slug)}/?annual=${year}`;
+
+/** The TennisExplorer lists to read for these tours (singles first). */
+export function listsFor(
+  tours: NormalizedInput["tours"],
+): { gender: Gender; discipline: Discipline; type: ListType }[] {
+  const seen = new Set<ListType>();
+  const out: { gender: Gender; discipline: Discipline; type: ListType }[] = [];
+  const sorted = [...tours].sort(
+    (a, b) => Number(isDoublesTour(a)) - Number(isDoublesTour(b)),
+  );
+  for (const t of sorted) {
+    const type = listTypeOfTour(t);
+    if (seen.has(type)) continue;
+    seen.add(type);
+    out.push({
+      gender: genderOfTour(t),
+      discipline: isDoublesTour(t) ? "doubles" : "singles",
+      type,
+    });
+  }
+  return out;
+}
 
 class Stop extends Error {
   constructor(readonly reason: RunStats["stopReason"]) {
@@ -74,6 +123,7 @@ export async function runMatches(
     emptyDays: [],
     skippedTour: 0,
     skippedSeen: 0,
+    skippedStarted: 0,
     playersNotFound: [],
     errors: [],
     stopReason: "done",
@@ -105,6 +155,39 @@ export async function runMatches(
     return info;
   }
 
+  /** Round and surface from the tournament page (and its qualifying draw). */
+  async function roundAndSurface<
+    T extends {
+      matchId: string;
+      round: string | null;
+      surface: string | null;
+      tournamentUrl: string | null;
+    },
+  >(m: T): Promise<T> {
+    if (
+      !input.includeRoundAndSurface ||
+      (m.round !== null && m.surface !== null) ||
+      !m.tournamentUrl
+    )
+      return m;
+    const info = await tournamentInfo(m.tournamentUrl);
+    let round = m.round ?? info?.rounds[m.matchId] ?? null;
+    // Qualifying matches are listed on a separate page.
+    if (round === null && info?.hasQualification) {
+      const q = await tournamentInfo(
+        `${m.tournamentUrl}${m.tournamentUrl.includes("?") ? "&" : "?"}phase=qualification`,
+      );
+      round = q?.rounds[m.matchId] ?? null;
+    }
+    return { ...m, surface: m.surface ?? info?.surface ?? null, round };
+  }
+
+  function record(id: string, bookmakers: number): void {
+    emitted.add(id);
+    stats.emitted += 1;
+    if (bookmakers) stats.withBookmakerOdds += 1;
+  }
+
   /** Enrich, emit and record a batch of candidate matches. */
   async function emitAll(candidates: Match[]): Promise<void> {
     for (const c of candidates) {
@@ -130,34 +213,84 @@ export async function runMatches(
           m = { ...m, bookmakerOdds: [] };
         }
       }
-      if (
-        input.includeRoundAndSurface &&
-        (m.round === null || m.surface === null) &&
-        m.tournamentUrl
-      ) {
-        const info = await tournamentInfo(m.tournamentUrl);
-        let round = m.round ?? info?.rounds[m.matchId] ?? null;
-        // Qualifying matches are listed on a separate page.
-        if (round === null && info?.hasQualification) {
-          const q = await tournamentInfo(
-            `${m.tournamentUrl}${m.tournamentUrl.includes("?") ? "&" : "?"}phase=qualification`,
-          );
-          round = q?.rounds[m.matchId] ?? null;
-        }
-        m = { ...m, surface: m.surface ?? info?.surface ?? null, round };
-      }
+      m = await roundAndSurface(m);
       const more = await deps.emit(orderFields(m));
-      emitted.add(m.matchId);
-      stats.emitted += 1;
-      if (m.bookmakerOdds?.length) stats.withBookmakerOdds += 1;
+      record(m.matchId, m.bookmakerOdds?.length ?? 0);
       deps.seen?.add(m.matchId, m.date);
       if (!more) throw new Stop("budget");
       if (stats.emitted >= input.maxMatches) throw new Stop("maxMatches");
     }
   }
 
+  /** Upcoming mode: enrich, compare odds (onlyNew), emit and record. */
+  async function emitUpcoming(candidates: UpcomingMatch[]): Promise<void> {
+    for (const c of candidates) {
+      if (emitted.has(c.matchId)) continue;
+      if (!tours.has(c.tour)) {
+        stats.skippedTour += 1;
+        continue;
+      }
+      let m = c;
+      if (input.includeBookmakerOdds) {
+        try {
+          const html = await deps.fetchPage(matchUrl(m.matchId));
+          if (html) {
+            m = applyUpcomingDetail(m, parseMatchDetail(html), true);
+            stats.pagesOk += 1;
+          } else m = { ...m, bookmakers: [] };
+        } catch (e) {
+          fail(`Match detail ${m.matchId} (bookmaker odds left empty)`, e);
+          m = { ...m, bookmakers: [] };
+        }
+      }
+      const hash = oddsHash(m);
+      if (deps.oddsSeen?.unchanged(m.matchId, hash)) {
+        emitted.add(m.matchId);
+        stats.skippedSeen += 1;
+        continue;
+      }
+      m = await roundAndSurface(m);
+      const more = await deps.emit(orderUpcomingFields(m));
+      record(m.matchId, m.bookmakers?.length ?? 0);
+      deps.oddsSeen?.add(m.matchId, hash, m.scheduledDate);
+      if (!more) throw new Stop("budget");
+      if (stats.emitted >= input.maxMatches) throw new Stop("maxMatches");
+    }
+  }
+
   try {
-    if (input.playerSlugs.length) {
+    if (input.mode === "upcoming") {
+      const lists = listsFor(input.tours);
+      for (const date of datesAsc(input.startDate, input.endDate)) {
+        for (const l of lists) {
+          const url = upcomingUrl(l.gender, date, l.discipline);
+          let page;
+          try {
+            const html = await deps.fetchPage(url);
+            if (html === null) throw new Error("HTTP 404");
+            page = parseUpcomingPage(html, date, l.gender, l.discipline);
+          } catch (e) {
+            fail(`Matches ${l.type} ${date}`, e);
+            continue;
+          }
+          stats.pagesOk += 1;
+          stats.skippedStarted += page.started;
+          if (page.noMatches) {
+            stats.emptyDays.push(`${date} ${l.type}`);
+            warn(`TennisExplorer lists no ${l.type} matches on ${date}.`);
+          }
+          log(
+            `${date} ${l.type}: ${page.matches.length} scheduled matches listed` +
+              (page.started
+                ? ` (${page.started} live or finished skipped)`
+                : "") +
+              ".",
+          );
+          await emitUpcoming(page.matches);
+          await deps.afterBatch?.();
+        }
+      }
+    } else if (input.playerSlugs.length) {
       const y0 = Number(input.startDate.slice(0, 4));
       const y1 = Number(input.endDate.slice(0, 4));
       for (const slug of input.playerSlugs) {
@@ -193,25 +326,25 @@ export async function runMatches(
         }
       }
     } else {
-      const genders = [...new Set(input.tours.map(genderOfTour))];
+      const lists = listsFor(input.tours);
       for (const date of datesDesc(input.startDate, input.endDate)) {
-        for (const g of genders) {
-          const url = resultsUrl(g, date);
+        for (const l of lists) {
+          const url = resultsUrl(l.gender, date, l.discipline);
           let page;
           try {
             const html = await deps.fetchPage(url);
             if (html === null) throw new Error("HTTP 404");
-            page = parseResultsPage(html, date, g);
+            page = parseResultsPage(html, date, l.gender, l.discipline);
           } catch (e) {
-            fail(`Results ${TYPE[g]} ${date}`, e);
+            fail(`Results ${l.type} ${date}`, e);
             continue;
           }
           stats.pagesOk += 1;
           if (page.noMatches) {
-            stats.emptyDays.push(`${date} ${TYPE[g]}`);
-            warn(`TennisExplorer lists no ${TYPE[g]} matches on ${date}.`);
+            stats.emptyDays.push(`${date} ${l.type}`);
+            warn(`TennisExplorer lists no ${l.type} matches on ${date}.`);
           }
-          log(`${date} ${TYPE[g]}: ${page.matches.length} matches listed.`);
+          log(`${date} ${l.type}: ${page.matches.length} matches listed.`);
           await emitAll(page.matches);
           await deps.afterBatch?.();
         }

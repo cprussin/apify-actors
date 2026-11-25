@@ -7,10 +7,12 @@ import {
   summarize,
   toNumber,
   type BookmakerOdds,
+  type Discipline,
   type Gender,
   type Match,
   type Player,
   type SetScore,
+  type UpcomingMatch,
 } from "./match.js";
 
 /** The page doesn't look like a TennisExplorer page we understand. */
@@ -95,17 +97,143 @@ function playerFrom(td: El): Player {
   };
 }
 
+/**
+ * A doubles cell: `<a href="/doubles-team/krawietz/puetz/" title="Krawietz K.
+ * / Puetz T.">Krawietz K / Puetz T</a> (3)`. Returns the team as one side
+ * (name "Krawietz K. / Puetz T.", team seed) plus its two players.
+ */
+export function teamFrom(td: El): { side: Player; team: Player[] } {
+  const a = td.find("a").first();
+  const seed = /\(([^)]+)\)\s*$/.exec(clean(td.text()));
+  const label = clean(
+    a.attr("title") ||
+      (a.length ? a.text() : td.text().replace(/\([^)]*\)\s*$/, "")),
+  );
+  const m = /\/doubles-team\/([^/?#]+)\/([^/?#]+)/.exec(a.attr("href") ?? "");
+  const slugs = m ? [m[1]!, m[2]!].map((s) => decodeURIComponent(s)) : [];
+  const team = label
+    .split(/\s+\/\s+|\s*\/\s*/)
+    .filter(Boolean)
+    .map((name, i) => ({
+      name,
+      slug: slugs[i] ?? null,
+      country: null,
+      seed: null,
+      rank: null,
+    }));
+  return {
+    side: {
+      name: label,
+      slug: null,
+      country: null,
+      seed: seed?.[1] ?? null,
+      rank: null,
+    },
+    team,
+  };
+}
+
+/** One match of a results or upcoming-matches list (two table rows). */
+interface ListRow {
+  tr: El;
+  trB: El;
+  matchId: string;
+  tournament: string;
+  tournamentUrl: string | null;
+  tournamentCountry: string | null;
+  /** Leading HH:MM of the time cell, if any. */
+  time: string | null;
+  /** Time cell is exactly HH:MM (results pages). */
+  exactTime: boolean;
+  side1: Player;
+  side2: Player;
+  team1: Player[] | null;
+  team2: Player[] | null;
+  oddsHome: number | null;
+  oddsAway: number | null;
+}
+
+function listRows(
+  $: cheerio.CheerioAPI,
+  tables: El,
+  discipline: Discipline,
+): ListRow[] {
+  const out: ListRow[] = [];
+  const seen = new Set<string>();
+  for (const t of tables.toArray()) {
+    let tournament = "";
+    let tournamentUrl: string | null = null;
+    let tournamentCountry: string | null = null;
+    for (const node of $(t).find("tr").toArray()) {
+      const tr = $(node);
+      if (tr.hasClass("head")) {
+        const td = tr.find("td.t-name").first();
+        tournament = clean(td.text());
+        tournamentUrl = absUrl(td.find("a").attr("href"));
+        tournamentCountry = flagCode(td);
+        continue;
+      }
+      const id = tr.attr("id");
+      if (!id || !/^r\d+$/.test(id)) continue;
+      const trB = tr.next(`tr#${id}b`);
+      if (!trB.length) continue;
+      const detail = tr
+        .find('a[href*="match-detail/?id="]')
+        .last()
+        .attr("href");
+      const matchId = /id=(\d+)/.exec(detail ?? "")?.[1];
+      if (!matchId || seen.has(matchId)) continue;
+      seen.add(matchId);
+      const timeText = clean(tr.find("td.time").first().text());
+      const time = /^(\d{1,2}:\d{2})\b/.exec(timeText)?.[1] ?? null;
+      const tdA = tr.find("td.t-name").first();
+      const tdB = trB.find("td.t-name").first();
+      let side1: Player;
+      let side2: Player;
+      let team1: Player[] | null = null;
+      let team2: Player[] | null = null;
+      if (discipline === "doubles") {
+        const a = teamFrom(tdA);
+        const b = teamFrom(tdB);
+        [side1, side2, team1, team2] = [a.side, b.side, a.team, b.team];
+      } else {
+        side1 = playerFrom(tdA);
+        side2 = playerFrom(tdB);
+      }
+      const odds = tr.find("td.course, td.coursew").toArray();
+      out.push({
+        tr,
+        trB,
+        matchId,
+        tournament,
+        tournamentUrl,
+        tournamentCountry,
+        time,
+        exactTime: /^\d{1,2}:\d{2}$/.test(timeText),
+        side1,
+        side2,
+        team1,
+        team2,
+        oddsHome: toNumber(odds[0] ? $(odds[0]).text() : null),
+        oddsAway: toNumber(odds[1] ? $(odds[1]).text() : null),
+      });
+    }
+  }
+  return out;
+}
+
 export interface ResultsPage {
   matches: Match[];
   /** The page says there are no matches on this day. */
   noMatches: boolean;
 }
 
-/** Parse /results/?type=atp-single|wta-single&year=&month=&day= */
+/** Parse /results/?type=atp-single|wta-single|atp-double|wta-double&year=&month=&day= */
 export function parseResultsPage(
   html: string,
   date: string,
   gender: Gender,
+  discipline: Discipline = "singles",
 ): ResultsPage {
   const $ = cheerio.load(html);
   const table = $("li.dNav").closest("ul.tabs").nextAll("table.result").first();
@@ -113,33 +241,9 @@ export function parseResultsPage(
     throw new LayoutError("Results table not found on TennisExplorer page.");
   const noMatches = table.find("td.no-data").length > 0;
   const matches: Match[] = [];
-  const seen = new Set<string>();
-  let tournament = "";
-  let tournamentUrl: string | null = null;
-  let tournamentCountry: string | null = null;
 
-  for (const node of table.find("tr").toArray()) {
-    const tr = $(node);
-    if (tr.hasClass("head")) {
-      const td = tr.find("td.t-name").first();
-      tournament = clean(td.text());
-      tournamentUrl = absUrl(td.find("a").attr("href"));
-      tournamentCountry = flagCode(td);
-      continue;
-    }
-    const id = tr.attr("id");
-    if (!id || !/^r\d+$/.test(id)) continue;
-    const trB = tr.next(`tr#${id}b`);
-    if (!trB.length) continue;
-    const detail = tr.find('a[href*="match-detail/?id="]').last().attr("href");
-    const matchId = /id=(\d+)/.exec(detail ?? "")?.[1];
-    if (!matchId || seen.has(matchId)) continue;
-    seen.add(matchId);
-
-    const timeText = clean(tr.find("td.time").first().text());
-    const time = /^\d{1,2}:\d{2}$/.test(timeText) ? timeText : null;
-    const p1 = playerFrom(tr.find("td.t-name").first());
-    const p2 = playerFrom(trB.find("td.t-name").first());
+  for (const r of listRows($, table, discipline)) {
+    const { tr, trB, side1: p1, side2: p2 } = r;
     const setsP1 = toNumber(tr.find("td.result").first().text());
     const setsP2 = toNumber(trB.find("td.result").first().text());
     const cellsA = tr.find("td.score").toArray();
@@ -151,20 +255,21 @@ export function parseResultsPage(
       if (a.games === null || b.games === null) continue;
       sets.push({ player1: a.games, player2: b.games, tiebreak: a.tb ?? b.tb });
     }
-    const odds = tr.find("td.course, td.coursew").toArray();
     const s = summarize(sets, setsP1, setsP2);
     matches.push({
-      matchId,
+      matchId: r.matchId,
       date,
-      time,
-      tournament,
-      tournamentUrl,
-      tournamentCountry,
-      tour: classifyTour(tournament, gender, tournamentUrl),
+      time: r.exactTime ? r.time : null,
+      tournament: r.tournament,
+      tournamentUrl: r.tournamentUrl,
+      tournamentCountry: r.tournamentCountry,
+      tour: classifyTour(r.tournament, gender, r.tournamentUrl, discipline),
       surface: null,
       round: null,
       player1: p1,
       player2: p2,
+      team1: r.team1,
+      team2: r.team2,
       winner: s.winner,
       winnerName:
         s.winner === "player1"
@@ -177,9 +282,10 @@ export function parseResultsPage(
       setScores: sets,
       score: s.score,
       status: s.status,
-      oddsHome: toNumber(odds[0] ? $(odds[0]).text() : null),
-      oddsAway: toNumber(odds[1] ? $(odds[1]).text() : null),
-      url: matchUrl(matchId),
+      state: "finished",
+      oddsHome: r.oddsHome,
+      oddsAway: r.oddsAway,
+      url: matchUrl(r.matchId),
     });
   }
   const rows = table.find("tr[id]").length;
@@ -188,6 +294,105 @@ export function parseResultsPage(
       `Could not parse any of ${rows} rows on the results page.`,
     );
   return { matches, noMatches: noMatches || rows === 0 };
+}
+
+export interface UpcomingPage {
+  /** Matches that have not started yet. */
+  matches: UpcomingMatch[];
+  /** Listed matches skipped because they are live or finished. */
+  started: number;
+  /** The page says there are no matches on this day. */
+  noMatches: boolean;
+}
+
+/** Fallback when the page does not show its time zone. */
+export const DEFAULT_TIME_ZONE = "GMT+1";
+
+/** "26. 11. 2026" -> "2026-11-26". */
+function tabDate(s: string): string | null {
+  const m = /(\d{1,2})\.\s*(\d{1,2})\.\s*(\d{4})/.exec(s);
+  return m
+    ? `${m[3]}-${m[2]!.padStart(2, "0")}-${m[1]!.padStart(2, "0")}`
+    : null;
+}
+
+/**
+ * Parse /matches/?type=atp-single|wta-single|atp-double|wta-double&year=&month=&day=
+ * (same table layout as /results/, odds cells, no score yet). Today's page can
+ * also list yesterday's late matches in a separate box and live or finished
+ * matches; only matches of `date` that have not started are returned.
+ */
+export function parseUpcomingPage(
+  html: string,
+  date: string,
+  gender: Gender,
+  discipline: Discipline = "singles",
+): UpcomingPage {
+  const $ = cheerio.load(html);
+  const boxes = $("li.dNav")
+    .closest("ul.tabs")
+    .toArray()
+    .map((ul) => ({
+      date: tabDate(clean($(ul).find("li.set .tab, li.set").first().text())),
+      table: $(ul).nextAll("table.result").first(),
+    }))
+    .filter((b) => b.table.length);
+  if (!boxes.length)
+    throw new LayoutError("Matches table not found on TennisExplorer page.");
+  const dated = boxes.filter((b) => b.date === date);
+  // Layout without readable tab dates: fall back to every box.
+  const use = dated.length || boxes.some((b) => b.date) ? dated : boxes;
+  const tables = $(use.map((b) => b.table.get(0)!));
+  const timeZone =
+    clean($("span.timezone").first().text()) || DEFAULT_TIME_ZONE;
+  const matches: UpcomingMatch[] = [];
+  let started = 0;
+  const rows = listRows($, tables, discipline);
+  for (const r of rows) {
+    const scored = [r.tr, r.trB].some(
+      (row) =>
+        toNumber(clean(row.find("td.result").first().text())) !== null ||
+        row
+          .find("td.score")
+          .toArray()
+          .some((c) => scoreCell($(c)).games !== null),
+    );
+    if (scored) {
+      started += 1;
+      continue;
+    }
+    const doubles = discipline === "doubles";
+    matches.push({
+      matchId: r.matchId,
+      scheduledDate: date,
+      startTime: r.time,
+      timeZone,
+      tournament: r.tournament,
+      tournamentUrl: r.tournamentUrl,
+      tournamentCountry: r.tournamentCountry,
+      tour: classifyTour(r.tournament, gender, r.tournamentUrl, discipline),
+      surface: null,
+      round: null,
+      status: "scheduled",
+      state: "scheduled",
+      player1: doubles ? null : r.side1,
+      player2: doubles ? null : r.side2,
+      team1: r.team1,
+      team2: r.team2,
+      seed1: r.side1.seed,
+      seed2: r.side2.seed,
+      oddsHome: r.oddsHome,
+      oddsAway: r.oddsAway,
+      sourceUrl: matchUrl(r.matchId),
+    });
+  }
+  const listed = tables.find("tr[id]").length;
+  if (!rows.length && listed > 0)
+    throw new LayoutError(
+      `Could not parse any of ${listed} rows on the matches page.`,
+    );
+  const noData = tables.find("td.no-data").length > 0;
+  return { matches, started, noMatches: noData || listed === 0 };
 }
 
 export interface TournamentInfo {
@@ -222,9 +427,27 @@ export function parseTournamentPage(html: string): TournamentInfo {
     const round = normalizeRound(td.text() || td.attr("title"));
     if (id && round) rounds[id] = round;
   });
+  // Scheduled matches: rows without an id, round in td.round.
+  center.find("table.result tr").each((_, node) => {
+    const tr = $(node);
+    if (tr.attr("id")) return;
+    const href = tr.find('a[href*="match-detail/?id="]').first().attr("href");
+    const id = /id=(\d+)/.exec(href ?? "")?.[1];
+    const td = tr.children("td.round").first();
+    const round = td.length
+      ? normalizeRound(td.text() || td.attr("title"))
+      : null;
+    if (id && round && !rounds[id]) rounds[id] = round;
+  });
   const hasQualification =
     center.find('a[href*="phase=qualification"]').length > 0;
   return { surface, rounds, hasQualification };
+}
+
+export interface DetailPlayer {
+  slug: string | null;
+  fullName: string;
+  rank: number | null;
 }
 
 export interface MatchDetail {
@@ -232,8 +455,10 @@ export interface MatchDetail {
   time: string | null;
   round: string | null;
   surface: string | null;
-  /** Players in the order shown on the detail page. */
-  players: { slug: string | null; fullName: string; rank: number | null }[];
+  /** Players in the order shown on the detail page (doubles: first of each team). */
+  players: DetailPlayer[];
+  /** Doubles only: [side 1 players, side 2 players]. */
+  teams: [DetailPlayer[], DetailPlayer[]] | null;
   bookmakerOdds: BookmakerOdds[];
 }
 
@@ -269,22 +494,39 @@ export function parseMatchDetail(html: string): MatchDetail {
     const r = surface ? rest.slice(0, -1) : rest;
     round = normalizeRound(r.join(", ")) ?? null;
   }
-  const ths = header.find("thead th.plName").toArray();
-  const rankRow = header
-    .find("tbody tr")
-    .filter((_, tr) => /singles ranking/i.test($(tr).find("th").text()));
-  const rank = (sel: string) => {
-    const n = /^(\d+)\.?$/.exec(clean(rankRow.find(sel).first().text()));
-    return n ? Number(n[1]) : null;
-  };
-  const players = ths.map((th, i) => {
-    const a = $(th).find("a").first();
-    return {
-      slug: slugOf(a.attr("href")),
-      fullName: clean(a.text() || $(th).text()),
-      rank: rank(i === 0 ? "td.tr" : "td.tl"),
+  // One table per pair of opponents: singles has one, doubles two.
+  const pairs = header.toArray().map((table) => {
+    const t = $(table);
+    const rows = t.find("tbody tr");
+    const byLabel = (re: RegExp) =>
+      rows.filter((_, tr) => re.test($(tr).find("th").text()));
+    let rankRow = byLabel(/singles ranking/i);
+    if (!rankRow.length) rankRow = byLabel(/doubles ranking/i);
+    const rank = (sel: string) => {
+      const n = /^(\d+)\.?$/.exec(clean(rankRow.find(sel).first().text()));
+      return n ? Number(n[1]) : null;
     };
+    return t
+      .find("thead th.plName")
+      .toArray()
+      .slice(0, 2)
+      .map((th, i): DetailPlayer => {
+        const a = $(th).find("a").first();
+        return {
+          slug: slugOf(a.attr("href")),
+          fullName: clean(a.text() || $(th).text()),
+          rank: rank(i === 0 ? "td.tr" : "td.tl"),
+        };
+      });
   });
+  const players = pairs[0] ?? [];
+  const teams: MatchDetail["teams"] =
+    pairs.length >= 2
+      ? [
+          pairs.map((p) => p[0]).filter((p): p is DetailPlayer => !!p),
+          pairs.map((p) => p[1]).filter((p): p is DetailPlayer => !!p),
+        ]
+      : null;
   const bookmakerOdds: BookmakerOdds[] = [];
   $("#oddsMenu-1-data table.result")
     .first()
@@ -313,26 +555,66 @@ export function parseMatchDetail(html: string): MatchDetail {
         openingOddsAway: a.open,
       });
     });
-  return { date, time, round, surface, players, bookmakerOdds };
+  return { date, time, round, surface, players, teams, bookmakerOdds };
 }
+
+/**
+ * Which detail-page side belongs to our side 1 / side 2. `swapped` when the
+ * detail page lists the sides the other way round (matched by player slugs).
+ */
+function detailSides(
+  d: MatchDetail,
+  slugs1: (string | null)[],
+  slugs2: (string | null)[],
+): { swapped: boolean; side1: DetailPlayer[]; side2: DetailPlayer[] } {
+  const [a, b] = d.teams ?? [
+    d.players[0] ? [d.players[0]] : [],
+    d.players[1] ? [d.players[1]] : [],
+  ];
+  const all = (ps: DetailPlayer[], slugs: (string | null)[]) =>
+    ps.length > 0 && ps.every((p) => !!p.slug && slugs.includes(p.slug));
+  const swapped = all(a, slugs2) && all(b, slugs1);
+  return swapped
+    ? { swapped, side1: b, side2: a }
+    : { swapped, side1: a, side2: b };
+}
+
+/** Fill full names and ranks of team members (by slug, else by position). */
+function enrichTeam(team: Player[], ps: DetailPlayer[]): Player[] {
+  return team.map((p, i) => {
+    const d = ps.find((x) => !!x.slug && x.slug === p.slug) ?? ps[i];
+    return d ? { ...p, name: d.fullName || p.name, rank: d.rank ?? p.rank } : p;
+  });
+}
+
+const swapOdds = (o: BookmakerOdds): BookmakerOdds => ({
+  bookmaker: o.bookmaker,
+  oddsHome: o.oddsAway,
+  oddsAway: o.oddsHome,
+  openingOddsHome: o.openingOddsAway,
+  openingOddsAway: o.openingOddsHome,
+});
 
 /**
  * Apply a match detail to a match: round, surface, full names, ranks and
  * bookmaker odds (swapped if the detail page lists the players the other way).
+ * Doubles keep the listed team names and enrich `team1`/`team2`.
  */
 export function applyDetail(
   m: Match,
   d: MatchDetail,
   withOdds: boolean,
 ): Match {
-  const [d1, d2] = d.players;
-  const swapped =
-    !!d1?.slug &&
-    !!d2?.slug &&
-    d1.slug === m.player2.slug &&
-    d2.slug === m.player1.slug;
-  const byP1 = swapped ? d2 : d1;
-  const byP2 = swapped ? d1 : d2;
+  const doubles = !!m.team1 && !!m.team2;
+  const { swapped, side1, side2 } = doubles
+    ? detailSides(
+        d,
+        m.team1!.map((p) => p.slug),
+        m.team2!.map((p) => p.slug),
+      )
+    : detailSides(d, [m.player1.slug], [m.player2.slug]);
+  const byP1 = doubles ? undefined : side1[0];
+  const byP2 = doubles ? undefined : side2[0];
   const out: Match = {
     ...m,
     round: m.round ?? d.round,
@@ -348,6 +630,8 @@ export function applyDetail(
       name: byP2?.fullName || m.player2.name,
       rank: byP2?.rank ?? m.player2.rank,
     },
+    team1: m.team1 ? enrichTeam(m.team1, side1) : null,
+    team2: m.team2 ? enrichTeam(m.team2, side2) : null,
   };
   out.winnerName =
     out.winner === "player1"
@@ -356,17 +640,52 @@ export function applyDetail(
         ? out.player2.name
         : null;
   if (withOdds) {
-    out.bookmakerOdds = d.bookmakerOdds.map((o) =>
-      swapped
-        ? {
-            bookmaker: o.bookmaker,
-            oddsHome: o.oddsAway,
-            oddsAway: o.oddsHome,
-            openingOddsHome: o.openingOddsAway,
-            openingOddsAway: o.openingOddsHome,
-          }
-        : o,
-    );
+    out.bookmakerOdds = d.bookmakerOdds.map((o) => (swapped ? swapOdds(o) : o));
+  }
+  return out;
+}
+
+/**
+ * Apply a match detail to an upcoming match: round, surface, full names,
+ * ranks and (withOdds) per-bookmaker pre-match odds, oriented to side 1/2.
+ */
+export function applyUpcomingDetail(
+  m: UpcomingMatch,
+  d: MatchDetail,
+  withOdds: boolean,
+): UpcomingMatch {
+  const doubles = !!m.team1 && !!m.team2;
+  const { swapped, side1, side2 } = doubles
+    ? detailSides(
+        d,
+        m.team1!.map((p) => p.slug),
+        m.team2!.map((p) => p.slug),
+      )
+    : detailSides(d, [m.player1?.slug ?? null], [m.player2?.slug ?? null]);
+  const single = (p: Player | null, x: DetailPlayer | undefined) =>
+    p && x ? { ...p, name: x.fullName || p.name, rank: x.rank ?? p.rank } : p;
+  const out: UpcomingMatch = {
+    ...m,
+    round: m.round ?? d.round,
+    surface: m.surface ?? d.surface,
+    startTime: m.startTime ?? d.time,
+    player1: doubles ? m.player1 : single(m.player1, side1[0]),
+    player2: doubles ? m.player2 : single(m.player2, side2[0]),
+    team1: m.team1 ? enrichTeam(m.team1, side1) : null,
+    team2: m.team2 ? enrichTeam(m.team2, side2) : null,
+  };
+  if (withOdds) {
+    out.bookmakers = d.bookmakerOdds.map((o) => {
+      const x = swapped ? swapOdds(o) : o;
+      // No movement history shown = the price has not moved since opening.
+      return {
+        name: x.bookmaker,
+        home: x.oddsHome,
+        away: x.oddsAway,
+        openingHome: x.openingOddsHome ?? x.oddsHome,
+        openingAway: x.openingOddsAway ?? x.oddsAway,
+      };
+    });
   }
   return out;
 }
@@ -475,6 +794,8 @@ export function parsePlayerPage(
       round: normalizeRound(roundTd.text() || roundTd.attr("title")),
       player1: p1,
       player2: p2,
+      team1: null,
+      team2: null,
       winner,
       winnerName:
         winner === "player1" ? p1.name : winner === "player2" ? p2.name : null,
@@ -487,6 +808,7 @@ export function parsePlayerPage(
       setScores: sets,
       score: s.score,
       status,
+      state: "finished",
       oddsHome: toNumber(odds[0] ? $(odds[0]).text() : null),
       oddsAway: toNumber(odds[1] ? $(odds[1]).text() : null),
       url: matchUrl(matchId),

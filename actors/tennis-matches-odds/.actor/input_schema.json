@@ -1,25 +1,47 @@
 {
-  "title": "Tennis Results & Betting Odds input",
+  "title": "Tennis Results, Fixtures & Betting Odds input",
   "type": "object",
   "schemaVersion": 1,
   "properties": {
+    "mode": {
+      "title": "Mode",
+      "type": "string",
+      "description": "results = finished matches with scores and closing odds (by date range or player). upcoming = scheduled matches (today's not-yet-started ones plus the next daysAhead days) with current pre-match odds.",
+      "editor": "select",
+      "enum": ["results", "upcoming"],
+      "enumTitles": [
+        "Results (finished matches, closing odds)",
+        "Upcoming fixtures (pre-match odds)"
+      ],
+      "default": "results",
+      "sectionCaption": "Mode"
+    },
+    "daysAhead": {
+      "title": "Days ahead (upcoming mode)",
+      "type": "integer",
+      "description": "Upcoming mode only: how many days after today to include (1 = today's remaining matches plus tomorrow's card, 7 = a week). One request per day and tour list.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 7,
+      "default": 1
+    },
     "startDate": {
       "title": "Start date",
       "type": "string",
-      "description": "First day to scrape: YYYY-MM-DD, \"yesterday\", or relative like \"7 days\" (ago). Empty = same as the end date (one day). In player mode, empty = 1 January of the end date's year.",
+      "description": "Results mode: first day to scrape: YYYY-MM-DD, \"yesterday\", or relative like \"7 days\" (ago). Empty = same as the end date (one day). In player mode, empty = 1 January of the end date's year. Ignored in upcoming mode.",
       "editor": "textfield",
-      "sectionCaption": "Dates"
+      "sectionCaption": "Dates (results mode)"
     },
     "endDate": {
       "title": "End date",
       "type": "string",
-      "description": "Last day to scrape (inclusive): YYYY-MM-DD, \"today\", \"yesterday\" or relative like \"1 day\". Empty = yesterday (UTC). Days are TennisExplorer's (Central European time).",
+      "description": "Results mode: last day to scrape (inclusive): YYYY-MM-DD, \"today\", \"yesterday\" or relative like \"1 day\". Empty = yesterday (UTC). Days are TennisExplorer's (Central European time). Ignored in upcoming mode.",
       "editor": "textfield"
     },
     "tours": {
       "title": "Tours",
       "type": "array",
-      "description": "Which singles tours to include. ATP and WTA = main tours (WTA includes WTA 125). CHALLENGER = ATP Challenger. ITF_MEN / ITF_WOMEN = ITF World Tennis Tour. OTHER_MEN / OTHER_WOMEN = UTR events, Asian Games, team events and exhibitions.",
+      "description": "Which tours to include. Singles: ATP and WTA = main tours (WTA includes WTA 125). CHALLENGER = ATP Challenger. ITF_MEN / ITF_WOMEN = ITF World Tennis Tour. OTHER_MEN / OTHER_WOMEN = UTR events, Asian Games, team events and exhibitions. Doubles: ATP_DOUBLES / WTA_DOUBLES = every men's / women's doubles match TennisExplorer lists (all levels, Challenger and ITF included). Doubles cost one extra request per day.",
       "editor": "select",
       "items": {
         "type": "string",
@@ -30,7 +52,9 @@
           "ITF_MEN",
           "ITF_WOMEN",
           "OTHER_MEN",
-          "OTHER_WOMEN"
+          "OTHER_WOMEN",
+          "ATP_DOUBLES",
+          "WTA_DOUBLES"
         ],
         "enumTitles": [
           "ATP",
@@ -39,7 +63,9 @@
           "ITF men",
           "ITF women",
           "Other men (UTR, exhibitions...)",
-          "Other women (UTR, exhibitions...)"
+          "Other women (UTR, exhibitions...)",
+          "Men's doubles (all levels)",
+          "Women's doubles (all levels)"
         ]
       },
       "prefill": ["ATP", "WTA"],
@@ -49,7 +75,7 @@
     "playerSlugs": {
       "title": "Players (optional)",
       "type": "array",
-      "description": "Player mode: instead of daily results, return the singles match history of these players in the date range. Use the TennisExplorer slug or URL, e.g. \"hurkacz\" or https://www.tennisexplorer.com/player/hurkacz/. The tours filter still applies.",
+      "description": "Player mode (results mode only): instead of daily results, return the singles match history of these players in the date range. Use the TennisExplorer slug or URL, e.g. \"hurkacz\" or https://www.tennisexplorer.com/player/hurkacz/. The tours filter still applies.",
       "editor": "stringList"
     },
     "maxMatches": {
@@ -72,13 +98,13 @@
     "includeBookmakerOdds": {
       "title": "Add per-bookmaker odds",
       "type": "boolean",
-      "description": "Open each match's detail page and add home/away odds from every listed bookmaker (closing and opening), plus player rankings and full names. One extra request per match (slower), billed as an extra event per match that has bookmaker odds.",
+      "description": "Open each match's detail page and add home/away odds from every listed bookmaker (closing or, in upcoming mode, current pre-match odds, plus opening odds), player rankings and full names. One extra request per match (slower), billed as an extra event per match that has bookmaker odds.",
       "default": false
     },
     "onlyNew": {
       "title": "Only new matches (monitoring)",
       "type": "boolean",
-      "description": "Skip matches returned by an earlier run with the same tours and players. Schedule daily with startDate \"3 days\" to also catch late-added results; each match is returned (and billed) once. State is kept in the key-value store \"tennis-matches-odds-state\" in your account.",
+      "description": "Results mode: skip matches returned by an earlier run with the same tours and players. Schedule daily with startDate \"3 days\" to also catch late-added results; each match is returned (and billed) once. Upcoming mode: return a match again only when its odds changed since the last run with the same tours and bookmaker setting (a line-movement feed). Skipped matches are free. State is kept in the key-value store \"tennis-matches-odds-state\" in your account.",
       "default": false
     }
   }

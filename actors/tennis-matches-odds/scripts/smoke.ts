@@ -3,12 +3,13 @@
  * 1. Runs the input-schema default input (what Apify's daily test runs) and
  *    checks it finishes well under 60 s with valid matches.
  * 2. Checks per-bookmaker odds, challengers, player mode and a past date.
+ * 3. Upcoming mode: tomorrow's card parses with numeric odds (or is empty).
  * Usage: npm run smoke -w actors/tennis-matches-odds
  */
 import { readFileSync } from "node:fs";
 import { HttpClient } from "../src/http.js";
 import { normalizeInput, type RawInput } from "../src/input.js";
-import type { Match } from "../src/match.js";
+import type { Match, UpcomingMatch } from "../src/match.js";
 import { runMatches } from "../src/run.js";
 
 const schema = JSON.parse(
@@ -30,7 +31,7 @@ async function run(name: string, raw: RawInput) {
   const stats = await runMatches(normalizeInput(raw), {
     fetchPage: (u) => http.get(u),
     warn: (m) => console.warn(`${name}: ${m}`),
-    emit: async (m) => (out.push(m), true),
+    emit: async (m) => (out.push(m as Match), true),
   });
   const seconds = (Date.now() - started) / 1000;
   console.log(
@@ -115,6 +116,44 @@ if (!p.out.every((m) => m.date.startsWith("2025-")))
   problems.push("player: out-of-range dates");
 if (share(p.out, (m) => m.surface && m.round) < 0.8)
   problems.push("player: missing round/surface");
+
+// 5. Upcoming: tomorrow's card parses with numeric odds (an empty card in
+// the off-season passes), plus bookmaker odds on two matches.
+async function upcoming(name: string, raw: RawInput) {
+  const out: UpcomingMatch[] = [];
+  const stats = await runMatches(normalizeInput({ mode: "upcoming", ...raw }), {
+    fetchPage: (u) => http.get(u),
+    warn: (m) => console.warn(`${name}: ${m}`),
+    emit: async (m) => (out.push(m as UpcomingMatch), true),
+  });
+  console.log(`\n== ${name}: ${out.length} matches`, JSON.stringify(stats));
+  if (stats.pagesFailed) problems.push(`${name}: ${stats.pagesFailed} failed`);
+  for (const m of out)
+    if (
+      m.status !== "scheduled" ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(m.scheduledDate) ||
+      !(m.player1?.name || m.team1?.length) ||
+      !m.sourceUrl.startsWith("https://www.tennisexplorer.com/match-detail/")
+    )
+      problems.push(`${name}: bad match ${JSON.stringify(m)}`);
+  return { out, stats };
+}
+{
+  const u = await upcoming("upcoming", {
+    tours: ["ATP", "WTA", "CHALLENGER", "ITF_MEN", "ATP_DOUBLES"],
+    includeRoundAndSurface: false,
+    maxMatches: 400,
+  });
+  // An empty card (off-season) is fine; a card without odds is not.
+  if (u.out.length && !u.out.some((m) => m.oddsHome && m.oddsAway))
+    problems.push("upcoming: no match with numeric odds");
+  const o = await upcoming("upcoming-odds", {
+    tours: ["ATP", "WTA", "CHALLENGER"],
+    includeBookmakerOdds: true,
+    maxMatches: 2,
+  });
+  console.log(JSON.stringify(o.out[0], null, 2)?.slice(0, 1500));
+}
 
 console.log(`\n${http.requests} requests total`);
 if (problems.length) {

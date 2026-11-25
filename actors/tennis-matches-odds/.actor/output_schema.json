@@ -6,6 +6,11 @@
       "type": "string",
       "title": "Results",
       "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "upcoming": {
+      "type": "string",
+      "title": "Upcoming matches",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=upcoming"
     }
   }
 }

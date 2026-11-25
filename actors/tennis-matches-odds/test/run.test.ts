@@ -8,9 +8,9 @@ import {
   parsePlayerSlug,
   type RawInput,
 } from "../src/input.js";
-import type { Match } from "../src/match.js";
-import { playerUrl, resultsUrl, runMatches } from "../src/run.js";
-import { Seen, stateKey } from "../src/state.js";
+import { matchUrl, type Match, type UpcomingMatch } from "../src/match.js";
+import { playerUrl, resultsUrl, runMatches, upcomingUrl } from "../src/run.js";
+import { OddsSeen, Seen, oddsHash, stateKey } from "../src/state.js";
 
 const fx = (name: string) =>
   readFileSync(new URL(`./fixtures/${name}`, import.meta.url), "utf8");
@@ -46,7 +46,7 @@ function harness(raw: RawInput, opts: { seen?: Seen; budget?: number } = {}) {
       return '<div id="center"><div class="box boxBasic">(1 €, clay, men)</div></div>';
     },
     emit: async (m) => {
-      out.push(m);
+      out.push(m as Match);
       return opts.budget === undefined || out.length < opts.budget;
     },
     warn: (m) => warnings.push(m),
@@ -55,9 +55,52 @@ function harness(raw: RawInput, opts: { seen?: Seen; budget?: number } = {}) {
   return { run, out, requested, warnings };
 }
 
+/** Upcoming mode: 2026-11-25 13:00 UTC (14:00 in Prague). */
+const NOW_UP = new Date("2026-11-25T13:00:00Z");
+const FLORIANOPOLIS =
+  "https://www.tennisexplorer.com/florianopolis-challenger/2026/atp-men/";
+
+const UP_PAGES: Record<string, string> = {
+  [upcomingUrl("men", "2026-11-25")]: fx("matches-atp-2026-11-25-today.html"),
+  [upcomingUrl("men", "2026-11-26")]: fx("matches-atp-2026-11-26.html"),
+  [upcomingUrl("men", "2026-11-26", "doubles")]: fx(
+    "matches-atp-double-2026-11-26.html",
+  ),
+  [FLORIANOPOLIS]: fx("tournament-florianopolis-challenger-2026.html"),
+  [matchUrl("3388457")]: fx("match-detail-3388457.html"),
+  [matchUrl("3388857")]: fx("match-detail-3388857.html"),
+};
+
+function upHarness(
+  raw: RawInput,
+  opts: { oddsSeen?: OddsSeen; pages?: Record<string, string> } = {},
+) {
+  const out: UpcomingMatch[] = [];
+  const requested: string[] = [];
+  const pages = opts.pages ?? UP_PAGES;
+  const input = normalizeInput({ mode: "upcoming", ...raw }, NOW_UP);
+  const run = runMatches(input, {
+    fetchPage: async (url) => {
+      requested.push(url);
+      if (url in pages) return pages[url]!;
+      if (url.includes("match-detail")) throw new Error("HTTP 503");
+      if (url.includes("/matches/")) return fx("results-empty.html");
+      return '<div id="center"><div class="box boxBasic">(1 €, hard, men)</div></div>';
+    },
+    emit: async (m) => {
+      out.push(m as UpcomingMatch);
+      return true;
+    },
+    oddsSeen: opts.oddsSeen,
+  });
+  return { run, out, requested };
+}
+
 describe("input", () => {
   it("defaults to yesterday, ATP + WTA", () => {
     expect(normalizeInput({}, NOW)).toEqual({
+      mode: "results",
+      daysAhead: 1,
       startDate: "2026-09-28",
       endDate: "2026-09-28",
       tours: ["ATP", "WTA"],
@@ -83,6 +126,39 @@ describe("input", () => {
     ).toThrow(InputError);
     expect(() => normalizeInput({ maxMatches: 0 }, NOW)).toThrow(InputError);
     expect(() => parsePlayerSlug("not a slug!")).toThrow(InputError);
+  });
+
+  it("upcoming mode: today (Prague time) plus daysAhead; doubles tours", () => {
+    expect(
+      normalizeInput(
+        { mode: "upcoming", tours: ["atp doubles", "WTA"] },
+        NOW_UP,
+      ),
+    ).toMatchObject({
+      mode: "upcoming",
+      daysAhead: 1,
+      startDate: "2026-11-25",
+      endDate: "2026-11-26",
+      tours: ["ATP_DOUBLES", "WTA"],
+    });
+    // 23:30 UTC is already the next day in Prague; dates in input are ignored.
+    expect(
+      normalizeInput(
+        { mode: "Upcoming", daysAhead: "7", startDate: "1 year" },
+        new Date("2026-11-25T23:30:00Z"),
+      ),
+    ).toMatchObject({ startDate: "2026-11-26", endDate: "2026-12-03" });
+  });
+
+  it("rejects bad upcoming input", () => {
+    for (const daysAhead of [0, 8, 1.5, "x"])
+      expect(() =>
+        normalizeInput({ mode: "upcoming", daysAhead }, NOW_UP),
+      ).toThrow(InputError);
+    expect(() => normalizeInput({ mode: "live" }, NOW)).toThrow(InputError);
+    expect(() =>
+      normalizeInput({ mode: "upcoming", playerSlugs: ["hurkacz"] }, NOW),
+    ).toThrow(/results" mode only/);
   });
 
   it("player mode defaults to the start of the year; clamps future end dates", () => {
@@ -235,7 +311,189 @@ describe("runMatches", () => {
   });
 });
 
+describe("runMatches doubles results", () => {
+  it("reads the doubles list only for doubles tours", async () => {
+    const requested: string[] = [];
+    const out: Match[] = [];
+    const input = normalizeInput(
+      {
+        tours: ["ATP_DOUBLES"],
+        startDate: "2026-11-24",
+        endDate: "2026-11-24",
+        includeRoundAndSurface: false,
+      },
+      NOW_UP,
+    );
+    await runMatches(input, {
+      fetchPage: async (u) => {
+        requested.push(u);
+        return u === resultsUrl("men", "2026-11-24", "doubles")
+          ? fx("results-atp-double-2026-11-24.html")
+          : null;
+      },
+      emit: async (m) => (out.push(m as Match), true),
+    });
+    expect(requested).toEqual([
+      "https://www.tennisexplorer.com/results/?type=atp-double&year=2026&month=11&day=24",
+    ]);
+    expect(out.length).toBe(3);
+    expect(
+      out.every((m) => m.tour === "ATP_DOUBLES" && m.team1?.length === 2),
+    ).toBe(true);
+    expect(out[0]).toMatchObject({ state: "finished", status: "completed" });
+  });
+});
+
+describe("runMatches upcoming", () => {
+  it("lists today's remaining and tomorrow's matches with bookmaker odds", async () => {
+    const h = upHarness({
+      tours: ["CHALLENGER", "ITF_MEN", "ATP_DOUBLES"],
+      includeBookmakerOdds: true,
+    });
+    const stats = await h.run;
+    expect(h.requested.filter((u) => u.includes("/matches/"))).toEqual([
+      upcomingUrl("men", "2026-11-25"),
+      upcomingUrl("men", "2026-11-25", "doubles"),
+      upcomingUrl("men", "2026-11-26"),
+      upcomingUrl("men", "2026-11-26", "doubles"),
+    ]);
+    expect(stats.skippedStarted).toBe(4);
+    expect(h.out.every((m) => m.status === "scheduled")).toBe(true);
+    expect(new Set(h.out.map((m) => m.matchId)).size).toBe(h.out.length);
+    expect(h.out.length).toBe(6 + 28 + 4);
+    const m = h.out.find((x) => x.matchId === "3388457")!;
+    expect(Object.keys(m)[0]).toBe("matchId");
+    expect(m).toMatchObject({
+      scheduledDate: "2026-11-26",
+      startTime: "14:00",
+      timeZone: "GMT+1",
+      tour: "CHALLENGER",
+      round: "R16",
+      surface: "clay",
+      player1: { name: "Nijboer Ryan", rank: 386 },
+      player2: { name: "Roncadelli Franco", seed: "6" },
+      seed2: "6",
+      oddsHome: 3.09,
+      oddsAway: 1.32,
+    });
+    expect(m.bookmakers!.length).toBeGreaterThanOrEqual(10);
+    expect(m.bookmakers![0]).toEqual({
+      name: expect.any(String),
+      home: expect.any(Number),
+      away: expect.any(Number),
+      openingHome: expect.any(Number),
+      openingAway: expect.any(Number),
+    });
+    const d = h.out.find((x) => x.matchId === "3388857")!;
+    expect(d).toMatchObject({
+      tour: "ATP_DOUBLES",
+      player1: null,
+      round: "QF",
+      team1: [{ name: "Delaney Jake" }, { name: "Delaney Jesse" }],
+    });
+    // Failed detail pages leave bookmakers empty (and not charged extra).
+    expect(stats.withBookmakerOdds).toBe(2);
+    expect(h.out.every((x) => Array.isArray(x.bookmakers))).toBe(true);
+  });
+
+  it("round and surface from the tournament page without detail pages", async () => {
+    const h = upHarness({ tours: ["CHALLENGER"] });
+    await h.run;
+    expect(h.requested).toContain(FLORIANOPOLIS);
+    expect(h.requested.some((u) => u.includes("match-detail"))).toBe(false);
+    const m = h.out.find((x) => x.matchId === "3388477")!;
+    expect(m).toMatchObject({ round: "R16", surface: "clay" });
+    expect(m).not.toHaveProperty("bookmakers");
+  });
+
+  it("onlyNew re-emits a match only when its odds change", async () => {
+    const oddsSeen = new OddsSeen(undefined);
+    const raw = { tours: ["CHALLENGER"], includeRoundAndSurface: false };
+    const a = upHarness(raw, { oddsSeen });
+    await a.run;
+    expect(a.out.length).toBeGreaterThan(3);
+
+    const reloaded = new OddsSeen(JSON.parse(JSON.stringify(oddsSeen)));
+    const b = upHarness(raw, { oddsSeen: reloaded });
+    const sb = await b.run;
+    expect(b.out.length).toBe(0);
+    expect(sb.skippedSeen).toBe(a.out.length);
+
+    // Nijboer vs Roncadelli drifts from 3.09/1.32 to 3.25/1.30.
+    const tomorrow = UP_PAGES[upcomingUrl("men", "2026-11-26")]!;
+    const moved = tomorrow
+      .replace('rowspan="2">3.09<', 'rowspan="2">3.25<')
+      .replace('rowspan="2">1.32<', 'rowspan="2">1.30<');
+    expect(moved).not.toBe(tomorrow);
+    const c = upHarness(raw, {
+      oddsSeen: reloaded,
+      pages: { ...UP_PAGES, [upcomingUrl("men", "2026-11-26")]: moved },
+    });
+    const sc = await c.run;
+    expect(c.out.map((m) => m.matchId)).toEqual(["3388457"]);
+    expect(c.out[0]).toMatchObject({ oddsHome: 3.25, oddsAway: 1.3 });
+    expect(sc.skippedSeen).toBe(a.out.length - 1);
+  });
+});
+
 describe("state", () => {
+  it("oddsHash ignores bookmaker order and opening odds, not prices", () => {
+    const base = {
+      oddsHome: 1.5,
+      oddsAway: 2.5,
+      bookmakers: [
+        { name: "A", home: 1.5, away: 2.5, openingHome: 1.4, openingAway: 2.6 },
+        {
+          name: "B",
+          home: 1.55,
+          away: 2.4,
+          openingHome: 1.55,
+          openingAway: 2.4,
+        },
+      ],
+    } as UpcomingMatch;
+    const h = oddsHash(base);
+    expect(h).toMatch(/^[0-9a-f]{16}$/);
+    expect(
+      oddsHash({
+        ...base,
+        bookmakers: [
+          { ...base.bookmakers![1]!, openingHome: 9 },
+          base.bookmakers![0]!,
+        ],
+      }),
+    ).toBe(h);
+    expect(oddsHash({ ...base, oddsHome: 1.51 })).not.toBe(h);
+    expect(
+      oddsHash({
+        ...base,
+        bookmakers: [
+          base.bookmakers![0]!,
+          { ...base.bookmakers![1]!, away: 2.45 },
+        ],
+      }),
+    ).not.toBe(h);
+  });
+
+  it("OddsSeen tolerates garbage and prunes old matches", () => {
+    expect(new OddsSeen("x").size).toBe(0);
+    const s = new OddsSeen({
+      odds: {
+        a: ["h1", "2026-11-26"],
+        b: "bad",
+        c: ["h3", "2026-09-01"],
+      },
+    });
+    expect(s.size).toBe(2);
+    expect(s.unchanged("a", "h1")).toBe(true);
+    expect(s.unchanged("a", "h2")).toBe(false);
+    expect(s.unchanged("z", "h1")).toBe(false);
+    expect(s.toJSON()).toEqual({
+      version: 1,
+      odds: { a: ["h1", "2026-11-26"] },
+    });
+  });
+
   it("stateKey is stable and input-specific", () => {
     const a = stateKey({ tours: ["ATP"], playerSlugs: [] });
     expect(a).toMatch(/^STATE-[0-9a-f]{16}$/);

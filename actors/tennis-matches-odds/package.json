@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Historical and daily tennis match results with closing betting odds from TennisExplorer.",
+  "description": "Tennis match results and upcoming fixtures (singles and doubles) with betting odds from TennisExplorer.",
   "main": "dist/main.js",
   "scripts": {
     "start": "node dist/main.js",
