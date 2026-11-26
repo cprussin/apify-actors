@@ -61,13 +61,13 @@
     "proxyConfiguration": {
       "title": "Proxy",
       "type": "object",
-      "description": "Apify Proxy (datacenter is enough). The actor uses one proxy IP for the whole run; if Wellfound blocks a request, that request fails instead of retrying from another IP.",
+      "description": "Off by default: Wellfound's Cloudflare blocks Apify datacenter proxy IPs (HTTP 403). If you turn a proxy on, the actor uses one IP for the whole run, and a blocked request fails instead of retrying from another IP.",
       "editor": "proxy",
       "default": {
-        "useApifyProxy": true
+        "useApifyProxy": false
       },
       "prefill": {
-        "useApifyProxy": true
+        "useApifyProxy": false
       },
       "sectionCaption": "Advanced"
     }

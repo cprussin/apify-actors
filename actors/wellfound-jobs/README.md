@@ -21,7 +21,7 @@ Click **Start** with the prefilled input:
   "locations": ["san-francisco"],
   "maxJobs": 20,
   "proxyConfiguration": {
-    "useApifyProxy": true
+    "useApifyProxy": false
   }
 }
 ```
@@ -116,7 +116,7 @@ Schedule it daily: after the first run you get (and pay for) only jobs not retur
 | `maxPages`           | Max listing pages per search (20 companies, usually 30–50 jobs per page)    | `10`                                            |
 | `includeDescription` | Add the full job description (Markdown)                                     | `false`                                         |
 | `onlyNew`            | Monitoring: only jobs not returned by an earlier run with the same searches | `true`                                          |
-| `proxyConfiguration` | Apify Proxy (on by default; datacenter is enough)                           | `{ "useApifyProxy": true }`                     |
+| `proxyConfiguration` | Apify Proxy (off by default; Cloudflare blocks datacenter proxy IPs)        | `{ "useApifyProxy": false }`                    |
 
 - **Roles only**: all locations (`/role/software-engineer`). **Locations only**: all roles (`/location/new-york`). Remote needs a role.
 - Slugs are what you see in Wellfound URLs. Plain names work too: `"Data Analyst"` becomes `data-analyst`, `"New York"` becomes `new-york`.
