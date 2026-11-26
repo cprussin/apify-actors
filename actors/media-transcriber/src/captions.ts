@@ -1,3 +1,13 @@
+/** One word of a Whisper segment (wordTimestamps). */
+export interface Word {
+  start: number;
+  end: number;
+  /** As Whisper writes it, usually with a leading space. */
+  word: string;
+  /** Whisper's confidence, 0-1. */
+  probability: number;
+}
+
 /** One timestamped piece of the transcript (seconds from the start). */
 export interface Segment {
   start: number;
@@ -5,6 +15,8 @@ export interface Segment {
   text: string;
   /** Speaker label, from a published transcript only. */
   speaker?: string;
+  /** Word-level times, with wordTimestamps only. */
+  words?: Word[];
 }
 
 export const segmentsToText = (segments: Segment[]): string =>

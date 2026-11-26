@@ -39,6 +39,10 @@ export interface OutputItem {
   contentUrl: string | null;
   warning: string | null;
   error: string | null;
+  /** The dataset the URL came from (null: pasted datasetItems or none). */
+  sourceDatasetId: string | null;
+  /** 0-based row of that dataset; null when not from a dataset. */
+  sourceItemIndex: number | null;
   convertedAt: string;
 }
 
@@ -224,6 +228,8 @@ export async function runConversions(
     contentUrl: null,
     warning: null,
     error: null,
+    sourceDatasetId: (s.kind === "kv" ? null : s.origin?.datasetId) ?? null,
+    sourceItemIndex: (s.kind === "kv" ? null : s.origin?.itemIndex) ?? null,
     convertedAt: now().toISOString(),
   });
 

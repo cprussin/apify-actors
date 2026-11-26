@@ -2,7 +2,7 @@ import { spawn, type ChildProcessWithoutNullStreams } from "node:child_process";
 import { createInterface } from "node:readline";
 import { fileURLToPath } from "node:url";
 import type { Segment } from "./captions.js";
-import type { Model } from "./input.js";
+import type { Model, Task } from "./input.js";
 
 export interface TranscribeRequest {
   path: string;
@@ -13,6 +13,12 @@ export interface TranscribeRequest {
   maxSeconds: number;
   /** Max billable minutes; null when unlimited. */
   budgetMinutes: number | null;
+  /** Word-level times on each segment. */
+  wordTimestamps?: boolean;
+  /** translate: English output whatever the spoken language. */
+  task?: Task;
+  /** Whisper's initial prompt; null for none. */
+  vocabulary?: string | null;
 }
 
 export type ErrorCode =

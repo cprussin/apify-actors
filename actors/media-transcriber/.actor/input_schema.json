@@ -25,6 +25,33 @@
       "description": "Files uploaded to an Apify key-value store, as <code>storeId/recordKey</code> or <code>username~store-name/recordKey</code>, one per line. Use this to transcribe your own recordings without hosting them anywhere.",
       "editor": "stringList"
     },
+    "datasetId": {
+      "title": "Dataset ID",
+      "type": "string",
+      "description": "Optional: transcribe the media URLs in another run's dataset (e.g. a scraper's output), as a dataset ID or <code>username~dataset-name</code>. Read with your run's token; a dataset you can't read gives one free error item.",
+      "editor": "textfield"
+    },
+    "datasetField": {
+      "title": "Dataset URL field",
+      "type": "string",
+      "description": "The dataset field with the media URL (a string, an array of URLs or an object with a url). Dot paths like <code>episode.audio</code> work. Empty: the first of url, videoUrl, mediaUrl, audioUrl, imageUrl, downloadUrl, fileUrl.",
+      "editor": "textfield"
+    },
+    "datasetItems": {
+      "title": "Dataset items",
+      "type": "array",
+      "description": "Optional: dataset rows pasted as JSON (objects with a URL field, or plain URL strings), read like a dataset. Handy for agents and pipelines that already hold the rows.",
+      "editor": "json"
+    },
+    "maxDatasetItems": {
+      "title": "Max dataset items",
+      "type": "integer",
+      "description": "Read at most this many rows of the dataset (and of Dataset items). Rows without a URL get a free error item.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 1000,
+      "default": 100
+    },
     "rssFeeds": {
       "title": "Podcast RSS feeds",
       "type": "array",
@@ -40,6 +67,24 @@
       "minimum": 1,
       "maximum": 500,
       "default": 5
+    },
+    "publishedAfter": {
+      "title": "Published after",
+      "type": "string",
+      "description": "Only episodes published on or after this date (applied before Max episodes per feed). Undated episodes are skipped.",
+      "editor": "datepicker"
+    },
+    "titleContains": {
+      "title": "Title contains",
+      "type": "array",
+      "description": "Only episodes whose title contains one of these words or phrases (case-insensitive), e.g. <code>interview</code>.",
+      "editor": "stringList"
+    },
+    "titleExcludes": {
+      "title": "Title excludes",
+      "type": "array",
+      "description": "Skip episodes whose title contains any of these (case-insensitive), e.g. <code>trailer</code>, <code>bonus</code>.",
+      "editor": "stringList"
     },
     "onlyNewEpisodes": {
       "title": "Only new episodes (monitoring)",
@@ -284,6 +329,24 @@
         "Yoruba"
       ],
       "default": "auto"
+    },
+    "translateToEnglish": {
+      "title": "Translate to English",
+      "type": "boolean",
+      "description": "Whisper writes the transcript in English, whatever language is spoken (its translate task). Same price. language still reports the spoken language. Published transcripts are used only when they are in English.",
+      "default": false
+    },
+    "wordTimestamps": {
+      "title": "Word timestamps",
+      "type": "boolean",
+      "description": "Add each word's start, end and confidence to the segments (karaoke captions, precise clip cutting, search). Same price; transcription takes a little longer.",
+      "default": false
+    },
+    "vocabulary": {
+      "title": "Vocabulary",
+      "type": "string",
+      "description": "Names, brands and jargon to spell right, e.g. <code>Kubernetes, Grafana, Dr. Nguyen</code>. Passed to Whisper as its initial prompt, which holds about 220 tokens (roughly 150 words); keep it short.",
+      "editor": "textarea"
     },
     "outputFormat": {
       "title": "Output format",

@@ -1,3 +1,11 @@
+import {
+  DATASET_FIELD,
+  DATASET_ID,
+  datasetRows,
+  type DatasetOrigin,
+  type DatasetRow,
+} from "./dataset.js";
+
 export const SCALES = [2, 3, 4] as const;
 export type Scale = (typeof SCALES)[number];
 
@@ -7,12 +15,23 @@ export type OutputFormat = (typeof OUTPUT_FORMATS)[number];
 /** Input-size limits offered in the input schema (megapixels). */
 export const MAX_INPUT_MEGAPIXELS = ["0.25", "0.5", "1", "2"] as const;
 
+/** Output-size targets offered in the input schema (megapixels). */
+export const OUTPUT_MEGAPIXELS = ["1", "2", "3", "4", "6", "8"] as const;
+
 /** Raw actor input, as defined in .actor/input_schema.json. */
 export interface RawInput {
   urls?: (string | { url?: string } | null)[] | string;
+  /** One image URL (for agents); added to urls. */
+  imageUrl?: string | null;
   startUrls?: (string | { url?: string } | null)[];
   keyValueStoreRecords?: string[] | string;
+  datasetId?: string | null;
+  datasetField?: string | null;
+  datasetItems?: unknown[] | null;
+  maxDatasetItems?: number | string | null;
   scale?: number | string | null;
+  outputMegapixels?: number | string | null;
+  colorFix?: boolean | null;
   outputFormat?: string | null;
   quality?: number | string | null;
   maxInputMegapixels?: number | string | null;
@@ -22,7 +41,14 @@ export interface RawInput {
 
 /** One image to upscale. */
 export type Source =
-  | { index: number; kind: "url"; input: string; url: string }
+  | {
+      index: number;
+      kind: "url";
+      input: string;
+      url: string;
+      /** Set for URLs read from a dataset row. */
+      origin?: DatasetOrigin;
+    }
   | {
       index: number;
       kind: "kv";
@@ -30,11 +56,23 @@ export type Source =
       store: string;
       key: string;
     }
-  | { index: number; kind: "invalid"; input: string; error: string };
+  | {
+      index: number;
+      kind: "invalid";
+      input: string;
+      error: string;
+      origin?: DatasetOrigin;
+    };
 
 export interface NormalizedInput {
   sources: Source[];
+  /** Dataset to read more image URLs from (read in main.ts). */
+  dataset: { id: string; field: string | null; maxItems: number } | null;
   scale: Scale;
+  /** Output size target in pixels (overrides scale); null: use scale. */
+  targetPixels: number | null;
+  /** Match the output's colours to a bicubic resize of the input. */
+  colorFix: boolean;
   outputFormat: OutputFormat;
   quality: number;
   maxInputPixels: number;
@@ -43,6 +81,7 @@ export interface NormalizedInput {
 }
 
 export const MAX_SOURCES = 1000;
+export const MAX_DATASET_ITEMS = 1000;
 /** Hard caps: 2 MP in, so at most 32 MP out at 4x. */
 export const HARD_MAX_INPUT_PIXELS = 2_000_000;
 export const HARD_MAX_OUTPUT_PIXELS = 32_000_000;
@@ -51,6 +90,7 @@ export const SAMPLE_URL =
   "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Aldrin_Apollo_11_original.jpg/500px-Aldrin_Apollo_11_original.jpg";
 
 export const DEFAULT_INPUT = {
+  maxDatasetItems: 100,
   scale: 4,
   outputFormat: "png",
   quality: 90,
@@ -162,14 +202,107 @@ export function parseRecordRef(
   return m ? { store: m[1]!, key: m[2]! } : null;
 }
 
+/** URL or invalid source for one input string. */
+function urlSource(
+  index: number,
+  input: string,
+  origin?: DatasetOrigin,
+): { url: string | null; source: Source } {
+  const url = normalizeUrl(input);
+  const social = url && socialUrlError(url);
+  const extra = origin ? { origin } : {};
+  const source: Source = !url
+    ? {
+        index,
+        kind: "invalid",
+        input,
+        error: `Invalid URL "${input}". Use a full http(s) address like https://example.com/photo.jpg.`,
+        ...extra,
+      }
+    : social
+      ? { index, kind: "invalid", input, error: social, ...extra }
+      : { index, kind: "url", input, url, ...extra };
+  return { url, source };
+}
+
+/**
+ * Appends dataset rows to `sources`: URLs already listed are skipped and
+ * rows without a URL become free errors. Returns how many rows were left
+ * out over MAX_SOURCES.
+ */
+export function addDatasetSources(
+  sources: Source[],
+  rows: DatasetRow[],
+): number {
+  const seen = new Set(
+    sources.flatMap((s) => (s.kind === "url" ? [s.url] : [])),
+  );
+  let dropped = 0;
+  for (const row of rows) {
+    if (sources.length >= MAX_SOURCES) {
+      dropped += 1;
+      continue;
+    }
+    const index = sources.length;
+    if ("error" in row) {
+      sources.push({
+        index,
+        kind: "invalid",
+        input: row.origin.datasetId ?? "datasetItems",
+        error: row.error,
+        origin: row.origin,
+      });
+      continue;
+    }
+    const { url, source } = urlSource(index, row.url, row.origin);
+    if (url && seen.has(url)) continue;
+    if (url) seen.add(url);
+    sources.push(source);
+  }
+  return dropped;
+}
+
 export function normalizeInput(
   raw: RawInput | null | undefined,
 ): NormalizedInput {
   const r = raw ?? {};
-  const urls = [...new Set([...list(r.urls), ...list(r.startUrls)])];
+  const urls = [
+    ...new Set([...list(r.urls), ...list(r.imageUrl), ...list(r.startUrls)]),
+  ];
   const records = [...new Set(list(r.keyValueStoreRecords))];
+  const datasetId =
+    r.datasetId === undefined || r.datasetId === null
+      ? ""
+      : String(r.datasetId).trim();
+  if (datasetId && !DATASET_ID.test(datasetId))
+    throw new InputError(
+      `datasetId "${datasetId}" is not a dataset ID or "username~dataset-name".`,
+    );
+  const field =
+    r.datasetField === undefined || r.datasetField === null
+      ? ""
+      : String(r.datasetField).trim();
+  if (field && !DATASET_FIELD.test(field))
+    throw new InputError(
+      `datasetField "${field}" must be a field name or dot path, like "imageUrl" or "product.image".`,
+    );
+  if (
+    r.datasetItems !== undefined &&
+    r.datasetItems !== null &&
+    !Array.isArray(r.datasetItems)
+  )
+    throw new InputError("datasetItems must be an array of dataset rows.");
+  const pasted = r.datasetItems ?? [];
+  const maxDatasetItems = ranged(
+    r.maxDatasetItems,
+    "maxDatasetItems",
+    DEFAULT_INPUT.maxDatasetItems,
+    1,
+    MAX_DATASET_ITEMS,
+  );
   // Fall back to the sample image only when nothing was given at all.
-  if (!urls.length && !records.length) urls.push(SAMPLE_URL);
+  if (!urls.length && !records.length && !datasetId && !pasted.length)
+    urls.push(SAMPLE_URL);
   const total = urls.length + records.length;
   if (total > MAX_SOURCES)
     throw new InputError(
@@ -179,23 +312,10 @@ export function normalizeInput(
   const sources: Source[] = [];
   const seen = new Set<string>();
   for (const input of urls) {
-    const index = sources.length;
-    const url = normalizeUrl(input);
+    const { url, source } = urlSource(sources.length, input);
     if (url && seen.has(url)) continue;
     if (url) seen.add(url);
-    const social = url && socialUrlError(url);
-    sources.push(
-      !url
-        ? {
-            index,
-            kind: "invalid",
-            input,
-            error: `Invalid URL "${input}". Use a full http(s) address like https://example.com/photo.jpg.`,
-          }
-        : social
-          ? { index, kind: "invalid", input, error: social }
-          : { index, kind: "url", input, url },
-    );
+    sources.push(source);
   }
   for (const input of records) {
     const index = sources.length;
@@ -212,7 +332,25 @@ export function normalizeInput(
     );
   }
 
+  addDatasetSources(
+    sources,
+    datasetRows(pasted.slice(0, maxDatasetItems), null, field || null),
+  );
+
   const scale = ranged(r.scale, "scale", DEFAULT_INPUT.scale, 2, 4) as Scale;
+  let targetPixels: number | null = null;
+  if (
+    r.outputMegapixels !== undefined &&
+    r.outputMegapixels !== null &&
+    String(r.outputMegapixels).trim() !== ""
+  ) {
+    const s = String(Number(String(r.outputMegapixels).trim()));
+    if (!(OUTPUT_MEGAPIXELS as readonly string[]).includes(s))
+      throw new InputError(
+        `outputMegapixels must be one of ${OUTPUT_MEGAPIXELS.join(", ")}.`,
+      );
+    targetPixels = Number(s) * 1_000_000;
+  }
   const mp =
     r.maxInputMegapixels === undefined ||
     r.maxInputMegapixels === null ||
@@ -226,7 +364,12 @@ export function normalizeInput(
 
   return {
     sources,
+    dataset: datasetId
+      ? { id: datasetId, field: field || null, maxItems: maxDatasetItems }
+      : null,
     scale,
+    targetPixels,
+    colorFix: r.colorFix === true,
     outputFormat: pick(
       r.outputFormat,
       OUTPUT_FORMATS,

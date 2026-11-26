@@ -2,7 +2,9 @@
 
 **AI Image Upscaler** makes images **2x, 3x or 4x larger and sharper** with **Real-ESRGAN**, the open-source super-resolution model. It removes blur, JPEG blocks and noise while it enlarges: good for **photos, product shots, old scans, screenshots, thumbnails and AI-generated art**. Paste image links or point it at your own uploads, and get **PNG, JPEG or WebP** files with a link for each. The model runs inside the actor: **no API key, no GPU service, no per-call fees** to anyone else.
 
-- ✅ **2x, 3x or 4x** upscaling with Real-ESRGAN (`realesr-general-x4v3`), tile by tile so large images fit in memory.
+- ✅ **2x, 3x or 4x** upscaling with Real-ESRGAN (`realesr-general-x4v3`), tile by tile so large images fit in memory, or a **fixed output size** of 1 to 8 megapixels.
+- ✅ **Colour fix**: keeps the original's colours and contrast after upscaling.
+- ✅ **AI upscaler API for pipelines and agents**: a single `imageUrl`, or every image URL in a scraper's dataset (`datasetId`).
 - ✅ **Any common image**: JPEG, PNG, WebP, GIF, BMP, TIFF and AVIF. EXIF rotation is applied, transparency and grayscale are kept.
 - ✅ **PNG, JPEG or WebP output** with adjustable quality, saved in the run's key-value store with a public link.
 - ✅ **Your own files**: upload images to an Apify key-value store and list them; no hosting needed.
@@ -67,16 +69,32 @@ The smallest output files, for a website.
 }
 ```
 
-### Your own uploads
+### Upscale to 4 megapixels, colours kept
 
-Images uploaded to a key-value store in your Apify account.
+Images uploaded to a key-value store in your Apify account, each made exactly 4 MP (aspect ratio kept) whatever its input size, with the colours matched to the original.
 
 ```json
 {
   "keyValueStoreRecords": ["my-user~photos/scan-001.jpg"],
-  "scale": 4
+  "outputMegapixels": "4",
+  "colorFix": true
 }
 ```
+
+### Chain from a scraper dataset
+
+Upscale the image URL of each row of another actor's dataset (the first of `url`, `imageUrl`, `downloadUrl`, `fileUrl` and similar, or the field you name, dot paths ok). Each item gets `sourceDatasetId` and `sourceItemIndex`, so you can join the result back to the row.
+
+```json
+{
+  "datasetId": "YOUR_DATASET_ID",
+  "datasetField": "imageUrl",
+  "maxDatasetItems": 100,
+  "scale": 2
+}
+```
+
+Agents can pass one image as `"imageUrl": "https://example.com/photo.jpg"`, or rows as `"datasetItems": [{ "imageUrl": "https://example.com/a.jpg" }]`.
 
 ### Cap the price per image
 
@@ -113,7 +131,14 @@ Skip inputs over 0.5 MP (free error item), so no image costs more than $0.01.
 | `urls`                 | Direct links to images, one per line                                       | a NASA photo |
 | `startUrls`            | Same, in Apify request-list format (combined with `urls`)                  | none         |
 | `keyValueStoreRecords` | Uploaded images, as `storeId/recordKey` or `username~store-name/recordKey` | none         |
+| `imageUrl`             | One image link (added to `urls`)                                           | none         |
+| `datasetId`            | A dataset whose rows hold image URLs                                       | none         |
+| `datasetField`         | The field with the URL (empty: auto-detect; dot paths ok)                  | auto         |
+| `datasetItems`         | Dataset rows pasted as JSON                                                | none         |
+| `maxDatasetItems`      | At most this many dataset rows are read                                    | `100`        |
 | `scale`                | `2`, `3` or `4`                                                            | `4`          |
+| `outputMegapixels`     | `1`, `2`, `3`, `4`, `6` or `8`: a fixed output size instead of `scale`     | none         |
+| `colorFix`             | Match the output's colours to the input                                    | `false`      |
 | `outputFormat`         | `png` (lossless, transparency), `jpg` (small) or `webp` (smallest)         | `png`        |
 | `quality`              | JPEG/WebP quality, 1-100                                                   | `90`         |
 | `maxInputMegapixels`   | `0.25`, `0.5`, `1` or `2`: larger images are skipped with a free error     | `2`          |
@@ -132,12 +157,17 @@ One item per image (shortened):
 {
   "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Aldrin_Apollo_11_original.jpg/500px-Aldrin_Apollo_11_original.jpg",
   "sourceType": "url",
+  "sourceDatasetId": null,
+  "sourceItemIndex": null,
   "fileName": "Aldrin_Apollo_11_original.jpg",
   "inputFormat": "jpg",
   "inputWidth": 500,
   "inputHeight": 503,
   "inputMegapixels": 0.25,
   "scale": 4,
+  "targetMegapixels": null,
+  "effectiveScale": 4,
+  "colorFixed": false,
   "outputWidth": 2000,
   "outputHeight": 2012,
   "outputFormat": "png",
@@ -156,6 +186,8 @@ One item per image (shortened):
 - The upscaled files are in the run's key-value store as `upscaled-0001-<name>.<format>`, linked from every item.
 - Failed images are returned with an `error` and no output, such as `Download failed: HTTP 404.`, `This link is a web page, not an image.`, `The image is 2000x1500 (3 MP), over the 2 MP input limit (maxInputMegapixels).` or `HEIC/HEIF images (iPhone photos) are not supported.`
 - `warning` notes things like an animated GIF (only the first frame is upscaled) or transparency flattened for JPEG.
+- With `outputMegapixels`, `targetMegapixels` is the target, `scale` the model scale used (the smallest of 2, 3 and 4 that reaches it) and `effectiveScale` the real ratio (e.g. 3.906 for 256x256 to 1 MP). Past 4x the rest is a Lanczos resize, noted in `warning`.
+- `sourceDatasetId` and `sourceItemIndex` say which dataset row an image came from (null for `urls` and uploads).
 
 ## How much does image upscaling cost?
 
@@ -168,7 +200,7 @@ Pay per event, by the size of the **input** image. No subscription, no start fee
 | 1 to 1.5 MP               | 1280x1024, 1440x900       | **$0.03**       |
 | 1.5 to 2 MP (the maximum) | 1600x1200, 1920x1040      | **$0.04**       |
 
-That is one `image-upscaled` event ($0.01) per started 0.5 megapixel of input. The scale and output format don't change the price. Failed and skipped images are free. If you set a **maximum cost per run**, the actor never upscales an image the remaining budget can't pay for: it skips it with a free error item and moves on to smaller images.
+That is one `image-upscaled` event ($0.01) per started 0.5 megapixel of input. The scale, `outputMegapixels`, `colorFix` and output format don't change the price, so even an 8 MP output costs at most $0.04. Failed and skipped images are free. If you set a **maximum cost per run**, the actor never upscales an image the remaining budget can't pay for: it skips it with a free error item and moves on to smaller images.
 
 ## Tips
 
@@ -182,6 +214,8 @@ That is one `image-upscaled` event ($0.01) per started 0.5 megapixel of input. T
 **Which model does it use?** Real-ESRGAN `realesr-general-x4v3` (BSD-3-Clause), a compact general-purpose model trained to remove real-world blur, noise and compression artifacts while upscaling. It runs on CPU with ONNX Runtime. Larger Real-ESRGAN models (x4plus) were measured at about 12x the CPU time for a modest quality gain, so they aren't offered.
 
 **Is there a face-enhancement option?** No. The popular face models (GFPGAN, CodeFormer) are under licenses or trained on data that don't allow commercial use, so they aren't included.
+
+**Is it a PiSA-SR alternative?** It takes the same kind of input (one `imageUrl`, an output size of 1 to 8 megapixels, a colour fix) but runs Real-ESRGAN on CPU instead of a GPU diffusion model: it sharpens and cleans up rather than inventing new detail, and costs $0.01 to $0.04 per image.
 
 **Are my images sent to an AI provider?** No. Everything runs inside the actor's container on Apify.
 

@@ -1,0 +1,7 @@
+[
+  { "title": "Annual report", "pdfUrl": "https://x.org/a.pdf" },
+  { "title": "Memo", "links": ["ignored"], "url": "https://x.org/b.docx" },
+  { "title": "No document", "pages": 12 },
+  { "title": "Broken", "fileUrl": "https://x.org/404.pdf" },
+  { "title": "Again", "documentUrl": "https://x.org/a.pdf" }
+]

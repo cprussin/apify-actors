@@ -6,7 +6,9 @@
 - ✅ **Podcast RSS feeds** with a **new-episodes mode**: schedule the actor daily and each new episode is transcribed exactly once.
 - ✅ **Published transcripts first**: when an episode links its own transcript (`<podcast:transcript>`, e.g. Omny, Buzzsprout, Transistor), you get it in the same text/segments/SRT/VTT shape for **$0.01 per episode**, no Whisper wait.
 - ✅ **SRT and VTT subtitles** for every file, plus the full text and **timestamped segments** in the dataset.
-- ✅ **Language detection** across Whisper's 99 languages, or set the language yourself.
+- ✅ **Language detection** across Whisper's 99 languages, or set the language yourself. **Translate to English** from any of them at the same price.
+- ✅ **Whisper word timestamps** (start, end and confidence per word) and a **vocabulary** for names and jargon.
+- ✅ **Chain from a scraper**: transcribe every media URL in another actor's dataset (`datasetId`) or in pasted rows.
 - ✅ **RAG chunks with start and end times**, ready for a vector database. Pairs with [Document to Markdown](https://apify.com/cprussin/document-to-markdown?fpr=to54nm) for PDFs and Office files.
 - ✅ **No API key**: Whisper runs inside the actor. Your audio isn't sent to an AI provider.
 - ✅ **Batch-safe**: a 404, a web page, a corrupt or over-long file never fails the run. You get an item with the reason, for free.
@@ -41,13 +43,15 @@ Use the Apify actor cprussin/media-transcriber to transcribe https://www.nasa.go
 
 ### New podcast episodes, daily
 
-The 3 newest episodes of a feed; schedule the same input daily to transcribe only new ones.
+The 3 newest episodes of a feed published since January, without trailers; schedule the same input daily to transcribe only new ones.
 
 ```json
 {
   "rssFeeds": ["https://feeds.example.com/my-podcast.xml"],
   "maxEpisodes": 3,
   "onlyNewEpisodes": true,
+  "publishedAfter": "2026-01-01",
+  "titleExcludes": ["trailer"],
   "model": "base"
 }
 ```
@@ -66,15 +70,17 @@ Shows that publish transcripts in their feed, at $0.01 per episode; episodes wit
 }
 ```
 
-### Interviews with the more accurate model
+### Interviews with word timestamps and a vocabulary
 
-Your own uploaded recording, English, with the `small` model.
+Your own uploaded recording with the `small` model, Whisper word timestamps (each word's start, end and confidence) and the names it should spell right. Add `"translateToEnglish": true` to get an English transcript of a recording in any language.
 
 ```json
 {
   "keyValueStoreRecords": ["my-user~interviews/call-2026-10-01.m4a"],
   "model": "small",
-  "language": "en"
+  "language": "en",
+  "wordTimestamps": true,
+  "vocabulary": "Kubernetes, Grafana, Dr. Nguyen"
 }
 ```
 
@@ -93,18 +99,20 @@ One item per chunk, each with its start and end time.
 }
 ```
 
-### Skip long files
+### Transcribe dataset videos (chain from a scraper)
 
-Files over 30 minutes are skipped with a free error item.
+Transcribe the media URL of each row of another actor's dataset (the first of `url`, `videoUrl`, `mediaUrl`, `audioUrl`, `downloadUrl`, `fileUrl`, or the field you name, dot paths ok). Files over 30 minutes are skipped with a free error item. Each item gets `sourceDatasetId` and `sourceItemIndex`, so you can join the transcript back to the row.
 
 ```json
 {
-  "urls": [
-    "https://www.nasa.gov/wp-content/uploads/2015/01/590325main_ringtone_kennedy_WeChoose.mp3"
-  ],
+  "datasetId": "YOUR_DATASET_ID",
+  "datasetField": "audioUrl",
+  "maxDatasetItems": 100,
   "maxDurationMinutes": 30
 }
 ```
+
+Agents and pipelines can paste the rows instead: `"datasetItems": [{ "audioUrl": "https://example.com/a.mp3" }]`.
 
 ## What can I use audio and video transcription for?
 
@@ -130,13 +138,22 @@ Files over 30 minutes are skipped with a free error item.
 | `urls`                       | Direct links to audio or video files, one per line                        | a 20 s NASA clip |
 | `startUrls`                  | Same, in Apify request-list format (combined with `urls`)                 | none             |
 | `keyValueStoreRecords`       | Uploaded files, as `storeId/recordKey` or `username~store-name/recordKey` | none             |
+| `datasetId`, `datasetField`  | A dataset whose rows hold media URLs, and the field (empty: auto-detect)  | none             |
+| `datasetItems`               | Dataset rows pasted as JSON                                               | none             |
+| `maxDatasetItems`            | At most this many dataset rows are read                                   | `100`            |
 | `rssFeeds`                   | Podcast RSS or Atom feed URLs                                             | none             |
 | `maxEpisodes`                | Newest episodes per feed to consider                                      | `5`              |
+| `publishedAfter`             | Only episodes published on or after this date                             | none             |
+| `titleContains`              | Only episodes whose title contains one of these (case-insensitive)        | none             |
+| `titleExcludes`              | Skip episodes whose title contains any of these                           | none             |
 | `onlyNewEpisodes`            | Skip episodes transcribed by an earlier run with the same feeds           | `false`          |
 | `preferPublishedTranscripts` | Use an episode's own `<podcast:transcript>` instead of Whisper            | `true`           |
 | `publishedOnly`              | Never run Whisper on episodes; no published transcript → free skip        | `false`          |
 | `model`                      | `base` (fast, $0.008/min) or `small` (more accurate, $0.016/min)          | `base`           |
 | `language`                   | `auto` or a language code (`en`, `de`, `es`, `fr`, `ja`, `zh`, ...)       | `auto`           |
+| `translateToEnglish`         | Whisper writes English whatever is spoken                                 | `false`          |
+| `wordTimestamps`             | Add `words` (start, end, word, probability) to each segment               | `false`          |
+| `vocabulary`                 | Names and jargon for Whisper's initial prompt (about 220 tokens)          | none             |
 | `outputFormat`               | `transcript` (one item per file) or `chunks` (one item per RAG chunk)     | `transcript`     |
 | `chunkSize`                  | Max characters per chunk, overlap included                                | `1500`           |
 | `chunkOverlap`               | Characters of whole segments repeated from the previous chunk             | `150`            |
@@ -159,8 +176,12 @@ Files over 30 minutes are skipped with a free error item.
   "transcriptSource": "whisper",
   "publishedTranscriptUrl": null,
   "sourceType": "url",
+  "sourceDatasetId": null,
+  "sourceItemIndex": null,
   "title": "590325main_ringtone_kennedy_WeChoose.mp3",
   "model": "base",
+  "task": "transcribe",
+  "vocabularyUsed": null,
   "language": "en",
   "languageProbability": 0.9672,
   "durationSeconds": 20.088,
@@ -186,6 +207,8 @@ Files over 30 minutes are skipped with a free error item.
 That is the fast `base` model; `small` gets this clip word-perfect ("...in this decade... because they are hard."). Podcast episodes also have `feedUrl`, `podcastTitle`, `episodeGuid` and `publishedAt`, and `title` is the episode title.
 
 **Published transcripts** have `transcriptSource: "published"`, `publishedTranscriptUrl` (the feed's transcript link), `billedMinutes: 0`, and the language from the tag or the feed. Timed formats (VTT, SRT, JSON, timestamped text) give segments, SRT and VTT; untimed plain text or HTML gives the `text` (paragraphs) with `segments`, `srtUrl` and `vttUrl` set to `null`. VTT and JSON speaker names are kept as `speaker` on each segment.
+
+**Word timestamps** (`wordTimestamps: true`): each Whisper segment also has `words`, e.g. `{ "start": 0.42, "end": 0.71, "word": " choose", "probability": 0.98 }`. `task` is `translate` with `translateToEnglish` (the `language` is still the spoken one), and `vocabularyUsed` is the vocabulary Whisper was given.
 
 **RAG chunks** (`outputFormat: "chunks"`): one item per chunk, with the same file fields plus `chunkIndex`, `chunkCount`, `startTime` and `endTime` (seconds), and the chunk's `text`. Chunks break between Whisper segments, so every chunk maps to an exact time range.
 

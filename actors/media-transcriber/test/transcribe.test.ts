@@ -78,6 +78,15 @@ describe.skipIf(!hasWorker)("Python transcriber", () => {
     writeFileSync(join(dir, "junk.mp3"), Buffer.from("not audio at all"));
     if (espeak) {
       spawnSync(espeak, ["-w", join(dir, "speech.wav"), SPEECH]);
+      // About 5 s.
+      spawnSync(espeak, [
+        "-w", join(dir, "words.wav"),
+        "We deploy Kubernetes clusters and watch them in Grafana every day.",
+      ]); // prettier-ignore
+      spawnSync(espeak, [
+        "-v", "de", "-w", join(dir, "german.wav"),
+        "Guten Morgen. Das Wetter ist heute sehr gut, und die Sonne scheint.",
+      ]); // prettier-ignore
       // A video with the speech as its audio track (skipped if this FFmpeg
       // can't encode one).
       spawnSync(ffmpeg, [
@@ -128,6 +137,50 @@ describe.skipIf(!hasWorker)("Python transcriber", () => {
       );
       if (!res.ok) throw new Error(res.error);
       expect(res.segments.map((s) => s.text).join(" ")).toMatch(/brown fox/i);
+    },
+    300_000,
+  );
+
+  it.skipIf(!espeak)(
+    "adds word timestamps to a 5 s TTS clip, with a vocabulary",
+    async () => {
+      const res = await worker.transcribe(
+        req("words.wav", {
+          language: "en",
+          wordTimestamps: true,
+          vocabulary: "Kubernetes, Grafana",
+        }),
+        300_000,
+      );
+      if (!res.ok) throw new Error(res.error);
+      expect(res.duration).toBeGreaterThan(3);
+      expect(res.duration).toBeLessThan(7);
+      const words = res.segments.flatMap((s) => s.words ?? []);
+      expect(words.length).toBeGreaterThan(3);
+      expect(words.some((w) => w.start < w.end)).toBe(true);
+      for (const w of words) {
+        expect(w.end).toBeGreaterThanOrEqual(w.start);
+        expect(w.probability).toBeGreaterThan(0);
+        expect(w.probability).toBeLessThanOrEqual(1);
+      }
+      expect(words.map((w) => w.word).join("")).toMatch(/deploy/i);
+    },
+    300_000,
+  );
+
+  it.skipIf(!espeak)(
+    "translates German speech to English",
+    async () => {
+      const res = await worker.transcribe(
+        req("german.wav", { task: "translate" }),
+        300_000,
+      );
+      if (!res.ok) throw new Error(res.error);
+      // The detected language is the spoken one; the text is English.
+      expect(res.language).toBe("de");
+      const text = res.segments.map((s) => s.text).join(" ");
+      expect(text).toMatch(/\b(the|is|good|morning|weather)\b/i);
+      expect(res.segments[0]!.words).toBeUndefined();
     },
     300_000,
   );

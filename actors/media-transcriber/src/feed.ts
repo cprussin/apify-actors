@@ -23,6 +23,37 @@ export interface Feed {
   episodes: Episode[];
 }
 
+export interface EpisodeFilter {
+  /** ISO time; undated episodes don't match. */
+  publishedAfter: string | null;
+  /** Lowercase terms: the title must contain one of them (when any)... */
+  titleContains: string[];
+  /** ...and none of these. */
+  titleExcludes: string[];
+}
+
+/** The episodes matching `f`, in order. */
+export function filterEpisodes(
+  episodes: Episode[],
+  f: EpisodeFilter,
+): Episode[] {
+  const after = f.publishedAfter ? Date.parse(f.publishedAfter) : null;
+  return episodes.filter((e) => {
+    if (
+      after !== null &&
+      !(e.publishedAt && Date.parse(e.publishedAt) >= after)
+    )
+      return false;
+    const title = (e.title ?? "").toLowerCase();
+    if (
+      f.titleContains.length &&
+      !f.titleContains.some((t) => title.includes(t))
+    )
+      return false;
+    return !f.titleExcludes.some((t) => title.includes(t));
+  });
+}
+
 /** "en-US" -> "en". */
 export const langCode = (raw: string | null | undefined): string | null => {
   const m = /^\s*([a-z]{2,3})(?:[-_]|\s*$)/i.exec(raw ?? "");

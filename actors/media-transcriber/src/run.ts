@@ -9,6 +9,7 @@ import {
   type Segment,
 } from "./captions.js";
 import { chunkSegments } from "./chunk.js";
+import type { DatasetOrigin } from "./dataset.js";
 import { notMediaError } from "./detect.js";
 import {
   MediaError,
@@ -16,8 +17,14 @@ import {
   type Downloaded,
   type TextDocument,
 } from "./download.js";
-import { parseFeed, type Episode } from "./feed.js";
-import type { Model, NormalizedInput, OutputFormat, Source } from "./input.js";
+import { filterEpisodes, parseFeed, type Episode } from "./feed.js";
+import type {
+  Model,
+  NormalizedInput,
+  OutputFormat,
+  Source,
+  Task,
+} from "./input.js";
 import type { Seen } from "./state.js";
 import {
   parsePublishedTranscript,
@@ -47,6 +54,10 @@ export interface OutputItem {
   transcriptSource: TranscriptSource | null;
   publishedTranscriptUrl: string | null;
   sourceType: SourceType;
+  /** Dataset the URL was read from; null for pasted datasetItems or none. */
+  sourceDatasetId: string | null;
+  /** 0-based row of datasetId or datasetItems; null when not from one. */
+  sourceItemIndex: number | null;
   feedUrl: string | null;
   podcastTitle: string | null;
   /** Episode title, or the file name. */
@@ -56,6 +67,10 @@ export interface OutputItem {
   fileName: string | null;
   bytes: number | null;
   model: Model;
+  /** transcribe, or translate (Whisper wrote English); null on failure. */
+  task: Task | null;
+  /** The vocabulary Whisper was prompted with; null for none. */
+  vocabularyUsed: string | null;
   /** Detected (or given) language code. */
   language: string | null;
   languageProbability: number | null;
@@ -223,6 +238,8 @@ export async function runTranscriptions(
     transcriptSource: null,
     publishedTranscriptUrl: null,
     sourceType,
+    sourceDatasetId: null,
+    sourceItemIndex: null,
     feedUrl: null,
     podcastTitle: null,
     title: null,
@@ -231,6 +248,8 @@ export async function runTranscriptions(
     fileName: null,
     bytes: null,
     model: input.model,
+    task: null,
+    vocabularyUsed: null,
     language: null,
     languageProbability: null,
     durationSeconds: null,
@@ -252,8 +271,16 @@ export async function runTranscriptions(
     ...extra,
   });
 
+  const fromDataset = (s: { origin?: DatasetOrigin }) =>
+    s.origin
+      ? {
+          sourceDatasetId: s.origin.datasetId,
+          sourceItemIndex: s.origin.itemIndex,
+        }
+      : {};
+
   const jobBase = (job: Job): OutputItem => {
-    if (job.kind === "url") return blank(job.url, "url");
+    if (job.kind === "url") return blank(job.url, "url", fromDataset(job));
     if (job.kind === "kv") return blank(job.input, "kv");
     const e = job.episode;
     return blank(job.url, "rss", {
@@ -290,7 +317,8 @@ export async function runTranscriptions(
   const jobs: Job[] = [];
   for (const s of input.sources) {
     if (s.kind === "invalid") {
-      if (!(await fail(blank(s.input, "url"), s.error))) return stats;
+      if (!(await fail(blank(s.input, "url", fromDataset(s)), s.error)))
+        return stats;
       continue;
     }
     if (s.kind !== "feed") {
@@ -322,12 +350,27 @@ export async function runTranscriptions(
         return stats;
       continue;
     }
+    const matching = filterEpisodes(feed.episodes, input);
+    if (!matching.length) {
+      if (
+        !(await fail(
+          blank(s.url, "rss", { feedUrl: s.url, podcastTitle: feed.title }),
+          `None of the feed's ${feed.episodes.length} episode(s) match publishedAfter, titleContains and titleExcludes.`,
+        ))
+      )
+        return stats;
+      continue;
+    }
     // The newest maxEpisodes; onlyNewEpisodes drops those done before.
-    const latest = feed.episodes.slice(0, input.maxEpisodes);
+    const latest = matching.slice(0, input.maxEpisodes);
     const fresh = latest.filter((e) => !deps.seen?.has(seenId(s.url, e.guid)));
     stats.skippedSeen += latest.length - fresh.length;
     log(
-      `Feed ${s.url}: ${feed.episodes.length} episode(s), transcribing ${fresh.length}` +
+      `Feed ${s.url}: ${feed.episodes.length} episode(s)` +
+        (matching.length < feed.episodes.length
+          ? ` (${matching.length} matching the filters)`
+          : "") +
+        `, transcribing ${fresh.length}` +
         (latest.length > fresh.length
           ? ` (${latest.length - fresh.length} done in earlier runs)`
           : "") +
@@ -379,6 +422,9 @@ export async function runTranscriptions(
           threads: deps.threads,
           maxSeconds: input.maxDurationSecs,
           budgetMinutes: Number.isFinite(budget) ? Math.floor(budget) : null,
+          wordTimestamps: input.wordTimestamps,
+          task: input.task,
+          vocabulary: input.vocabulary,
         },
         transcribeTimeoutMs(input.maxDurationSecs, input.model),
       );
@@ -424,6 +470,8 @@ export async function runTranscriptions(
       {
         ...done,
         transcriptSource: "whisper",
+        task: input.task,
+        vocabularyUsed: input.vocabulary,
         billedMinutes: minutes,
         warning: warning.join(" ") || null,
       },
@@ -559,7 +607,17 @@ export async function runTranscriptions(
   const oneJob = async (job: Job): Promise<boolean> => {
     // Published transcript fast path: no download, no Whisper.
     if (job.kind === "episode" && input.preferPublishedTranscripts) {
-      const pub = await fetchPublished(job);
+      let pub = await fetchPublished(job);
+      // translateToEnglish: only an English published transcript will do.
+      const pubLanguage = pub.ok
+        ? (pub.language ?? job.episode.feedLanguage)
+        : null;
+      if (pub.ok && input.task === "translate" && pubLanguage !== "en")
+        pub = {
+          ok: false,
+          robots: false,
+          reason: `The published transcript is ${pubLanguage ? `in "${pubLanguage}"` : "in an unknown language"}, not English (translateToEnglish).`,
+        };
       if (pub.ok) {
         await turns.wait(job.index);
         const { segments, timed } = pub.parsed;
@@ -573,8 +631,12 @@ export async function runTranscriptions(
             ...jobBase(job),
             transcriptSource: "published",
             publishedTranscriptUrl: pub.url,
+            task: "transcribe",
             language: pub.language ?? job.episode.feedLanguage,
             durationSeconds: duration,
+            warning: input.wordTimestamps
+              ? "Published transcripts have no word timestamps; set preferPublishedTranscripts to false to get them from Whisper."
+              : null,
           },
           pub.parsed,
           0,

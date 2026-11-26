@@ -23,6 +23,33 @@
       "description": "Files uploaded to an Apify key-value store, as <code>storeId/recordKey</code> or <code>username~store-name/recordKey</code>, one per line. Use this to convert your own files without hosting them anywhere.",
       "editor": "stringList"
     },
+    "datasetId": {
+      "title": "Dataset ID",
+      "type": "string",
+      "description": "Optional: convert the document URLs in another run's dataset (e.g. a scraper's output), as a dataset ID or <code>username~dataset-name</code>. Read with your run's token; a dataset you can't read gives one free error item.",
+      "editor": "textfield"
+    },
+    "datasetField": {
+      "title": "Dataset URL field",
+      "type": "string",
+      "description": "The dataset field with the document URL (a string, an array of URLs or an object with a url/src/href). Dot paths like <code>attachment.url</code> work. Empty: the first of url, pdfUrl, documentUrl, fileUrl, downloadUrl, mediaUrl, imageUrl.",
+      "editor": "textfield"
+    },
+    "datasetItems": {
+      "title": "Dataset items",
+      "type": "array",
+      "description": "Optional: dataset rows pasted as JSON (objects with a URL field, or plain URL strings), read like a dataset. Handy for agents and pipelines that already hold the rows.",
+      "editor": "json"
+    },
+    "maxDatasetItems": {
+      "title": "Max dataset items",
+      "type": "integer",
+      "description": "Read at most this many rows of the dataset (and of Dataset items). Rows without a URL get a free error item; URLs already listed are converted once.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 10000,
+      "default": 100
+    },
     "outputFormat": {
       "title": "Output format",
       "type": "string",

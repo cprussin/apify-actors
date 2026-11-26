@@ -1,3 +1,11 @@
+import {
+  DATASET_FIELD,
+  DATASET_ID,
+  datasetRows,
+  type DatasetOrigin,
+  type DatasetRow,
+} from "./dataset.js";
+
 export const OUTPUT_FORMATS = ["markdown", "text", "chunks"] as const;
 export type OutputFormat = (typeof OUTPUT_FORMATS)[number];
 
@@ -18,6 +26,10 @@ export interface RawInput {
   urls?: (string | { url?: string } | null)[] | string;
   startUrls?: (string | { url?: string } | null)[];
   keyValueStoreRecords?: string[] | string;
+  datasetId?: string | null;
+  datasetField?: string | null;
+  datasetItems?: unknown[] | null;
+  maxDatasetItems?: number | string | null;
   outputFormat?: string | null;
   chunkSize?: number | string | null;
   chunkOverlap?: number | string | null;
@@ -32,7 +44,14 @@ export interface RawInput {
 
 /** One document to convert. */
 export type Source =
-  | { index: number; kind: "url"; input: string; url: string }
+  | {
+      index: number;
+      kind: "url";
+      input: string;
+      url: string;
+      /** Set for URLs read from a dataset row. */
+      origin?: DatasetOrigin;
+    }
   | {
       index: number;
       kind: "kv";
@@ -40,10 +59,18 @@ export type Source =
       store: string;
       key: string;
     }
-  | { index: number; kind: "invalid"; input: string; error: string };
+  | {
+      index: number;
+      kind: "invalid";
+      input: string;
+      error: string;
+      origin?: DatasetOrigin;
+    };
 
 export interface NormalizedInput {
   sources: Source[];
+  /** Dataset to read more document URLs from (read in main.ts). */
+  dataset: { id: string; field: string | null; maxItems: number } | null;
   outputFormat: OutputFormat;
   /** Max characters per chunk (chunks format). */
   chunkSize: number;
@@ -59,9 +86,11 @@ export interface NormalizedInput {
 }
 
 export const MAX_SOURCES = 10_000;
+export const MAX_DATASET_ITEMS = 10_000;
 export const SAMPLE_URL = "https://arxiv.org/pdf/1706.03762";
 
 export const DEFAULT_INPUT = {
+  maxDatasetItems: 100,
   outputFormat: "markdown",
   chunkSize: 2000,
   chunkOverlap: 200,
@@ -153,34 +182,109 @@ export function parseRecordRef(
   return m ? { store: m[1]!, key: m[2]! } : null;
 }
 
+function urlSource(
+  index: number,
+  input: string,
+  origin?: DatasetOrigin,
+): { url: string | null; source: Source } {
+  const url = normalizeUrl(input);
+  const extra = origin ? { origin } : {};
+  const source: Source = url
+    ? { index, kind: "url", input, url, ...extra }
+    : {
+        index,
+        kind: "invalid",
+        input,
+        error: `Invalid URL "${input}". Use a full http(s) address like https://example.com/file.pdf.`,
+        ...extra,
+      };
+  return { url, source };
+}
+
+/**
+ * Appends dataset rows to `sources`: URLs already listed are skipped and
+ * rows without a URL become free errors. Returns how many rows were left
+ * out over MAX_SOURCES.
+ */
+export function addDatasetSources(
+  sources: Source[],
+  rows: DatasetRow[],
+): number {
+  const seen = new Set(
+    sources.flatMap((s) => (s.kind === "url" ? [s.url] : [])),
+  );
+  let dropped = 0;
+  for (const row of rows) {
+    if (sources.length >= MAX_SOURCES) {
+      dropped += 1;
+      continue;
+    }
+    const index = sources.length;
+    if ("error" in row) {
+      sources.push({
+        index,
+        kind: "invalid",
+        input: row.origin.datasetId ?? "datasetItems",
+        error: row.error,
+        origin: row.origin,
+      });
+      continue;
+    }
+    const { url, source } = urlSource(index, row.url, row.origin);
+    if (url && seen.has(url)) continue;
+    if (url) seen.add(url);
+    sources.push(source);
+  }
+  return dropped;
+}
+
 export function normalizeInput(
   raw: RawInput | null | undefined,
 ): NormalizedInput {
   const r = raw ?? {};
   const urls = [...new Set([...list(r.urls), ...list(r.startUrls)])];
   const records = [...new Set(list(r.keyValueStoreRecords))];
+  const datasetId =
+    r.datasetId === undefined || r.datasetId === null
+      ? ""
+      : String(r.datasetId).trim();
+  if (datasetId && !DATASET_ID.test(datasetId))
+    throw new InputError(
+      `datasetId "${datasetId}" is not a dataset ID or "username~dataset-name".`,
+    );
+  const field =
+    r.datasetField === undefined || r.datasetField === null
+      ? ""
+      : String(r.datasetField).trim();
+  if (field && !DATASET_FIELD.test(field))
+    throw new InputError(
+      `datasetField "${field}" must be a field name or dot path, like "pdfUrl" or "attachment.url".`,
+    );
+  if (
+    r.datasetItems !== undefined &&
+    r.datasetItems !== null &&
+    !Array.isArray(r.datasetItems)
+  )
+    throw new InputError("datasetItems must be an array of dataset rows.");
+  const pasted = r.datasetItems ?? [];
+  const maxDatasetItems = ranged(
+    r.maxDatasetItems,
+    "maxDatasetItems",
+    DEFAULT_INPUT.maxDatasetItems,
+    1,
+    MAX_DATASET_ITEMS,
+  );
   // Fall back to the sample document only when nothing was given at all.
-  if (!urls.length && !records.length) urls.push(SAMPLE_URL);
+  if (!urls.length && !records.length && !datasetId && !pasted.length)
+    urls.push(SAMPLE_URL);
   if (urls.length + records.length > MAX_SOURCES)
     throw new InputError(
       `At most ${MAX_SOURCES} documents per run; got ${urls.length + records.length}.`,
     );
 
   const sources: Source[] = [];
-  for (const input of urls) {
-    const index = sources.length;
-    const url = normalizeUrl(input);
-    sources.push(
-      url
-        ? { index, kind: "url", input, url }
-        : {
-            index,
-            kind: "invalid",
-            input,
-            error: `Invalid URL "${input}". Use a full http(s) address like https://example.com/file.pdf.`,
-          },
-    );
-  }
+  for (const input of urls)
+    sources.push(urlSource(sources.length, input).source);
   for (const input of records) {
     const index = sources.length;
     const ref = parseRecordRef(input);
@@ -195,6 +299,10 @@ export function normalizeInput(
           },
     );
   }
+  addDatasetSources(
+    sources,
+    datasetRows(pasted.slice(0, maxDatasetItems), null, field || null),
+  );
 
   const chunkSize = ranged(
     r.chunkSize,
@@ -215,6 +323,9 @@ export function normalizeInput(
 
   return {
     sources,
+    dataset: datasetId
+      ? { id: datasetId, field: field || null, maxItems: maxDatasetItems }
+      : null,
     outputFormat: pick(
       r.outputFormat,
       OUTPUT_FORMATS,

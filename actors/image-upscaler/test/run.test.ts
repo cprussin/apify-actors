@@ -1,16 +1,21 @@
-import { writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { describe, expect, it } from "vitest";
 import { ImageError, type Downloaded } from "../src/download.js";
 import { normalizeInput, type RawInput } from "../src/input.js";
 import {
   billableUnits,
   outputKey,
+  planOutput,
   runUpscales,
   type OutputItem,
   type RunDeps,
 } from "../src/run.js";
 import type { ProbeResult, UpscaleRequest } from "../src/worker.js";
 import { makePng } from "./png.js";
+
+const dataset = JSON.parse(
+  await readFile(new URL("fixtures/dataset.json", import.meta.url), "utf8"),
+) as unknown[];
 
 /** url -> [width, height] of a generated PNG, or a download error. */
 const files: Record<string, [number, number] | Error | Buffer> = {
@@ -65,10 +70,11 @@ function harness(
         ok: true,
         inputWidth: w,
         inputHeight: h,
-        outputWidth: w * req.scale,
-        outputHeight: h * req.scale,
+        outputWidth: req.outputSize?.[0] ?? w * req.scale,
+        outputHeight: req.outputSize?.[1] ?? h * req.scale,
         outputBytes: 1234,
         hasAlpha: false,
+        colorFixed: req.colorFix === true,
         seconds: 1.234,
         cpuSeconds: 1.2,
         warnings: [],
@@ -128,7 +134,106 @@ describe("outputKey", () => {
   });
 });
 
+describe("planOutput", () => {
+  it("uses the scale without a target", () => {
+    expect(planOutput(500, 400, 3, null)).toEqual({
+      scale: 3,
+      width: 1500,
+      height: 1200,
+      warning: null,
+    });
+  });
+
+  it("picks the smallest scale reaching the target, then fits it", () => {
+    // 256x256: 3x is 0.59 MP, 4x 1.05 MP.
+    expect(planOutput(256, 256, 2, 1_000_000)).toMatchObject({
+      scale: 4,
+      width: 1000,
+      height: 1000,
+      warning: null,
+    });
+    // 0.2 MP: 2x is 0.8 MP and 3x 1.8 MP, so 1 MP needs 3x; 2 MP needs 4x.
+    const p = planOutput(500, 400, 4, 1_000_000);
+    expect(p).toMatchObject({ scale: 3, width: 1118, height: 894 });
+    expect(Math.abs(p.width * p.height - 1e6) / 1e6).toBeLessThan(0.01);
+    expect(planOutput(500, 400, 4, 2_000_000).scale).toBe(4);
+  });
+
+  it("warns past 4x and below 1x", () => {
+    expect(planOutput(100, 100, 4, 8_000_000).warning).toMatch(
+      /more than 4x.*Lanczos/,
+    );
+    expect(planOutput(1600, 1200, 4, 1_000_000)).toMatchObject({
+      scale: 2,
+      warning: expect.stringMatching(/smaller than the input/),
+    });
+  });
+});
+
 describe("runUpscales", () => {
+  it("fits to outputMegapixels and applies colorFix, billed as before", async () => {
+    const h = harness({
+      imageUrl: "https://x.org/small.png",
+      outputMegapixels: "1",
+      colorFix: true,
+    });
+    await h.run();
+    expect(h.requests[0]).toMatchObject({
+      scale: 3,
+      outputSize: [1118, 894],
+      colorFix: true,
+    });
+    expect(h.items[0]).toMatchObject({
+      url: "https://x.org/small.png",
+      scale: 3,
+      targetMegapixels: 1,
+      effectiveScale: 2.236,
+      colorFixed: true,
+      outputWidth: 1118,
+      outputHeight: 894,
+      billedUnits: 1,
+    });
+    expect(h.charges).toEqual([1]);
+  });
+
+  it("sends the same request as before without the new options", async () => {
+    const h = harness({ urls: ["https://x.org/small.png"], scale: 2 });
+    await h.run();
+    expect(Object.keys(h.requests[0]!).sort()).toEqual([
+      "format",
+      "maxPixels",
+      "outPath",
+      "path",
+      "quality",
+      "scale",
+      "threads",
+    ]);
+    expect(h.items[0]).toMatchObject({
+      targetMegapixels: null,
+      effectiveScale: 2,
+      colorFixed: false,
+      sourceDatasetId: null,
+      sourceItemIndex: null,
+    });
+  });
+
+  it("upscales pasted dataset rows, tagging each item with its row", async () => {
+    const h = harness({ datasetItems: dataset, scale: 2 });
+    const stats = await h.run();
+    expect(stats).toMatchObject({ upscaled: 2, failed: 2 });
+    expect(
+      h.items
+        .map((i) => [i.sourceItemIndex, i.url, i.error === null])
+        .sort((a, b) => Number(a[0]) - Number(b[0])),
+    ).toEqual([
+      [0, "https://x.org/small.png", true],
+      [1, "https://x.org/mid.png", true],
+      [2, "datasetItems", false],
+      [3, "https://www.instagram.com/p/abc/", false],
+    ]);
+    expect(h.charges).toEqual([1, 2]);
+  });
+
   it("upscales, stores and bills each image by input size", async () => {
     const h = harness({
       urls: ["https://x.org/small.png", "https://x.org/mid.png"],

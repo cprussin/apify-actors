@@ -47,13 +47,16 @@ Use the Apify actor cprussin/document-to-markdown to convert https://arxiv.org/p
 }
 ```
 
-### Plain text for a search index
+### Every PDF a scraper found, as plain text
 
-Text without Markdown formatting.
+Chain from another run: the document URLs in a scraper's dataset (here its `pdfUrl` field), as text without Markdown formatting for a search index. Each item keeps `sourceDatasetId` and `sourceItemIndex` to join back to the scraper's rows.
 
 ```json
 {
-  "urls": ["https://arxiv.org/pdf/1706.03762"],
+  "urls": [],
+  "datasetId": "my-user~report-links",
+  "datasetField": "pdfUrl",
+  "maxDatasetItems": 500,
   "outputFormat": "text"
 }
 ```
@@ -117,6 +120,10 @@ The first 3 pages of each PDF, with no OCR charges.
 | `urls`                   | Document links, one per line                                                   | a sample arXiv PDF |
 | `startUrls`              | Same, in Apify request-list format (combined with `urls`)                      | none               |
 | `keyValueStoreRecords`   | Uploaded files, as `storeId/recordKey` or `username~store-name/recordKey`      | none               |
+| `datasetId`              | Another run's dataset to read document URLs from (ID or `username~name`)       | none               |
+| `datasetField`           | Field (or dot path) with the URL; empty tries `url`, `pdfUrl`, `fileUrl`, ...  | auto               |
+| `datasetItems`           | Dataset rows pasted as JSON, read like a dataset                               | none               |
+| `maxDatasetItems`        | Max rows read from the dataset (and from `datasetItems`)                       | `100`              |
 | `outputFormat`           | `markdown`, `text` or `chunks`                                                 | `markdown`         |
 | `chunkSize`              | Max characters per chunk, overlap included (about 4 characters per token)      | `2000`             |
 | `chunkOverlap`           | Characters repeated from the previous chunk                                    | `200`              |
@@ -150,6 +157,8 @@ The first 3 pages of each PDF, with no OCR charges.
   "contentUrl": null,
   "warning": null,
   "error": null,
+  "sourceDatasetId": null,
+  "sourceItemIndex": null,
   "convertedAt": "2026-10-06T13:20:00.000Z"
 }
 ```
@@ -172,6 +181,7 @@ The first 3 pages of each PDF, with no OCR charges.
 - `heading` is the nearest Markdown heading above the chunk (DOCX, HTML and EPUB headings, slide titles, sheet names). PDFs carry no heading structure, so for PDFs it is `null`.
 - Each item has a `title` from the document's metadata or its first heading, when available.
 - Content over 5 MB (very long books) is saved to the run's key-value store and linked in `contentUrl`; the item holds the first million characters.
+- URLs read from a dataset carry `sourceDatasetId` (null for pasted `datasetItems`) and `sourceItemIndex`, the 0-based row. A dataset row without a document URL, or a dataset that can't be read, becomes a free error item.
 - Failed documents are returned with `content: null` and an `error`, such as `Download failed: HTTP 404 Not Found.`, `The file is 80 MB, over the 50 MB limit (maxFileSizeMb).`, `The PDF is password-protected.` or `Legacy Office format (.doc, .xls or .ppt) is not supported.`
 
 ## How much does it cost to convert documents to Markdown?

@@ -25,6 +25,10 @@ export interface UpscaleRequest {
   quality: number;
   threads: number;
   maxPixels: number;
+  /** [width, height] to fit the 4x model output to, instead of `scale`. */
+  outputSize?: [number, number] | null;
+  /** Mean/variance colour transfer from a bicubic resize of the input. */
+  colorFix?: boolean;
 }
 
 export type UpscaleResult =
@@ -36,6 +40,8 @@ export type UpscaleResult =
       outputHeight: number;
       outputBytes: number;
       hasAlpha: boolean;
+      /** colorFix was applied (left out: false). */
+      colorFixed?: boolean;
       seconds: number;
       cpuSeconds: number;
       warnings: string[];

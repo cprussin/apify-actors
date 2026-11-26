@@ -1,7 +1,14 @@
 import { Actor, log } from "apify";
 import { PythonWorker } from "./converter.js";
 import { authHeaders, DocumentError, download } from "./download.js";
-import { InputError, normalizeInput, type RawInput } from "./input.js";
+import { apiFields, datasetRows, type DatasetRow } from "./dataset.js";
+import {
+  addDatasetSources,
+  InputError,
+  MAX_SOURCES,
+  normalizeInput,
+  type RawInput,
+} from "./input.js";
 import { runConversions } from "./run.js";
 
 export const DOCUMENT_EVENT = "document-converted";
@@ -21,6 +28,33 @@ try {
       await Actor.fail(`Invalid input: ${e.message}`);
     }
     throw e;
+  }
+  // Document URLs from another run's dataset (e.g. a scraper's output). An
+  // unreadable dataset is one free error item, not a failed run.
+  if (input.dataset) {
+    const { id, field, maxItems } = input.dataset;
+    let rows: DatasetRow[];
+    try {
+      const page = await Actor.apifyClient.dataset(id).listItems({
+        clean: true,
+        limit: maxItems,
+        fields: apiFields(field),
+      });
+      rows = datasetRows(page.items, id, field);
+      if (!page.items.length) log.warning(`Dataset "${id}" has no items.`);
+    } catch (e) {
+      rows = [
+        {
+          origin: { datasetId: id, itemIndex: null },
+          error: `Reading dataset "${id}" failed: ${(e as Error).message}`,
+        },
+      ];
+    }
+    const dropped = addDatasetSources(input.sources, rows);
+    if (dropped)
+      log.warning(
+        `${dropped} dataset item(s) left out: at most ${MAX_SOURCES} documents per run.`,
+      );
   }
   log.info(
     `${input.sources.length} document(s) -> ${input.outputFormat}` +

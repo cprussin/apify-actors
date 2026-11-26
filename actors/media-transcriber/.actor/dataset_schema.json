@@ -33,6 +33,18 @@
         "description": "url, kv (key-value store record) or rss (podcast feed episode).",
         "example": "url"
       },
+      "sourceDatasetId": {
+        "type": ["string", "null"],
+        "title": "Source dataset",
+        "description": "The datasetId the media URL was read from; null for Dataset items rows and other inputs.",
+        "example": null
+      },
+      "sourceItemIndex": {
+        "type": ["number", "null"],
+        "title": "Source item index",
+        "description": "0-based row of the dataset (or of Dataset items) the URL came from; null for other inputs.",
+        "example": null
+      },
       "feedUrl": {
         "type": ["string", "null"],
         "title": "Feed URL",
@@ -81,6 +93,18 @@
         "description": "Whisper model used: base or small.",
         "example": "base"
       },
+      "task": {
+        "type": ["string", "null"],
+        "title": "Task",
+        "description": "transcribe, or translate (translateToEnglish: Whisper wrote English). Published transcripts are transcribe; null on failure.",
+        "example": "transcribe"
+      },
+      "vocabularyUsed": {
+        "type": ["string", "null"],
+        "title": "Vocabulary used",
+        "description": "The vocabulary Whisper was prompted with, or null.",
+        "example": null
+      },
       "language": {
         "type": ["string", "null"],
         "title": "Language",
@@ -120,7 +144,7 @@
       "segments": {
         "type": ["array", "null"],
         "title": "Segments",
-        "description": "Timestamped segments [{start, end, text}] in seconds (transcript format).",
+        "description": "Timestamped segments [{start, end, text}] in seconds (transcript format). With wordTimestamps, each Whisper segment also has words [{start, end, word, probability}].",
         "example": [
           {
             "start": 0.0,

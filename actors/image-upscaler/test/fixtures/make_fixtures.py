@@ -25,6 +25,8 @@ def path(name):
 gradient(40, 30).save(path("rgb.png"))
 gradient(40, 30).save(path("photo.jpg"), quality=90)
 gradient(24, 24, "L").save(path("gray.png"))
+# outputMegapixels: 256x256 to 1 MP.
+gradient(256, 256).save(path("square.png"))
 
 # Left half transparent.
 rgba = gradient(32, 32, "RGBA")

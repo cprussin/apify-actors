@@ -11,10 +11,11 @@ Requests:
     -> {"id", "ok": true, "format", "width", "height", "frames"}
   {"id", "op": "upscale", "path", "outPath", "scale" (2-4),
    "format" ("png" | "jpg" | "webp"), "quality" (1-100), "threads",
-   "maxPixels"}
+   "maxPixels", "outputSize" ([width, height] to fit to instead of the
+   scale; optional), "colorFix" (bool; optional)}
     -> {"id", "ok": true, "inputWidth", "inputHeight", "outputWidth",
-        "outputHeight", "outputBytes", "hasAlpha", "seconds", "cpuSeconds",
-        "warnings"}
+        "outputHeight", "outputBytes", "hasAlpha", "colorFixed", "seconds",
+        "cpuSeconds", "warnings"}
 Errors: {"id", "ok": false, "error", "code"}
   code: "decode" | "too_large" | "internal"
 """
@@ -172,6 +173,21 @@ def run_model(sess, rgb):
     return out
 
 
+def color_fix(big, ref_small):
+    """Per-channel mean/variance transfer from a bicubic resize of the
+    input, so the model's output keeps the input's colours and contrast."""
+    ref = np.asarray(
+        ref_small.resize(big.size, Image.Resampling.BICUBIC), dtype=np.float32
+    )
+    out = np.asarray(big, dtype=np.float32).copy()
+    for c in range(3):
+        o, r = out[:, :, c], ref[:, :, c]
+        o_std = float(o.std())
+        gain = float(r.std()) / o_std if o_std > 1e-3 else 1.0
+        out[:, :, c] = (o - float(o.mean())) * gain + float(r.mean())
+    return Image.fromarray(np.clip(out, 0, 255).round().astype(np.uint8), "RGB")
+
+
 def save(img, path, fmt, quality, icc):
     if fmt == "jpg" and img.mode in ("RGBA", "LA"):
         # JPEG has no alpha: flatten onto white.
@@ -215,6 +231,8 @@ def upscale(req):
     max_pixels = min(
         int(req.get("maxPixels") or HARD_MAX_INPUT_PIXELS), HARD_MAX_INPUT_PIXELS
     )
+    fit = req.get("outputSize")
+    fix = bool(req.get("colorFix"))
     warnings = []
 
     with open_image(req["path"]) as im:
@@ -226,6 +244,8 @@ def upscale(req):
                 code="too_large",
             )
         ow, oh = w * scale, h * scale
+        if fit:
+            ow, oh = max(1, int(fit[0])), max(1, int(fit[1]))
         if ow * oh > HARD_MAX_OUTPUT_PIXELS:
             raise UserError(
                 f"The {scale}x output would be {ow}x{oh}, over the "
@@ -257,10 +277,16 @@ def upscale(req):
                 f"The image could not be decoded (damaged file): {str(e)[:200]}"
             ) from e
 
+    small = (
+        Image.fromarray((rgb * 255).round().astype(np.uint8), "RGB") if fix else None
+    )
     big = Image.fromarray(run_model(session(threads), rgb), "RGB")
     del rgb
-    if scale != MODEL_SCALE:
+    if big.size != (ow, oh):
         big = big.resize((ow, oh), Image.Resampling.LANCZOS)
+    if small is not None:
+        big = color_fix(big, small)
+        del small
     if gray:
         big = big.convert("L")
     if alpha is not None:
@@ -278,6 +304,7 @@ def upscale(req):
         "outputHeight": oh,
         "outputBytes": os.path.getsize(req["outPath"]),
         "hasAlpha": alpha is not None,
+        "colorFixed": fix,
         "seconds": round(time.time() - started, 3),
         "cpuSeconds": round(time.process_time() - cpu_started, 3),
         "warnings": warnings,

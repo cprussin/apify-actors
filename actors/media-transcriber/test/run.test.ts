@@ -1,4 +1,4 @@
-import { writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { describe, expect, it } from "vitest";
 import {
   MediaError,
@@ -16,6 +16,10 @@ import {
 } from "../src/run.js";
 import { Seen } from "../src/state.js";
 import type { TranscribeRequest, TranscribeResult } from "../src/worker.js";
+
+const dataset = JSON.parse(
+  await readFile(new URL("fixtures/dataset.json", import.meta.url), "utf8"),
+) as unknown[];
 
 const FEED = `<rss><channel><title>Pod</title>
 <item><title>New</title><guid>g2</guid><pubDate>Wed, 01 Oct 2026 00:00:00 GMT</pubDate><enclosure url="https://x.org/ep2.mp3" type="audio/mpeg"/></item>
@@ -484,6 +488,98 @@ describe("runTranscriptions", () => {
         .filter((i) => i.status === "transcribed")
         .map((i) => i.transcriptSource),
     ).toEqual(["whisper", "whisper"]);
+  });
+
+  it("transcribes pasted dataset rows, tagging each item with its row", async () => {
+    const h = harness({ datasetItems: dataset });
+    const stats = await runTranscriptions(h.input, h.deps);
+    expect(stats).toMatchObject({ transcribed: 3, failed: 2 });
+    expect(
+      h.items
+        .map((i) => [i.sourceItemIndex, i.url, i.status])
+        .sort((a, b) => Number(a[0]) - Number(b[0])),
+    ).toEqual([
+      [0, "https://x.org/a.mp3", "transcribed"],
+      [1, "https://x.org/b.mp4", "transcribed"],
+      [2, "datasetItems", "failed"],
+      [3, "https://www.tiktok.com/@a/video/1", "failed"],
+      [5, "https://x.org/ep1.mp3", "transcribed"],
+    ]);
+    expect(h.items.every((i) => i.sourceDatasetId === null)).toBe(true);
+    expect(h.charges).toHaveLength(3);
+  });
+
+  it("filters feed episodes by date and title before maxEpisodes", async () => {
+    const h = harness({
+      rssFeeds: ["https://feeds.x.org/pod.xml"],
+      maxEpisodes: 1,
+      publishedAfter: "2026-08-15",
+      titleExcludes: ["NEW"],
+    });
+    await runTranscriptions(h.input, h.deps);
+    expect(h.items.map((i) => i.title)).toEqual(["Old"]);
+
+    const none = harness({
+      rssFeeds: ["https://feeds.x.org/pod.xml"],
+      titleContains: ["bonus", "special"],
+    });
+    await runTranscriptions(none.input, none.deps);
+    expect(none.items).toHaveLength(1);
+    expect(none.items[0]!.error).toMatch(
+      /None of the feed's 3 episode\(s\) match/,
+    );
+  });
+
+  it("passes word timestamps, translation and vocabulary to Whisper", async () => {
+    const h = harness({
+      urls: ["https://x.org/a.mp3"],
+      wordTimestamps: true,
+      translateToEnglish: true,
+      vocabulary: "  Kenobi,\n Grievous ",
+    });
+    await runTranscriptions(h.input, h.deps);
+    expect(h.requests[0]).toMatchObject({
+      wordTimestamps: true,
+      task: "translate",
+      vocabulary: "Kenobi, Grievous",
+    });
+    expect(h.items[0]).toMatchObject({
+      task: "translate",
+      vocabularyUsed: "Kenobi, Grievous",
+      sourceDatasetId: null,
+      sourceItemIndex: null,
+    });
+
+    const plain = harness({ urls: ["https://x.org/a.mp3"] });
+    await runTranscriptions(plain.input, plain.deps);
+    expect(plain.requests[0]).toMatchObject({
+      wordTimestamps: false,
+      task: "transcribe",
+      vocabulary: null,
+    });
+    expect(plain.items[0]).toMatchObject({
+      task: "transcribe",
+      vocabularyUsed: null,
+    });
+  });
+
+  it("translateToEnglish skips published transcripts in other languages", async () => {
+    const h = harness({
+      rssFeeds: ["https://feeds.x.org/pub.xml"],
+      translateToEnglish: true,
+    });
+    await runTranscriptions(h.input, h.deps);
+    const by = Object.fromEntries(h.items.map((i) => [i.title, i]));
+    // Vtt is German: Whisper translates it instead (but it is 5 h long).
+    expect(by["Vtt"]).toMatchObject({
+      transcriptSource: null,
+      error: expect.stringMatching(/300.0 min long/),
+    });
+    // Plain is in the feed's language, English: still used.
+    expect(by["Plain"]).toMatchObject({
+      transcriptSource: "published",
+      task: "transcribe",
+    });
   });
 
   it("bills started minutes", () => {

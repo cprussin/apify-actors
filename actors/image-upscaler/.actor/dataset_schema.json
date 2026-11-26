@@ -15,6 +15,18 @@
         "description": "url or kv (key-value store record).",
         "example": "url"
       },
+      "sourceDatasetId": {
+        "type": ["string", "null"],
+        "title": "Source dataset",
+        "description": "The datasetId the image URL was read from; null for Dataset items rows and other inputs.",
+        "example": null
+      },
+      "sourceItemIndex": {
+        "type": ["number", "null"],
+        "title": "Source item index",
+        "description": "0-based row of the dataset (or of Dataset items) the URL came from; null for other inputs.",
+        "example": null
+      },
       "fileName": {
         "type": ["string", "null"],
         "title": "File name",
@@ -54,8 +66,26 @@
       "scale": {
         "type": "number",
         "title": "Scale",
-        "description": "Requested scale: 2, 3 or 4.",
+        "description": "Model scale used: 2, 3 or 4 (the requested one, or with outputMegapixels the smallest that reaches the target).",
         "example": 4
+      },
+      "targetMegapixels": {
+        "type": ["number", "null"],
+        "title": "Target size (MP)",
+        "description": "outputMegapixels, when set; null when the output is Scale times the input.",
+        "example": null
+      },
+      "effectiveScale": {
+        "type": ["number", "null"],
+        "title": "Effective scale",
+        "description": "Output width divided by input width (equals scale without a target).",
+        "example": 4
+      },
+      "colorFixed": {
+        "type": "boolean",
+        "title": "Colour fixed",
+        "description": "Whether colorFix matched the output's colours to the input.",
+        "example": false
       },
       "outputWidth": {
         "type": ["number", "null"],

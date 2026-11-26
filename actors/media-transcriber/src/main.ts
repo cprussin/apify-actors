@@ -7,7 +7,14 @@ import {
   MediaError,
   saveStream,
 } from "./download.js";
-import { InputError, normalizeInput, type RawInput } from "./input.js";
+import { apiFields, datasetRows, type DatasetRow } from "./dataset.js";
+import {
+  addDatasetSources,
+  InputError,
+  MAX_SOURCES,
+  normalizeInput,
+  type RawInput,
+} from "./input.js";
 import { RobotsGate } from "./robots-gate.js";
 import { runTranscriptions } from "./run.js";
 import { Seen, stateKey } from "./state.js";
@@ -36,11 +43,41 @@ try {
     }
     throw e;
   }
+  // Media URLs from another run's dataset (e.g. a scraper's output). An
+  // unreadable dataset is one free error item, not a failed run.
+  if (input.dataset) {
+    const { id, field, maxItems } = input.dataset;
+    let rows: DatasetRow[];
+    try {
+      const page = await Actor.apifyClient.dataset(id).listItems({
+        clean: true,
+        limit: maxItems,
+        fields: apiFields(field),
+      });
+      rows = datasetRows(page.items, id, field);
+      if (!page.items.length) log.warning(`Dataset "${id}" has no items.`);
+    } catch (e) {
+      rows = [
+        {
+          origin: { datasetId: id, itemIndex: null },
+          error: `Reading dataset "${id}" failed: ${(e as Error).message}`,
+        },
+      ];
+    }
+    const dropped = addDatasetSources(input.sources, rows);
+    if (dropped)
+      log.warning(
+        `${dropped} dataset item(s) left out: at most ${MAX_SOURCES} files and feeds per run.`,
+      );
+  }
+
   // Apify gives one CPU core per 4 GB of memory.
   const memoryMb = Number(process.env.ACTOR_MEMORY_MBYTES) || 4096;
   const threads = Math.max(1, Math.floor(memoryMb / 4096));
   log.info(
     `${input.sources.length} file(s)/feed(s), model ${input.model}, language ${input.language ?? "auto"}, ${input.outputFormat}` +
+      (input.task === "translate" ? ", translated to English" : "") +
+      (input.wordTimestamps ? ", word timestamps" : "") +
       (input.onlyNewEpisodes ? ", only new episodes" : "") +
       `, max ${input.maxDurationSecs / 60} min per file, ${threads} thread(s).`,
   );

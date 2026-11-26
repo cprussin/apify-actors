@@ -3,7 +3,13 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { detectImage } from "./detect.js";
 import { ImageError, type Downloaded } from "./download.js";
-import type { NormalizedInput, OutputFormat, Scale, Source } from "./input.js";
+import {
+  SCALES,
+  type NormalizedInput,
+  type OutputFormat,
+  type Scale,
+  type Source,
+} from "./input.js";
 import type { Probe, Upscale, UpscaleResult } from "./worker.js";
 
 export const MODEL = "realesr-general-x4v3";
@@ -17,6 +23,10 @@ export interface OutputItem {
   /** Image URL, or "storeId/key" for a key-value store record. */
   url: string;
   sourceType: SourceType;
+  /** Dataset the URL was read from; null for pasted datasetItems or none. */
+  sourceDatasetId: string | null;
+  /** 0-based row of datasetId or datasetItems; null when not from one. */
+  sourceItemIndex: number | null;
   fileName: string | null;
   inputFormat: string | null;
   inputBytes: number | null;
@@ -24,6 +34,11 @@ export interface OutputItem {
   inputHeight: number | null;
   inputMegapixels: number | null;
   scale: Scale;
+  /** outputMegapixels, when set; null: the output is `scale` times the input. */
+  targetMegapixels: number | null;
+  /** Output width / input width (equals scale without a target). */
+  effectiveScale: number | null;
+  colorFixed: boolean;
   outputWidth: number | null;
   outputHeight: number | null;
   outputFormat: OutputFormat;
@@ -93,6 +108,50 @@ export const billableUnits = (pixels: number) =>
   Math.max(1, Math.ceil(pixels / PIXELS_PER_UNIT));
 
 export const megapixels = (pixels: number) => Math.round(pixels / 10_000) / 100;
+
+export interface OutputPlan {
+  /** The model scale: the given one, or the smallest reaching the target. */
+  scale: Scale;
+  width: number;
+  height: number;
+  /** Set when the target makes the output smaller or more than 4x. */
+  warning: string | null;
+}
+
+/**
+ * Output size for a `width`x`height` input: `scale` times it, or, with a
+ * target, the smallest of 2/3/4 that reaches `targetPixels`, fitted to that
+ * many pixels with the aspect ratio kept.
+ */
+export function planOutput(
+  width: number,
+  height: number,
+  scale: Scale,
+  targetPixels: number | null,
+): OutputPlan {
+  if (!targetPixels)
+    return {
+      scale,
+      width: width * scale,
+      height: height * scale,
+      warning: null,
+    };
+  const pixels = width * height;
+  const chosen = SCALES.find((s) => pixels * s * s >= targetPixels) ?? 4;
+  const k = Math.sqrt(targetPixels / pixels);
+  const mp = targetPixels / 1e6;
+  return {
+    scale: chosen,
+    width: Math.max(1, Math.round(width * k)),
+    height: Math.max(1, Math.round(height * k)),
+    warning:
+      k > 4
+        ? `${mp} MP is more than 4x this ${megapixels(pixels)} MP image: the 4x result was enlarged further with Lanczos (no new detail beyond 4x).`
+        : k < 1
+          ? `The image is already ${megapixels(pixels)} MP, more than the ${mp} MP target: the output is smaller than the input.`
+          : null,
+  };
+}
 
 /** Key-value store key for an output image: upscaled-0001-name.png. */
 export function outputKey(
@@ -169,6 +228,8 @@ export async function runUpscales(
   const blank = (s: Source, extra: Partial<OutputItem> = {}): OutputItem => ({
     url: s.kind === "url" ? s.url : s.input,
     sourceType: s.kind === "kv" ? "kv" : "url",
+    sourceDatasetId: (s.kind === "kv" ? null : s.origin?.datasetId) ?? null,
+    sourceItemIndex: (s.kind === "kv" ? null : s.origin?.itemIndex) ?? null,
     fileName: null,
     inputFormat: null,
     inputBytes: null,
@@ -176,6 +237,9 @@ export async function runUpscales(
     inputHeight: null,
     inputMegapixels: null,
     scale: input.scale,
+    targetMegapixels: input.targetPixels ? input.targetPixels / 1e6 : null,
+    effectiveScale: null,
+    colorFixed: false,
     outputWidth: null,
     outputHeight: null,
     outputFormat: input.outputFormat,
@@ -243,17 +307,27 @@ export async function runUpscales(
         return deps.budgetUnits() >= 1;
       }
 
+      const plan = planOutput(
+        info.width,
+        info.height,
+        input.scale,
+        input.targetPixels,
+      );
       let res: UpscaleResult;
       try {
         res = await deps.upscale(
           {
             path: file.path,
             outPath,
-            scale: input.scale,
+            scale: plan.scale,
             format: input.outputFormat,
             quality: input.quality,
             threads: deps.threads,
             maxPixels: input.maxInputPixels,
+            ...(input.targetPixels
+              ? { outputSize: [plan.width, plan.height] as [number, number] }
+              : {}),
+            ...(input.colorFix ? { colorFix: true } : {}),
           },
           deps.timeoutMs(pixels),
         );
@@ -272,8 +346,13 @@ export async function runUpscales(
         outPath,
         CONTENT_TYPES[input.outputFormat],
       );
+      const warnings = [plan.warning, ...res.warnings].filter(Boolean);
       const item: OutputItem = {
         ...sized,
+        scale: plan.scale,
+        effectiveScale:
+          Math.round((res.outputWidth / info.width) * 1000) / 1000,
+        colorFixed: res.colorFixed === true,
         outputWidth: res.outputWidth,
         outputHeight: res.outputHeight,
         outputBytes: res.outputBytes,
@@ -281,7 +360,7 @@ export async function runUpscales(
         outputUrl,
         billedUnits: units,
         processingSeconds: Math.round(res.seconds * 100) / 100,
-        warning: res.warnings.join(" ") || null,
+        warning: warnings.join(" ") || null,
       };
       const emitted = await deps.emit(item, units);
       if (emitted.pushed) {

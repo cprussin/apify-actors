@@ -1,7 +1,13 @@
+import { readFile } from "node:fs/promises";
 import { describe, expect, it } from "vitest";
 import type { ConvertRequest, ConvertResult } from "../src/converter.js";
+import { datasetRows } from "../src/dataset.js";
 import { DocumentError, type Fetched } from "../src/download.js";
-import { normalizeInput, type RawInput } from "../src/input.js";
+import {
+  addDatasetSources,
+  normalizeInput,
+  type RawInput,
+} from "../src/input.js";
 import {
   assemble,
   MAX_ITEM_CONTENT_BYTES,
@@ -263,6 +269,48 @@ describe("runConversions", () => {
     expect(item.content!.length).toBe(1_000_000);
     expect(item.charCount).toBeGreaterThan(MAX_ITEM_CONTENT_BYTES);
     expect(item.warning).toMatch(/truncated/);
+  });
+
+  it("converts URLs from a dataset, tagging each item with its row", async () => {
+    const dataset = JSON.parse(
+      await readFile(new URL("fixtures/dataset.json", import.meta.url), "utf8"),
+    ) as unknown[];
+    const h = harness({ datasetId: "me~reports" });
+    expect(h.input.sources).toEqual([]);
+    addDatasetSources(
+      h.input.sources,
+      datasetRows(dataset, "me~reports", null),
+    );
+    const stats = await runConversions(h.input, h.deps);
+    // Row 4 repeats row 0's URL and is converted once.
+    expect(stats).toMatchObject({ converted: 2, failed: 2 });
+    expect(h.charges).toHaveLength(2);
+    const rows = h.items
+      .map((i) => [i.sourceDatasetId, i.sourceItemIndex, i.url, i.error])
+      .sort((a, b) => Number(a[1]) - Number(b[1]));
+    expect(rows).toEqual([
+      ["me~reports", 0, "https://x.org/a.pdf", null],
+      ["me~reports", 1, "https://x.org/b.docx", null],
+      [
+        "me~reports",
+        2,
+        "me~reports",
+        expect.stringMatching(/No document URL in dataset item 2/),
+      ],
+      ["me~reports", 3, "https://x.org/404.pdf", "Download failed: HTTP 404."],
+    ]);
+  });
+
+  it("leaves the source fields null without a dataset", async () => {
+    const h = harness({
+      urls: ["https://x.org/a.pdf"],
+      keyValueStoreRecords: ["s/k"],
+    });
+    await runConversions(h.input, h.deps);
+    expect(h.items.map((i) => [i.sourceDatasetId, i.sourceItemIndex])).toEqual([
+      [null, null],
+      [null, null],
+    ]);
   });
 });
 

@@ -202,6 +202,65 @@ describe.skipIf(!hasWorker)("Python upscaler", () => {
     expect(ok.ok).toBe(true);
   }, 60_000);
 
+  it("fits a 256x256 PNG to outputMegapixels 1, with colorFix", async () => {
+    const input = normalizeInput({
+      urls: ["https://x.org/square.png"],
+      outputMegapixels: 1,
+      colorFix: true,
+    });
+    const items: OutputItem[] = [];
+    let out = "";
+    await runUpscales(input, {
+      download: async (_job, path) => {
+        await copyFile(join(dir, "square.png"), path);
+        const body = readFileSync(path);
+        return {
+          path,
+          bytes: body.length,
+          head: body.subarray(0, 4096),
+          contentType: null,
+          fileName: "square.png",
+        };
+      },
+      probe: worker.probe,
+      upscale: worker.upscale,
+      budgetUnits: () => Infinity,
+      emit: async (item) => {
+        items.push(item);
+        return { pushed: true, more: true };
+      },
+      saveFile: async (key, path) => {
+        out = join(dir, key);
+        await copyFile(path, out);
+        return `memory://${key}`;
+      },
+      deleteFile: async () => {},
+      threads: 2,
+      timeoutMs: () => 120_000,
+    });
+    const item = items[0]!;
+    if (item.error) throw new Error(item.error);
+    const [w, h] = info(out);
+    expect(Math.abs(w * h - 1_000_000) / 1_000_000).toBeLessThan(0.01);
+    expect(item).toMatchObject({
+      outputWidth: w,
+      outputHeight: h,
+      scale: 4,
+      targetMegapixels: 1,
+      effectiveScale: 3.906,
+      colorFixed: true,
+      billedUnits: 1,
+    });
+    // Colour fix: each channel's mean matches a bicubic resize of the input.
+    const means = execFileSync(python, [
+      "-c",
+      "import sys, numpy as np; from PIL import Image; b = Image.open(sys.argv[2]); a = np.asarray(Image.open(sys.argv[1]).convert('RGB').resize(b.size, Image.BICUBIC), float); b = np.asarray(b, float); print(float(np.abs(a.mean((0, 1)) - b.mean((0, 1))).max()))",
+      join(dir, "square.png"),
+      out,
+    ]).toString();
+    expect(Number(means)).toBeLessThan(1);
+  }, 120_000);
+
   it("runs a whole batch through runUpscales", async () => {
     const input = normalizeInput({
       urls: [

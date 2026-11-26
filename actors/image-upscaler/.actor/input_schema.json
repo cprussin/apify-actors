@@ -13,6 +13,12 @@
       ],
       "sectionCaption": "Images"
     },
+    "imageUrl": {
+      "title": "Image URL",
+      "type": "string",
+      "description": "One image link, for agents and API calls that pass a single image. Added to Image URLs.",
+      "editor": "textfield"
+    },
     "startUrls": {
       "title": "Start URLs",
       "type": "array",
@@ -25,6 +31,33 @@
       "description": "Images uploaded to an Apify key-value store, as <code>storeId/recordKey</code> or <code>username~store-name/recordKey</code>, one per line. Use this to upscale your own files without hosting them anywhere.",
       "editor": "stringList"
     },
+    "datasetId": {
+      "title": "Dataset ID",
+      "type": "string",
+      "description": "Optional: upscale the image URLs in another run's dataset (e.g. a product scraper's output), as a dataset ID or <code>username~dataset-name</code>. Read with your run's token; a dataset you can't read gives one free error item.",
+      "editor": "textfield"
+    },
+    "datasetField": {
+      "title": "Dataset URL field",
+      "type": "string",
+      "description": "The dataset field with the image URL (a string, an array of URLs or an object with a url/src). Dot paths like <code>product.image</code> work. Empty: the first of url, videoUrl, mediaUrl, audioUrl, imageUrl, downloadUrl, fileUrl.",
+      "editor": "textfield"
+    },
+    "datasetItems": {
+      "title": "Dataset items",
+      "type": "array",
+      "description": "Optional: dataset rows pasted as JSON (objects with a URL field, or plain URL strings), read like a dataset. Handy for agents and pipelines that already hold the rows.",
+      "editor": "json"
+    },
+    "maxDatasetItems": {
+      "title": "Max dataset items",
+      "type": "integer",
+      "description": "Read at most this many rows of the dataset (and of Dataset items). Rows without a URL get a free error item.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 1000,
+      "default": 100
+    },
     "scale": {
       "title": "Scale",
       "type": "integer",
@@ -35,6 +68,20 @@
       "default": 4,
       "prefill": 4,
       "sectionCaption": "Output"
+    },
+    "outputMegapixels": {
+      "title": "Output size (megapixels)",
+      "type": "string",
+      "description": "Optional: make every output this many megapixels instead of using Scale (aspect ratio kept). The smallest scale that reaches it is used, then the result is resized to the exact size. Same price: billing depends on the input size only.",
+      "editor": "select",
+      "enum": ["1", "2", "3", "4", "6", "8"],
+      "enumTitles": ["1 MP", "2 MP", "3 MP", "4 MP", "6 MP", "8 MP"]
+    },
+    "colorFix": {
+      "title": "Colour fix",
+      "type": "boolean",
+      "description": "Match each colour channel's brightness and contrast to a plain resize of the input, in case the model shifts colours. Same price.",
+      "default": false
     },
     "outputFormat": {
       "title": "Output format",

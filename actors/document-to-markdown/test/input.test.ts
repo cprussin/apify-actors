@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
+  addDatasetSources,
   InputError,
+  MAX_SOURCES,
   normalizeInput,
   normalizeUrl,
   parseRecordRef,
@@ -65,6 +67,86 @@ describe("normalizeInput", () => {
       normalizeInput({ outputFormat: "CHUNKS", ocr: false }),
     ).toMatchObject({ outputFormat: "chunks", ocr: false });
     expect(normalizeInput({ maxFileSizeMb: "10" }).maxBytes).toBe(10485760);
+  });
+
+  it("reads dataset inputs", () => {
+    expect(normalizeInput({}).dataset).toBeNull();
+    const n = normalizeInput({
+      urls: ["https://x.org/a.pdf"],
+      datasetItems: [
+        { attachment: { href: "https://x.org/b.pdf" } },
+        { attachment: { href: "https://x.org/a.pdf" } },
+        { attachment: {} },
+        { attachment: { href: "https://x.org/c.pdf" } },
+      ],
+      datasetField: "attachment",
+      datasetId: "me~reports",
+      maxDatasetItems: 3,
+    });
+    expect(n.sources).toEqual([
+      {
+        index: 0,
+        kind: "url",
+        input: "https://x.org/a.pdf",
+        url: "https://x.org/a.pdf",
+      },
+      {
+        index: 1,
+        kind: "url",
+        input: "https://x.org/b.pdf",
+        url: "https://x.org/b.pdf",
+        origin: { datasetId: null, itemIndex: 0 },
+      },
+      {
+        index: 2,
+        kind: "invalid",
+        input: "datasetItems",
+        error: expect.stringMatching(/No document URL in dataset item 2/),
+        origin: { datasetId: null, itemIndex: 2 },
+      },
+    ]);
+    expect(n.dataset).toEqual({
+      id: "me~reports",
+      field: "attachment",
+      maxItems: 3,
+    });
+    // A dataset alone replaces the sample document.
+    expect(normalizeInput({ datasetId: "me~reports" }).sources).toEqual([]);
+    for (const bad of [
+      { datasetId: "a b" },
+      { datasetField: ".x" },
+      { datasetItems: {} as never },
+      { maxDatasetItems: 10_001 },
+    ])
+      expect(() => normalizeInput(bad)).toThrow(InputError);
+  });
+});
+
+describe("addDatasetSources", () => {
+  it("skips listed URLs, keeps row errors and caps the run", () => {
+    const sources = normalizeInput({ urls: ["https://x.org/a.pdf"] }).sources;
+    const origin = (i: number) => ({ datasetId: "d", itemIndex: i });
+    const dropped = addDatasetSources(sources, [
+      { origin: origin(0), url: "x.org/a.pdf" },
+      { origin: origin(1), url: "ftp://x.org/b.pdf" },
+      { origin: origin(2), error: "No document URL." },
+    ]);
+    expect(dropped).toBe(0);
+    expect(sources.map((s) => [s.index, s.kind, s.input])).toEqual([
+      [0, "url", "https://x.org/a.pdf"],
+      [1, "invalid", "ftp://x.org/b.pdf"],
+      [2, "invalid", "d"],
+    ]);
+    const full = normalizeInput({
+      urls: Array.from(
+        { length: MAX_SOURCES },
+        (_, i) => `https://x.org/${i}.pdf`,
+      ),
+    }).sources;
+    expect(
+      addDatasetSources(full, [{ origin: origin(0), url: "https://y.org" }]),
+    ).toBe(1);
+    expect(full).toHaveLength(MAX_SOURCES);
   });
 });
 

@@ -1,0 +1,7 @@
+[
+  { "title": "Chair", "imageUrl": "https://x.org/small.png" },
+  { "title": "Lamp", "images": ["ignored"], "url": "https://x.org/mid.png" },
+  { "title": "No image", "price": 12 },
+  { "title": "Social", "imageUrl": "https://www.instagram.com/p/abc/" },
+  { "title": "Again", "fileUrl": "https://x.org/small.png" }
+]

@@ -100,6 +100,70 @@ describe("normalizeInput", () => {
     ).toMatchObject({ preferPublishedTranscripts: true, publishedOnly: true });
   });
 
+  it("reads the Whisper options and feed filters", () => {
+    expect(normalizeInput({})).toMatchObject({
+      dataset: null,
+      wordTimestamps: false,
+      task: "transcribe",
+      vocabulary: null,
+      publishedAfter: null,
+      titleContains: [],
+      titleExcludes: [],
+    });
+    expect(
+      normalizeInput({
+        wordTimestamps: true,
+        translateToEnglish: true,
+        vocabulary: "Apify,  Crawlee",
+        publishedAfter: "2026-01-31",
+        titleContains: ["Interview", " interview ", ""],
+        titleExcludes: "Trailer\nBonus",
+      }),
+    ).toMatchObject({
+      wordTimestamps: true,
+      task: "translate",
+      vocabulary: "Apify, Crawlee",
+      publishedAfter: "2026-01-31T00:00:00.000Z",
+      titleContains: ["interview"],
+      titleExcludes: ["trailer", "bonus"],
+    });
+    expect(() => normalizeInput({ publishedAfter: "last week" })).toThrow(
+      /not a date/,
+    );
+    expect(() => normalizeInput({ vocabulary: "x".repeat(1001) })).toThrow(
+      /at most 1000/,
+    );
+  });
+
+  it("reads dataset inputs", () => {
+    const n = normalizeInput({ datasetId: "me~podcast-scrape" });
+    expect(n.sources).toEqual([]);
+    expect(n.dataset).toEqual({
+      id: "me~podcast-scrape",
+      field: null,
+      maxItems: 100,
+    });
+    const pasted = normalizeInput({
+      urls: ["https://x.org/a.mp3"],
+      datasetItems: [
+        { episode: { audio: "https://x.org/a.mp3" } },
+        { episode: { audio: [{ url: "https://x.org/b.mp3" }] } },
+      ],
+      datasetField: "episode.audio",
+    });
+    expect(pasted.sources).toEqual([
+      { index: 0, kind: "url", input: "https://x.org/a.mp3", url: "https://x.org/a.mp3" },
+      { index: 1, kind: "url", input: "https://x.org/b.mp3", url: "https://x.org/b.mp3", origin: { datasetId: null, itemIndex: 1 } },
+    ]); // prettier-ignore
+    for (const bad of [
+      { datasetId: "has space" },
+      { datasetField: "a..b" },
+      { datasetItems: "nope" as never },
+      { maxDatasetItems: 0 },
+    ])
+      expect(() => normalizeInput(bad)).toThrow(InputError);
+  });
+
   it("knows Whisper's 100 languages", () => {
     expect(LANGUAGES).toHaveLength(100);
     expect(new Set(LANGUAGES).size).toBe(100);

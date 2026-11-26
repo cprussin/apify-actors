@@ -23,6 +23,48 @@ describe("normalizeInput", () => {
     });
   });
 
+  it("reads outputMegapixels, colorFix, imageUrl and dataset inputs", () => {
+    expect(normalizeInput({})).toMatchObject({
+      dataset: null,
+      targetPixels: null,
+      colorFix: false,
+    });
+    expect(
+      normalizeInput({ outputMegapixels: "4", colorFix: true }),
+    ).toMatchObject({ targetPixels: 4_000_000, colorFix: true });
+    expect(normalizeInput({ outputMegapixels: 2 }).targetPixels).toBe(
+      2_000_000,
+    );
+    expect(() => normalizeInput({ outputMegapixels: 5 })).toThrow(
+      /outputMegapixels must be one of 1, 2, 3, 4, 6, 8/,
+    );
+    const n = normalizeInput({
+      urls: ["https://x.org/a.png"],
+      imageUrl: "https://x.org/b.png",
+      datasetItems: [{ product: { image: { src: "https://x.org/a.png" } } }],
+      datasetField: "product.image",
+      datasetId: "me~products",
+      maxDatasetItems: 50,
+    });
+    expect(n.sources.map((s) => s.input)).toEqual([
+      "https://x.org/a.png",
+      "https://x.org/b.png",
+    ]);
+    expect(n.dataset).toEqual({
+      id: "me~products",
+      field: "product.image",
+      maxItems: 50,
+    });
+    expect(normalizeInput({ datasetId: "me~products" }).sources).toEqual([]);
+    for (const bad of [
+      { datasetId: "a b" },
+      { datasetField: ".x" },
+      { datasetItems: {} as never },
+      { maxDatasetItems: 1001 },
+    ])
+      expect(() => normalizeInput(bad)).toThrow(InputError);
+  });
+
   it("combines and dedupes URLs, start URLs and records", () => {
     const n = normalizeInput({
       urls: ["example.com/a.jpg", "https://example.com/a.jpg", "not a url"],

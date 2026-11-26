@@ -7,9 +7,13 @@ stdout, in order. Library output is redirected to stderr so it can't corrupt
 the protocol.
 
 Request:  {"id", "path", "model", "language" (null = detect), "threads",
-           "maxSeconds", "budgetMinutes" (null = unlimited)}
+           "maxSeconds", "budgetMinutes" (null = unlimited),
+           "wordTimestamps" (bool), "task" ("transcribe" | "translate"),
+           "vocabulary" (initial prompt, or null)}
 Response: {"id", "ok": true, "language", "languageProbability", "duration",
-           "segments": [{"start", "end", "text"}], "warnings"}
+           "segments": [{"start", "end", "text",
+                         "words": [{"start", "end", "word", "probability"}]
+                         (wordTimestamps only)}], "warnings"}
           {"id", "ok": false, "error", "code", "duration"}
           code: "too_long" | "budget" | "no_audio" | "decode" | "internal"
 """
@@ -50,6 +54,8 @@ MIN_SECONDS = 0.3
 # when the header says clearly too long.
 HEADER_TOLERANCE = 1.1
 PROBE_TIMEOUT_SECS = 120
+# faster-whisper keeps the last max_length // 2 - 1 tokens of the prompt.
+MAX_PROMPT_TOKENS = 223
 
 _models = {}
 
@@ -241,6 +247,17 @@ def transcribe(req):
     model = load_model(model_name, threads)
     language = req.get("language") or None
     probability = 1.0 if language else None
+    words_on = bool(req.get("wordTimestamps"))
+    task = "translate" if req.get("task") == "translate" else "transcribe"
+    prompt = (req.get("vocabulary") or "").strip() or None
+    tokenizer = getattr(model, "hf_tokenizer", None)
+    if prompt and tokenizer is not None:
+        tokens = len(tokenizer.encode(" " + prompt).ids)
+        if tokens > MAX_PROMPT_TOKENS:
+            warnings.append(
+                f"The vocabulary is {tokens} tokens; Whisper used only the "
+                f"last {MAX_PROMPT_TOKENS}."
+            )
     segments = []
     started = time.time()
     parts = windows(audio)
@@ -249,23 +266,36 @@ def transcribe(req):
         segs, info = model.transcribe(
             chunk,
             language=language,
+            task=task,
+            initial_prompt=prompt,
+            word_timestamps=words_on,
             vad_filter=True,
             beam_size=5,
         )
         offset = a / SAMPLE_RATE
+        end_cap = b / SAMPLE_RATE
         found = False
         for s in segs:
             text = s.text.strip()
             if not text:
                 continue
             found = True
-            segments.append(
-                {
-                    "start": round(s.start + offset, 3),
-                    "end": round(min(s.end + offset, b / SAMPLE_RATE), 3),
-                    "text": text,
-                }
-            )
+            seg = {
+                "start": round(s.start + offset, 3),
+                "end": round(min(s.end + offset, end_cap), 3),
+                "text": text,
+            }
+            if words_on:
+                seg["words"] = [
+                    {
+                        "start": round(w.start + offset, 3),
+                        "end": round(min(w.end + offset, end_cap), 3),
+                        "word": w.word,
+                        "probability": round(float(w.probability), 4),
+                    }
+                    for w in (s.words or [])
+                ]
+            segments.append(seg)
         # Keep the language detected in the first window with speech.
         if found and language is None:
             language = info.language

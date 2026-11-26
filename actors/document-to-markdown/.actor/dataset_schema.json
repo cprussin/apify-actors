@@ -117,6 +117,18 @@
         "description": "Why the document failed (not billed), or null on success.",
         "example": null
       },
+      "sourceDatasetId": {
+        "type": ["string", "null"],
+        "title": "Source dataset",
+        "description": "The dataset the document URL was read from (datasetId), or null.",
+        "example": null
+      },
+      "sourceItemIndex": {
+        "type": ["integer", "null"],
+        "title": "Source dataset row",
+        "description": "0-based row of the dataset (or of datasetItems) the URL came from, or null.",
+        "example": null
+      },
       "convertedAt": {
         "type": "string",
         "title": "Converted at",

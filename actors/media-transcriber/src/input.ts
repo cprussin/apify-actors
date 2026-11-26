@@ -1,3 +1,11 @@
+import {
+  DATASET_FIELD,
+  DATASET_ID,
+  datasetRows,
+  type DatasetOrigin,
+  type DatasetRow,
+} from "./dataset.js";
+
 export const MODELS = ["base", "small"] as const;
 export type Model = (typeof MODELS)[number];
 
@@ -23,8 +31,18 @@ export interface RawInput {
   urls?: (string | { url?: string } | null)[] | string;
   startUrls?: (string | { url?: string } | null)[];
   keyValueStoreRecords?: string[] | string;
+  datasetId?: string | null;
+  datasetField?: string | null;
+  datasetItems?: unknown[] | null;
+  maxDatasetItems?: number | string | null;
   rssFeeds?: (string | { url?: string } | null)[] | string;
   maxEpisodes?: number | string | null;
+  publishedAfter?: string | null;
+  titleContains?: string[] | string | null;
+  titleExcludes?: string[] | string | null;
+  wordTimestamps?: boolean | null;
+  translateToEnglish?: boolean | null;
+  vocabulary?: string | null;
   onlyNewEpisodes?: boolean;
   preferPublishedTranscripts?: boolean;
   publishedOnly?: boolean;
@@ -40,7 +58,14 @@ export interface RawInput {
 
 /** One media file to transcribe, or a podcast feed to expand. */
 export type Source =
-  | { index: number; kind: "url"; input: string; url: string }
+  | {
+      index: number;
+      kind: "url";
+      input: string;
+      url: string;
+      /** Set for URLs read from a dataset row. */
+      origin?: DatasetOrigin;
+    }
   | {
       index: number;
       kind: "kv";
@@ -49,11 +74,32 @@ export type Source =
       key: string;
     }
   | { index: number; kind: "feed"; input: string; url: string }
-  | { index: number; kind: "invalid"; input: string; error: string };
+  | {
+      index: number;
+      kind: "invalid";
+      input: string;
+      error: string;
+      origin?: DatasetOrigin;
+    };
+
+export type Task = "transcribe" | "translate";
 
 export interface NormalizedInput {
   sources: Source[];
+  /** Dataset to read more media URLs from (read in main.ts). */
+  dataset: { id: string; field: string | null; maxItems: number } | null;
   maxEpisodes: number;
+  /** Feeds: only episodes published at or after this ISO time. */
+  publishedAfter: string | null;
+  /** Feeds: titles must contain one of these (case-insensitive)... */
+  titleContains: string[];
+  /** ...and none of these. */
+  titleExcludes: string[];
+  wordTimestamps: boolean;
+  /** translate: Whisper writes English whatever the spoken language. */
+  task: Task;
+  /** Whisper initial prompt (names, jargon); null for none. */
+  vocabulary: string | null;
   onlyNewEpisodes: boolean;
   /** Use an episode's <podcast:transcript> instead of Whisper when present. */
   preferPublishedTranscripts: boolean;
@@ -76,8 +122,15 @@ export const SAMPLE_URL =
   "https://www.nasa.gov/wp-content/uploads/2015/01/590325main_ringtone_kennedy_WeChoose.mp3";
 /** Hard cap: decoded audio is kept in memory (1.9 MB per minute). */
 export const MAX_DURATION_MINUTES = 300;
+export const MAX_DATASET_ITEMS = 1000;
+/**
+ * Whisper keeps at most 223 prompt tokens; about 1000 characters of
+ * English is well past that, so longer vocabularies are refused.
+ */
+export const MAX_VOCABULARY_CHARS = 1000;
 
 export const DEFAULT_INPUT = {
+  maxDatasetItems: 100,
   maxEpisodes: 5,
   model: "base",
   language: "auto",
@@ -193,6 +246,78 @@ export function parseRecordRef(
   return m ? { store: m[1]!, key: m[2]! } : null;
 }
 
+/** URL, feed or invalid source for one input string. */
+function urlSource(
+  index: number,
+  input: string,
+  kind: "url" | "feed",
+  origin?: DatasetOrigin,
+): Source {
+  const url = normalizeUrl(input);
+  const social = url && socialUrlError(url);
+  const extra = origin ? { origin } : {};
+  return !url
+    ? {
+        index,
+        kind: "invalid",
+        input,
+        error: `Invalid URL "${input}". Use a full http(s) address like https://example.com/${kind === "feed" ? "feed.xml" : "episode.mp3"}.`,
+        ...extra,
+      }
+    : social
+      ? { index, kind: "invalid", input, error: social, ...extra }
+      : kind === "feed"
+        ? { index, kind, input, url }
+        : { index, kind, input, url, ...extra };
+}
+
+/**
+ * Appends dataset rows to `sources` as media files: URLs already listed
+ * are skipped and rows without a URL become free errors. Returns how many
+ * rows were left out over MAX_SOURCES.
+ */
+export function addDatasetSources(
+  sources: Source[],
+  rows: DatasetRow[],
+): number {
+  const seen = new Set(
+    sources.flatMap((s) => (s.kind === "url" ? [s.url] : [])),
+  );
+  let dropped = 0;
+  for (const row of rows) {
+    if (sources.length >= MAX_SOURCES) {
+      dropped += 1;
+      continue;
+    }
+    const index = sources.length;
+    if ("error" in row) {
+      sources.push({
+        index,
+        kind: "invalid",
+        input: row.origin.datasetId ?? "datasetItems",
+        error: row.error,
+        origin: row.origin,
+      });
+      continue;
+    }
+    const source = urlSource(index, row.url, "url", row.origin);
+    if (source.kind === "url" && seen.has(source.url)) continue;
+    if (source.kind === "url") seen.add(source.url);
+    sources.push(source);
+  }
+  return dropped;
+}
+
+/** Search terms: a list, or one per line. */
+const terms = (v: unknown): string[] =>
+  [
+    ...new Set(
+      (Array.isArray(v) ? v : typeof v === "string" ? v.split("\n") : [])
+        .map((x) => (typeof x === "string" ? x.trim().toLowerCase() : ""))
+        .filter(Boolean),
+    ),
+  ] as string[];
+
 export function normalizeInput(
   raw: RawInput | null | undefined,
 ): NormalizedInput {
@@ -200,8 +325,45 @@ export function normalizeInput(
   const urls = [...new Set([...list(r.urls), ...list(r.startUrls)])];
   const records = [...new Set(list(r.keyValueStoreRecords))];
   const feeds = [...new Set(list(r.rssFeeds))];
+  const datasetId =
+    r.datasetId === undefined || r.datasetId === null
+      ? ""
+      : String(r.datasetId).trim();
+  if (datasetId && !DATASET_ID.test(datasetId))
+    throw new InputError(
+      `datasetId "${datasetId}" is not a dataset ID or "username~dataset-name".`,
+    );
+  const field =
+    r.datasetField === undefined || r.datasetField === null
+      ? ""
+      : String(r.datasetField).trim();
+  if (field && !DATASET_FIELD.test(field))
+    throw new InputError(
+      `datasetField "${field}" must be a field name or dot path, like "audioUrl" or "episode.audio".`,
+    );
+  if (
+    r.datasetItems !== undefined &&
+    r.datasetItems !== null &&
+    !Array.isArray(r.datasetItems)
+  )
+    throw new InputError("datasetItems must be an array of dataset rows.");
+  const pasted = r.datasetItems ?? [];
+  const maxDatasetItems = ranged(
+    r.maxDatasetItems,
+    "maxDatasetItems",
+    DEFAULT_INPUT.maxDatasetItems,
+    1,
+    MAX_DATASET_ITEMS,
+  );
   // Fall back to the sample clip only when nothing was given at all.
-  if (!urls.length && !records.length && !feeds.length) urls.push(SAMPLE_URL);
+  if (
+    !urls.length &&
+    !records.length &&
+    !feeds.length &&
+    !datasetId &&
+    !pasted.length
+  )
+    urls.push(SAMPLE_URL);
   const total = urls.length + records.length + feeds.length;
   if (total > MAX_SOURCES)
     throw new InputError(
@@ -209,23 +371,8 @@ export function normalizeInput(
     );
 
   const sources: Source[] = [];
-  const addUrl = (input: string, kind: "url" | "feed") => {
-    const index = sources.length;
-    const url = normalizeUrl(input);
-    const social = url && socialUrlError(url);
-    sources.push(
-      !url
-        ? {
-            index,
-            kind: "invalid",
-            input,
-            error: `Invalid URL "${input}". Use a full http(s) address like https://example.com/${kind === "feed" ? "feed.xml" : "episode.mp3"}.`,
-          }
-        : social
-          ? { index, kind: "invalid", input, error: social }
-          : { index, kind, input, url },
-    );
-  };
+  const addUrl = (input: string, kind: "url" | "feed") =>
+    sources.push(urlSource(sources.length, input, kind));
   for (const input of urls) addUrl(input, "url");
   for (const input of records) {
     const index = sources.length;
@@ -242,6 +389,33 @@ export function normalizeInput(
     );
   }
   for (const input of feeds) addUrl(input, "feed");
+  addDatasetSources(
+    sources,
+    datasetRows(pasted.slice(0, maxDatasetItems), null, field || null),
+  );
+
+  let publishedAfter: string | null = null;
+  if (
+    r.publishedAfter !== undefined &&
+    r.publishedAfter !== null &&
+    String(r.publishedAfter).trim()
+  ) {
+    const s = String(r.publishedAfter).trim();
+    const t = Date.parse(/^\d{4}-\d{2}-\d{2}$/.test(s) ? `${s}T00:00:00Z` : s);
+    if (Number.isNaN(t))
+      throw new InputError(
+        `publishedAfter "${s}" is not a date. Use YYYY-MM-DD, e.g. 2026-01-31.`,
+      );
+    publishedAfter = new Date(t).toISOString();
+  }
+  const vocabulary =
+    typeof r.vocabulary === "string" && r.vocabulary.trim()
+      ? r.vocabulary.trim().replace(/\s+/g, " ")
+      : null;
+  if (vocabulary && vocabulary.length > MAX_VOCABULARY_CHARS)
+    throw new InputError(
+      `vocabulary is ${vocabulary.length} characters; at most ${MAX_VOCABULARY_CHARS} (Whisper reads about 220 tokens of it).`,
+    );
 
   const chunkSize = ranged(
     r.chunkSize,
@@ -269,6 +443,9 @@ export function normalizeInput(
 
   return {
     sources,
+    dataset: datasetId
+      ? { id: datasetId, field: field || null, maxItems: maxDatasetItems }
+      : null,
     maxEpisodes: ranged(
       r.maxEpisodes,
       "maxEpisodes",
@@ -276,6 +453,12 @@ export function normalizeInput(
       1,
       500,
     ),
+    publishedAfter,
+    titleContains: terms(r.titleContains),
+    titleExcludes: terms(r.titleExcludes),
+    wordTimestamps: r.wordTimestamps === true,
+    task: r.translateToEnglish === true ? "translate" : "transcribe",
+    vocabulary,
     onlyNewEpisodes: r.onlyNewEpisodes === true,
     // publishedOnly implies using published transcripts.
     preferPublishedTranscripts:
