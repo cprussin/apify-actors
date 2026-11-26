@@ -58,7 +58,7 @@ export interface HttpResult {
 const RETRYABLE = new Set([408, 425, 429, 500, 502, 503, 504]);
 
 export const USER_AGENT =
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36";
+  "Mozilla/5.0 (compatible; product-hunt-launches/0.1; +https://apify.com/cprussin/product-hunt-launches)";
 
 /** Seconds to wait, from Retry-After or Product Hunt's X-Rate-Limit-Reset. */
 export function retryAfterSeconds(headers: HeadersLike): number | undefined {

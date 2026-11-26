@@ -46,7 +46,7 @@ export interface ClientOptions {
 
 export const BASE = "https://adstransparency.google.com";
 export const USER_AGENT =
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36";
+  "Mozilla/5.0 (compatible; google-ads-transparency/0.1; +https://apify.com/cprussin/google-ads-transparency)";
 
 const TRANSIENT = new Set([408, 500, 502, 503, 504]);
 

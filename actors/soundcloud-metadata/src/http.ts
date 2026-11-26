@@ -49,7 +49,7 @@ export interface HttpResult {
 const RETRYABLE = new Set([408, 425, 429, 500, 502, 503, 504]);
 
 export const USER_AGENT =
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36";
+  "Mozilla/5.0 (compatible; soundcloud-metadata/0.1; +https://apify.com/cprussin/soundcloud-metadata)";
 
 /** Fetch with timeout, retries, exponential backoff and Retry-After support. */
 export class HttpClient {

@@ -1,9 +1,9 @@
 import { fetch, ProxyAgent, type Dispatcher } from "undici";
 import type { FetchLike } from "./client.js";
 
-/** Desktop Chrome matching Playwright 1.56's Chromium; the WAF token is issued for it. */
+/** Sent by the HTTP client and the WAF-solving browser alike; the WAF token is issued for it. */
 export const USER_AGENT =
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36";
+  "Mozilla/5.0 (compatible; trustpilot-reviews/0.1; +https://apify.com/cprussin/trustpilot-reviews)";
 
 export interface RawRequest {
   method: string;

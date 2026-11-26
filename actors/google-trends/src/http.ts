@@ -65,7 +65,7 @@ export interface ClientOptions {
 
 export const BASE = "https://trends.google.com";
 export const USER_AGENT =
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36";
+  "Mozilla/5.0 (compatible; google-trends/0.1; +https://apify.com/cprussin/google-trends)";
 
 /** Statuses Google uses for rate limiting / bot blocks, plus transient errors. */
 const BLOCKED = new Set([403, 429]);

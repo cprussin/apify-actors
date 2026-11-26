@@ -59,13 +59,6 @@ interface Envelope {
 const BROWSER_HEADERS: Record<string, string> = {
   accept: "application/json, text/plain, */*",
   "accept-language": "zh-CN,zh;q=0.9,en;q=0.8",
-  "sec-ch-ua":
-    '"Chromium";v="128", "Not;A=Brand";v="24", "Google Chrome";v="128"',
-  "sec-ch-ua-mobile": "?0",
-  "sec-ch-ua-platform": '"Windows"',
-  "sec-fetch-dest": "empty",
-  "sec-fetch-mode": "cors",
-  "sec-fetch-site": "same-site",
 };
 
 /** Parses "name=value; Path=/; ..." Set-Cookie values into [name, value]. */
@@ -167,9 +160,6 @@ export class BiliClient {
         headers: {
           ...BROWSER_HEADERS,
           accept: "text/html,application/xhtml+xml,*/*;q=0.8",
-          "sec-fetch-dest": "document",
-          "sec-fetch-mode": "navigate",
-          "sec-fetch-site": "none",
         },
       },
       [403, 412],
