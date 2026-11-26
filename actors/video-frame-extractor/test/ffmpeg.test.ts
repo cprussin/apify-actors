@@ -307,6 +307,70 @@ describe.skipIf(!hasTools)("FFmpeg tools", () => {
     if (!res.ok) throw new Error(res.error);
   });
 
+  it("finds the scene cuts inside a window, in video time", async () => {
+    const res = await ff.scenes(video(), info, 0.3, { start: 3, end: 6 });
+    if (!res.ok) throw new Error(res.error);
+    expect(res.cuts.map((c) => Math.round(c.time))).toEqual([4]);
+  });
+
+  it("drops blank and near-duplicate frames of a 10 s clip", async () => {
+    // 10 s: black 0-2, a static test card 2-6, white 6-7, then three
+    // different test patterns 7-10. One frame per second: 0..9.
+    const clip = join(dir, "blank-dupes.mp4");
+    const made = spawnSync(fixtureFfmpeg, [
+      "-v", "error", "-y",
+      "-f", "lavfi", "-i", "color=c=black:s=320x180:r=25:d=2",
+      "-f", "lavfi", "-i", "smptebars=s=320x180:r=25:d=4",
+      "-f", "lavfi", "-i", "color=c=white:s=320x180:r=25:d=1",
+      "-f", "lavfi", "-i", "testsrc=s=320x180:r=25:d=1",
+      "-f", "lavfi", "-i", "smptebars=s=320x180:r=25:d=1",
+      "-f", "lavfi", "-i", "rgbtestsrc=s=320x180:r=25:d=1",
+      "-filter_complex", "[4:v]hflip[m];[0:v][1:v][2:v][3:v][m][5:v]concat=n=6:v=1:a=0,format=yuv420p[v]",
+      "-map", "[v]", "-c:v", "mpeg4", "-q:v", "2", clip,
+    ]); // prettier-ignore
+    if (made.status !== 0) throw new Error(made.stderr?.toString());
+    const probed = await ff.probe(clip);
+    if (!probed.ok) throw new Error(probed.error);
+    const { normalizeInput } = await import("../src/input.js");
+    const { runExtraction } = await import("../src/run.js");
+    const items: { skippedBlank: number; skippedDuplicate: number }[] = [];
+    const frameTimes: number[][] = [];
+    await runExtraction(
+      normalizeInput({
+        urls: ["https://x.org/clip.mp4"],
+        intervalSeconds: 1,
+        skipBlankFrames: true,
+        removeNearDuplicates: true,
+      }),
+      {
+        download: async (_job, path) => {
+          writeFileSync(path, readFileSync(clip));
+          return {
+            path,
+            bytes: 1,
+            head: Buffer.from("\0\0\0\x20ftypisom"),
+            contentType: "video/mp4",
+            fileName: "clip.mp4",
+          };
+        },
+        media: ff,
+        prices: {},
+        budgetUsd: () => Infinity,
+        emit: async (item) => {
+          items.push(item);
+          frameTimes.push(item.frames.map((f) => f.timeSeconds));
+          return { pushed: true, more: true };
+        },
+        saveFile: async (key) => key,
+        deleteFile: async () => {},
+      },
+    );
+    // Blank: 0, 1 (black) and 6 (white). Duplicates: 3, 4, 5 (same card).
+    // 7, 8 and 9 are different patterns, so all are kept.
+    expect(items[0]).toMatchObject({ skippedBlank: 3, skippedDuplicate: 3 });
+    expect(frameTimes[0]).toEqual([2, 7, 8, 9]);
+  }, 60_000);
+
   it("fails a frame past the end without crashing", async () => {
     const res = await ff.frame(video(), info, 60, join(dir, "none.jpg"), {
       format: "jpg",

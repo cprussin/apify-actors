@@ -25,15 +25,43 @@
       "description": "Videos uploaded to an Apify key-value store, as <code>storeId/recordKey</code> or <code>username~store-name/recordKey</code>, one per line. Use this for your own videos without hosting them anywhere.",
       "editor": "stringList"
     },
+    "datasetId": {
+      "title": "Dataset ID",
+      "type": "string",
+      "description": "Optional: process the video URLs in another run's dataset (e.g. a scraper's output), as a dataset ID or <code>username~dataset-name</code>. Read with your run's token; a dataset you can't read gives one free error item.",
+      "editor": "textfield"
+    },
+    "datasetField": {
+      "title": "Dataset URL field",
+      "type": "string",
+      "description": "The dataset field with the video URL (a string, an array of URLs or an object with a url). Dot paths like <code>media.url</code> work. Empty: the first of url, videoUrl, mediaUrl, audioUrl, imageUrl, downloadUrl, fileUrl.",
+      "editor": "textfield"
+    },
+    "datasetItems": {
+      "title": "Dataset items",
+      "type": "array",
+      "description": "Optional: dataset rows pasted as JSON (objects with a URL field, or plain URL strings), read like a dataset. Handy for agents and pipelines that already hold the rows.",
+      "editor": "json"
+    },
+    "maxDatasetItems": {
+      "title": "Max dataset items",
+      "type": "integer",
+      "description": "Read at most this many rows of the dataset (and of Dataset items). Rows without a URL get a free error item.",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 1000,
+      "default": 100
+    },
     "mode": {
       "title": "Frames",
       "type": "string",
-      "description": "Interval: frames every N seconds, or N evenly spaced frames. Scene changes: one frame at the start of each detected scene (costs $0.01 per started video minute for the analysis; 2x for 1440p, 4x for 4K). Metadata only: no frames, just video info and the optional GIF and audio.",
+      "description": "Interval: frames every N seconds, or N evenly spaced frames. Scene changes: one frame at the start of each detected scene (costs $0.01 per started video minute for the analysis; 2x for 1440p, 4x for 4K). Timestamps: one frame at each time you list. Metadata only: no frames, just video info and the optional GIF and audio.",
       "editor": "select",
-      "enum": ["interval", "scene", "none"],
+      "enum": ["interval", "scene", "timestamps", "none"],
       "enumTitles": [
         "Interval (every N seconds / N frames)",
         "Scene changes (keyframes)",
+        "Exact timestamps",
         "Metadata only (no frames)"
       ],
       "default": "interval",
@@ -76,6 +104,45 @@
       "minimum": 0,
       "maximum": 600,
       "default": 1
+    },
+    "timestamps": {
+      "title": "Timestamps",
+      "type": "array",
+      "description": "Timestamps mode: the times to take a frame at, one per line, as seconds (<code>65.5</code>) or <code>HH:MM:SS(.ms)</code> (<code>00:01:05.500</code>). Times past the end of the video are skipped with a warning.",
+      "editor": "stringList"
+    },
+    "startTime": {
+      "title": "Start time",
+      "type": "string",
+      "description": "Take frames from this point on, in every mode: seconds or <code>HH:MM:SS(.ms)</code>. Empty: the start of the video.",
+      "editor": "textfield"
+    },
+    "endTime": {
+      "title": "End time",
+      "type": "string",
+      "description": "Take frames up to this point, in every mode: seconds or <code>HH:MM:SS(.ms)</code>. Empty: the end of the video. Scene mode analyzes (and bills) only this window.",
+      "editor": "textfield"
+    },
+    "skipBlankFrames": {
+      "title": "Skip blank frames",
+      "type": "boolean",
+      "description": "Drop black, white and flat single-color frames (fades, title cards). Dropped frames aren't charged.",
+      "default": false
+    },
+    "removeNearDuplicates": {
+      "title": "Remove near-duplicate frames",
+      "type": "boolean",
+      "description": "Drop a frame that looks almost the same as the last kept one (a static talking head, a paused slide), compared by perceptual hash. Dropped frames aren't charged.",
+      "default": false
+    },
+    "duplicateThreshold": {
+      "title": "Near-duplicate threshold",
+      "type": "integer",
+      "description": "How different two frames must be to both be kept: the bits that differ between their 64-bit perceptual hashes. 0 drops only identical frames; higher drops more.",
+      "editor": "number",
+      "minimum": 0,
+      "maximum": 32,
+      "default": 6
     },
     "maxFrames": {
       "title": "Max frames per video",

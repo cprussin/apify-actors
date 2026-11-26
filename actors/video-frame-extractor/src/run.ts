@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { notVideoError } from "./detect.js";
 import { VideoError, type Downloaded } from "./download.js";
 import { copiesAudio, type MediaTools, type VideoInfo } from "./ffmpeg.js";
+import { frameStats, hamming, isBlank } from "./filter.js";
 import type {
   AudioFormat,
   FrameFormat,
@@ -38,6 +39,8 @@ export interface FrameItem {
   timecode: string;
   /** Scene mode: the cut's scene score (0-1); null in interval mode. */
   sceneScore: number | null;
+  /** Timestamps mode: the time as given in the input; null otherwise. */
+  timestampRequested: string | null;
   key: string;
   url: string;
   width: number;
@@ -50,6 +53,10 @@ export interface OutputItem {
   /** Video URL, or "storeId/key" for a key-value store record. */
   url: string;
   sourceType: SourceType;
+  /** Dataset the URL was read from; null for pasted datasetItems or none. */
+  sourceDatasetId: string | null;
+  /** 0-based row of datasetId or datasetItems; null when not from one. */
+  sourceItemIndex: number | null;
   fileName: string | null;
   bytes: number | null;
   mode: Mode;
@@ -69,6 +76,10 @@ export interface OutputItem {
   sceneCount: number | null;
   frameFormat: FrameFormat;
   frameCount: number;
+  /** Frames dropped as blank (skipBlankFrames); not charged. */
+  skippedBlank: number;
+  /** Frames dropped as near-duplicates (removeNearDuplicates); not charged. */
+  skippedDuplicate: number;
   frames: FrameItem[];
   frameUrls: string[];
   contactSheetUrl: string | null;
@@ -207,6 +218,8 @@ export async function runExtraction(
   const blank = (s: Source, extra: Partial<OutputItem> = {}): OutputItem => ({
     url: s.kind === "url" ? s.url : s.input,
     sourceType: s.kind === "kv" ? "kv" : "url",
+    sourceDatasetId: (s.kind === "kv" ? null : s.origin?.datasetId) ?? null,
+    sourceItemIndex: (s.kind === "kv" ? null : s.origin?.itemIndex) ?? null,
     fileName: null,
     bytes: null,
     mode: input.mode,
@@ -225,6 +238,8 @@ export async function runExtraction(
     sceneCount: null,
     frameFormat: input.frameFormat,
     frameCount: 0,
+    skippedBlank: 0,
+    skippedDuplicate: 0,
     frames: [],
     frameUrls: [],
     contactSheetUrl: null,
@@ -287,6 +302,20 @@ export async function runExtraction(
           `The video is ${(info.durationSecs / 60).toFixed(1)} min long, over the ${input.maxDurationSecs / 60} min limit (maxDurationMinutes).`,
         );
 
+      // The part of the video frames are taken from (startTime/endTime).
+      const winStart = input.startSecs;
+      const winEnd = Math.min(
+        input.endSecs ?? info.durationSecs,
+        info.durationSecs,
+      );
+      const windowed = winStart > 0 || winEnd < info.durationSecs;
+      if (input.mode !== "none" && winStart >= info.durationSecs)
+        return await fail(
+          item,
+          `startTime (${winStart} s) is past the end of the video (${info.durationSecs} s).`,
+        );
+      const winSecs = winEnd - winStart;
+
       // Fixed costs, known before any work.
       const sheet = input.contactSheetColumns > 0;
       const gif = input.gif;
@@ -303,7 +332,9 @@ export async function runExtraction(
       // scale with the frame area; re-encoded audio scales with length.
       const factor = sizeFactor(info.width, info.height);
       const minutes = startedMinutes(info.durationSecs);
-      const sceneMinutes = input.mode === "scene" ? minutes * factor : 0;
+      // Scene detection decodes only the window.
+      const sceneMinutes =
+        input.mode === "scene" ? startedMinutes(winSecs) * factor : 0;
       const gifSize = gif ? fitWidth(info.width, info.height, gif.width) : null;
       const gifCharge =
         doGif && gifSize
@@ -335,15 +366,38 @@ export async function runExtraction(
       // Interval frames are known up front; scene frames after detection.
       let times: number[] = [];
       let scenes: Scene[] | null = null;
+      let requested: string[] | null = null;
       if (input.mode === "interval") {
         const plan = intervalTimes(
-          info.durationSecs,
+          winSecs,
           input.intervalSecs,
           input.frameCount,
           input.maxFrames,
         );
-        times = plan.times;
+        times = plan.times.map((t) => Math.round((t + winStart) * 1000) / 1000);
         if (plan.warning) warnings.push(plan.warning);
+      }
+      if (input.mode === "timestamps") {
+        const inside = input.timestamps.filter(
+          (t) => t.seconds >= winStart && t.seconds <= winEnd,
+        );
+        const outside = input.timestamps.length - inside.length;
+        if (!inside.length)
+          return await fail(
+            item,
+            `None of the ${input.timestamps.length} timestamp(s) is within ${windowed ? `the window ${timecode(winStart)}-${timecode(winEnd)}` : `the video (0-${info.durationSecs} s)`}.`,
+          );
+        if (outside)
+          warnings.push(
+            `${outside} timestamp(s) outside ${windowed ? "the startTime-endTime window" : "the video"} were skipped.`,
+          );
+        const kept = inside.slice(0, input.maxFrames);
+        if (kept.length < inside.length)
+          warnings.push(
+            `${inside.length} timestamps requested; took the first ${kept.length} (maxFrames).`,
+          );
+        times = kept.map((t) => t.seconds);
+        requested = kept.map((t) => t.input);
       }
       const minFrames = input.mode === "scene" ? 1 : times.length;
       const needed = {
@@ -367,6 +421,7 @@ export async function runExtraction(
           file.path,
           info,
           input.sceneThreshold,
+          ...(windowed ? [{ start: winStart, end: winEnd }] : []),
         );
         if (!detected.ok) return await fail(item, detected.error);
         // Frames the rest of the budget pays for.
@@ -377,8 +432,18 @@ export async function runExtraction(
             )
           : Infinity;
         const max = Math.max(1, Math.min(input.maxFrames, affordable));
-        const picked = pickScenes(detected.cuts, input.minSceneSecs, max);
-        scenes = picked.scenes;
+        // Scenes are picked relative to the window start (its first frame).
+        const picked = pickScenes(
+          detected.cuts
+            .map((c) => ({ ...c, time: c.time - winStart }))
+            .filter((c) => c.time <= winSecs),
+          input.minSceneSecs,
+          max,
+        );
+        scenes = picked.scenes.map((s) => ({
+          ...s,
+          time: Math.round((s.time + winStart) * 1000) / 1000,
+        }));
         times = scenes.map((s) => s.time);
         item.sceneCount = picked.detected;
         if (picked.warning)
@@ -406,6 +471,9 @@ export async function runExtraction(
       // Frames.
       const frames: FrameItem[] = [];
       const framePaths: string[] = [];
+      let skippedBlank = 0;
+      let skippedDuplicate = 0;
+      let lastHash: bigint | null = null;
       for (const [i, t] of times.entries()) {
         const out = join(work, `frame-${i}.${ext}`);
         let time = t;
@@ -419,6 +487,29 @@ export async function runExtraction(
           warnings.push(`No frame at ${timecode(t)} (${res.error})`);
           continue;
         }
+        // Blank and near-duplicate frames are dropped before they are stored.
+        if (input.skipBlank || input.removeDuplicates) {
+          const thumb = await deps.media.thumb(out);
+          if (!thumb.ok) warnings.push(`${thumb.error} (${timecode(time)})`);
+          else {
+            const s = frameStats(thumb.gray);
+            if (input.skipBlank && isBlank(s)) {
+              skippedBlank += 1;
+              await rm(out, { force: true });
+              continue;
+            }
+            if (
+              input.removeDuplicates &&
+              lastHash !== null &&
+              hamming(s.hash, lastHash) <= input.duplicateThreshold
+            ) {
+              skippedDuplicate += 1;
+              await rm(out, { force: true });
+              continue;
+            }
+            lastHash = s.hash;
+          }
+        }
         const n = frames.length + 1;
         const key = `${prefix}-frame-${String(n).padStart(4, "0")}.${ext}`;
         const url = await deps.saveFile(key, out, CONTENT_TYPES[ext]!);
@@ -429,6 +520,7 @@ export async function runExtraction(
           timeSeconds: time,
           timecode: timecode(time),
           sceneScore: scenes ? (scenes[i]?.score ?? null) : null,
+          timestampRequested: requested ? (requested[i] ?? null) : null,
           key,
           url,
           width: fit.width,
@@ -436,7 +528,16 @@ export async function runExtraction(
           bytes: res.bytes,
         });
       }
-      if (times.length && !frames.length)
+      if (skippedBlank || skippedDuplicate)
+        warnings.push(
+          `Skipped ${[
+            skippedBlank ? `${skippedBlank} blank` : "",
+            skippedDuplicate ? `${skippedDuplicate} near-duplicate` : "",
+          ]
+            .filter(Boolean)
+            .join(" and ")} frame(s) (not charged).`,
+        );
+      if (times.length && !frames.length && !skippedBlank && !skippedDuplicate)
         return await fail(
           item,
           `No frames could be extracted. ${warnings.at(-1) ?? ""}`.trim(),
@@ -504,6 +605,8 @@ export async function runExtraction(
       const done: OutputItem = {
         ...item,
         frameCount: frames.length,
+        skippedBlank,
+        skippedDuplicate,
         frames,
         frameUrls: frames.map((f) => f.url),
         contactSheetUrl,

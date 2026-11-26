@@ -4,6 +4,7 @@ import {
   MAX_FRAMES,
   normalizeInput,
   parseRecordRef,
+  parseTime,
   SAMPLE_URL,
   socialUrlError,
 } from "../src/input.js";
@@ -12,7 +13,14 @@ describe("normalizeInput", () => {
   it("falls back to the sample video with defaults", () => {
     expect(normalizeInput({})).toEqual({
       sources: [{ index: 0, kind: "url", input: SAMPLE_URL, url: SAMPLE_URL }],
+      dataset: null,
       mode: "interval",
+      timestamps: [],
+      startSecs: 0,
+      endSecs: null,
+      skipBlank: false,
+      removeDuplicates: false,
+      duplicateThreshold: 6,
       intervalSecs: 10,
       frameCount: 0,
       sceneThreshold: 0.3,
@@ -99,6 +107,73 @@ describe("normalizeInput", () => {
     });
   });
 
+  it("reads timestamps, the window and the frame filters", () => {
+    const n = normalizeInput({
+      mode: "timestamps",
+      timestamps: ["00:01:05.250", 12, "1:30", "12", " 0.5 "],
+      startTime: "00:00:10",
+      endTime: 120,
+      skipBlankFrames: true,
+      removeNearDuplicates: true,
+      duplicateThreshold: 10,
+    });
+    expect(n.timestamps).toEqual([
+      { seconds: 0.5, input: "0.5" },
+      { seconds: 12, input: "12" },
+      { seconds: 65.25, input: "00:01:05.250" },
+      { seconds: 90, input: "1:30" },
+    ]);
+    expect(n).toMatchObject({
+      mode: "timestamps",
+      startSecs: 10,
+      endSecs: 120,
+      skipBlank: true,
+      removeDuplicates: true,
+      duplicateThreshold: 10,
+    });
+    expect(parseTime("1:02:03.5", "t")).toBe(3723.5);
+    expect(parseTime("", "t")).toBeNull();
+  });
+
+  it("adds pasted dataset rows after the URLs, deduped", () => {
+    const { sources, dataset } = normalizeInput({
+      urls: ["https://x.org/a.mp4"],
+      datasetItems: [
+        { url: "https://x.org/a.mp4" },
+        { clip: { src: "https://x.org/c.mp4" } },
+        { videoUrl: ["https://x.org/d.mp4", "https://x.org/e.mp4"] },
+      ],
+      datasetField: "clip",
+    });
+    expect(dataset).toBeNull();
+    expect(sources).toEqual([
+      { index: 0, kind: "url", input: "https://x.org/a.mp4", url: "https://x.org/a.mp4" },
+      { index: 1, kind: "invalid", input: "datasetItems", error: expect.stringMatching(/No video URL in dataset item 0 \(looked in field "clip"/), origin: { datasetId: null, itemIndex: 0 } },
+      { index: 2, kind: "url", input: "https://x.org/c.mp4", url: "https://x.org/c.mp4", origin: { datasetId: null, itemIndex: 1 } },
+      { index: 3, kind: "invalid", input: "datasetItems", error: expect.any(String), origin: { datasetId: null, itemIndex: 2 } },
+    ]); // prettier-ignore
+  });
+
+  it("keeps a datasetId for main.ts and skips the sample", () => {
+    const n = normalizeInput({ datasetId: "me~scraped-videos" });
+    expect(n.sources).toEqual([]);
+    expect(n.dataset).toEqual({
+      id: "me~scraped-videos",
+      field: null,
+      maxItems: 100,
+    });
+    expect(
+      normalizeInput({ datasetItems: ["https://x.org/a.mp4"] }).sources,
+    ).toHaveLength(1);
+  });
+
+  it("caps pasted rows at maxDatasetItems", () => {
+    const rows = Array.from({ length: 5 }, (_, i) => `https://x.org/${i}.mp4`);
+    expect(
+      normalizeInput({ datasetItems: rows, maxDatasetItems: 2 }).sources,
+    ).toHaveLength(2);
+  });
+
   it("has no contact sheet without frames", () => {
     expect(
       normalizeInput({ mode: "none", contactSheet: true }).contactSheetColumns,
@@ -116,6 +191,15 @@ describe("normalizeInput", () => {
       { sceneThreshold: 100 },
       { gifClip: true, gifDurationSeconds: 16 },
       { frameQuality: "high" },
+      { mode: "timestamps" },
+      { timestamps: ["1:75"] },
+      { timestamps: ["soon"] },
+      { startTime: 30, endTime: "00:00:20" },
+      { datasetId: "not a dataset" },
+      { datasetField: "a..b" },
+      { datasetItems: "https://x.org/a.mp4" as never },
+      { maxDatasetItems: 1001 },
+      { duplicateThreshold: 33 },
       {
         urls: Array.from({ length: 1001 }, (_, i) => `https://x.org/${i}.mp4`),
       },

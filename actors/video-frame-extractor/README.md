@@ -4,6 +4,9 @@
 
 - ✅ **Interval frames**: one every N seconds, or exactly N frames spread over the whole video.
 - ✅ **Scene-change keyframes**: one frame at the start of each shot, with adjustable sensitivity and minimum scene length.
+- ✅ **Exact timestamps** (`00:01:05.500` or `65.5`) and a **start/end window** for every mode.
+- ✅ **Skip blank frames** and **remove near-duplicates** (perceptual hash), so a static talking head doesn't give you 30 identical images. Dropped frames are free.
+- ✅ **Chain from a scraper dataset**: pass a `datasetId` (or pasted `datasetItems`) and extract frames from every video URL in it.
 - ✅ **JPEG, PNG or WebP**, with quality and max width; frames are saved upright (phone rotation applied).
 - ✅ **Contact sheet**, **GIF clip** and **audio track** (M4A, MP3, Opus; copied without re-encoding when it is already in that codec) as optional extras.
 - ✅ **Video metadata** for every file: duration, width, height, FPS, video and audio codecs, bit rate, rotation, audio channels.
@@ -57,7 +60,7 @@ Use the Apify actor cprussin/video-frame-extractor to extract one frame per scen
 
 ### One keyframe per scene
 
-A frame at each scene change, up to 30.
+A frame at each scene change between 0:20 and 1:10, up to 30. `startTime` and `endTime` work in every mode; scene mode analyzes (and bills) only that window.
 
 ```json
 {
@@ -66,13 +69,46 @@ A frame at each scene change, up to 30.
   ],
   "mode": "scene",
   "sceneThreshold": 35,
-  "maxFrames": 30
+  "maxFrames": 30,
+  "startTime": "00:00:20",
+  "endTime": "00:01:10"
 }
 ```
 
-### A GIF preview
+### Frames at exact timestamps
 
-A 5-second animated GIF from 0:10, no frames.
+One frame at each time you list, in seconds or `HH:MM:SS(.ms)`.
+
+```json
+{
+  "urls": [
+    "https://images-assets.nasa.gov/video/KSC_69-71212-sRGB/KSC_69-71212-sRGB~small.mp4"
+  ],
+  "mode": "timestamps",
+  "timestamps": ["00:00:05", "00:00:31.500", "62"]
+}
+```
+
+### Extract frames from a dataset (chain from a scraper)
+
+Point it at another actor's dataset and it takes the video URL of each row (the first of `url`, `videoUrl`, `mediaUrl`, `downloadUrl`, `fileUrl`, or the field you name, dot paths ok). Blank frames and near-duplicates (a static talking head, a paused slide) are dropped for free. Each item gets `sourceDatasetId` and `sourceItemIndex`, so you can join the frames back to the row.
+
+```json
+{
+  "datasetId": "YOUR_DATASET_ID",
+  "datasetField": "videoUrl",
+  "maxDatasetItems": 100,
+  "intervalSeconds": 2,
+  "skipBlankFrames": true,
+  "removeNearDuplicates": true
+}
+```
+
+Agents and pipelines can paste the rows instead: `"datasetItems": [{ "videoUrl": "https://example.com/a.mp4" }]`.
+
+### A GIF preview and the audio track
+
+A 5-second animated GIF from 0:10 and the audio track as MP3, no frames.
 
 ```json
 {
@@ -82,20 +118,7 @@ A 5-second animated GIF from 0:10, no frames.
   "mode": "none",
   "gifClip": true,
   "gifStartSeconds": 10,
-  "gifDurationSeconds": 5
-}
-```
-
-### The audio track as MP3
-
-Video metadata and the audio track, no frames.
-
-```json
-{
-  "urls": [
-    "https://images-assets.nasa.gov/video/KSC_69-71212-sRGB/KSC_69-71212-sRGB~small.mp4"
-  ],
-  "mode": "none",
+  "gifDurationSeconds": 5,
   "audioFormat": "mp3"
 }
 ```
@@ -119,26 +142,32 @@ Video metadata and the audio track, no frames.
 
 ## How do I extract frames from a video?
 
-| Field                                                                    | Description                                                                  | Default            |
-| ------------------------------------------------------------------------ | ---------------------------------------------------------------------------- | ------------------ |
-| `urls`                                                                   | Direct links to video files, one per line                                    | a NASA video       |
-| `startUrls`                                                              | Same, in Apify request-list format (combined with `urls`)                    | none               |
-| `keyValueStoreRecords`                                                   | Uploaded videos, as `storeId/recordKey` or `username~store-name/recordKey`   | none               |
-| `mode`                                                                   | `interval`, `scene` (scene changes) or `none` (metadata, GIF and audio only) | `interval`         |
-| `intervalSeconds`                                                        | Interval mode: one frame every N seconds from 0:00                           | `10`               |
-| `frameCount`                                                             | Interval mode: N evenly spaced frames instead (0: use `intervalSeconds`)     | `0`                |
-| `sceneThreshold`                                                         | Scene mode: sensitivity, 1-99 (lower finds more cuts)                        | `30`               |
-| `minSceneSeconds`                                                        | Scene mode: ignore cuts closer than this to the previous one                 | `1`                |
-| `maxFrames`                                                              | Max frames per video (at most 1000)                                          | `50`               |
-| `frameFormat`                                                            | `jpg`, `png` or `webp`                                                       | `jpg`              |
-| `frameQuality`                                                           | JPEG/WebP quality, 1-100                                                     | `85`               |
-| `maxWidth`                                                               | Scale wider frames down to this width (0: original size)                     | `1280`             |
-| `contactSheet`, `contactSheetColumns`                                    | Also save a grid image of the frames, with this many columns                 | off, `4`           |
-| `gifClip`, `gifStartSeconds`, `gifDurationSeconds`, `gifWidth`, `gifFps` | Also save an animated GIF clip (at most 15 s)                                | off, 0, 5, 480, 10 |
-| `audioFormat`                                                            | Also save the audio track: `none`, `m4a`, `mp3` or `opus`                    | `none`             |
-| `maxDurationMinutes`                                                     | Longer videos are skipped with a free error (at most 180)                    | `60`               |
-| `maxFileSizeMb`                                                          | Larger downloads are skipped with a free error (at most 4000)                | `1000`             |
-| `timeoutSecs`                                                            | Max download time per video                                                  | `600`              |
+| Field                                                                    | Description                                                                | Default            |
+| ------------------------------------------------------------------------ | -------------------------------------------------------------------------- | ------------------ |
+| `urls`                                                                   | Direct links to video files, one per line                                  | a NASA video       |
+| `startUrls`                                                              | Same, in Apify request-list format (combined with `urls`)                  | none               |
+| `keyValueStoreRecords`                                                   | Uploaded videos, as `storeId/recordKey` or `username~store-name/recordKey` | none               |
+| `datasetId`, `datasetField`                                              | A dataset whose rows hold video URLs, and the field (empty: auto-detect)   | none               |
+| `datasetItems`, `maxDatasetItems`                                        | Dataset rows pasted as JSON; at most this many rows are read               | none, `100`        |
+| `mode`                                                                   | `interval`, `scene`, `timestamps` or `none` (metadata, GIF and audio only) | `interval`         |
+| `timestamps`                                                             | Timestamps mode: times as seconds or `HH:MM:SS(.ms)`                       | none               |
+| `startTime`, `endTime`                                                   | Only take frames in this window (every mode)                               | whole video        |
+| `skipBlankFrames`                                                        | Drop black, white and flat frames (free)                                   | off                |
+| `removeNearDuplicates`, `duplicateThreshold`                             | Drop frames within this many hash bits of the last kept one (free)         | off, `6`           |
+| `intervalSeconds`                                                        | Interval mode: one frame every N seconds from 0:00                         | `10`               |
+| `frameCount`                                                             | Interval mode: N evenly spaced frames instead (0: use `intervalSeconds`)   | `0`                |
+| `sceneThreshold`                                                         | Scene mode: sensitivity, 1-99 (lower finds more cuts)                      | `30`               |
+| `minSceneSeconds`                                                        | Scene mode: ignore cuts closer than this to the previous one               | `1`                |
+| `maxFrames`                                                              | Max frames per video (at most 1000)                                        | `50`               |
+| `frameFormat`                                                            | `jpg`, `png` or `webp`                                                     | `jpg`              |
+| `frameQuality`                                                           | JPEG/WebP quality, 1-100                                                   | `85`               |
+| `maxWidth`                                                               | Scale wider frames down to this width (0: original size)                   | `1280`             |
+| `contactSheet`, `contactSheetColumns`                                    | Also save a grid image of the frames, with this many columns               | off, `4`           |
+| `gifClip`, `gifStartSeconds`, `gifDurationSeconds`, `gifWidth`, `gifFps` | Also save an animated GIF clip (at most 15 s)                              | off, 0, 5, 480, 10 |
+| `audioFormat`                                                            | Also save the audio track: `none`, `m4a`, `mp3` or `opus`                  | `none`             |
+| `maxDurationMinutes`                                                     | Longer videos are skipped with a free error (at most 180)                  | `60`               |
+| `maxFileSizeMb`                                                          | Larger downloads are skipped with a free error (at most 4000)              | `1000`             |
+| `timeoutSecs`                                                            | Max download time per video                                                | `600`              |
 
 **Processing your own files:** upload them to a key-value store in your Apify account (Storage → Key-value stores → your store → upload a record) and list them in `keyValueStoreRecords`, e.g. `my-user~videos/demo.mp4`. Private record URLs (`https://api.apify.com/v2/key-value-stores/.../records/...`) also work in `urls`; the actor reads them with your run's token.
 
@@ -152,6 +181,8 @@ One item per video (shortened):
 {
   "url": "https://images-assets.nasa.gov/video/KSC_69-71212-sRGB/KSC_69-71212-sRGB~small.mp4",
   "sourceType": "url",
+  "sourceDatasetId": null,
+  "sourceItemIndex": null,
   "fileName": "KSC_69-71212-sRGB~small.mp4",
   "bytes": 15526635,
   "mode": "interval",
@@ -167,12 +198,15 @@ One item per video (shortened):
   "hasAudio": false,
   "frameFormat": "jpg",
   "frameCount": 12,
+  "skippedBlank": 0,
+  "skippedDuplicate": 0,
   "frames": [
     {
       "index": 1,
       "timeSeconds": 3.508,
       "timecode": "00:00:03.508",
       "sceneScore": null,
+      "timestampRequested": null,
       "key": "video-0001-frame-0001.jpg",
       "url": "https://api.apify.com/v2/key-value-stores/.../records/video-0001-frame-0001.jpg",
       "width": 480,
@@ -195,6 +229,9 @@ One item per video (shortened):
 
 - Files are in the run's key-value store as `video-0001-frame-0001.jpg`, `video-0001-contact-sheet.jpg`, `video-0001-clip.gif` and `video-0001-audio.m4a` (numbered by input order), linked from every item.
 - In scene mode, `sceneCount` is the number of scenes found and each frame has its `sceneScore` (0-1; 1 for the first frame).
+- In timestamps mode, each frame has `timestampRequested`, the time as you gave it.
+- `skippedBlank` and `skippedDuplicate` count the frames dropped by `skipBlankFrames` and `removeNearDuplicates` (not charged).
+- `sourceDatasetId` and `sourceItemIndex` say which dataset row a video came from (null for `urls` and uploads).
 - Failed videos are returned with an `error` and no files, such as `Download failed: HTTP 404.`, `This link is a web page, not a video file.`, `The video is 75.3 min long, over the 60 min limit (maxDurationMinutes).` or `The file has no video track (it is audio only).`
 - `warning` notes things like frames capped by `maxFrames`, a frame that could not be decoded or a video without audio.
 

@@ -15,6 +15,18 @@
         "description": "url or kv (key-value store record).",
         "example": "url"
       },
+      "sourceDatasetId": {
+        "type": ["string", "null"],
+        "title": "Source dataset",
+        "description": "The datasetId the video URL was read from; null for Dataset items rows and other inputs.",
+        "example": null
+      },
+      "sourceItemIndex": {
+        "type": ["number", "null"],
+        "title": "Source item index",
+        "description": "0-based row of the dataset (or of Dataset items) the URL came from; null for other inputs.",
+        "example": null
+      },
       "fileName": {
         "type": ["string", "null"],
         "title": "File name",
@@ -30,7 +42,7 @@
       "mode": {
         "type": "string",
         "title": "Mode",
-        "description": "interval, scene or none (metadata only).",
+        "description": "interval, scene, timestamps or none (metadata only).",
         "example": "interval"
       },
       "durationSeconds": {
@@ -123,16 +135,29 @@
         "description": "Frame images saved for this video (the contact sheet not included).",
         "example": 12
       },
+      "skippedBlank": {
+        "type": "number",
+        "title": "Blank frames skipped",
+        "description": "Frames dropped as blank (skipBlankFrames), not charged.",
+        "example": 0
+      },
+      "skippedDuplicate": {
+        "type": "number",
+        "title": "Duplicate frames skipped",
+        "description": "Frames dropped as near-duplicates of the last kept frame (removeNearDuplicates), not charged.",
+        "example": 0
+      },
       "frames": {
         "type": "array",
         "title": "Frame list",
-        "description": "One entry per frame: index, timeSeconds, timecode, sceneScore (scene mode), key and url in the key-value store, width, height, bytes.",
+        "description": "One entry per frame: index, timeSeconds, timecode, sceneScore (scene mode), timestampRequested (timestamps mode: the time as given), key and url in the key-value store, width, height, bytes.",
         "example": [
           {
             "index": 1,
             "timeSeconds": 3.508,
             "timecode": "00:00:03.508",
             "sceneScore": null,
+            "timestampRequested": null,
             "key": "video-0001-frame-0001.jpg",
             "url": "https://api.apify.com/v2/key-value-stores/abc123/records/video-0001-frame-0001.jpg",
             "width": 480,

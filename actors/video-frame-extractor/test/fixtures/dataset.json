@@ -1,0 +1,9 @@
+[
+  { "title": "Launch", "url": "https://x.org/a.mp4" },
+  { "title": "Interview", "videoUrl": "https://x.org/b.mov" },
+  { "title": "No link", "views": 12 },
+  { "title": "Social", "mediaUrl": "https://www.youtube.com/watch?v=x" },
+  { "title": "Again", "downloadUrl": "https://x.org/a.mp4" },
+  { "title": "Nested", "media": { "file": { "url": "https://x.org/b.mov" } } },
+  "https://x.org/4k.mp4"
+]

@@ -1,6 +1,7 @@
 import { spawn } from "node:child_process";
 import { stat, writeFile } from "node:fs/promises";
 import { createInterface } from "node:readline";
+import { THUMB_HEIGHT, THUMB_WIDTH } from "./filter.js";
 import type { AudioFormat, FrameFormat, GifOptions } from "./input.js";
 import type { Scene, SheetLayout } from "./plan.js";
 
@@ -27,6 +28,12 @@ export interface VideoInfo {
 
 export type Result<T> = ({ ok: true } & T) | { ok: false; error: string };
 
+/** Part of a video, in seconds. */
+export interface TimeWindow {
+  start: number;
+  end: number;
+}
+
 export interface FrameOptions {
   format: FrameFormat;
   quality: number;
@@ -44,11 +51,15 @@ export interface MediaTools {
     outPath: string,
     opts: FrameOptions,
   ) => Promise<Result<{ bytes: number }>>;
+  /** Cut times are from the video's start, also with a `window`. */
   scenes: (
     path: string,
     info: VideoInfo,
     threshold: number,
+    window?: TimeWindow,
   ) => Promise<Result<{ cuts: Scene[] }>>;
+  /** A frame image as a THUMB_WIDTH x THUMB_HEIGHT 8-bit gray thumbnail. */
+  thumb: (framePath: string) => Promise<Result<{ gray: Uint8Array }>>;
   contactSheet: (
     framePaths: string[],
     outPath: string,
@@ -208,6 +219,8 @@ export interface RunResult {
   code: number | null;
   timedOut: boolean;
   stdout: string;
+  /** stdout as bytes. */
+  raw: Buffer;
   /** Last stderr lines. */
   tail: string[];
 }
@@ -236,12 +249,8 @@ export function runProcess(
     });
     const done = (code: number | null) => {
       clearTimeout(timer);
-      resolve({
-        code,
-        timedOut,
-        stdout: Buffer.concat(out).toString("utf8"),
-        tail,
-      });
+      const raw = Buffer.concat(out);
+      resolve({ code, timedOut, stdout: raw.toString("utf8"), raw, tail });
     };
     proc.on("error", (e) => {
       tail.push(e.message);
@@ -389,8 +398,16 @@ export class Ffmpeg implements MediaTools {
     return this.output(res, outPath, "Frame extraction", [path, outPath]);
   };
 
-  scenes: MediaTools["scenes"] = async (path, info, threshold) => {
+  scenes: MediaTools["scenes"] = async (path, info, threshold, window) => {
     const parser = new SceneParser();
+    // Input seeking restarts timestamps at 0: cut times are shifted back.
+    const seek = window
+      ? [
+          "-ss", window.start.toFixed(3),
+          "-t", (window.end - window.start).toFixed(3),
+        ] // prettier-ignore
+      : [];
+    const secs = window ? window.end - window.start : info.durationSecs;
     // Skipping frames no other frame references (most B-frames) about
     // halves the decoding; a cut is then found within a frame or two.
     // Skipping the deblocking filter saves 15-20% more (invisible at 320 px).
@@ -398,12 +415,12 @@ export class Ffmpeg implements MediaTools {
       this.ffmpeg,
       [
         ...BASE, "-v", "info", "-threads", String(this.threads),
-        "-skip_frame", "noref", "-skip_loop_filter", "all", "-i", path,
+        "-skip_frame", "noref", "-skip_loop_filter", "all", ...seek, "-i", path,
         "-map", `0:${info.videoStream}`, "-an", "-sn", "-dn",
         "-vf", `scale=320:-2:flags=fast_bilinear,select='gt(scene,${threshold})',metadata=print`,
         "-f", "null", "-",
       ], // prettier-ignore
-      timeouts.scenes(info.durationSecs, this.threads),
+      timeouts.scenes(secs, this.threads),
       (line) => parser.push(line),
     );
     if (res.code !== 0)
@@ -411,7 +428,29 @@ export class Ffmpeg implements MediaTools {
         ok: false,
         error: `Scene detection failed: ${this.reason(res, [path])}.`,
       };
-    return { ok: true, cuts: parser.cuts };
+    const shift = window?.start ?? 0;
+    return {
+      ok: true,
+      cuts: parser.cuts.map((c) => ({ ...c, time: c.time + shift })),
+    };
+  };
+
+  thumb: MediaTools["thumb"] = async (framePath) => {
+    const res = await runProcess(
+      this.ffmpeg,
+      [
+        ...BASE, "-v", "error", "-i", framePath,
+        "-vf", `scale=${THUMB_WIDTH}:${THUMB_HEIGHT}:flags=area,format=gray`,
+        "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "gray", "-",
+      ], // prettier-ignore
+      timeouts.frame,
+    );
+    if (res.code !== 0 || res.raw.length !== THUMB_WIDTH * THUMB_HEIGHT)
+      return {
+        ok: false,
+        error: `Frame check failed: ${res.code === 0 ? "no output" : this.reason(res, [framePath])}.`,
+      };
+    return { ok: true, gray: new Uint8Array(res.raw) };
   };
 
   contactSheet: MediaTools["contactSheet"] = async (

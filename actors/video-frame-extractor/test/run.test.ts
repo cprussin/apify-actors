@@ -6,6 +6,10 @@ import { normalizeInput, type RawInput } from "../src/input.js";
 import { EVENTS, type Charges } from "../src/plan.js";
 import { runExtraction, type OutputItem, type RunDeps } from "../src/run.js";
 
+const dataset = JSON.parse(
+  await readFile(new URL("fixtures/dataset.json", import.meta.url), "utf8"),
+) as unknown[];
+
 const PRICES = {
   [EVENTS.video]: 0.005,
   [EVENTS.frame]: 0.003,
@@ -58,6 +62,8 @@ function harness(
     cuts?: number[];
     failFrameAt?: number;
     failGif?: boolean;
+    /** What the frame at a time looks like (default "a"). */
+    look?: (t: number) => "black" | "a" | "b";
   } = {},
 ) {
   const items: OutputItem[] = [];
@@ -83,10 +89,14 @@ function harness(
     frame: async (_p, _i, t, out, o) => {
       calls.push(`frame ${t} ${o.format} ${o.size?.width ?? "orig"}`);
       if (t === opts.failFrameAt) return { ok: false, error: "decode error" };
-      return ok(out);
+      await writeFile(out, opts.look?.(t) ?? "a");
+      return { ok: true as const, bytes: 1 };
     },
-    scenes: async (_p, _i, threshold) => {
-      calls.push(`scenes ${threshold}`);
+    scenes: async (_p, _i, threshold, window) => {
+      calls.push(
+        `scenes ${threshold}` +
+          (window ? ` ${window.start}-${window.end}` : ""),
+      );
       return {
         ok: true,
         cuts: (opts.cuts ?? []).map((t, i) => ({
@@ -94,6 +104,18 @@ function harness(
           score: 0.4 + i / 10,
         })),
       };
+    },
+    // A 64x36 gray thumbnail: black, or a gradient left-right (a) or
+    // right-left (b).
+    thumb: async (path) => {
+      const look = await readFile(path, "utf8");
+      calls.push(`thumb ${look}`);
+      const gray = new Uint8Array(64 * 36);
+      for (let i = 0; i < gray.length; i++) {
+        const x = i % 64;
+        gray[i] = look === "black" ? 0 : look === "a" ? x * 4 : 255 - x * 4;
+      }
+      return { ok: true, gray };
     },
     contactSheet: async (paths, out, layout) => {
       calls.push(`sheet ${paths.length} ${layout.columns}x${layout.rows}`);
@@ -211,6 +233,7 @@ describe("runExtraction", () => {
       timeSeconds: 30,
       timecode: "00:00:30.000",
       sceneScore: null,
+      timestampRequested: null,
       key: "video-0001-frame-0002.webp",
       url: "https://store/video-0001-frame-0002.webp",
       width: 640,
@@ -460,6 +483,119 @@ describe("runExtraction", () => {
     expect(h.charges).toEqual([
       { [EVENTS.video]: 1, [EVENTS.frame]: 1, [EVENTS.sceneMinute]: 2 },
     ]);
+  });
+
+  it("processes pasted dataset rows, tagging each item with its row", async () => {
+    const h = harness({ datasetItems: dataset, mode: "none" });
+    const stats = await h.run();
+    expect(stats).toMatchObject({ processed: 3, failed: 3 });
+    expect(
+      h.items
+        .map((i) => [i.sourceItemIndex, i.url, i.error === null])
+        .sort((a, b) => Number(a[0]) - Number(b[0])),
+    ).toEqual([
+      [0, "https://x.org/a.mp4", true],
+      [1, "https://x.org/b.mov", true],
+      [2, "datasetItems", false],
+      [3, "https://www.youtube.com/watch?v=x", false],
+      [5, "datasetItems", false],
+      [6, "https://x.org/4k.mp4", true],
+    ]);
+    expect(h.items.every((i) => i.sourceDatasetId === null)).toBe(true);
+    expect(by(h.items, "youtube").error).toMatch(/YouTube links/);
+    // Failed rows are free.
+    expect(h.charges).toHaveLength(3);
+  });
+
+  it("takes frames at the requested timestamps inside the window", async () => {
+    const h = harness({
+      urls: ["https://x.org/a.mp4"],
+      mode: "timestamps",
+      timestamps: ["00:00:05", "1:30.5", 12, "200"],
+      startTime: 4,
+    });
+    await h.run();
+    const item = h.items[0]!;
+    expect(
+      item.frames.map((f) => [f.timeSeconds, f.timestampRequested]),
+    ).toEqual([
+      [5, "00:00:05"],
+      [12, "12"],
+      [90.5, "1:30.5"],
+    ]);
+    expect(item.warning).toMatch(/1 timestamp\(s\) outside/);
+    expect(h.charges).toEqual([{ [EVENTS.video]: 1, [EVENTS.frame]: 3 }]);
+  });
+
+  it("limits interval and scene frames to startTime-endTime", async () => {
+    const h = harness({
+      urls: ["https://x.org/a.mp4"],
+      intervalSeconds: 10,
+      startTime: "00:00:20",
+      endTime: 45,
+    });
+    await h.run();
+    expect(h.items[0]!.frames.map((f) => f.timeSeconds)).toEqual([20, 30, 40]);
+
+    const s = harness(
+      {
+        urls: ["https://x.org/hour.mp4"],
+        mode: "scene",
+        startTime: 600,
+        endTime: 690,
+      },
+      { cuts: [100, 630, 680, 900] },
+    );
+    await s.run();
+    expect(s.calls[0]).toBe("scenes 0.3 600-690");
+    expect(s.items[0]!.frames.map((f) => f.timeSeconds)).toEqual([
+      600, 630, 680,
+    ]);
+    // Only the 90 s window is analyzed: 2 started minutes, not 60.
+    expect(s.charges).toEqual([
+      { [EVENTS.video]: 1, [EVENTS.frame]: 3, [EVENTS.sceneMinute]: 2 },
+    ]);
+  });
+
+  it("drops blank and near-duplicate frames without charging them", async () => {
+    // 0, 10 ... 90: black at 0 and 50, "b" at 30 and 40, "a" elsewhere.
+    const look = (t: number) =>
+      t === 0 || t === 50 ? "black" : t === 30 || t === 40 ? "b" : "a";
+    const h = harness(
+      {
+        urls: ["https://x.org/a.mp4"],
+        skipBlankFrames: true,
+        removeNearDuplicates: true,
+      },
+      { look },
+    );
+    await h.run();
+    const item = h.items[0]!;
+    // Kept: 10 (a), 30 (b), 60 (a); 20, 40, 70, 80, 90 repeat the last kept.
+    expect(item.frames.map((f) => f.timeSeconds)).toEqual([10, 30, 60]);
+    expect(item.frames.map((f) => f.index)).toEqual([1, 2, 3]);
+    expect(item).toMatchObject({ skippedBlank: 2, skippedDuplicate: 5 });
+    expect(item.warning).toMatch(
+      /Skipped 2 blank and 5 near-duplicate frame\(s\) \(not charged\)/,
+    );
+    expect(h.charges).toEqual([{ [EVENTS.video]: 1, [EVENTS.frame]: 3 }]);
+    expect([...h.saved.keys()]).toHaveLength(3);
+  });
+
+  it("leaves frames alone with the filters off", async () => {
+    const h = harness(
+      { urls: ["https://x.org/b.mov"] },
+      { look: () => "black" },
+    );
+    await h.run();
+    expect(h.calls.some((c) => c.startsWith("thumb"))).toBe(false);
+    expect(h.items[0]).toMatchObject({
+      frameCount: 3,
+      skippedBlank: 0,
+      skippedDuplicate: 0,
+      sourceDatasetId: null,
+      sourceItemIndex: null,
+    });
   });
 
   it("deletes stored files that could not be charged", async () => {
