@@ -1,8 +1,10 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it, vi } from "vitest";
 import {
+  BlockedError,
   classify,
   HttpError,
+  USER_AGENT,
   WellfoundClient,
   type FetchLike,
 } from "../src/http.js";
@@ -455,37 +457,60 @@ describe("http client", () => {
     expect(classify(new Error("ECONNRESET"))).toBe("transient");
   });
 
-  it("rotates the session on blocks and captchas", async () => {
-    const responses = [
+  it("fails blocks and captchas at once, without retrying", async () => {
+    for (const res of [
       status(403),
+      status(429),
       ok("<title>Just a moment...</title>"),
-      ok("fine"),
-    ];
-    const fetch = vi.fn(async () => responses.shift()!) as unknown as FetchLike;
-    const rotate = vi.fn();
-    const client = new WellfoundClient({
-      fetch,
-      rotate,
-      sleep: async () => {},
-    });
-    expect((await client.get("https://wellfound.com/x")).html).toBe("fine");
-    expect(rotate).toHaveBeenCalledTimes(2);
-    expect(client.blocks).toBe(2);
+      {
+        ...status(403),
+        headers: {
+          get: (n: string) => (n === "cf-mitigated" ? "challenge" : null),
+        },
+      },
+    ]) {
+      const fetch = vi.fn(async () => res) as unknown as FetchLike;
+      const client = new WellfoundClient({ fetch, sleep: async () => {} });
+      const err = await client.get("https://wellfound.com/x").catch((e) => e);
+      expect(err).toBeInstanceOf(BlockedError);
+      expect(err.message).toMatch(
+        /^Wellfound blocked this request \(Cloudflare\)/,
+      );
+      expect(fetch).toHaveBeenCalledTimes(1);
+      expect(client.blocks).toBe(1);
+    }
   });
 
-  it("falls back to direct when the proxy keeps failing", async () => {
-    const primary = vi.fn(async () => {
-      throw new Error("proxy timeout");
-    }) as unknown as FetchLike;
-    const fallback = vi.fn(async () => ok("direct")) as unknown as FetchLike;
+  it("retries 5xx and network errors", async () => {
+    const responses: (() => unknown)[] = [
+      () => status(503),
+      () => {
+        throw new Error("ECONNRESET");
+      },
+      () => ok("fine"),
+    ];
+    const fetch = vi.fn(async () =>
+      responses.shift()!(),
+    ) as unknown as FetchLike;
+    const client = new WellfoundClient({ fetch, sleep: async () => {} });
+    expect((await client.get("https://wellfound.com/x")).html).toBe("fine");
+    expect(fetch).toHaveBeenCalledTimes(3);
+    expect(client.errors).toBe(2);
+  });
+
+  it("sends an honest User-Agent", async () => {
+    const fetch = vi.fn(async () => ok("fine"));
     const client = new WellfoundClient({
-      fetch: primary,
-      fallbackFetch: fallback,
-      sleep: async () => {},
+      fetch: fetch as unknown as FetchLike,
     });
-    expect((await client.get("https://wellfound.com/x")).html).toBe("direct");
-    expect(primary).toHaveBeenCalledTimes(2);
-    expect(client.route).toBe("fallback");
+    await client.get("https://wellfound.com/x");
+    const init = (fetch.mock.calls[0] as unknown[])[1] as {
+      headers: Record<string, string>;
+    };
+    expect(init.headers["user-agent"]).toBe(USER_AGENT);
+    expect(USER_AGENT).toBe(
+      "Mozilla/5.0 (compatible; wellfound-jobs/0.1; +https://apify.com/cprussin/wellfound-jobs)",
+    );
   });
 
   it("does not retry 404", async () => {

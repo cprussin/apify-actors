@@ -1,12 +1,12 @@
 /**
- * Live smoke test against wellfound.com (no proxy, no Apify platform).
+ * Live smoke test against wellfound.com (no Apify proxy, no Apify platform).
+ * Behind an HTTP(S)_PROXY, run with NODE_USE_ENV_PROXY=1.
  * 1. Runs the input-schema default input (what Apify's daily test runs) and
  *    checks it finishes quickly with complete jobs.
  * 2. Checks a remote search over 2 pages and a location-only start URL.
  * Usage: npm run smoke -w actors/wellfound-jobs
  */
 import { readFileSync } from "node:fs";
-import { gotFetch } from "../src/got-fetch.js";
 import { WellfoundClient } from "../src/http.js";
 import { normalizeInput, type RawInput } from "../src/input.js";
 import { runJobs, type JobResult } from "../src/run.js";
@@ -22,7 +22,7 @@ const defaults = Object.fromEntries(
 ) as RawInput;
 
 const problems: string[] = [];
-const http = new WellfoundClient({ fetch: gotFetch(), log: console.warn });
+const http = new WellfoundClient({ log: console.warn });
 
 async function run(name: string, raw: RawInput) {
   const out: JobResult[] = [];

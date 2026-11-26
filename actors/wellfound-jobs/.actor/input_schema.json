@@ -61,7 +61,7 @@
     "proxyConfiguration": {
       "title": "Proxy",
       "type": "object",
-      "description": "Apify Proxy (datacenter is enough). The actor switches to a new IP whenever Wellfound blocks or rate-limits a request, and falls back to direct requests if the proxy keeps failing.",
+      "description": "Apify Proxy (datacenter is enough). The actor uses one proxy IP for the whole run; if Wellfound blocks a request, that request fails instead of retrying from another IP.",
       "editor": "proxy",
       "default": {
         "useApifyProxy": true

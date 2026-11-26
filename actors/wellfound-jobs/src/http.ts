@@ -26,21 +26,22 @@ export type FetchLike = (
   text(): Promise<string>;
 }>;
 
+export const USER_AGENT =
+  "Mozilla/5.0 (compatible; wellfound-jobs/0.1; +https://apify.com/cprussin/wellfound-jobs)";
+
+export const BLOCKED_MESSAGE = "Wellfound blocked this request (Cloudflare)";
+
+/** A 403/429 or Cloudflare challenge page. Never retried. */
+export class BlockedError extends HttpError {
+  constructor(status: number, body: string, url: string) {
+    super(status, body, url);
+    this.message = `${BLOCKED_MESSAGE}: HTTP ${status} from ${url.slice(0, 160)}`;
+  }
+}
+
 export interface ClientOptions {
-  /** Primary transport (e.g. through a proxy). Default: global fetch. */
+  /** Transport (e.g. through a proxy). Default: global fetch. */
   fetch?: FetchLike;
-  /**
-   * Alternative transport (e.g. direct, no proxy). Used after
-   * `fallbackAfter` consecutive network errors/timeouts/5xx on `fetch`;
-   * a block (429/403/captcha) on it switches back to `fetch`.
-   */
-  fallbackFetch?: FetchLike;
-  /** Consecutive primary failures before switching to `fallbackFetch`. Default 2. */
-  fallbackAfter?: number;
-  /** Switch to a new proxy session (new IP). Called after every failed attempt. */
-  rotate?: () => void;
-  /** Delay before retrying when `rotate` gives a new IP. Default: normal backoff. */
-  rotatedDelayMs?: number;
   maxRetries?: number;
   baseDelayMs?: number;
   maxDelayMs?: number;
@@ -65,6 +66,7 @@ type Failure = "blocked" | "transient" | "fatal";
 
 /** How to handle an error from one attempt. */
 export function classify(e: unknown): Failure {
+  if (e instanceof BlockedError) return "blocked";
   if (e instanceof HttpError) {
     if (BLOCKED.has(e.status)) return "blocked";
     if (TRANSIENT.has(e.status) || e.status >= 500) return "transient";
@@ -81,17 +83,14 @@ export interface Page {
 }
 
 /**
- * HTTP client for wellfound.com: retries blocks (403/429/captcha) and
- * transient errors (timeouts, network errors, 5xx) with a new proxy session
- * each time, falls back to `fallbackFetch` when the primary transport keeps
- * failing, and caps total retry time.
+ * HTTP client for wellfound.com. Identifies itself with an honest
+ * User-Agent, retries transient errors (timeouts, network errors, 5xx) with
+ * backoff, and caps total retry time. A block (403/429 or a Cloudflare
+ * challenge page) fails the request at once with a BlockedError: no retry,
+ * no new IP.
  */
 export class WellfoundClient {
-  private readonly primary: FetchLike;
-  private readonly fallback: FetchLike | undefined;
-  private readonly fallbackAfter: number;
-  private readonly rotate: () => void;
-  private readonly rotatedDelayMs: number | undefined;
+  private readonly fetch: FetchLike;
   private readonly maxRetries: number;
   private readonly baseDelayMs: number;
   private readonly maxDelayMs: number;
@@ -101,19 +100,13 @@ export class WellfoundClient {
   private readonly sleep: (ms: number) => Promise<void>;
   private readonly now: () => number;
   private readonly log: (msg: string) => void;
-  private onFallback = false;
-  private primaryFailures = 0;
   private lastSuccess: number;
   requests = 0;
   blocks = 0;
   errors = 0;
 
   constructor(opts: ClientOptions = {}) {
-    this.primary = opts.fetch ?? (globalThis.fetch as unknown as FetchLike);
-    this.fallback = opts.fallbackFetch;
-    this.fallbackAfter = opts.fallbackAfter ?? 2;
-    this.rotate = opts.rotate ?? (() => {});
-    this.rotatedDelayMs = opts.rotatedDelayMs;
+    this.fetch = opts.fetch ?? (globalThis.fetch as unknown as FetchLike);
     this.maxRetries = opts.maxRetries ?? 5;
     this.baseDelayMs = opts.baseDelayMs ?? 1500;
     this.maxDelayMs = opts.maxDelayMs ?? 20_000;
@@ -127,44 +120,26 @@ export class WellfoundClient {
     this.lastSuccess = this.now();
   }
 
-  /** "fallback" while requests go through `fallbackFetch`. */
-  get route(): "primary" | "fallback" {
-    return this.onFallback ? "fallback" : "primary";
-  }
-
   private async send(url: string, timeoutMs: number): Promise<Page> {
     this.requests += 1;
-    const fetch = this.onFallback ? this.fallback! : this.primary;
-    const res = await fetch(url, {
+    const res = await this.fetch(url, {
       method: "GET",
       headers: {
-        accept:
-          "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "user-agent": USER_AGENT,
+        accept: "text/html",
         "accept-language": "en-US,en;q=0.9",
       },
       signal: AbortSignal.timeout(timeoutMs),
     });
     const html = await res.text();
-    if (isBlockPage(html)) throw new HttpError(429, "captcha", url);
+    if (
+      BLOCKED.has(res.status) ||
+      res.headers.get("cf-mitigated") === "challenge" ||
+      isBlockPage(html)
+    )
+      throw new BlockedError(res.status, html, url);
     if (!res.ok) throw new HttpError(res.status, html, url);
     return { url: res.url || url, html };
-  }
-
-  /** Update route after a failed attempt; returns a note for the log. */
-  private switchRoute(kind: Failure): string {
-    if (!this.fallback) return "";
-    if (this.onFallback) {
-      // Fallback (direct) is blocked or broken: back to the (new) proxy IP.
-      this.onFallback = false;
-      this.primaryFailures = 0;
-      return "back to proxy, ";
-    }
-    if (kind === "transient") this.primaryFailures += 1;
-    if (this.primaryFailures >= this.fallbackAfter) {
-      this.onFallback = true;
-      return "proxy failing, trying direct, ";
-    }
-    return "";
   }
 
   /** Returns the final URL and body of a 2xx response; throws HttpError otherwise. */
@@ -180,24 +155,21 @@ export class WellfoundClient {
         );
         const page = await this.send(url, timeoutMs);
         this.lastSuccess = this.now();
-        if (!this.onFallback) this.primaryFailures = 0;
         return page;
       } catch (e) {
         error = e instanceof Error ? e : new Error(String(e));
       }
       const kind = classify(error);
+      if (kind === "blocked") {
+        this.blocks += 1;
+        throw error;
+      }
       if (kind === "fatal") throw error;
-      if (kind === "blocked") this.blocks += 1;
-      else this.errors += 1;
-      this.rotate();
-      const note = this.switchRoute(kind);
-      const delay =
-        this.rotatedDelayMs !== undefined
-          ? this.rotatedDelayMs
-          : Math.min(
-              this.maxDelayMs,
-              this.baseDelayMs * 2 ** attempt * (0.75 + Math.random() * 0.5),
-            );
+      this.errors += 1;
+      const delay = Math.min(
+        this.maxDelayMs,
+        this.baseDelayMs * 2 ** attempt * (0.75 + Math.random() * 0.5),
+      );
       const now = this.now();
       if (attempt >= this.maxRetries) throw error;
       if (now + delay >= deadline) {
@@ -212,7 +184,7 @@ export class WellfoundClient {
       }
       attempt += 1;
       this.log(
-        `Request failed (${error.message.slice(0, 120)}); ${note}new session, retry ${attempt}/${this.maxRetries} in ${Math.round(delay)}ms`,
+        `Request failed (${error.message.slice(0, 120)}); retry ${attempt}/${this.maxRetries} in ${Math.round(delay)}ms`,
       );
       await this.sleep(delay);
     }

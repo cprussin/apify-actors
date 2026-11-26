@@ -15,7 +15,7 @@
   "dependencies": {
     "apify": "^3.7.2",
     "cheerio": "^1.2.0",
-    "got-scraping": "^4.2.1"
+    "undici": "^7.30.0"
   },
   "devDependencies": {
     "@types/node": "^22.20.4",

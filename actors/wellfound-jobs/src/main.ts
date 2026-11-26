@@ -1,7 +1,7 @@
 import { Actor, log } from "apify";
-import { gotFetch } from "./got-fetch.js";
-import { WellfoundClient } from "./http.js";
+import { BLOCKED_MESSAGE, WellfoundClient } from "./http.js";
 import { InputError, normalizeInput, type RawInput } from "./input.js";
+import { proxiedFetch } from "./proxy-fetch.js";
 import { runJobs } from "./run.js";
 import { Seen, stateKey } from "./state.js";
 import { listingUrl } from "./wellfound.js";
@@ -72,21 +72,12 @@ try {
       log.warning(`Proxy unavailable, continuing without: ${String(e)}`);
     }
   }
-  // Same proxy session (IP) until a request fails, then a fresh one. If the
-  // proxy keeps failing (timeouts, 5xx), fall back to direct requests; when
-  // those get blocked, switch back to a new proxy IP.
-  const prefix = `wf${Math.floor(Math.random() * 1e8)}`;
-  let session = 0;
+  // One proxy session (IP) for the whole run. Blocks are not retried and
+  // never trigger a new IP.
+  const session = `wf${Math.floor(Math.random() * 1e8)}`;
   if (proxy) log.info("Using Apify Proxy.");
   const client = new WellfoundClient({
-    fetch: gotFetch(
-      proxy ? () => proxy.newUrl(`${prefix}_${session}`) : undefined,
-    ),
-    fallbackFetch: proxy ? gotFetch() : undefined,
-    rotate: () => {
-      session += 1;
-    },
-    ...(proxy ? { rotatedDelayMs: 1000, maxRetries: 6 } : {}),
+    fetch: proxy ? proxiedFetch(() => proxy.newUrl(session)) : undefined,
     timeoutMs: 30_000,
     maxRequestMs: 90_000,
     maxFailingMs: 180_000,
@@ -108,7 +99,8 @@ try {
   );
   const failed = stats.searches.filter((s) => s.status === "failed").length;
   await Actor.setStatusMessage(
-    `${stats.emitted} jobs from ${stats.searches.length} search(es), ${stats.pages} page(s)` +
+    (client.blocks ? `${BLOCKED_MESSAGE}. ` : "") +
+      `${stats.emitted} jobs from ${stats.searches.length} search(es), ${stats.pages} page(s)` +
       (failed ? `, ${failed} failed` : "") +
       (stats.skippedSeen ? `, skipped ${stats.skippedSeen} seen before` : "") +
       (stats.stopReason === "budget" ? " (stopped at max charge)" : ""),

@@ -8,7 +8,7 @@
 - ✅ **Company data**: name, Wellfound page, logo, company size, funding stage, one-liner and badges (YC, Top Investors, Growing Fast, ...).
 - ✅ **Start URLs**: paste any Wellfound role or location listing page.
 - ✅ Deduplicated across searches, so a job that matches two searches is returned (and billed) once.
-- ✅ Handles rate limits: new proxy IP on every blocked or failed request, direct fallback when the proxy is down.
+- ✅ Polite and transparent: identifies itself with an honest User-Agent, retries network errors and 5xx, and never works around a block.
 - ✅ Fast and light: plain HTTP requests, no browser. Pay only for jobs written to your dataset.
 
 ## Start in one minute
@@ -207,7 +207,9 @@ Turn on `onlyNew` and run the actor on an [Apify schedule](https://docs.apify.co
 
 **Why does a search fail with "no listing page"?** Wellfound redirects unknown role or location slugs to another page. The actor detects this instead of returning unrelated jobs. Check the slug on wellfound.com.
 
-**Do I need a proxy?** Usually not, but Apify Proxy (datacenter) is enabled by default and the actor switches IP automatically when a request is blocked.
+**Do I need a proxy?** Usually not. Apify Proxy (datacenter) is enabled by default, with one IP for the whole run.
+
+**Why does a search fail with "Wellfound blocked this request (Cloudflare)"?** Wellfound's Cloudflare protection answered with a block or challenge page. The actor does not retry from other IPs or disguise itself as a browser, so that request fails. Try again later or with fewer pages.
 
 **Can I use it through the API or with AI agents?** Yes. Call it through the Apify API, the Apify MCP server or any Apify integration.
 
