@@ -28,6 +28,8 @@ export interface AppStats {
     | "exhausted"
     | "reachedSinceDate"
     | "scanLimit"
+    /** Several storefronts: only reviews already returned from another storefront (Google Play). */
+    | "duplicates"
     | "notFound"
     | "failed"
     | "notStarted";
@@ -37,8 +39,26 @@ export interface AppStats {
 export interface RunStats {
   emitted: number;
   stopReason: "done" | "budget";
+  /** Per app, or per app and storefront ("apple:123:gb") with several storefronts. */
   apps: Record<string, AppStats>;
+  storefrontsRequested: string[];
+  /** Storefronts that returned at least one review. */
+  storefrontsWithReviews: string[];
 }
+
+/**
+ * Several storefronts: stop a storefront after this many consecutive
+ * reviews already returned from an earlier one (Google Play serves mostly
+ * the same reviews in every country).
+ */
+export const DUPLICATE_STREAK_STOP = 100;
+
+/** Stats/monitor key: the app, plus the storefront when there are several. */
+export const runLabel = (
+  ref: { store: string; id: string },
+  country: string,
+  multi: boolean,
+): string => `${ref.store}:${ref.id}${multi ? `:${country}` : ""}`;
 
 /**
  * With sort=newest, stop once this many consecutive reviews are older than
@@ -55,17 +75,33 @@ export async function runReviews(
   deps: RunDeps,
 ): Promise<RunStats> {
   const log = deps.log ?? (() => {});
-  const stats: RunStats = { emitted: 0, stopReason: "done", apps: {} };
-  const seen = new Set<string>();
-  const q: SourceQuery = {
-    country: input.country,
-    language: input.language,
-    sort: input.sort,
+  const stats: RunStats = {
+    emitted: 0,
+    stopReason: "done",
+    apps: {},
+    storefrontsRequested: [...input.countries],
+    storefrontsWithReviews: [],
   };
+  const withReviews = new Set<string>();
+  const done = (): RunStats => {
+    stats.storefrontsWithReviews = input.countries.filter((c) =>
+      withReviews.has(c),
+    );
+    return stats;
+  };
+  const seen = new Set<string>();
   const limit = scanLimit(input);
+  const multi = input.countries.length > 1;
+  // Each app in each storefront, app by app.
+  const jobs = input.apps.flatMap((ref) =>
+    input.countries.map((country) => ({
+      ref,
+      country,
+      label: runLabel(ref, country, multi),
+    })),
+  );
 
-  for (const ref of input.apps) {
-    const label = `${ref.store}:${ref.id}`;
+  for (const { label } of jobs) {
     stats.apps[label] = {
       appName: null,
       scanned: 0,
@@ -77,8 +113,12 @@ export async function runReviews(
     };
   }
 
-  for (const ref of input.apps) {
-    const label = `${ref.store}:${ref.id}`;
+  for (const { ref, country, label } of jobs) {
+    const q: SourceQuery = {
+      country,
+      language: input.language,
+      sort: input.sort,
+    };
     const st = stats.apps[label]!;
     const source = deps.sources[ref.store];
     const monitor = deps.monitor;
@@ -88,12 +128,13 @@ export async function runReviews(
       const app = await source.resolve(ref.id, q);
       if (!app) {
         st.status = "notFound";
-        st.error = `App not found in the ${input.country.toUpperCase()} ${ref.store === "apple" ? "App Store" : "Google Play store"}.`;
+        st.error = `App not found in the ${country.toUpperCase()} ${ref.store === "apple" ? "App Store" : "Google Play store"}.`;
         log(`${label}: ${st.error}`);
         continue;
       }
       st.appName = app.name;
       let oldStreak = 0;
+      let dupStreak = 0;
       const it = source.reviews(app, q);
       try {
         for await (const raw of it) {
@@ -117,14 +158,24 @@ export async function runReviews(
               appId: app.id,
               appName: app.name,
               ...raw,
-              country: input.country,
+              country,
+              storefront: country,
               language: ref.store === "google" ? input.language : null,
             };
             const key = reviewKey(review);
             if (seen.has(key)) {
               st.skippedDuplicate += 1;
+              // onlyNew: also mark it seen in this storefront, so a later run
+              // does not return it from here once the first storefront stops.
+              if (multi) monitor?.record(label, raw.reviewId, raw.date);
+              if (multi && ++dupStreak >= DUPLICATE_STREAK_STOP) {
+                st.status = "duplicates";
+                break;
+              }
             } else {
+              dupStreak = 0;
               seen.add(key);
+              withReviews.add(country);
               const more = await deps.emit(orderFields(review));
               st.emitted += 1;
               stats.emitted += 1;
@@ -135,7 +186,7 @@ export async function runReviews(
                   monitor.finish(label, false);
                   await deps.afterApp?.();
                 }
-                return stats;
+                return done();
               }
               if (st.emitted >= input.maxReviewsPerApp) {
                 st.status = "maxReviews";
@@ -181,7 +232,7 @@ export async function runReviews(
         .join("; ")}`,
     );
   }
-  return stats;
+  return done();
 }
 
 /** Stable key order in the dataset, matching the schema. */
@@ -201,6 +252,7 @@ function orderFields(r: Review): Review {
     developerReplyDate: r.developerReplyDate,
     helpfulCount: r.helpfulCount,
     country: r.country,
+    storefront: r.storefront,
     language: r.language,
     url: r.url,
   };

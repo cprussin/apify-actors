@@ -6,6 +6,7 @@
 - ✅ **Developer replies** and reply dates on both stores, so you can measure response rate and response time.
 - ✅ **App version** on each review, so you can tie complaints to a release.
 - ✅ **New-review alerts.** Turn on `onlyNew` and schedule the actor daily: each run returns (and bills) only reviews it hasn't returned before. Or set `sinceDate` (e.g. `"7 days"`) for a date cutoff.
+- ✅ **Multi-country App Store reviews.** List up to 50 storefronts in `countries`, or set `allCountries` to get App Store reviews from all countries (the 50 largest storefronts) in one run, each review tagged with its `storefront`.
 - ✅ Filter by **star rating** (e.g. 1–2 stars for complaints only), **country** and **language**.
 - ✅ Public store endpoints. No login, no API key and normally no proxy needed.
 - ✅ Pay only per review returned.
@@ -83,6 +84,20 @@ German Google Play reviews in German.
 }
 ```
 
+### Multi-country App Store reviews
+
+The newest 50 App Store reviews from each of five storefronts in one run (up to 250 reviews), each tagged with `storefront`.
+
+```json
+{
+  "apps": ["id324684580"],
+  "countries": ["us", "gb", "de", "fr", "jp"],
+  "maxReviewsPerApp": 50
+}
+```
+
+For App Store reviews from all countries, set `"allCountries": true` instead: the actor reads the 50 largest storefronts (us, gb, ca, au, de, fr, jp, cn, kr, it, ...). Storefronts with no reviews cost nothing.
+
 ### Daily new-review alerts
 
 Schedule it daily: after the first run you get (and pay for) only reviews not returned before.
@@ -119,10 +134,12 @@ Schedule it daily: after the first run you get (and pay for) only reviews not re
 | Field                | Description                                                                                                         | Example                           |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
 | `apps`               | App Store / Google Play URLs or IDs (store auto-detected)                                                           | `["id324684580", "com.whatsapp"]` |
-| `country`            | Two-letter store country                                                                                            | `"us"`, `"gb"`, `"de"`            |
+| `country`            | Two-letter store country (used when `countries` is empty)                                                           | `"us"`, `"gb"`, `"de"`            |
+| `countries`          | Several storefronts, up to 50; each app is read in each one                                                         | `["us", "gb", "de"]`              |
+| `allCountries`       | Read the 50 largest App Store storefronts (overrides `countries` and `country`)                                     | `true`                            |
 | `language`           | Review language (Google Play only; the App Store has no language filter)                                            | `"en"`                            |
 | `sort`               | `newest` or `mostRelevant` (App Store "most helpful", Google Play "most relevant")                                  | `"newest"`                        |
-| `maxReviewsPerApp`   | Stop after this many reviews per app                                                                                | `500`                             |
+| `maxReviewsPerApp`   | Stop after this many reviews per app (per app and storefront with several countries)                                | `500`                             |
 | `sinceDate`          | Only reviews on or after this date: `YYYY-MM-DD`, ISO timestamp, or relative (`"7 days"`, `"2 weeks"`, `"1 month"`) | `"7 days"`                        |
 | `onlyNew`            | Monitoring: only reviews not returned by an earlier run with the same input (see Tips)                              | `true`                            |
 | `minRating`          | Minimum stars (1–5)                                                                                                 | `4`                               |
@@ -149,6 +166,7 @@ One dataset item per review. App Store example:
   "developerReplyDate": null,
   "helpfulCount": 0,
   "country": "us",
+  "storefront": "us",
   "language": null,
   "url": "https://apps.apple.com/us/app/id324684580?see-all=reviews"
 }
@@ -172,6 +190,7 @@ Google Play example:
   "developerReplyDate": "2026-09-28T16:41:28.000Z",
   "helpfulCount": 0,
   "country": "us",
+  "storefront": "us",
   "language": "en",
   "url": "https://play.google.com/store/apps/details?id=com.robinhood.android&hl=en&gl=us&reviewId=b09bffa7-10fd-42bb-9200-65b89bc23e9b"
 }
@@ -188,6 +207,7 @@ Google Play example:
 - `language`: the language requested from Google Play. `null` for App Store reviews, which Apple doesn't filter by language (you get every review posted in that country's store).
 - `url`: Google Play links to the individual review; the App Store has no per-review page, so it links to the app's reviews page.
 - `author` is the public nickname shown in the store.
+- `storefront`: the two-letter storefront the review was read from (the same value as `country`). With several `countries`, a review that appears in more than one storefront is returned once, from the first one listed.
 
 ## How much does it cost to scrape app reviews?
 
@@ -201,16 +221,18 @@ That's **$0.50 per 1,000 reviews**, for both stores combined. Filtered-out and d
 
 ## Tips for scraping App Store and Google Play reviews
 
-- **Daily new-review alerts:** schedule this actor daily (Apify Console, Schedules; or save a task and schedule it) with `"onlyNew": true`. The first run returns the latest reviews (up to `maxReviewsPerApp`) as a baseline; every later run returns only reviews not returned before and stops paging a few days before the newest one it has seen, so a quiet day costs almost nothing. Add a Slack, email or webhook integration to the task for alerts. State lives in your account in the key-value store `app-store-reviews-state`, one record per combination of apps, country, language and rating filter; changing any of these starts a new baseline.
+- **Daily new-review alerts:** schedule this actor daily (Apify Console, Schedules; or save a task and schedule it) with `"onlyNew": true`. The first run returns the latest reviews (up to `maxReviewsPerApp`) as a baseline; every later run returns only reviews not returned before and stops paging a few days before the newest one it has seen, so a quiet day costs almost nothing. Add a Slack, email or webhook integration to the task for alerts. State lives in your account in the key-value store `app-store-reviews-state`, one record per combination of apps, countries, language and rating filter; changing any of these starts a new baseline.
 - **Weekly review digest:** schedule the actor with `sinceDate: "7 days"` and sort = Newest, and pipe the dataset to Google Sheets, Slack or email with Apify integrations.
 - **Complaint tracking:** `maxRating: 2` returns only 1–2 star reviews. Combine with `appVersion` to spot a bad release.
-- **Multiple countries:** App Store reviews are separate per country. Run once per country (e.g. `us`, `gb`, `de`) to cover them.
+- **Multiple countries:** App Store reviews are separate per storefront. Put the storefronts in `countries` (e.g. `["us", "gb", "de"]`, up to 50) or set `allCountries` to cover the 50 largest in one run; `maxReviewsPerApp` applies to each storefront, and the run log lists `storefrontsRequested` and `storefrontsWithReviews`. Google Play reviews mostly repeat across countries: repeats are dropped (not billed), and a storefront that only repeats earlier ones is stopped after 100 repeats in a row.
 - **Google Play language:** Google returns reviews in the requested `language`. For all reviews from Germany in German, use `country: "de"`, `language: "de"`.
 - Very large pulls (hundreds of thousands of reviews) may hit store rate limits. The actor backs off automatically; add Apify Proxy if it keeps happening.
 
 ## App review scraper FAQ
 
 **How many reviews can I get?** Google Play serves its full review history through pagination. The App Store feed also goes deep for popular apps, but Apple decides how much history it exposes, and this varies by app and country. `maxReviewsPerApp` caps each app.
+
+**App Store reviews, all countries: can I get them in one run?** Yes. Set `"allCountries": true` to read the 50 largest App Store storefronts, or list your own (up to 50) in `countries`. Every review carries its `storefront`, and `maxReviewsPerApp` caps each storefront separately.
 
 **Does it need a login, API key or App Store Connect access?** No. It reads the same public review data anyone can see in the stores. It cannot read private feedback or reviews for apps you don't have listed publicly.
 

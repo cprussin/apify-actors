@@ -26,6 +26,19 @@
       "default": "us",
       "prefill": "us"
     },
+    "countries": {
+      "title": "Countries (several storefronts)",
+      "type": "array",
+      "description": "Optional. Read each app in each of these storefronts (two-letter codes, up to 50), e.g. us, gb, de, jp. Every review is tagged with its storefront and Max reviews per app applies per storefront. When set, Country is ignored. Google Play reviews mostly repeat across countries; repeats are dropped and not billed.",
+      "editor": "stringList",
+      "maxItems": 50
+    },
+    "allCountries": {
+      "title": "All countries (top 50 App Store storefronts)",
+      "type": "boolean",
+      "description": "Read each app in the 50 largest App Store storefronts (us, gb, ca, au, de, fr, jp, cn, kr, it...). Overrides Countries and Country. Storefronts without reviews cost nothing.",
+      "default": false
+    },
     "language": {
       "title": "Language (Google Play)",
       "type": "string",
@@ -47,7 +60,7 @@
     "maxReviewsPerApp": {
       "title": "Max reviews per app",
       "type": "integer",
-      "description": "Stop after this many reviews for each app. Each review is billed as one event.",
+      "description": "Stop after this many reviews for each app (for each app and storefront with several countries). Each review is billed as one event.",
       "editor": "number",
       "minimum": 1,
       "maximum": 100000,
@@ -63,7 +76,7 @@
     "onlyNew": {
       "title": "Only new reviews (monitoring)",
       "type": "boolean",
-      "description": "Return only reviews not returned by an earlier run with the same apps, country, language and rating filter. Schedule the actor daily for new-review alerts: the first run is a baseline, later runs output (and bill) only new reviews. Forces sort = Newest. State is kept in the key-value store \"app-store-reviews-state\" in your account.",
+      "description": "Return only reviews not returned by an earlier run with the same apps, countries, language and rating filter. Schedule the actor daily for new-review alerts: the first run is a baseline, later runs output (and bill) only new reviews. Forces sort = Newest. State is kept in the key-value store \"app-store-reviews-state\" in your account.",
       "default": false
     },
     "minRating": {

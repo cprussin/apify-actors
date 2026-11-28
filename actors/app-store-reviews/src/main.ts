@@ -26,7 +26,7 @@ try {
   }
 
   log.info(
-    `${input.apps.length} app(s), country ${input.country}, language ${input.language}, sort ${input.sort}, up to ${input.maxReviewsPerApp} reviews each` +
+    `${input.apps.length} app(s), ${input.countries.length > 1 ? `${input.countries.length} storefronts (${input.countries.join(",")})` : `country ${input.countries[0]}`}, language ${input.language}, sort ${input.sort}, up to ${input.maxReviewsPerApp} reviews each` +
       (input.since ? `, since ${input.since}` : "") +
       (input.minRating > 1 || input.maxRating < 5
         ? `, rating ${input.minRating}-${input.maxRating}`
@@ -43,7 +43,10 @@ try {
     const store = await Actor.openKeyValueStore(STATE_STORE);
     const key = stateKey({
       apps: input.apps.map((a) => `${a.store}:${a.id}`).sort(),
-      country: input.country,
+      // One storefront keeps the original key, so existing state carries over.
+      ...(input.countries.length === 1
+        ? { country: input.countries[0] }
+        : { countries: [...input.countries].sort() }),
       language: input.language,
       minRating: input.minRating,
       maxRating: input.maxRating,
@@ -62,7 +65,10 @@ try {
       log.warning("Max charge per run is too low for a single review.");
       await Actor.exit();
     }
-    if (affordable < input.apps.length * input.maxReviewsPerApp) {
+    if (
+      affordable <
+      input.apps.length * input.countries.length * input.maxReviewsPerApp
+    ) {
       log.info(`Budget allows ${affordable} reviews in total.`);
     }
   }
@@ -95,7 +101,9 @@ try {
     )
     .join(", ");
   await Actor.setStatusMessage(
-    `Scraped ${stats.emitted} reviews (${perApp})` +
+    (stats.storefrontsRequested.length > 1
+      ? `Scraped ${stats.emitted} reviews from ${stats.storefrontsWithReviews.length} of ${stats.storefrontsRequested.length} storefronts`
+      : `Scraped ${stats.emitted} reviews (${perApp})`) +
       (stats.stopReason === "budget" ? " (stopped at max charge)" : ""),
     { isStatusMessageTerminal: true },
   );

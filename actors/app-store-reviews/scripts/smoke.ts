@@ -109,6 +109,20 @@ const f = await run("delta", {
 if (f.out.some((x) => x.date < since.slice(0, 13) || x.rating > 2))
   problems.push("delta: filter violated");
 if (!f.out.length) problems.push("delta: no results");
+// 4. Several storefronts: per-storefront cap and storefront tag.
+const m = await run("countries", {
+  apps: ["id324684580"],
+  countries: ["us", "gb", "de"],
+  maxReviewsPerApp: 10,
+});
+for (const c of ["us", "gb", "de"]) {
+  const n = m.out.filter((x) => x.storefront === c).length;
+  if (n !== 10) problems.push(`countries: ${c} ${n}/10 reviews`);
+}
+if (m.stats.storefrontsWithReviews.length !== 3)
+  problems.push(
+    `countries: storefronts with reviews ${m.stats.storefrontsWithReviews.join(",")}`,
+  );
 const bad = await run("not-found", {
   apps: ["id99999", "com.nonexistent.zzzqqq"],
 });

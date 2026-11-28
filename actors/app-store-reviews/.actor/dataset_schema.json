@@ -87,6 +87,12 @@
         "description": "Store country code the review was fetched from.",
         "example": "us"
       },
+      "storefront": {
+        "type": "string",
+        "title": "Storefront",
+        "description": "Two-letter storefront the review was read from (same as country); tells rows apart when several countries are requested.",
+        "example": "gb"
+      },
       "language": {
         "type": ["string", "null"],
         "title": "Language",
@@ -117,7 +123,7 @@
           "developerReply",
           "developerReplyDate",
           "helpfulCount",
-          "country",
+          "storefront",
           "language",
           "appId",
           "reviewId",
@@ -171,8 +177,8 @@
             "label": "Helpful",
             "format": "number"
           },
-          "country": {
-            "label": "Country",
+          "storefront": {
+            "label": "Storefront",
             "format": "text"
           },
           "language": {

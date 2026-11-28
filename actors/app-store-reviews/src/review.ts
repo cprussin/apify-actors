@@ -17,6 +17,8 @@ export interface Review {
   developerReplyDate: string | null;
   helpfulCount: number | null;
   country: string;
+  /** Storefront the review was read from (2-letter code; same as country). */
+  storefront: string;
   /** Requested review language (Google Play only; Apple has no language filter). */
   language: string | null;
   url: string;
@@ -25,7 +27,7 @@ export interface Review {
 /** A review before app-level fields are attached. */
 export type RawReview = Omit<
   Review,
-  "store" | "appId" | "appName" | "country" | "language"
+  "store" | "appId" | "appName" | "country" | "storefront" | "language"
 >;
 
 export interface AppRef {

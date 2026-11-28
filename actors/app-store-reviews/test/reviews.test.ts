@@ -17,9 +17,25 @@ import {
   parseDetailsName,
 } from "../src/google.js";
 import { HttpClient, HttpError, type FetchLike } from "../src/http.js";
-import { InputError, normalizeInput, parseSince } from "../src/input.js";
-import { AppRefError, parseAppRef, type RawReview } from "../src/review.js";
-import { OLD_STREAK_STOP, runReviews } from "../src/run.js";
+import {
+  InputError,
+  MAX_COUNTRIES,
+  normalizeInput,
+  parseSince,
+  TOP_STOREFRONTS,
+  type RawInput,
+} from "../src/input.js";
+import {
+  AppRefError,
+  parseAppRef,
+  type RawReview,
+  type Review,
+} from "../src/review.js";
+import {
+  DUPLICATE_STREAK_STOP,
+  OLD_STREAK_STOP,
+  runReviews,
+} from "../src/run.js";
 import { Monitor } from "../src/state.js";
 import type { AppInfo, ReviewSource } from "../src/source.js";
 
@@ -108,7 +124,7 @@ describe("input", () => {
       { store: "apple", id: "324684580" },
     ]);
     expect(i).toMatchObject({
-      country: "us",
+      countries: ["us"],
       language: "en",
       sort: "newest",
       maxReviewsPerApp: 100,
@@ -132,7 +148,7 @@ describe("input", () => {
       NOW,
     );
     expect(i).toMatchObject({
-      country: "gb",
+      countries: ["gb"],
       language: "pt-br",
       minRating: 1,
       maxRating: 2,
@@ -146,6 +162,15 @@ describe("input", () => {
     [{ apps: [] }],
     [{ apps: ["nope"] }],
     [{ apps: ["com.a.b"], country: "usa" }],
+    [{ apps: ["com.a.b"], countries: ["us", "gbr"] }],
+    [
+      {
+        apps: ["com.a.b"],
+        countries: Array.from({ length: 51 }, (_, i) =>
+          String.fromCharCode(97 + Math.floor(i / 26), 97 + (i % 26)),
+        ),
+      },
+    ],
     [{ apps: ["com.a.b"], sort: "oldest" }],
     [{ apps: ["com.a.b"], maxReviewsPerApp: 0 }],
     [{ apps: ["com.a.b"], minRating: 4, maxRating: 2 }],
@@ -153,6 +178,24 @@ describe("input", () => {
     [{ apps: ["com.a.b"], sinceDate: "last tuesday" }],
   ])("rejects %j", (raw) => {
     expect(() => normalizeInput(raw, NOW)).toThrow(InputError);
+  });
+
+  it("normalizes countries, with country as the single-storefront alias", () => {
+    const i = (raw: Partial<RawInput>) =>
+      normalizeInput({ apps: ["id12345"], ...raw }, NOW).countries;
+    expect(i({ country: "de" })).toEqual(["de"]);
+    expect(i({ country: "de", countries: [] })).toEqual(["de"]);
+    expect(i({ country: "de", countries: ["US", "uk", "us", "fr"] })).toEqual([
+      "us",
+      "gb",
+      "fr",
+    ]);
+    expect(i({ countries: "us, jp" })).toEqual(["us", "jp"]);
+    const all = i({ allCountries: true, countries: ["xx"] });
+    expect(all).toHaveLength(MAX_COUNTRIES);
+    expect(new Set(all).size).toBe(MAX_COUNTRIES);
+    expect(all.slice(0, 2)).toEqual(["us", "gb"]);
+    expect(all).toEqual([...TOP_STOREFRONTS]);
   });
 
   it("parses relative and absolute since dates", () => {
@@ -515,6 +558,7 @@ describe("runReviews", () => {
       developerReplyDate: null,
       helpfulCount: 0,
       country: "us",
+      storefront: "us",
       language: null,
       url: "https://x/2",
     });
@@ -590,6 +634,111 @@ describe("runReviews", () => {
     expect(out).toHaveLength(5);
     expect(apple.consumed).toBe(5);
     expect(stats.apps["apple:12345"]!.status).toBe("maxReviews");
+  });
+
+  describe("several storefronts", () => {
+    // One app ID, us and gb fixtures; "shared" is listed in both storefronts.
+    const byCountry: Record<string, RawReview[]> = {
+      us: [
+        mk("shared", days(1)),
+        ...Array.from({ length: 9 }, (_, i) => mk(`us${i}`, days(2))),
+      ],
+      gb: [
+        mk("shared", days(1)),
+        ...Array.from({ length: 9 }, (_, i) => mk(`gb${i}`, days(2))),
+      ],
+      fr: [],
+    };
+    const storefronts = () => {
+      const queried: string[] = [];
+      const src: ReviewSource = {
+        resolve: async (id, q) => (
+          queried.push(q.country),
+          { id, name: `App ${q.country}` }
+        ),
+        async *reviews(_app, q) {
+          yield* byCountry[q.country] ?? [];
+        },
+      };
+      return { src, queried };
+    };
+
+    it("tags the storefront, caps each storefront and dedupes on review ID", async () => {
+      const { src, queried } = storefronts();
+      const out: Review[] = [];
+      const stats = await runReviews(
+        normalizeInput(
+          {
+            apps: ["id12345"],
+            country: "jp",
+            countries: ["us", "gb", "fr"],
+            maxReviewsPerApp: 5,
+          },
+          NOW,
+        ),
+        {
+          sources: { apple: src, google: fakeSource([]) },
+          emit: async (r) => (out.push(r), true),
+        },
+      );
+      expect(queried).toEqual(["us", "gb", "fr"]);
+      const ids = (c: string) =>
+        out.filter((r) => r.storefront === c).map((r) => r.reviewId);
+      expect(ids("us")).toEqual(["shared", "us0", "us1", "us2", "us3"]);
+      expect(ids("gb")).toEqual(["gb0", "gb1", "gb2", "gb3", "gb4"]);
+      expect(out.every((r) => r.country === r.storefront)).toBe(true);
+      expect(out.find((r) => r.storefront === "gb")).toMatchObject({
+        appName: "App gb",
+      });
+      expect(stats.apps["apple:12345:gb"]).toMatchObject({
+        emitted: 5,
+        skippedDuplicate: 1,
+        status: "maxReviews",
+      });
+      expect(stats.apps["apple:12345:fr"]!.status).toBe("exhausted");
+      expect(stats.storefrontsRequested).toEqual(["us", "gb", "fr"]);
+      expect(stats.storefrontsWithReviews).toEqual(["us", "gb"]);
+    });
+
+    it("keeps the single-storefront stats key", async () => {
+      const { src } = storefronts();
+      const stats = await runReviews(
+        normalizeInput({ apps: ["id12345"], country: "gb" }, NOW),
+        {
+          sources: { apple: src, google: fakeSource([]) },
+          emit: async () => true,
+        },
+      );
+      expect(Object.keys(stats.apps)).toEqual(["apple:12345"]);
+      expect(stats.storefrontsWithReviews).toEqual(["gb"]);
+    });
+
+    it("stops a storefront that only repeats earlier reviews", async () => {
+      const same = Array.from({ length: 300 }, (_, i) => mk(`g${i}`, days(1)));
+      const google = fakeSource(same);
+      const out: Review[] = [];
+      const stats = await runReviews(
+        normalizeInput(
+          {
+            apps: ["com.a.b"],
+            countries: ["us", "gb"],
+            maxReviewsPerApp: 300,
+          },
+          NOW,
+        ),
+        {
+          sources: { apple: fakeSource([]), google },
+          emit: async (r) => (out.push(r), true),
+        },
+      );
+      expect(out).toHaveLength(300);
+      expect(stats.apps["google:com.a.b:gb"]).toMatchObject({
+        emitted: 0,
+        status: "duplicates",
+        skippedDuplicate: DUPLICATE_STREAK_STOP,
+      });
+      expect(stats.storefrontsWithReviews).toEqual(["us"]);
+    });
   });
 
   it("stops at sinceDate when sorted by newest", async () => {

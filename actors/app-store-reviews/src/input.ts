@@ -5,6 +5,8 @@ import type { Sort } from "./source.js";
 export interface RawInput {
   apps?: (string | { url?: string })[];
   country?: string;
+  countries?: (string | null)[] | string | null;
+  allCountries?: boolean;
   language?: string;
   sort?: string;
   maxReviewsPerApp?: number;
@@ -17,7 +19,8 @@ export interface RawInput {
 
 export interface NormalizedInput {
   apps: AppRef[];
-  country: string;
+  /** Storefronts (2-letter, lower case), in order; each app is read in each. */
+  countries: string[];
   language: string;
   sort: Sort;
   maxReviewsPerApp: number;
@@ -37,6 +40,25 @@ export const DEFAULT_INPUT = {
 } satisfies RawInput;
 
 export const MAX_REVIEWS_PER_APP = 100_000;
+export const MAX_COUNTRIES = 50;
+
+/** allCountries: the 50 largest App Store storefronts. */
+// prettier-ignore
+export const TOP_STOREFRONTS = [
+  "us", "gb", "ca", "au", "de", "fr", "jp", "cn", "kr", "it",
+  "es", "nl", "br", "mx", "in", "se", "ch", "no", "dk", "fi",
+  "be", "at", "ie", "pt", "pl", "tr", "sa", "ae", "il", "sg",
+  "hk", "tw", "th", "my", "id", "ph", "vn", "nz", "za", "ar",
+  "cl", "co", "pe", "cz", "hu", "ro", "gr", "ua", "eg", "ru",
+] as const;
+
+const storefront = (v: string): string => {
+  const c = v.trim().toLowerCase();
+  const code = c === "uk" ? "gb" : c;
+  if (!/^[a-z]{2}$/.test(code))
+    throw new InputError(`country "${v.trim()}" must be a 2-letter code.`);
+  return code;
+};
 export const SORTS: readonly Sort[] = ["newest", "mostRelevant"];
 
 export class InputError extends Error {}
@@ -100,12 +122,27 @@ export function normalizeInput(
   }
   if (!apps.size) throw new InputError("apps contains no valid entries.");
 
-  let country = String(r.country || DEFAULT_INPUT.country)
-    .trim()
-    .toLowerCase();
-  if (country === "uk") country = "gb";
-  if (!/^[a-z]{2}$/.test(country))
-    throw new InputError(`country "${country}" must be a 2-letter code.`);
+  // allCountries > countries > country (the single-storefront alias).
+  const listed = (
+    Array.isArray(r.countries)
+      ? r.countries
+      : typeof r.countries === "string"
+        ? r.countries.split(/[\s,;]+/)
+        : []
+  ).filter((c): c is string => typeof c === "string" && !!c.trim());
+  const countries = [
+    ...new Set(
+      r.allCountries === true
+        ? TOP_STOREFRONTS
+        : listed.length
+          ? listed.map(storefront)
+          : [storefront(String(r.country || DEFAULT_INPUT.country))],
+    ),
+  ];
+  if (countries.length > MAX_COUNTRIES)
+    throw new InputError(
+      `countries has ${countries.length} storefronts; the limit is ${MAX_COUNTRIES}.`,
+    );
   const language = String(r.language || DEFAULT_INPUT.language)
     .trim()
     .toLowerCase();
@@ -133,7 +170,7 @@ export function normalizeInput(
 
   return {
     apps: [...apps.values()],
-    country,
+    countries,
     language,
     sort,
     maxReviewsPerApp: Math.min(max, MAX_REVIEWS_PER_APP),
